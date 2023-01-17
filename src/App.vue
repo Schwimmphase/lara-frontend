@@ -4,6 +4,7 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
+  <!--
   <v-app>
     <v-app-bar :elevation="2">
       
@@ -12,6 +13,8 @@ import { RouterLink, RouterView } from 'vue-router'
     </v-app-bar>
     <v-btn>Wunderschön</v-btn>
   </v-app>
+-->
+  <router-view></router-view>
 </template>
 
 <style scoped>
