@@ -1,3 +1,9 @@
+<script setup lang="ts">
+    import NavbarComponent from '../components/NavbarComponent.vue'
+</script>
+
 <template>
-    <span>TestView</span>
+    <div>
+        <NavbarComponent></NavbarComponent>
+    </div>
 </template>

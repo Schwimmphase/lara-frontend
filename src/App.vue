@@ -14,7 +14,9 @@ import { RouterLink, RouterView } from 'vue-router'
     <v-btn>Wunderschön</v-btn>
   </v-app>
 -->
-  <router-view></router-view>
+  <v-app>
+    <router-view></router-view>  
+  </v-app>
 </template>
 
 <style scoped>
