@@ -1,0 +1,27 @@
+stages:
+  - build
+  - deploy
+
+node-build:
+  image: node:16.5.0
+  stage: build
+  script:
+    - npm install
+    - npm run build
+    - cp -a dist/. public/
+  artifacts:
+    paths:
+      - public/
+
+docker-build-deploy:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'main'
+  dependencies:
+    - node-build
+  script:
+    - docker login -u gitlab-ci -p $DOCKER_PASSWORD $DOCKER_REGISTRY
+    - docker build -t $DOCKER_REGISTRY/lara/$CI_PROJECT_NAME:latest .
+    - docker push $DOCKER_REGISTRY/lara/$CI_PROJECT_NAME:latest
+  environment:
+    name: staging
