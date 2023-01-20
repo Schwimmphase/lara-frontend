@@ -1,5 +1,6 @@
 <script setup lang="ts">
 
+import type { SavedPaper } from '../model/SavedPaper';
 
 </script>
 
