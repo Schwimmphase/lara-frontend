@@ -4,16 +4,6 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-  <!--
-  <v-app>
-    <v-app-bar :elevation="2">
-      
-      
-      <v-app-bar-title>lara.</v-app-bar-title>
-    </v-app-bar>
-    <v-btn>Wunderschön</v-btn>
-  </v-app>
--->
   <v-app>
     <router-view></router-view>  
   </v-app>
