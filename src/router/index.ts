@@ -57,6 +57,7 @@ const router = createRouter({
     {
       path: '/paper',
       name: 'paperDetails',
+      props: true,
       component: DetailView
     },
 

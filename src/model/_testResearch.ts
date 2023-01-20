@@ -30,3 +30,27 @@ export const testPaper = new Paper("id12345", "Das ist der Titel eines Papers, m
 export const testSavedPaper1 = new SavedPaper(testPaper, testResearch, testComment1, [testTag], 1, SaveState.enqueued);
 export const testSavedPaper2 = new SavedPaper(testPaper, testResearch, testComment2, [testTag], 2, SaveState.hidden);
 export const testSavedPaper3 = new SavedPaper(testPaper, testResearch, testComment3, [testTag], 0, SaveState.added);
+export const testSavedPaper4 = new SavedPaper(testPaper, testResearch, testComment1, [testTag], 1, SaveState.enqueued);
+export const testSavedPaper5 = new SavedPaper(testPaper, testResearch, testComment2, [testTag], 2, SaveState.hidden);
+export const testSavedPaper6 = new SavedPaper(testPaper, testResearch, testComment3, [testTag], 0, SaveState.added);
+export const testSavedPaper7 = new SavedPaper(testPaper, testResearch, testComment1, [testTag], 1, SaveState.enqueued);
+export const testSavedPaper8 = new SavedPaper(testPaper, testResearch, testComment2, [testTag], 2, SaveState.hidden);
+export const testSavedPaper9 = new SavedPaper(testPaper, testResearch, testComment3, [testTag], 0, SaveState.added);
+export const testSavedPaper10 = new SavedPaper(testPaper, testResearch, testComment1, [testTag], 1, SaveState.enqueued);
+export const testSavedPaper11 = new SavedPaper(testPaper, testResearch, testComment2, [testTag], 2, SaveState.hidden);
+export const testSavedPaper12 = new SavedPaper(testPaper, testResearch, testComment3, [testTag], 0, SaveState.added);
+
+export const testSavedPaperList: SavedPaper[] = [
+    testSavedPaper1,
+    testSavedPaper2,
+    testSavedPaper3,
+    testSavedPaper4,
+    testSavedPaper5,
+    testSavedPaper6,
+    testSavedPaper7,
+    testSavedPaper8,
+    testSavedPaper9,
+    testSavedPaper10,
+    testSavedPaper11,
+    testSavedPaper12
+]
