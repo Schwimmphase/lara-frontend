@@ -12,14 +12,6 @@ const props = defineProps({
     showLogout: Boolean
 })
 
-
-let items = [
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me 2' },
-      ]
-
 // language options from language service
 // TODO get options from language service
 let languages:string[] = [
@@ -75,6 +67,7 @@ function checkAdmin(): boolean {
 .lara-navbar-link {
     color: #000;
     transition: color ease-in-out 0.3s;
+    text-decoration: none;
 }
 
 .lara-navbar-link:hover {
@@ -85,6 +78,7 @@ function checkAdmin(): boolean {
 
 .lara-icon-link {
     color: #000;
+    text-decoration: none;
 }
 
 .lara-icon-link:hover {

@@ -8,11 +8,33 @@
   font-weight: normal;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+.lara-button {
+  color: #fff;
+}
+
+.lara-button-div {
+  transition: background-color ease-in-out 0.3s;
+  text-align: center;
+}
+
+.lara-button-div:hover {
+  cursor: pointer;
+}
+
+.lara-button-primary {
+  background-color: #000;
+}
+
+.lara-button-primary:hover {
+  background-color: rgb(125, 125, 125);
+}
+
+.lara-button-secondary {
+  background-color: rgb(71, 71, 71);
+}
+
+.lara-button-secondary:hover {
+  background-color: rgb(157, 157, 157);
 }
 
 @media (hover: hover) {
