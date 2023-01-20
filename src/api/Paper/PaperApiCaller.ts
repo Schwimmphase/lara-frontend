@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export class PaperApiCaller {
-    static baseUrl = 'api.lara.gregyyy.dev/paper/'
+    static baseUrl = 'api.lara.gregyyy.dev/paper/';
 
     public static getDetailsOfPaper(paperId: string): Promise<any> {
         return axios.get(this.baseUrl + paperId)
@@ -11,7 +11,7 @@ export class PaperApiCaller {
             .catch(error => {
                 console.log(error)
                 return {}
-            })
+            });
     }
 
     public static getRecommendationsOfPaper(paperId: string): string {
@@ -45,62 +45,4 @@ export class PaperApiCaller {
     public static changeRelevance(paperId: string, relevance: number): string {
         return 'relevance changed'
     }
-}
-
-interface Paper {
-    id: string
-    researchId: string
-    title: string
-    year: number
-    abstract: string
-    citationCount: number
-    refrenceCount: number
-    venue: string
-    pdfUrl: string
-    comment: string
-    tags: Tag[]
-}
-
-interface SavedPaper {
-    paper: Paper
-    research: Research
-    saveState: SaveState
-    comment: Comment
-    tags: Tag[]
-    relevance: number
-}
-
-interface Research {
-    id: string
-    title: string
-    started: Date
-    user: User
-}
-
-interface User {
-    username: string
-    userId: string
-    password: string
-    activeResearch: string
-    category: Category
-}
-
-interface Category {
-    color: string
-    name: string
-}
-
-interface Tag {
-    id: string
-    name: string
-    color: string
-}
-
-interface Comment {
-    text: string
-}
-
-enum SaveState {
-    citation,
-    reference
 }
