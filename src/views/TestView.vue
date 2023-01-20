@@ -4,6 +4,6 @@
 
 <template>
     <div>
-        <NavbarComponent></NavbarComponent>
+        <NavbarComponent :show-logout="true"></NavbarComponent>
     </div>
 </template>

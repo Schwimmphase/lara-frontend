@@ -1,6 +1,24 @@
+<!--
+    Komponente der Navbar, <UIC1&2>
+    Bietet seitenunabhängige Navigation und Funktionen
+-->
+
 <script setup lang="ts">
 
 import router from '../router';
+
+// Propertie um anzugeben, ob der Logout-Link angezeigt werden soll
+const props = defineProps({
+    showLogout: Boolean
+})
+
+
+let items = [
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me 2' },
+      ]
 
 // language options from language service
 // TODO get options from language service
@@ -36,36 +54,23 @@ function checkAdmin(): boolean {
         <v-app-bar :elevation="5" class="lara-navbar">
             <div class="ml-6">
                 <v-app-bar-title>
-                    <span class="font-weight-bold">lara.</span>
+                    <router-link :to="{ name: 'home' }" class="lara-icon-link">
+                        <h2 class="font-weight-bold">lara.</h2>
+                    </router-link>
                 </v-app-bar-title>
             </div>
-            
             <v-spacer></v-spacer>
-            <div class="mr-6 lara-navbar-link-collection">
-                <v-menu>
-                    moins
-                </v-menu>
-                <router-link class="lara-navbar-link" v-if="checkAdmin()" :to="{ name: 'admin' }">Nutzer verwalten</router-link>
+            <div class="mr-6">
+                <span class="lara-navbar-link" @click="logout()">Sprache ändern</span>
+                <router-link class="pl-6 lara-navbar-link" v-if="checkAdmin()" :to="{ name: 'admin' }">Nutzer verwalten</router-link>
                 <router-link class="pl-6 lara-navbar-link" :to="{ name: 'home' }">Start</router-link>
-                <span class="pl-6 lara-navbar-link" @click="logout()">Abmelden</span>
+                <span v-if="showLogout" class="pl-6 lara-navbar-link" @click="logout()">Abmelden</span>
             </div>
         </v-app-bar>
-        
     </div>
 </template>
 
 <style scoped>
-
-.lara-navbar {
-    /*
-    display: flex;
-    justify-content: center;
-    align-items: center;
-*/
-    width: 100vw;
-}
-
-
 
 .lara-navbar-link {
     color: #000;
@@ -76,6 +81,14 @@ function checkAdmin(): boolean {
     color: rgb(125, 125, 125);
     background: none;
     cursor: pointer;
+}
+
+.lara-icon-link {
+    color: #000;
+}
+
+.lara-icon-link:hover {
+    color: #000;
 }
 
 </style>
