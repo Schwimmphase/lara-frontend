@@ -11,23 +11,24 @@ import { UserCategory } from "@/model/UserCategory"
 
 class PaperApiHandler {
     public static getDetailsOfPaper(paperId: string): SavedPaper {
-        let title: string = "";
+        let title = "";
         let research = new Research(0, "", new Date(), new Comment(""), new User("", "", "", new UserCategory("", "")))
         let authors = [ new Author("", "") ];
-        let year: number = 0;
-        let abstract: string = "";
-        let citationCount: number = 0;
-        let refrenceCount: number = 0;
-        let venue: string = "";
-        let pdfUrl: string = "";
-        let saveState = SaveState.added;
+        let year = 0;
+        let abstract = "";
+        let citationCount = 0;
+        let refrenceCount = 0;
+        let venue = "";
+        let pdfUrl = "";
         let comment = new Comment("");
         let tags = [ new Tag("", "", "") ];
+        let relevance = 0;
+        let saveState = SaveState.added;
 
         const response = PaperApiCaller.getDetailsOfPaper(paperId)
             .then(result => {
                 title = result.title;
-                research = result.research;
+                research = new Research(result.research, "", new Date(), new Comment(""), new User("", "", "", new UserCategory("", "")));
                 for (let i = 0; i < result.authors.size; i++) {
                     authors[i] = new Author(result.authors[i].id, result.authors[i].name)
                 }
@@ -37,11 +38,12 @@ class PaperApiHandler {
                 refrenceCount = result.refrenceCount;
                 venue = result.venue;
                 pdfUrl = result.pdfUrl;
-                saveState = result.saveState;
                 comment = new Comment(result.comment);
                 for (let i = 0; i < result.tags.size; i++) {
                     tags[i] = new Tag(result.tags[i].id, result.tags[i].name, result.tags[i].color);
                 }
+                relevance = result.relevance;
+                saveState = result.saveState;
             })
             .catch(error => {
                 console.log(error)
@@ -50,6 +52,6 @@ class PaperApiHandler {
         
         let paper = new Paper(paperId, title, year, abstract, citationCount, refrenceCount, venue, pdfUrl, authors);
 
-        return new SavedPaper(paper, comment, 0, tags, saveState);
+        return new SavedPaper(paper, research, comment, tags, relevance, saveState);
     }
 }
