@@ -3,14 +3,14 @@ import axios from "axios"
 export class PaperApiCaller {
     static baseUrl = 'api.lara.gregyyy.dev/paper/';
 
-    public static getDetailsOfPaper(paperId: string): Promise<any> {
-        return axios.get(this.baseUrl + paperId)
+    public static async getDetailsOfPaper(paperId: string): Promise<string> {
+        return await axios.get(this.baseUrl + paperId)
             .then(response => {
-                return response.data
+                return JSON.stringify(response.data)
             })
             .catch(error => {
                 console.log(error)
-                return {}
+                return "{}"
             });
     }
 
