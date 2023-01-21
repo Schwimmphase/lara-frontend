@@ -6,15 +6,16 @@ import router from '../router'
 import ReturnButtonComponent from './ReturnButtonComponent.vue';
 import RecommendationsButtonComponent from './RecommendationsButtonComponent.vue';
 
-import type { SavedPaper } from '../model/SavedPaper';
-import type { Research } from '../model/Research';
-import { SaveState } from '../model/SaveState';
+import type { SavedPaper } from '@/model/SavedPaper';
+import type { Research } from '@/model/Research';
+import { SaveState } from '@/model/SaveState';
 
-import { useResearchStore } from '../stores/research'
+import { useResearchStore } from '@/stores/research'
 
 // TODO nur testzwecke
 import '../model/_testResearch';
-import { testResearch, testSavedPaperList } from '../model/_testResearch';
+import { testResearch, testSavedPaperList } from '@/model/_testResearch';
+import ExpandableList from "@/components/ExpandableList.vue";
 
 
 let matchesSaveState = (paper: SavedPaper, state: SaveState): boolean => {
@@ -50,32 +51,12 @@ const store = useResearchStore();
 store.setOpenResearch(testResearch, testSavedPaperList);
 
 // Get the research from the store
-let research: Research = store.getResearch;
+let research: Research | null = store.getResearch;
 let researchPapers: SavedPaper[] = store.getResearchPapers;
 
 let addedPapers: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveState(savedPaper, SaveState.added));
 let enqueued: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveState(savedPaper, SaveState.enqueued));
 let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveState(savedPaper, SaveState.hidden));
-
-// Variables to keep track, which lists of papers are shown
-let state: ({addedShown: boolean, enqueuedShown: boolean, hiddenShown: boolean}) = reactive({
-    addedShown: true,
-    enqueuedShown: true,
-    hiddenShown: false,
-});
-
-let toggleAdded = (): void => {
-    state.addedShown = !state.addedShown;
-}
-
-let toggleEnqueued = (): void => {
-    state.enqueuedShown = !state.enqueuedShown;
-}
-
-let toggleHidden = (): void => {
-    state.hiddenShown = !state.hiddenShown;
-}
-
 </script>
 
 <template>
@@ -95,58 +76,29 @@ let toggleHidden = (): void => {
                 </div>
 
                 <!-- Section for the enqueued papers -->
-                <div @click="toggleEnqueued" class="lara-collapse-div">
-                    <span v-show="state.enqueuedShown" class="px-2"><v-icon icon="mdi-menu-down" /></span>
-                    <span v-show="!state.enqueuedShown" class="px-2"><v-icon icon="mdi-menu-right" /></span>
-                    <span class="text-h5">gemerkt</span>
-                    
-                    
-                </div>
-
-                <!-- List of the enqueued papers -->
-                <v-list v-show="state.enqueuedShown">
-                    <v-list-item v-bind:key="index" v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState == SaveState.enqueued})">
+                <expandable-list title="gemerkt" :expanded="true">
+                    <v-list-item v-bind:key="index" v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState === SaveState.enqueued})">
                         <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
                         <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon icon="mdi-plus" /></span>
                     </v-list-item>
-                    <v-list-item>
-                        <v-divider></v-divider>
-                    </v-list-item>
-                </v-list>
+                </expandable-list>
 
                 <!-- Section for the added papers -->
-                <div @click="toggleAdded" class="mt-2 lara-collapse-div">
-                    <span v-show="state.addedShown" class="px-2"><v-icon icon="mdi-menu-down" /></span>
-                    <span v-show="!state.addedShown" class="px-2"><v-icon icon="mdi-menu-right" /></span>
-                    <span class="text-h5">hinzugefügt</span>
-                </div>
-
-                <v-list v-show="state.addedShown">
+                <expandable-list title="hinzugefügt" :expanded="true">
                     <!-- List of the added papers -->
-                    <v-list-item v-bind:key="index" v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState == SaveState.added})">
+                    <v-list-item v-bind:key="index" v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState === SaveState.added})">
                         <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
                     </v-list-item>
-                    <v-list-item>
-                        <v-divider></v-divider>
-                    </v-list-item>
-                </v-list>
+                </expandable-list>
+
 
                 <!-- Section for the hidden papers -->
-                <div @click="toggleHidden" class="mt-2 lara-collapse-div">
-                    <span v-show="state.hiddenShown" class="px-2 lara-hidden-link"><v-icon icon="mdi-menu-down" /></span>
-                    <span v-show="!state.hiddenShown" class="px-2 lara-hidden-link"><v-icon icon="mdi-menu-right" /></span>
-                    <span class="text-h5 lara-hidden-link">ausgeblendet</span><span class="text-h6 lara-hidden-link"><v-icon icon="mdi-eye-off" class="ml-2" /></span>
-                </div>
-
-                <v-list v-show="state.hiddenShown">
-                    <v-list-item v-bind:key="index" v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState == SaveState.hidden})">
+                <expandable-list title="ausgeblendet" icon="mdi-eye-off" :hidden="true">
+                    <v-list-item v-bind:key="index" v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState === SaveState.hidden})">
                         <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
                         <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon icon="mdi-plus" /></span>
                     </v-list-item>
-                    <v-list-item>
-                        <v-divider></v-divider>
-                    </v-list-item>
-                </v-list>
+                </expandable-list>
             </div>
         </v-navigation-drawer>
 
@@ -173,16 +125,8 @@ let toggleHidden = (): void => {
 
 @import '../assets/main.css';
 
-.lara-collapse-div {
-    color: #000;
-}
-
 .lara-collapse-div span::selection {
     background: none;
-}
-
-.lara-collapse-div:hover {
-    cursor: pointer;
 }
 
 .lara-sidebar-link {
@@ -193,9 +137,5 @@ let toggleHidden = (): void => {
 .lara-sidebar-link:hover {
     cursor: pointer;
     color: #000;
-}
-
-.lara-hidden-link {
-    color: rgb(175, 175, 175);
 }
 </style>
