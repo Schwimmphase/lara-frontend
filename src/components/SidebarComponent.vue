@@ -6,12 +6,6 @@ import router from '../router'
 import ReturnButtonComponent from './ReturnButtonComponent.vue';
 import RecommendationsButtonComponent from './RecommendationsButtonComponent.vue';
 
-import ChevronRightIcon from 'vue-material-design-icons/ChevronRight.vue';
-import ChevronDownIcon from 'vue-material-design-icons/ChevronDown.vue';
-import PlusIcon from 'vue-material-design-icons/Plus.vue';
-import FormatListIcon from 'vue-material-design-icons/FormatListBulleted.vue';
-import EyeOffIcon from 'vue-material-design-icons/EyeOff.vue';
-
 import type { SavedPaper } from '../model/SavedPaper';
 import type { Research } from '../model/Research';
 import { SaveState } from '../model/SaveState';
@@ -97,13 +91,13 @@ let toggleHidden = (): void => {
                 
                 <div class="mt-2">
                     <span class="text-h6 font-weight-bold">{{ research.title }}</span>
-                    <span @click="navigateToResearchOverview(research)" class="ml-2 lara-sidebar-link text-h6"><FormatListIcon /></span>
+                    <span @click="navigateToResearchOverview(research)" class="ml-2 lara-sidebar-link text-h6"><v-icon icon="mdi-view-grid" /></span>
                 </div>
 
                 <!-- Section for the enqueued papers -->
                 <div @click="toggleEnqueued" class="lara-collapse-div">
-                    <span v-show="state.enqueuedShown" class="px-2"><ChevronDownIcon /></span>
-                    <span v-show="!state.enqueuedShown" class="px-2"><ChevronRightIcon /></span>
+                    <span v-show="state.enqueuedShown" class="px-2"><v-icon icon="mdi-menu-down" /></span>
+                    <span v-show="!state.enqueuedShown" class="px-2"><v-icon icon="mdi-menu-right" /></span>
                     <span class="text-h5">gemerkt</span>
                     
                     
@@ -113,7 +107,7 @@ let toggleHidden = (): void => {
                 <v-list v-show="state.enqueuedShown">
                     <v-list-item v-bind:key="index" v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState == SaveState.enqueued})">
                         <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
-                        <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><PlusIcon /></span>
+                        <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon icon="mdi-plus" /></span>
                     </v-list-item>
                     <v-list-item>
                         <v-divider></v-divider>
@@ -122,8 +116,8 @@ let toggleHidden = (): void => {
 
                 <!-- Section for the added papers -->
                 <div @click="toggleAdded" class="mt-2 lara-collapse-div">
-                    <span v-show="state.addedShown" class="px-2"><ChevronDownIcon /></span>
-                    <span v-show="!state.addedShown" class="px-2"><ChevronRightIcon /></span>
+                    <span v-show="state.addedShown" class="px-2"><v-icon icon="mdi-menu-down" /></span>
+                    <span v-show="!state.addedShown" class="px-2"><v-icon icon="mdi-menu-right" /></span>
                     <span class="text-h5">hinzugefügt</span>
                 </div>
 
@@ -139,15 +133,15 @@ let toggleHidden = (): void => {
 
                 <!-- Section for the hidden papers -->
                 <div @click="toggleHidden" class="mt-2 lara-collapse-div">
-                    <span v-show="state.hiddenShown" class="px-2 lara-hidden-link"><ChevronDownIcon /></span>
-                    <span v-show="!state.hiddenShown" class="px-2 lara-hidden-link"><ChevronRightIcon /></span>
-                    <span class="text-h5 lara-hidden-link">ausgeblendet</span><span class="text-h6 lara-hidden-link"><EyeOffIcon class="ml-2" /></span>
+                    <span v-show="state.hiddenShown" class="px-2 lara-hidden-link"><v-icon icon="mdi-menu-down" /></span>
+                    <span v-show="!state.hiddenShown" class="px-2 lara-hidden-link"><v-icon icon="mdi-menu-right" /></span>
+                    <span class="text-h5 lara-hidden-link">ausgeblendet</span><span class="text-h6 lara-hidden-link"><v-icon icon="mdi-eye-off" class="ml-2" /></span>
                 </div>
 
                 <v-list v-show="state.hiddenShown">
                     <v-list-item v-bind:key="index" v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState == SaveState.hidden})">
                         <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
-                        <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><PlusIcon /></span>
+                        <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon icon="mdi-plus" /></span>
                     </v-list-item>
                     <v-list-item>
                         <v-divider></v-divider>
