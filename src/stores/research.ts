@@ -1,24 +1,25 @@
 import { defineStore } from "pinia";
 
 import type { SavedPaper } from "../model/SavedPaper";
+import type { Research } from "../model/Research";
 
 export const useResearchStore = defineStore('researchPapers', {
-    state: (): { researchPapers: SavedPaper[], researchId: string } => ({
+    state: (): { research: Research | null, researchPapers: SavedPaper[] } => ({
+        research: null,
         researchPapers: [],
-        researchId: "MOIN"
     }),
     getters: {
         getResearchPapers(state) {
             return state.researchPapers;
         },
-        getResearchId(state) {
-            return state.researchId;
+        getResearch(state) {
+            return state.research;
         }
     },
     actions: {
-        setOpenResearch(researchId: string, researchPapers: SavedPaper[]) {
-            this.researchId = researchId;
-            this.researchPapers = researchPapers;
+        setOpenResearch(research: Research, researchPapers: SavedPaper[]) {
+            this.research = research;
+            this.researchPapers =researchPapers;
         },
         setResearchPapers(researchPapers: SavedPaper[]) {
             this.researchPapers = researchPapers;

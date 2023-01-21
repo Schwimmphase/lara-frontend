@@ -10,6 +10,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
 import './assets/main.css'
+import 'vue-material-design-icons/styles.css'
 
 const vuetify = createVuetify({
     components,
