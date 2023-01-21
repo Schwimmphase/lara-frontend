@@ -1,8 +1,7 @@
 <template>
     <div @click="toggleExpanded" class="lara-collapse-div">
         <span class="text-h5" :class="hidden ? 'lara-hidden-link' : ''">
-            <v-icon icon="mdi-menu-down" v-show="state.expanded" class="px-2" />
-            <v-icon icon="mdi-menu-right" v-show="!state.expanded" class="px-2" />
+            <v-icon icon="mdi-menu-right" class="px-2" :class="state.expanded ? 'rotate' : ''" />
             {{ title }}
             <v-icon :icon="icon" v-show="hidden" class="ml-2" size="25"/>
         </span>
@@ -48,4 +47,13 @@ let toggleExpanded = (): void => {
 .lara-collapse-div:hover {
     cursor: pointer;
 }
+
+.v-icon {
+    transition: transform .3s ease-out;
+}
+
+.rotate {
+    transform: rotate(90deg);
+}
+
 </style>
