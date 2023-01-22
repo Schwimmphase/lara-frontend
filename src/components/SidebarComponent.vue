@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import {reactive} from 'vue';
-import router from '../router'
+import router from '../router';
 
 import ReturnButtonComponent from './ReturnButtonComponent.vue';
 import RecommendationsButtonComponent from './RecommendationsButtonComponent.vue';
@@ -11,11 +11,11 @@ import type {SavedPaper} from '@/model/SavedPaper';
 import type {Research} from '@/model/Research';
 import {SaveState} from '@/model/SaveState';
 
-import {useResearchStore} from '@/stores/research'
+import {useResearchStore} from '@/stores/research';
 
 // TODO nur testzwecke
 //import '../model/_testResearch';
-import {testResearch, testSavedPaperList} from '@/model/_testResearch';
+import { testResearch, testSavedPaperList } from '@/model/_testResearch';
 import ExpandableList from "@/components/ExpandableList.vue";
 import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
 
