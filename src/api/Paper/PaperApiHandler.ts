@@ -8,6 +8,7 @@ import type { Comment } from "@/model/Comment"
 import type { Tag } from "@/model/Tag"
 import { SaveState } from "@/model/SaveState"
 import type { Organizer } from "@/model/Organizer"
+import { RecommendationMethod } from "@/model/RecommendationMethod"
 
 export class PaperApiHandler { // what about JWT token?
     // old variant, yuck

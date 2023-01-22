@@ -14,7 +14,7 @@ import {SaveState} from '@/model/SaveState';
 import {useResearchStore} from '@/stores/research'
 
 // TODO nur testzwecke
-import '../model/_testResearch';
+//import '../model/_testResearch';
 import {testResearch, testSavedPaperList} from '@/model/_testResearch';
 import ExpandableList from "@/components/ExpandableList.vue";
 import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
