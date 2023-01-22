@@ -5,6 +5,7 @@ import router from '../router'
 
 import ReturnButtonComponent from './ReturnButtonComponent.vue';
 import RecommendationsButtonComponent from './RecommendationsButtonComponent.vue';
+import SearchbarComponent from './SearchbarComponent.vue';
 
 import type {SavedPaper} from '@/model/SavedPaper';
 import type {Research} from '@/model/Research';
@@ -64,12 +65,12 @@ let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveStat
     <v-navigation-drawer>
         <div class="mx-2 my-3">
             <div class="w-75">
-
-                <RecommendationsButtonComponent/>
+                <SearchbarComponent />
+                <RecommendationsButtonComponent class="mt-2"/>
                 <ReturnButtonComponent class="mt-2"/>
             </div>
 
-            <div class="mt-2">
+            <div class="mt-4">
                 <span class="text-h6 font-weight-bold">{{ research.title }}</span>
                 <span @click="navigateToResearchOverview(research)" class="ml-2 lara-sidebar-link text-h6"><v-icon
                     icon="mdi-view-grid"/></span>
