@@ -1,5 +1,11 @@
 import { createApp } from 'vue'
+
+// Pinia for shared storage
 import { createPinia } from 'pinia'
+
+// i18n for internatonalization
+import { createI18n } from 'vue-i18n';
+import { messages } from '@/internationalization/translations';
 
 import App from './App.vue'
 import router from './router'
@@ -28,10 +34,18 @@ const vuetify = createVuetify({
     }
 })
 
+const i18n = createI18n({
+    legacy: false,
+    locale: 'de',
+    fallbackLocale: 'de',
+    messages
+})
+
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
 app.use(vuetify)
+app.use(i18n)
 
 app.mount('#app')
