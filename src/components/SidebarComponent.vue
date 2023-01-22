@@ -1,20 +1,20 @@
 <script setup lang="ts">
 
-import { reactive } from 'vue';
+import {reactive} from 'vue';
 import router from '../router'
 
 import ReturnButtonComponent from './ReturnButtonComponent.vue';
 import RecommendationsButtonComponent from './RecommendationsButtonComponent.vue';
 
-import type { SavedPaper } from '@/model/SavedPaper';
-import type { Research } from '@/model/Research';
-import { SaveState } from '@/model/SaveState';
+import type {SavedPaper} from '@/model/SavedPaper';
+import type {Research} from '@/model/Research';
+import {SaveState} from '@/model/SaveState';
 
-import { useResearchStore } from '@/stores/research'
+import {useResearchStore} from '@/stores/research'
 
 // TODO nur testzwecke
 import '../model/_testResearch';
-import { testResearch, testSavedPaperList } from '@/model/_testResearch';
+import {testResearch, testSavedPaperList} from '@/model/_testResearch';
 import ExpandableList from "@/components/ExpandableList.vue";
 
 
@@ -27,7 +27,7 @@ let openSavedPaper = (savedPaper: SavedPaper): void => {
     let id: string = savedPaper.research.id + "-" + savedPaper.paper.id;
 
     // Navigate to paperDetail-route
-    router.push({ name: 'paperDetails', query: { id: id }});
+    router.push({name: 'paperDetails', query: {id: id}});
 }
 
 let changeSaveState = (savedPaper: SavedPaper, saveState: SaveState) => {
@@ -40,7 +40,7 @@ let changeSaveState = (savedPaper: SavedPaper, saveState: SaveState) => {
 let navigateToResearchOverview = (research: Research) => {
     let id: string = research.id;
 
-    router.push({ name: 'researchOverview', query: { id: id }});
+    router.push({name: 'researchOverview', query: {id: id}});
 }
 
 
@@ -60,65 +60,69 @@ let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveStat
 </script>
 
 <template>
-    <div>
-        <!-- Navigations-drawer for the sidebar to manage the paper of a research -->
-        <v-navigation-drawer>
-            <div class="mx-2 my-3">
-                <div class="w-75">
-                    
-                    <RecommendationsButtonComponent />
-                    <ReturnButtonComponent class="mt-2" />
-                </div>
-                
-                <div class="mt-2">
-                    <span class="text-h6 font-weight-bold">{{ research.title }}</span>
-                    <span @click="navigateToResearchOverview(research)" class="ml-2 lara-sidebar-link text-h6"><v-icon icon="mdi-view-grid" /></span>
-                </div>
+    <!-- Navigations-drawer for the sidebar to manage the paper of a research -->
+    <v-navigation-drawer>
+        <div class="mx-2 my-3">
+            <div class="w-75">
 
-                <!-- Section for the enqueued papers -->
-                <expandable-list title="gemerkt" :expanded="true">
-                    <v-list-item v-bind:key="index" v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState === SaveState.enqueued})">
-                        <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
-                        <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon icon="mdi-plus" /></span>
-                    </v-list-item>
-                </expandable-list>
-
-                <!-- Section for the added papers -->
-                <expandable-list title="hinzugefügt" :expanded="true">
-                    <!-- List of the added papers -->
-                    <v-list-item v-bind:key="index" v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState === SaveState.added})">
-                        <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
-                    </v-list-item>
-                </expandable-list>
-
-
-                <!-- Section for the hidden papers -->
-                <expandable-list title="ausgeblendet" icon="mdi-eye-off" :hidden="true">
-                    <v-list-item v-bind:key="index" v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState === SaveState.hidden})">
-                        <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
-                        <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon icon="mdi-plus" /></span>
-                    </v-list-item>
-                </expandable-list>
+                <RecommendationsButtonComponent/>
+                <ReturnButtonComponent class="mt-2"/>
             </div>
-        </v-navigation-drawer>
 
-        <!--
-        <v-navigation-drawer>
-            
-            <v-list>
-                <v-list-item>
-                    
+            <div class="mt-2">
+                <span class="text-h6 font-weight-bold">{{ research.title }}</span>
+                <span @click="navigateToResearchOverview(research)" class="ml-2 lara-sidebar-link text-h6"><v-icon
+                    icon="mdi-view-grid"/></span>
+            </div>
+
+            <!-- Section for the enqueued papers -->
+            <expandable-list title="gemerkt" :expanded="true">
+                <v-list-item v-bind:key="index"
+                             v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState === SaveState.enqueued})">
+                    <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
+                    <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon
+                        icon="mdi-plus"/></span>
                 </v-list-item>
+            </expandable-list>
 
-
-                <v-list-item v-bind:key="index" v-for="(savedPaper, index) in researchPapers">
-                    {{ savedPaper.paper.title }}
+            <!-- Section for the added papers -->
+            <expandable-list title="hinzugefügt" :expanded="true">
+                <!-- List of the added papers -->
+                <v-list-item v-bind:key="index"
+                             v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState === SaveState.added})">
+                    <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
                 </v-list-item>
+            </expandable-list>
 
-            </v-list>
-        </v-navigation-drawer>
-        -->
-    </div>
+
+            <!-- Section for the hidden papers -->
+            <expandable-list title="ausgeblendet" icon="mdi-eye-off" :hidden="true">
+                <v-list-item v-bind:key="index"
+                             v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState === SaveState.hidden})">
+                    <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
+                    <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon
+                        icon="mdi-plus"/></span>
+                </v-list-item>
+            </expandable-list>
+        </div>
+    </v-navigation-drawer>
+
+    <!--
+    <v-navigation-drawer>
+
+        <v-list>
+            <v-list-item>
+
+            </v-list-item>
+
+
+            <v-list-item v-bind:key="index" v-for="(savedPaper, index) in researchPapers">
+                {{ savedPaper.paper.title }}
+            </v-list-item>
+
+        </v-list>
+    </v-navigation-drawer>
+    -->
 </template>
 
 <style scoped>

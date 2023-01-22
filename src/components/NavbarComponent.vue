@@ -42,24 +42,22 @@ function checkAdmin(): boolean {
 </script>
 
 <template>
-    <div class="lara-navbar-container">
-        <v-app-bar :elevation="5" class="lara-navbar">
-            <div class="ml-6">
-                <v-app-bar-title>
-                    <router-link :to="{ name: 'home' }" class="lara-icon-link">
-                        <h2 class="font-weight-bold">lara.</h2>
-                    </router-link>
-                </v-app-bar-title>
-            </div>
-            <v-spacer></v-spacer>
-            <div class="mr-6">
-                <span class="lara-navbar-link" @click="logout()">Sprache ändern</span>
-                <router-link class="pl-6 lara-navbar-link" v-if="checkAdmin()" :to="{ name: 'admin' }">Nutzer verwalten</router-link>
-                <router-link class="pl-6 lara-navbar-link" :to="{ name: 'home' }">Start</router-link>
-                <span v-if="showLogout" class="pl-6 lara-navbar-link" @click="logout()">Abmelden</span>
-            </div>
-        </v-app-bar>
-    </div>
+    <v-app-bar :elevation="5" class="lara-navbar">
+        <div class="ml-6">
+            <v-app-bar-title>
+                <router-link :to="{ name: 'home' }" class="lara-icon-link">
+                    <h2 class="font-weight-bold">lara.</h2>
+                </router-link>
+            </v-app-bar-title>
+        </div>
+        <v-spacer></v-spacer>
+        <div class="mr-6">
+            <span class="lara-navbar-link" @click="logout()">Sprache ändern</span>
+            <router-link class="pl-6 lara-navbar-link" v-if="checkAdmin()" :to="{ name: 'admin' }">Nutzer verwalten</router-link>
+            <router-link class="pl-6 lara-navbar-link" :to="{ name: 'home' }">Start</router-link>
+            <span v-if="showLogout" class="pl-6 lara-navbar-link" @click="logout()">Abmelden</span>
+        </div>
+    </v-app-bar>
 </template>
 
 <style scoped>
