@@ -3,9 +3,7 @@ import { createApp } from 'vue'
 // Pinia for shared storage
 import { createPinia } from 'pinia'
 
-// i18n for internatonalization
-import { createI18n } from 'vue-i18n';
-import { messages } from '@/internationalization/translations';
+import { i18n } from './internationalization/i18n'
 
 import App from './App.vue'
 import router from './router'
@@ -32,13 +30,6 @@ const vuetify = createVuetify({
             fa,
         },
     }
-})
-
-const i18n = createI18n({
-    legacy: false,
-    locale: 'de',
-    fallbackLocale: 'de',
-    messages
 })
 
 const app = createApp(App)

@@ -7,19 +7,10 @@
 
 import router from '../router';
 
-// Propertie um anzugeben, ob der Logout-Link angezeigt werden soll
-const props = defineProps({
-    showLogout: Boolean
-})
+import { LanguageService } from '../internationalization/LanguageService';
+import { Language } from '../internationalization/Language';
 
-// language options from language service
-// TODO get options from language service
-let languages:string[] = [
-    'german',
-    'english'
-];
-
-let selectedLanguage: string;
+import { i18n } from '@/internationalization/i18n'
 
 // Function to logout the user
 function logout(): void {
@@ -39,6 +30,25 @@ function checkAdmin(): boolean {
     return isAdmin;
 }
 
+let changeLanguage = (lang: string) => {
+    console.log(lang)
+
+    switch (lang) {
+        case 'de':
+            i18n.global.locale.value = 'de';        
+            break;
+
+        case 'en':
+            i18n.global.locale.value = 'en';        
+            break;
+    }
+}
+
+let selectedLanguage: Language;
+let languages = LanguageService.getLanguages();
+
+let showLogout: boolean = true;
+
 </script>
 
 <template>
@@ -51,13 +61,29 @@ function checkAdmin(): boolean {
             </v-app-bar-title>
         </div>
         <v-spacer></v-spacer>
+        <div>
+            <v-btn id="menu-activator" color="primary">{{ $t('navbar.changeLanguage') }}</v-btn>
+
+            <v-menu activator="#menu-activator">
+                <v-list>
+                    <v-list-item
+                    v-for="(language, index) in languages" :key="index" :value="language.abbreviation"
+                    @click="changeLanguage(language.abbreviation)"
+                    >
+                        <span>{{ language.name }}</span>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+        </div>
         <div class="mr-6">
-            <span class="lara-navbar-link" @click="logout()">Sprache ändern</span>
-            <router-link class="pl-6 lara-navbar-link" v-if="checkAdmin()" :to="{ name: 'admin' }">Nutzer verwalten</router-link>
-            <router-link class="pl-6 lara-navbar-link" :to="{ name: 'home' }">Start</router-link>
-            <span v-if="showLogout" class="pl-6 lara-navbar-link" @click="logout()">Abmelden</span>
+            <span class="lara-navbar-link" @click="logout()">{{ $t('navbar.changeLanguage') }}</span>
+            <router-link class="pl-6 lara-navbar-link" v-if="checkAdmin()" :to="{ name: 'admin' }">{{ $t('navbar.manageUsers') }}</router-link>
+            <router-link class="pl-6 lara-navbar-link" :to="{ name: 'home' }">{{ $t('navbar.home') }}</router-link>
+            <span v-if="showLogout" class="pl-6 lara-navbar-link" @click="logout()">{{ $t('navbar.logout') }}</span>
         </div>
     </v-app-bar>
+    
+
 </template>
 
 <style scoped>
