@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import {RouterView, useRoute} from 'vue-router'
 import NavbarComponent from "@/components/NavbarComponent.vue";
 import SidebarComponent from "@/components/SidebarComponent.vue";
-//import HelloWorld from './components/HelloWorld.vue'
+import {computed} from "vue";
+
+const route = useRoute();
+const currentRouteName = computed(() => route.name);
 </script>
 
 <template>
   <v-app>
       <NavbarComponent :show-logout="true"></NavbarComponent>
-      <SidebarComponent />
+      <SidebarComponent v-if="currentRouteName !== 'login'" />
       <v-main>
           <router-view></router-view>
       </v-main>
