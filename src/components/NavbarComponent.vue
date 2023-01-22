@@ -8,7 +8,7 @@
 import router from '../router';
 
 import { LanguageService } from '../internationalization/LanguageService';
-import { Language } from '../internationalization/Language';
+import type { Language } from '../internationalization/Language';
 
 import { i18n } from '@/internationalization/i18n'
 

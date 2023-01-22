@@ -25,7 +25,7 @@ export const testAuthor = new Author("id12345", "Carsten Sinz");
 
 export const testTag = new Tag("id12345", "Super wichtig", "#fcba03");
 
-export const testPaper = new Paper("id12345", "Das ist der Titel eines Papers, moin!", 2023 ,"Das ist der Absrtract eines sehr coolen Papers, das aber keinen Zweck hat sonder nur Test ist.", 10, 3, "NEG", "https://www.orimi.com/pdf-test.pdf", [testAuthor]);
+export const testPaper = new Paper("id12345", "Das ist der Titel eines Papers, moin!", [testAuthor], 2023 ,"Das ist der Absrtract eines sehr coolen Papers, das aber keinen Zweck hat sonder nur Test ist.", 10, 3, "NEG", "https://www.orimi.com/pdf-test.pdf");
 
 export const testSavedPaper1 = new SavedPaper(testPaper, testResearch, testComment1, [testTag], 1, SaveState.enqueued);
 export const testSavedPaper2 = new SavedPaper(testPaper, testResearch, testComment2, [testTag], 2, SaveState.hidden);

@@ -17,6 +17,7 @@ import {useResearchStore} from '@/stores/research'
 import '../model/_testResearch';
 import {testResearch, testSavedPaperList} from '@/model/_testResearch';
 import ExpandableList from "@/components/ExpandableList.vue";
+import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
 
 
 let matchesSaveState = (paper: SavedPaper, state: SaveState): boolean => {
@@ -34,7 +35,7 @@ let openSavedPaper = (savedPaper: SavedPaper): void => {
 let changeSaveState = (savedPaper: SavedPaper, saveState: SaveState) => {
     console.log("Change state of paper! " + savedPaper.paper.title);
     // TODO Call API to change save state of paper
-
+    PaperApiHandler.changeSaveState(savedPaper, saveState);
     // TODO Force a new fetch of the researchPapers
 }
 
@@ -71,14 +72,14 @@ let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveStat
             </div>
 
             <div class="mt-4">
-                <span class="text-h6 font-weight-bold">{{ research.title }}</span>
-                <span @click="navigateToResearchOverview(research)" class="ml-2 lara-sidebar-link text-h6"><v-icon
+                <span class="text-h6 font-weight-bold">{{ research != null ? research.title : null }}</span>
+                <span @click="research != null ? navigateToResearchOverview(research)" class="ml-2 lara-sidebar-link text-h6"><v-icon
                     icon="mdi-view-grid"/></span>
             </div>
 
             <!-- Section for the enqueued papers -->
             <expandable-list title="gemerkt" :expanded="true">
-                <v-list-item v-bind:key="index"
+                <v-list-item v-bind:key=index
                              v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState === SaveState.enqueued})">
                     <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
                     <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon
