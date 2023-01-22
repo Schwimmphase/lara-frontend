@@ -1,4 +1,4 @@
-import BaseApiCaller from "../BaseApiCaller"
+import basicApiHandler from "../BasicApiHandler"
 import { PaperApiCaller } from "./PaperApiCaller"
 
 import { Paper } from "@/model/Paper"
@@ -61,7 +61,7 @@ export class PaperApiHandler { // what about JWT token?
     public static getDetailsOfPaper(paper: Paper) {
         PaperApiCaller.getDetailsOfPaper(paper.id)
             .then(response => {
-                let data = BaseApiCaller.tryParseJson(response.data);
+                let data = basicApiHandler.tryParseJson(response.data);
                 console.log("response of gedDetailsOfPaper: ", data);
                 let paper = PaperApiHandler.buildPaper(data); // update html component here
             });
@@ -70,7 +70,7 @@ export class PaperApiHandler { // what about JWT token?
     public static addTagToPaper(savedPaper: SavedPaper, tag: Tag) {
         PaperApiCaller.addTagToPaper(savedPaper.paper.id, savedPaper.research.id, tag.id)
             .then(response => {
-                let data = BaseApiCaller.tryParseJson(response.data);
+                let data = basicApiHandler.tryParseJson(response.data);
                 console.log("response of addTagToPaper: ", data); // update html component here
             });
     }
@@ -78,7 +78,7 @@ export class PaperApiHandler { // what about JWT token?
     public static removeTagFromPaper(savedPaper: SavedPaper, tag: Tag) {
         PaperApiCaller.removeTagFromPaper(savedPaper.paper.id, savedPaper.research.id, tag.id)
             .then(response => {
-                let data = BaseApiCaller.tryParseJson(response.data);
+                let data = basicApiHandler.tryParseJson(response.data);
                 console.log("response of removeTagFromPaper: ", data); // update html component here
             });
     }
@@ -86,7 +86,7 @@ export class PaperApiHandler { // what about JWT token?
     public static changeComment(savedPaper: SavedPaper, comment: Comment) {
         PaperApiCaller.changeComment(savedPaper.paper.id, savedPaper.research.id, comment.text)
         .then(response => {
-            let data = BaseApiCaller.tryParseJson(response.data);
+            let data = basicApiHandler.tryParseJson(response.data);
             console.log("response of changeComment: ", data); // update html component here
         });
     }
@@ -94,7 +94,7 @@ export class PaperApiHandler { // what about JWT token?
     public static changeSaveState(savedPaper: SavedPaper, saveState: SaveState) {
         PaperApiCaller.changeSaveState(savedPaper.paper.id, savedPaper.research.id, SaveState[saveState])
             .then(response => {
-                let data = BaseApiCaller.tryParseJson(response.data);
+                let data = basicApiHandler.tryParseJson(response.data);
                 console.log("response of changeSaveState: ", data); // update html component here
             });
     }
@@ -102,7 +102,7 @@ export class PaperApiHandler { // what about JWT token?
     public static changeRelevance(savedPaper: SavedPaper, relevance: number) {
         PaperApiCaller.changeRelevance(savedPaper.paper.id, savedPaper.research.id, relevance)
             .then(response => {
-                let data = BaseApiCaller.tryParseJson(response.data);
+                let data = basicApiHandler.tryParseJson(response.data);
                 console.log("response of changeRelevance: ", data); // update html component here
             });
     }
@@ -110,8 +110,9 @@ export class PaperApiHandler { // what about JWT token?
     public static getRecommendationsOfPaper(paper: Paper, method: RecommendationMethod, organizers: Organizer[]) {
         PaperApiCaller.getRecommendationsOfPaper(paper.id, RecommendationMethod[method], JSON.stringify(organizers))
             .then(response => {
-                let data = BaseApiCaller.tryParseJson(response.data);
-                console.log("response of changeSaveState: ", data); // update html component here
+                let data = basicApiHandler.tryParseJson(response.data);
+                console.log("response of changeSaveState: ", data);
+                let recommendations = PaperApiHandler.buildRecommendations(data); // update html component here
             });
     }
 

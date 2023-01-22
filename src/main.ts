@@ -8,16 +8,16 @@ import { i18n } from './internationalization/i18n'
 import App from './App.vue'
 import router from './router'
 
+// Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-
-import './assets/main.css'
-
 import {aliases, mdi} from "vuetify/iconsets/mdi";
 import {fa} from "vuetify/iconsets/fa";
 import "@mdi/font/css/materialdesignicons.css";
+
+import './assets/main.css'
 
 const vuetify = createVuetify({
     components,

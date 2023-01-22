@@ -1,4 +1,4 @@
-import BaseApiCaller from "../BaseApiCaller";
+import basicApiCaller from "../BasicApiCaller";
 
 export class PaperApiCaller {
     static urlPath = '/paper/';
@@ -6,7 +6,7 @@ export class PaperApiCaller {
     // old variant, yuck
     /*
     public static async getDetailsOfPaper(paperId: string): Promise<string> {
-        return await BaseApiCaller.axiosInstance.get(PaperApiCaller.urlPath + paperId)
+        return await BasicApiCaller.axiosInstance.get(PaperApiCaller.urlPath + paperId)
             .then(response => {
                 return JSON.stringify(response);
             })
@@ -19,11 +19,11 @@ export class PaperApiCaller {
 
    // new & improved variants
     public static getDetailsOfPaper(paperId: string) {
-        return BaseApiCaller.axiosInstance.get(PaperApiCaller.urlPath + paperId);
+        return basicApiCaller.axiosInstance.get(PaperApiCaller.urlPath + paperId);
     }
 
     public static addTagToPaper(paperId: string, researchId: string, tagId: string) {
-        return BaseApiCaller.axiosInstance.put(PaperApiCaller.urlPath + paperId + '/tag', {
+        return basicApiCaller.axiosInstance.put(PaperApiCaller.urlPath + paperId + '/tag', {
             params: {
                 "researchId": researchId,
                 "tagId": tagId
@@ -32,7 +32,7 @@ export class PaperApiCaller {
     }
     
     public static removeTagFromPaper(paperId: string, researchId: string, tagId: string) {
-        return BaseApiCaller.axiosInstance.delete(PaperApiCaller.urlPath + paperId + "'/tag", {
+        return basicApiCaller.axiosInstance.delete(PaperApiCaller.urlPath + paperId + "'/tag", {
             params: {
                 "researchId": researchId,
                 "tagId": tagId
@@ -41,7 +41,7 @@ export class PaperApiCaller {
     }
     
     public static changeComment(paperId: string, researchId: string, comment: string) {
-        return BaseApiCaller.axiosInstance.patch(PaperApiCaller.urlPath + paperId + '/comment', {
+        return basicApiCaller.axiosInstance.patch(PaperApiCaller.urlPath + paperId + '/comment', {
             params: {
                 "researchId": researchId
             },
@@ -52,7 +52,7 @@ export class PaperApiCaller {
     }
 
     public static changeSaveState(paperId: string, researchId: string, saveState: string) {
-        return BaseApiCaller.axiosInstance.put(PaperApiCaller.urlPath + paperId + '/save-state', {
+        return basicApiCaller.axiosInstance.put(PaperApiCaller.urlPath + paperId + '/save-state', {
             params: {
                 "researchId": researchId,
                 "save-state": saveState
@@ -61,7 +61,7 @@ export class PaperApiCaller {
     }
 
     public static changeRelevance(paperId: string, researchId: string, relevance: number) {
-        return BaseApiCaller.axiosInstance.patch(PaperApiCaller.urlPath + paperId + '/relevance', {
+        return basicApiCaller.axiosInstance.patch(PaperApiCaller.urlPath + paperId + '/relevance', {
             params: {
                 "researchId": researchId,
                 "relevance": relevance
@@ -70,7 +70,7 @@ export class PaperApiCaller {
     }
     
     public static getRecommendationsOfPaper(paperId: string, method: string, organizerList: string) {
-        return BaseApiCaller.axiosInstance.post(PaperApiCaller.urlPath + paperId, {
+        return basicApiCaller.axiosInstance.post(PaperApiCaller.urlPath + paperId, {
             params: {
                 "method": method
             },
