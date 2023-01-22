@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 import router from '../router';
+import LaraButton from "@/components/basic/LaraButton.vue";
 
 // Method to navigate to the recommendations
 let navigateToRecommendations = ():void => {
@@ -10,9 +11,5 @@ let navigateToRecommendations = ():void => {
 </script>
 
 <template>
-    <div>
-        <div class="px-4 lara-button-div lara-button-primary">
-            <span class="lara-button text-button" @click="navigateToRecommendations()">Empfehlungen</span>
-        </div>
-    </div>
+    <lara-button type="primary" @click="navigateToRecommendations">Empfehlungen</lara-button>
 </template>

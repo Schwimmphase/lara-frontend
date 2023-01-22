@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 import router from '../router';
+import LaraButton from "@/components/basic/LaraButton.vue";
 
 // Method to navigate back one page
 let returnToLastPage = ():void => {
@@ -10,9 +11,5 @@ let returnToLastPage = ():void => {
 </script>
 
 <template>
-    <div>
-        <div class="px-4 lara-button-div lara-button-secondary">
-            <span class="lara-button text-button" @click="returnToLastPage()">Zurück</span>
-        </div>
-    </div>
+    <lara-button type="secondary" @click="returnToLastPage">Zurück</lara-button>
 </template>

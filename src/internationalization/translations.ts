@@ -3,6 +3,9 @@ export const messages = {
         test: 'This is a small test'
     },
     de: {
-        test: 'Das ist ein kleiner Test!'
+        test: 'Das ist ein kleiner Test!',
+        researchOverview: {
+
+        }
     }
 }
