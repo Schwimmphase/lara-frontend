@@ -71,8 +71,8 @@ let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveStat
             </div>
 
             <div class="mt-4">
-                <span class="text-h6 font-weight-bold">{{ research.title }}</span>
-                <span @click="navigateToResearchOverview(research)" class="ml-2 lara-sidebar-link text-h6"><v-icon
+                <span class="text-h6 font-weight-bold">{{ research != null ? research.title : null }}</span>
+                <span @click="research != null ? navigateToResearchOverview(research) : null" class="ml-2 lara-sidebar-link text-h6"><v-icon
                     icon="mdi-view-grid"/></span>
             </div>
 

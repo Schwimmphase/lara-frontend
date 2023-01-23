@@ -1,6 +1,6 @@
 <template>
     <v-container class="pt-8 px-16">
-        <h1 class="text-h3 font-weight-bold">Übersicht {{ research.title }}</h1>
+        <h1 class="text-h3 font-weight-bold">Übersicht {{ research != null ? research.title : null }}</h1>
         <organizable-list :slots="slots">
             <template v-slot:added>
                 <research-overview-card v-for="savedPaper in testSavedPaperList"
@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import OrganizableList from "@/components/basic/OrganizableList.vue";
 import {testResearch, testSavedPaperList} from "@/model/_testResearch";
-import {Research} from "@/model/Research";
+import type {Research} from "@/model/Research";
 import {useResearchStore} from "@/stores/research";
 import ResearchOverviewCard from "@/components/cards/ResearchOverviewCard.vue";
 import type {Slot} from "@/components/basic/OrganizableList.vue";

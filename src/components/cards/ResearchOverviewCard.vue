@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import LaraButton from "@/components/basic/LaraButton.vue";
-import {Tag} from "@/model/Tag";
+import type {Tag} from "@/model/Tag";
 
 defineProps<{
     title: String,
