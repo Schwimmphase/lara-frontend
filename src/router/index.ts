@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 // TODO Only for Test reasons
-import TestHomeView from '../views/_test_HomeView.vue'
 import TestView from '../views/TestView.vue'
 
 // Import all views
@@ -17,13 +16,7 @@ import RecommendationsView from '../views/RecommendationsView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    // TODO Two test routes
-    {
-      path: '/testHome',
-      name: 'testHome',
-      component: TestHomeView
-    },
-
+    
     {
       path: '/test',
       name: 'test',

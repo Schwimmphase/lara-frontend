@@ -10,8 +10,11 @@ export const messages = {
         },
 
         detailSidebar: {
+            informations: 'Informations',
             comments: 'Comments',
-            save: 'save'
+            save: 'save',
+            tags: 'Tags',
+            relevance: 'Relecvance',
         }
 
 
@@ -27,8 +30,11 @@ export const messages = {
         },
 
         detailSidebar: {
+            informations: 'Informationen',
             comments: 'Kommentare',
-            save: 'speichern'
+            save: 'speichern',
+            tags: 'Tags',
+            relevance: 'Relevanz',
         }
     }
 }
