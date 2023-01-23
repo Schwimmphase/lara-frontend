@@ -6,9 +6,9 @@
                 <v-card-text>
                     <v-form v-model="valid">
                         <div class="d-flex flex-column">
-                            <v-text-field class="lara-textarea" variant="outlined"
+                            <v-text-field class="lara-field" variant="outlined"
                                           v-model="state.title" :counter="32" label="Titel"></v-text-field>
-                            <v-textarea class="lara-textarea mt-4" variant="outlined"
+                            <v-textarea class="lara-field mt-4" variant="outlined"
                                         v-model="state.description" :counter="256" label="Beschreibung"></v-textarea>
                         </div>
                     </v-form>
