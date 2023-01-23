@@ -12,9 +12,14 @@ export const messages = {
         detailSidebar: {
             comments: 'Comments',
             save: 'save'
+        },
+
+        login: {
+            login: 'Login',
+            userId: 'User ID',
+            password: 'Password',
+            button: 'submit'
         }
-
-
     },
     de: {
         test: 'Das ist ein kleiner Test!',
@@ -29,6 +34,13 @@ export const messages = {
         detailSidebar: {
             comments: 'Kommentare',
             save: 'speichern'
+        },
+
+        login: {
+            login: 'Anmelden',
+            userId: 'Nutzer-ID',
+            password: 'Passwort',
+            button: 'anmelden'
         }
     }
 }
