@@ -17,7 +17,7 @@ export class AdminApiCaller {
             data: {
                 "username": username,
                 "password": password,
-                "usercategory": userCategory
+                "userCategory": userCategory
             }
         });
     }
@@ -27,7 +27,7 @@ export class AdminApiCaller {
             data: {
                 "username": username,
                 "password": password,
-                "usercategory": userCategory
+                "useCategory": userCategory
             }
         })
     }

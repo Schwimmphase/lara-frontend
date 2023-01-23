@@ -73,6 +73,13 @@ const router = createRouter({
       component: RecommendationsView
     }
   ]
-})
+});
+
+router.beforeEach(async (to, from) => {
+  console.log(document.cookie);
+  if (!document.cookie.includes("lara-token") && to.name !== 'login') {
+      return { name: 'login' };
+  }
+});
 
 export default router

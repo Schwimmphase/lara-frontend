@@ -7,13 +7,15 @@ class BasicApiCaller {
     constructor() {
         this.axiosInstance = axios.create({
             baseURL: 'https://api.lara.gregyyy.dev',
-            timeout: 10000
+            timeout: 10000, // ms
+            headers: {
+                Authorization: document.cookie
+            }
         });
 
         // axios interceptor for requests
         this.axiosInstance.interceptors.request.use(config => {
             console.log("request url: ", config.baseURL, config.url);
-            console.log("request params: ", Object.keys(config.data.params)[0] + ": " + config.data.params.method); // only for param "method"
             console.log("request method: ", config.method);
             return config;
         }, error => {
