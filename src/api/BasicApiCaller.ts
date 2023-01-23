@@ -6,11 +6,8 @@ class BasicApiCaller {
 
     constructor() {
         this.axiosInstance = axios.create({
-            baseURL: 'https://2fa9806c-0984-4cb0-b381-e5fd2e3b013a.mock.pstmn.io/', // mocked server via postman
-            timeout: 3000,
-            headers: {
-                "x-mock-response-code": 200 // mocked http response
-            }
+            baseURL: 'https://api.lara.gregyyy.dev',
+            timeout: 10000
         });
 
         // axios interceptor for requests
@@ -34,7 +31,9 @@ class BasicApiCaller {
             console.log("error message: ", error.message);
 
             if (error.response) {
-                if (error.response.status == "401") {
+                if (error.response.status == "400") {
+                    throw new Error("False arguments of request, recieved error message: " + error.response.message);
+                } else if (error.response.status == "401") {
                     throw new Error("User not authentificated, recieved error message: " + error.response.message);
                 } else if (error.response.status == "403") {
                     throw new Error("Access forbidden, recieved error message: " + error.response.message);

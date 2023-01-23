@@ -11,54 +11,6 @@ import type { Organizer } from "@/model/Organizer"
 import { RecommendationMethod } from "@/model/RecommendationMethod"
 
 export class PaperApiHandler { // what about JWT token?
-    // old variant, yuck
-    /*
-    public static async getDetailsOfPaper(paperId: string): Promise<SavedPaper> {
-        const response = await PaperApiCaller.getDetailsOfPaper(paperId)
-            .then(res => {
-                return res;
-            });
-               
-        try {
-            var json = JSON.parse(response);
-        } catch(error) {
-            throw new Error("Could not parse JSON string from backend: " + error);
-        }
-
-        let data = json["data"];
-        if (json.status == "401") {
-            throw new Error("User not authentificated: " + data["message"]);
-        }
-        if (json.status == "403") {
-            throw new Error("Paper not found or paper does not belong to user :" + data["message"]);
-        }
-        
-        try { // parsing not needed as our rest-api always responds in correct format (or errors 401 & 403 that were checked before)
-            var research = data.research as Research;
-            var comment = data.comment as Comment;
-            var tags = data.tags.Children() as Tag[];
-            var relevance = data.relevance as number;
-            var saveState = data.saveState as SaveState;
-
-            var title = data.title;
-            var authors = data.authors.Children() as Author[];
-            var year = data.year as number;
-            var abstract = data.abstract;
-            var citationCount = data.citationCount as number;
-            var referenceCount = data.referenceCount as number;
-            var venue = data.venue;
-            var pdfUrl = data.pdfUrl;
-        } catch(error) {
-            throw new Error("JSON string is of wrong format: " + error);
-        }
-
-        let paper = new Paper(paperId, title, authors, year, abstract, citationCount, referenceCount, venue, pdfUrl);
-
-        return new SavedPaper(paper, research, comment, tags, relevance, saveState);
-    }
-    */
-
-    // new & improved variants
     public static getDetailsOfPaper(paper: Paper) {
         PaperApiCaller.getDetailsOfPaper(paper.id)
             .then(response => {
