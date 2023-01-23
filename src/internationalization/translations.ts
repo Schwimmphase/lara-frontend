@@ -7,6 +7,11 @@ export const messages = {
             home: 'home',
             manageUsers: 'manage users',
             changeLanguage: 'change language'
+        },
+
+        detailSidebar: {
+            comments: 'Comments',
+            save: 'save'
         }
 
 
@@ -19,6 +24,11 @@ export const messages = {
             home: 'Start',
             manageUsers: 'Nutzer verwalten',
             changeLanguage: 'Sprache ändern'
+        },
+
+        detailSidebar: {
+            comments: 'Kommentare',
+            save: 'speichern'
         }
     }
 }
