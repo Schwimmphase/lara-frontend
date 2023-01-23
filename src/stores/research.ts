@@ -6,7 +6,7 @@ import type { Research } from "../model/Research";
 export const useResearchStore = defineStore('researchPapers', {
     state: (): { research: Research | null, researchPapers: SavedPaper[] } => ({
         research: null,
-        researchPapers: [],
+        researchPapers: []
     }),
     getters: {
         getResearchPapers(state) {

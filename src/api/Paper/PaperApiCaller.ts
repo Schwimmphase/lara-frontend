@@ -1,12 +1,12 @@
-import type { Organizer } from "@/model/Organizer";
-import axios from "axios"
+import basicApiCaller from "../BasicApiCaller";
 
 export class PaperApiCaller {
-    static baseUrl = 'api.lara.gregyyy.dev/paper/';
+    static urlPath = '/paper/';
 
     // old variant, yuck
+    /*
     public static async getDetailsOfPaper(paperId: string): Promise<string> {
-        return await axios.get(this.baseUrl + paperId)
+        return await BasicApiCaller.axiosInstance.get(PaperApiCaller.urlPath + paperId)
             .then(response => {
                 return JSON.stringify(response);
             })
@@ -15,45 +15,76 @@ export class PaperApiCaller {
                 return '{}';
             });
     }
+    */
 
-    // new & improved variant
-    public static getRecommendationsOfPaper(paperId: string, method: string, organizers: Organizer[]) { // input parameters "method", "organizers" needed
-        let organizersJSON = JSON.stringify(organizers);
-        return axios.get(this.baseUrl + paperId, {
+   // new & improved variants
+    public static getDetailsOfPaper(paperId: string) {
+        return basicApiCaller.axiosInstance.get(PaperApiCaller.urlPath + paperId);
+    }
+
+    public static addTagToPaper(paperId: string, researchId: string, tagId: string) {
+        return basicApiCaller.axiosInstance.put(PaperApiCaller.urlPath + paperId + '/tag', {
             params: {
-                method: method
+                "researchId": researchId,
+                "tagId": tagId
+            }
+        });
+    }
+    
+    public static removeTagFromPaper(paperId: string, researchId: string, tagId: string) {
+        return basicApiCaller.axiosInstance.delete(PaperApiCaller.urlPath + paperId + "'/tag", {
+            params: {
+                "researchId": researchId,
+                "tagId": tagId
+            }
+        })
+    }
+    
+    public static changeComment(paperId: string, researchId: string, comment: string) {
+        return basicApiCaller.axiosInstance.patch(PaperApiCaller.urlPath + paperId + '/comment', {
+            params: {
+                "researchId": researchId
             },
-            data : {
-                organizers: organizersJSON
+            data: {
+                "comment": comment
             }
         });
     }
 
-    public static getReferencesOfPaper(paperId: string): string {
-        return 'references'
+    public static changeSaveState(paperId: string, researchId: string, saveState: string) {
+        return basicApiCaller.axiosInstance.put(PaperApiCaller.urlPath + paperId + '/save-state', {
+            params: {
+                "researchId": researchId,
+                "save-state": saveState
+            }
+        });
     }
 
-    public static getCitationsOfPaper(paperId: string): string {
-        return 'citations'
+    public static changeRelevance(paperId: string, researchId: string, relevance: number) {
+        return basicApiCaller.axiosInstance.patch(PaperApiCaller.urlPath + paperId + '/relevance', {
+            params: {
+                "researchId": researchId,
+                "relevance": relevance
+            }
+        });
+    }
+    
+    public static getRecommendationsOfPaper(paperId: string, method: string, organizerList: string) {
+        return basicApiCaller.axiosInstance.post(PaperApiCaller.urlPath + paperId, {
+            params: {
+                "method": method
+            },
+            data : {
+                "organizers": organizerList
+            }
+        });
     }
 
-    public static addTagToPaper(paperId: string, tagId: string): string {
-        return 'tag added'
+    public static getReferencesOfPaper(paperId: string) {
+        return // not defined in yaml
     }
 
-    public static removeTagFromPaper(paperId: string, tagId: string): string {
-        return 'tag removed'
-    }
-
-    public static changeComment(comment: string): string {  // fehlt hier nicht paperId ?
-        return 'comment changed'
-    }
-
-    public static changeSaveState(paperId: string, saveState: string): string {
-        return 'save state changed'
-    }
-
-    public static changeRelevance(paperId: string, relevance: number): string {
-        return 'relevance changed'
+    public static getCitationsOfPaper(paperId: string) {
+        return // not defined in yaml
     }
 }

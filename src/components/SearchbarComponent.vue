@@ -4,7 +4,7 @@ import { reactive } from "@vue/reactivity";
 import router from '../router';
 
 const state: { searchQuery: string } = reactive({
-    searchQuery: "",
+    searchQuery: ""
 });
 
 // Method to navigate to the search view
