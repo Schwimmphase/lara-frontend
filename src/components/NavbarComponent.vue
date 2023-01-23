@@ -10,7 +10,7 @@ import router from '../router';
 import { LanguageService } from '../internationalization/LanguageService';
 import type { Language } from '../internationalization/Language';
 
-import { i18n } from '@/internationalization/i18n'
+import { i18n } from '../internationalization/i18n'
 
 // Function to logout the user
 function logout(): void {
@@ -41,10 +41,12 @@ let changeLanguage = (lang: string) => {
         case 'en':
             i18n.global.locale.value = 'en';        
             break;
+        
+        default:
+            i18n.global.locale.value = 'en';
     }
 }
 
-let selectedLanguage: Language;
 let languages = LanguageService.getLanguages();
 
 let showLogout: boolean = true;
@@ -62,7 +64,8 @@ let showLogout: boolean = true;
         </div>
         <v-spacer></v-spacer>
         <div>
-            <v-btn id="menu-activator" color="primary">{{ $t('navbar.changeLanguage') }}</v-btn>
+            <span id="menu-activator" class="lara-navbar-link">{{ $t('navbar.changeLanguage') }}</span>
+            <!--<v-btn id="menu-activator" class="lara-navbar-link">{{ $t('navbar.changeLanguage') }}</v-btn>-->
 
             <v-menu activator="#menu-activator">
                 <v-list>
@@ -76,10 +79,9 @@ let showLogout: boolean = true;
             </v-menu>
         </div>
         <div class="mr-6">
-            <span class="lara-navbar-link" @click="logout()">{{ $t('navbar.changeLanguage') }}</span>
-            <router-link class="pl-6 lara-navbar-link" v-if="checkAdmin()" :to="{ name: 'admin' }">{{ $t('navbar.manageUsers') }}</router-link>
-            <router-link class="pl-6 lara-navbar-link" :to="{ name: 'home' }">{{ $t('navbar.home') }}</router-link>
-            <span v-if="showLogout" class="pl-6 lara-navbar-link" @click="logout()">{{ $t('navbar.logout') }}</span>
+            <router-link class="ml-6 lara-navbar-link" v-if="checkAdmin()" :to="{ name: 'admin' }">{{ $t('navbar.manageUsers') }}</router-link>
+            <router-link class="ml-6 lara-navbar-link" :to="{ name: 'home' }">{{ $t('navbar.home') }}</router-link>
+            <span v-if="showLogout" class="ml-6 lara-navbar-link" @click="logout()">{{ $t('navbar.logout') }}</span>
         </div>
     </v-app-bar>
     
