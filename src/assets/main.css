@@ -1,42 +1,35 @@
 @import './base.css';
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
-}
-
-.lara-button {
-  color: #fff;
-}
-
-.lara-button-div {
-  transition: background-color ease-in-out 0.3s;
-  text-align: center;
-}
-
-.lara-button-div:hover {
-  cursor: pointer;
-}
-
-.lara-button-primary {
-  background-color: #000;
-}
-
-.lara-button-primary:hover {
-  background-color: rgb(125, 125, 125);
-}
-
-.lara-button-secondary {
-  background-color: rgb(71, 71, 71);
-}
-
-.lara-button-secondary:hover {
-  background-color: rgb(157, 157, 157);
+    margin: 0 auto;
 }
 
 .lara-hidden-link {
-  color: rgb(175, 175, 175);
+    color: rgb(175, 175, 175);
+}
+
+.lara-card {
+    border-radius: 0;
+    border-color: gray;
+    border-width: 1px;
+}
+
+.lara-chip {
+    border-radius: 0;
+}
+
+.lara-textarea .v-field {
+    border-radius: 0 !important;
+}
+
+.lara-field .v-field__outline__start {
+    border-radius: 0 !important;
+}
+
+.lara-field .v-field__outline__notch {
+    border-radius: 0 !important;
+}
+
+.lara-field .v-field__outline__end {
+    border-radius: 0 !important;
 }
