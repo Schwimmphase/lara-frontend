@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import router from '../router';
+import router from '../../router';
 
 import ReturnButtonComponent from './ReturnButtonComponent.vue';
 import RecommendationsButtonComponent from './RecommendationsButtonComponent.vue';
@@ -13,9 +13,9 @@ import { SaveState } from '@/model/SaveState';
 import { useResearchStore } from '@/stores/research';
 
 // TODO nur testzwecke
-import '../model/_testResearch';
+import '../../model/_testResearch';
 import { testResearch, testSavedPaperList } from '@/model/_testResearch';
-import ExpandableList from "@/components/ExpandableList.vue";
+import ExpandableList from "@/components/basic/ExpandableList.vue";
 import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
 
 
@@ -128,7 +128,7 @@ let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveStat
 
 <style scoped>
 
-@import '../assets/main.css';
+@import '../../assets/main.css';
 
 .lara-collapse-div span::selection {
     background: none;

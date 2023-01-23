@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { reactive } from "@vue/reactivity";
-import router from '../router';
+import router from '../../router';
 
 const state: { searchQuery: string } = reactive({
     searchQuery: ""
