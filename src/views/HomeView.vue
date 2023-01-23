@@ -6,7 +6,7 @@
             <lara-button class="mt-8 mb-8" type="primary">Neue Recherche starten</lara-button>
         </div>
 
-        <h1 class="text-h4">Meine Recherchen</h1>
+        <h2 class="text-h4 font-weight-bold">Meine Recherchen</h2>
 
         <div class="mt-4 d-flex flex-wrap flex-row gap-8">
             <research-card v-for="research in researches"
@@ -15,7 +15,7 @@
                            :added="research.added"
                            :enqueued="research.enqueued"
                            :started-at="research.startedAt"
-                           @edit=""
+                           @data-change="(newTitle: String, newDescription: String) => onEdited(research, newTitle, newDescription)"
             />
         </div>
     </v-container>
@@ -24,8 +24,15 @@
 <script setup lang="ts">
 import ResearchCard from "@/components/cards/ResearchCard.vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
+import {Research} from "@/model/Research";
 
-const researches = [
+function onEdited(research: Research, title: String, description: String) {
+    console.debug("New name and title for research: ");
+    console.debug(research);
+    console.debug("Title: " + title + " - description: " + description);
+}
+
+let researches = [
   {
     title: "Masterarbeit",
     description: "Recherche für meine Masterarbeit über die Weiterentwicklung bekannter Sortieralgorithmen",

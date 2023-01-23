@@ -17,3 +17,7 @@
 .lara-chip {
   border-radius: 0;
 }
+
+.lara-textarea .v-field {
+  border-radius: 0;
+}
