@@ -1,20 +1,7 @@
 <script setup lang="ts">
-    import ReturnButtonComponent from '../components/ReturnButtonComponent.vue';
-    import RecommendationsButtonComponent from '../components/RecommendationsButtonComponent.vue';
-import { messages } from '@/internationalization/translations';
+    import DetailSidebarComponent from '@/components/DetailSidebarComponent.vue';
 </script>
 
 <template>
-    <p>asd</p>
-    <p>asd</p>
-    <p>asd</p>
-    <p>asd</p>
-    <p>asd</p>
-    <p>asd</p>
-    <p>asd</p>
-    <p>asd</p>
-    <p>{{ $t('test') }}</p>
-    <p>asd</p>
-    <ReturnButtonComponent />
-    <RecommendationsButtonComponent />
+    <DetailSidebarComponent />
 </template>

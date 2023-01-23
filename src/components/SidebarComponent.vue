@@ -62,7 +62,7 @@ let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveStat
 
 <template>
     <!-- Navigations-drawer for the sidebar to manage the paper of a research -->
-    <v-navigation-drawer>
+    <v-navigation-drawer width="300">
         <div class="mx-2 my-3">
             <div class="w-75">
                 <SearchbarComponent />
