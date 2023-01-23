@@ -9,14 +9,16 @@
         <h2 class="text-h4 font-weight-bold">Meine Recherchen</h2>
 
         <div class="mt-4 d-flex flex-wrap flex-row gap-8">
-            <research-card v-for="research in researches"
-                           :title="research.title"
-                           :description="research.description"
-                           :added="research.added"
-                           :enqueued="research.enqueued"
-                           :started-at="research.startedAt"
-                           @data-change="(newTitle: String, newDescription: String) => onEdited(research, newTitle, newDescription)"
-            />
+            <div v-for="research in researches">
+                <research-card v-if="research != null"
+                               :title="research.title"
+                               :description="research.comment.text"
+                               :added="69"
+                               :enqueued="420"
+                               :started-at="research.started.toLocaleDateString()"
+                               @data-change="(newTitle: String, newDescription: String) => onEdited(research, newTitle, newDescription)"
+                />
+            </div>
         </div>
     </v-container>
 </template>
@@ -24,7 +26,9 @@
 <script setup lang="ts">
 import ResearchCard from "@/components/cards/ResearchCard.vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
-import {Research} from "@/model/Research";
+import type {Research} from "@/model/Research";
+import {useResearchStore} from "@/stores/research";
+import {testResearch, testSavedPaperList} from "@/model/_testResearch";
 
 function onEdited(research: Research, title: String, description: String) {
     console.debug("New name and title for research: ");
@@ -32,36 +36,16 @@ function onEdited(research: Research, title: String, description: String) {
     console.debug("Title: " + title + " - description: " + description);
 }
 
-let researches = [
-  {
-    title: "Masterarbeit",
-    description: "Recherche für meine Masterarbeit über die Weiterentwicklung bekannter Sortieralgorithmen",
-    added: 13,
-    enqueued: 8,
-    startedAt: "12.11.2022"
-  },
-  {
-    title: "Seminararbeit Sicherheit",
-    description: "Seminarmodul Informationssicherheit, Bachelor Informatik",
-    added: 8,
-    enqueued: 12,
-    startedAt: "01.06.2019"
-  },
-  {
-    title: "Datenschutzrecht konkret",
-    description: "Persönliche Recherche, in welchen Bereichen des Alltags das Datenschutzrecht Anwendung findet",
-    added: 19,
-    enqueued: 22,
-    startedAt: "22.03.2020"
-  },
-  {
-    title: "Recherche",
-    description: "Diese Recherche hat wenig Text",
-    added: 69,
-    enqueued: 420,
-    startedAt: "01.01.2023"
-  }
-]
+// Pinia store for the research
+const store = useResearchStore();
+
+// TODO Nur zu Testzwecken drin... sobald die Research Papers gesetzt werden, kann das wieder weg
+store.setOpenResearch(testResearch, testSavedPaperList);
+
+// Get the research from the store
+let research1: Research | null = store.getResearch;
+
+let researches = [research1, research1, research1, research1];
 </script>
 
 <style>
