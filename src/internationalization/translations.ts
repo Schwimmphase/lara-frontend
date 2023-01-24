@@ -3,10 +3,10 @@ export const messages = {
         test: 'This is a small test',
 
         navbar: {
-            logout: 'logout',
-            home: 'home',
-            manageUsers: 'manage users',
-            changeLanguage: 'change language'
+            logout: 'Logout',
+            home: 'Home',
+            manageUsers: 'Manage users',
+            changeLanguage: 'Change language'
         },
 
         detailSidebar: {
@@ -14,7 +14,7 @@ export const messages = {
             comments: 'Comments',
             save: 'save',
             tags: 'Tags',
-            relevance: 'Relecvance',
+            relevance: 'Relevance',
         }
 
 

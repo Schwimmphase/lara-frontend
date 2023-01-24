@@ -1,22 +1,25 @@
 import { defineStore } from 'pinia';
 
-import type { SavedPaper } from "@/model/SavedPaper";
-import type { Paper } from "@/model/Paper";
+import type { OpenPaper } from './model/OpenPaper';
 
 // Store for the currently opened paper
 export const useOpenPaperStore = defineStore('openPaper', {
-    state: (): { paper: Paper | SavedPaper | null } => ({
+    state: (): { paper: OpenPaper | null } => ({
         paper: null
     }),
 
     getters: {
         getPaper(state) {
-            return state.paper;
+            if (state.paper?.saved) {
+                return state.paper?.savedPaper;
+            }
+
+            return state.paper?.paper;
         }
     },
 
     actions: {
-        setPaper(paper: Paper | SavedPaper) {
+        setPaper(paper: OpenPaper) {
             this.paper = paper;
         }
     }

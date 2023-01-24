@@ -8,7 +8,7 @@ export class OpenPaper {
 
     constructor(paper: Paper | null, savedPaper: SavedPaper | null, saved: boolean) {
         this.paper = paper;
-        this.saved = saved;
         this.savedPaper = savedPaper;
+        this.saved = saved;
     }
 }

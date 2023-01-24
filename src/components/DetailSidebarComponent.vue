@@ -5,16 +5,47 @@ import LaraButton from './basic/LaraButton.vue';
 import type { OpenPaper } from '../stores/model/OpenPaper';
 
 import { useOpenPaperStore } from '../stores/openPaper'
+import { reactive } from '@vue/reactivity';
 
 import type { SavedPaper } from '../model/SavedPaper';
 import type { Paper } from '../model/Paper';
 
 // TODO nur wegen Test
-import '../model/_testResearch';
+import { testOpenPaper } from '../model/_testResearch';
+import { watch } from 'vue';
 
-//openPaperStore.setPaper();
+let openPaperStore = useOpenPaperStore();
 
-//let openPaperStore = useOpenPaperStore();
+
+let state: { relevance: number } = reactive({
+    relevance: 0,
+});
+
+// Method to change comment of the paper currently viewed
+let changeComment = (comment: string): void => {
+    
+    console.log(comment);
+}
+
+
+let changeRelevance = (relevance: number): void => {
+    console.log(relevance);
+}
+
+watch(state, async (value) => {
+    changeRelevance(value.relevance);
+});
+
+
+
+
+let changeRelevance = () => {
+    console.log("relevance " + state.relevance);
+}
+
+// TODO Nur wegen Test man.....
+openPaperStore.setPaper(testOpenPaper);
+
 //let openPaper: OpenPaper = openPaperStore.getPaper;
 
 let deleteTag = (): void => {
@@ -53,14 +84,19 @@ let deleteTag = (): void => {
                 <span class="text-h5">{{ $t('detailSidebar.relevance') }}</span>
                 
                 <div>
-                    <v-icon size="x-large" class="lara-star">mdi-star-outline</v-icon>
-                    <v-icon size="x-large" class="lara-star">mdi-star-outline</v-icon>
-                    <v-icon size="x-large" class="lara-star">mdi-star-outline</v-icon>
-
-                    <v-icon size="x-large" class="lara-star">mdi-star</v-icon>
-                    <v-icon size="x-large" class="lara-star">mdi-star</v-icon>
-                    <v-icon size="x-large" class="lara-star">mdi-star</v-icon>
+                    <v-rating v-model="state.relevance"
+                        length="3"
+                        size="100"
+                    >
+                        <template v-slot:item="props">
+                            <v-icon
+                            :icon="props.isFilled ? 'mdi-star' : 'mdi-star-outline'"
+                            color="orange"
+                            ></v-icon>
+                        </template>
+                    </v-rating>
                 </div>
+                
 
                 <v-divider class="my-3"></v-divider>
             </div>
@@ -69,4 +105,9 @@ let deleteTag = (): void => {
 </template>
 
 <style scope>
+
+.lara-star {
+    color: #ffcd59;
+}
+
 </style>

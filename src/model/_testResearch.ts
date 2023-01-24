@@ -7,6 +7,7 @@ import { SaveState } from "./SaveState";
 import { Research } from "./Research";
 import { User } from "./User";
 import { UserCategory } from "./UserCategory";
+import { OpenPaper } from "@/stores/model/OpenPaper";
 
 
 export const testComment1 = new Comment("Das ist der erste Testkommentar");
@@ -43,6 +44,8 @@ export const testSavedPaper9 = new SavedPaper(testPaper, testResearch, testComme
 export const testSavedPaper10 = new SavedPaper(testPaper, testResearch, testComment1, [testTag1, testTag2, testTag3], 1, SaveState.enqueued);
 export const testSavedPaper11 = new SavedPaper(testPaper, testResearch, testComment2, [testTag1, testTag2, testTag3], 2, SaveState.hidden);
 export const testSavedPaper12 = new SavedPaper(testPaper, testResearch, testComment3, [testTag1, testTag2, testTag3], 0, SaveState.added);
+
+export const testOpenPaper = new OpenPaper(null, testSavedPaper1, true);
 
 export const testSavedPaperList: SavedPaper[] = [
     testSavedPaper1,
