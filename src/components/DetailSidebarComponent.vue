@@ -42,7 +42,9 @@ watch(relevanceState, async (value) => {
     changeRelevance(value.data);
 });
 
-//let openPaper: OpenPaper = openPaperStore.getPaper;
+let openPaper: OpenPaper = openPaperStore.getPaper;
+
+console.log()
 
 let deleteTag = (): void => {
     console.log("Close");
@@ -53,45 +55,51 @@ let deleteTag = (): void => {
 <template>
     <v-navigation-drawer location="right" width="400">
         <div class="mx-8 my-3">
-            <div>
-                <span class="text-h5">{{ $t('detailSidebar.informations') }}</span><br>
-                <span class="font-weight-bold">Karl Marx Gauß</span><br>
-                <span>2022 - DAGV - 100 mal zitiert - 12 Referenzen</span>
-                <v-divider class="my-3"></v-divider>
-            </div>
 
-            <div class="mt-4">
-                <span class="text-h5">{{ $t('detailSidebar.comments') }}</span>
-                <v-textarea hide-details variant="outlined" class="mt-2 lara-field" v-model="commentState.data"></v-textarea>
-                <lara-button class="mt-2" type="primary" @click="changeComment(commentState.data)">{{ $t('detailSidebar.save') }}</lara-button>
-                <v-divider class="my-3"></v-divider>
-            </div>
-
-            <div class="mt-4">
-                <span class="text-h5">{{ $t('detailSidebar.tags') }}</span>
-                <div class="mt-2">
-                    <v-chip @click:close="deleteTag" closable :color="'#eb4034'" class="lara-chip mr-2 mb-1">Hallo</v-chip>
-                    
-                </div>
-                <v-divider class="my-3"></v-divider>
-            </div>
-
-            <div class="mt-4">
-                <span class="text-h5">{{ $t('detailSidebar.relevance') }}</span>
-                
+            <!-- Section for a saved paper -->
+            <div v-if="openPaper.saved">
                 <div>
-                    <v-rating
-                        v-model="relevanceState.data"
-                        length="3"
-                        size="65"
-                        full-icon="mdi-star"
-                        empty-icon="mdi-star-outline"
-                        color="orange"
-                    ></v-rating>
+                    <span class="text-h5">{{ $t('detailSidebar.informations') }}</span><br>
+                    <div>
+                        <span v-for="(author, index) in openPaper.savedPaper.paper.authors" :key="index" class="font-weight-bold">{{ author.name }}</span>
+                    </div>
+                    <span>2022 - DAGV - 100 mal zitiert - 12 Referenzen</span>
+                    <v-divider class="my-3"></v-divider>
                 </div>
-                
 
-                <v-divider class="my-3"></v-divider>
+                <div class="mt-4">
+                    <span class="text-h5">{{ $t('detailSidebar.comments') }}</span>
+                    <v-textarea hide-details variant="outlined" class="mt-2 lara-field" v-model="commentState.data"></v-textarea>
+                    <lara-button class="mt-2" type="primary" @click="changeComment(commentState.data)">{{ $t('detailSidebar.save') }}</lara-button>
+                    <v-divider class="my-3"></v-divider>
+                </div>
+
+                <div class="mt-4">
+                    <span class="text-h5">{{ $t('detailSidebar.tags') }}</span>
+                    <div class="mt-2">
+                        <v-chip @click:close="deleteTag" closable :color="'#eb4034'" class="lara-chip mr-2 mb-1">Hallo</v-chip>
+                        
+                    </div>
+                    <v-divider class="my-3"></v-divider>
+                </div>
+
+                <div class="mt-4">
+                    <span class="text-h5">{{ $t('detailSidebar.relevance') }}</span>
+                    
+                    <div>
+                        <v-rating
+                            v-model="relevanceState.data"
+                            length="3"
+                            size="65"
+                            full-icon="mdi-star"
+                            empty-icon="mdi-star-outline"
+                            color="orange"
+                        ></v-rating>
+                    </div>
+                    
+
+                    <v-divider class="my-3"></v-divider>
+                </div>
             </div>
         </div>
     </v-navigation-drawer>
