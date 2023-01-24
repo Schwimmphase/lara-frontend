@@ -20,50 +20,58 @@ const router = createRouter({
     {
       path: '/test',
       name: 'test',
-      component: TestView
+      component: TestView,
+      meta: { showSidebar: true }
     },
 
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      meta: { showSidebar: false }
     },
 
     {
       path: '/admin',
       name: 'admin',
-      component: AdminView
+      component: AdminView,
+      meta: { showSidebar: false }
     },
 
     {
       path: '/login',
       name: 'login',
-      component: LoginView
+      component: LoginView,
+      meta: { showSidebar: false }
     },
 
     {
       path: '/research',
       name: 'researchOverview',
-      component: ResearchOverviewView
+      component: ResearchOverviewView,
+      meta: { showSidebar: false }
     },
 
     {
       path: '/paper',
       name: 'paperDetails',
       props: true,
-      component: DetailView
+      component: DetailView,
+      meta: { showSidebar: true }
     },
 
     {
       path: '/search',
       name: 'search',
-      component: SearchView
+      component: SearchView,
+      meta: { showSidebar: true }
     },
 
     {
       path: '/recommendations',
       name: 'recommendations',
-      component: RecommendationsView
+      component: RecommendationsView,
+      meta: { showSidebar: true }
     }
   ]
 });

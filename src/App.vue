@@ -6,12 +6,15 @@ import {computed} from "vue";
 
 const route = useRoute();
 const currentRouteName = computed(() => route.name);
+const meta = computed(() => route.meta);
+
+
 </script>
 
 <template>
   <v-app>
       <NavbarComponent :show-logout="true"></NavbarComponent>
-      <SidebarComponent v-if="currentRouteName !== 'login'" />
+      <SidebarComponent v-if="meta.showSidebar" />  
       <v-main>
           <router-view></router-view>
       </v-main>
