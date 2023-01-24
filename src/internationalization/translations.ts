@@ -19,6 +19,14 @@ export const messages = {
             userId: 'User ID',
             password: 'Password',
             button: 'submit'
+        },
+
+        admin: {
+            createUser: 'Create user',
+            createCategory: 'Create user category',
+            greeting: 'Hello Admin {name}!',
+            userOverview: 'User overview',
+            editUser: 'Edit user'
         }
     },
     de: {
@@ -41,6 +49,14 @@ export const messages = {
             userId: 'Nutzer-ID',
             password: 'Passwort',
             button: 'anmelden'
+        },
+
+        admin: {
+            createUser: 'Nutzer anlegen',
+            createCategory: 'Nutzerkategorie anlegen',
+            greeting: 'Hallo Admin {name}!',
+            userOverview: 'Nutzerübersicht',
+            editUser: 'Nutzer bearbeiten'
         }
     }
 }

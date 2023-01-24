@@ -1,11 +1,14 @@
 <template>
     <div class="d-flex justify-space-between gap-8">
         <lara-button type="outline" icon="mdi-filter" class="mt-4 w-100" id="filter-button">Filtereinstellungen</lara-button>
-        <lara-button type="primary" class="mt-4 w-100" id="export-button">Exportieren</lara-button>
+        <lara-button type="primary" class="mt-4 w-100" id="export-button" v-if="rightButton" @click="$emit('clickRightButton')">
+            {{ rightButton }}
+        </lara-button>
     </div>
+
     <div v-for="slot in slots">
         <h4 class="text-h4 font-weight-bold mt-8" v-if="slot.name">{{ slot.name }}</h4>
-        <div class="d-flex flex-column mt-8 gap-8">
+        <div class="d-flex flex-row flex-wrap mt-8 gap-8">
             <slot :name="slot.id"></slot>
         </div>
     </div>
@@ -20,7 +23,12 @@ export interface Slot {
 }
 
 defineProps<{
-    slots: Slot[]
+    slots: Slot[],
+    rightButton?: string
+}>()
+
+defineEmits<{
+    clickRightButton(): void
 }>()
 
 </script>

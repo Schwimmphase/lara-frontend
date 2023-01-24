@@ -1,5 +1,5 @@
 <template>
-    <v-card class="d-flex flex-column lara-card" height="230" variant="flat">
+    <v-card class="d-flex flex-column lara-card w-100" height="230" variant="flat">
         <v-card-title class="font-weight-bold text-wrap">{{ title }}</v-card-title>
         <v-card-text>{{ comment }}</v-card-text>
 
