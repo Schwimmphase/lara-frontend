@@ -16,7 +16,7 @@ export const testComment3 = new Comment("Das ist der dritte Testkommentar");
 
 export const testResearchComment = new Comment("Das ist der dritte Testkommentar");
 
-export const testUserCategory = new UserCategory("#32a852", "Cooler Typ");
+export const testUserCategory = new UserCategory("id12345", "#32a852", "Cooler Typ");
 export const testUser = new User("Johannes", "id12345", "cool", testUserCategory);
 
 

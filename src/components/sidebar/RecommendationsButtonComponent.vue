@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import router from '../router';
+import router from '../../router';
 import LaraButton from "@/components/basic/LaraButton.vue";
 
 // Method to navigate to the recommendations

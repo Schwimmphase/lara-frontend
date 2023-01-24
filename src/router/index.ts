@@ -16,7 +16,7 @@ import RecommendationsView from '../views/RecommendationsView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    
+    // TODO One test route
     {
       path: '/test',
       name: 'test',
@@ -66,6 +66,13 @@ const router = createRouter({
       component: RecommendationsView
     }
   ]
-})
+});
+
+router.beforeEach(async (to, from) => {
+  console.log(document.cookie);
+  if (!document.cookie.includes("lara-token") && to.name !== 'login') {
+      return { name: 'login' };
+  }
+});
 
 export default router

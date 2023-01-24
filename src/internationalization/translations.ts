@@ -15,9 +15,14 @@ export const messages = {
             save: 'save',
             tags: 'Tags',
             relevance: 'Relevance',
+        },
+
+        login: {
+            login: 'Login',
+            userId: 'User ID',
+            password: 'Password',
+            button: 'submit'
         }
-
-
     },
     de: {
         test: 'Das ist ein kleiner Test!',
@@ -32,9 +37,16 @@ export const messages = {
         detailSidebar: {
             informations: 'Informationen',
             comments: 'Kommentare',
-            save: 'speichern',
             tags: 'Tags',
             relevance: 'Relevanz',
+            save: 'speichern'
+        },
+
+        login: {
+            login: 'Anmelden',
+            userId: 'Nutzer-ID',
+            password: 'Passwort',
+            button: 'anmelden'
         }
     }
 }
