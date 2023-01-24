@@ -16,35 +16,31 @@ import { watch } from 'vue';
 
 let openPaperStore = useOpenPaperStore();
 
+// TODO Nur wegen Test man.....
+openPaperStore.setPaper(testOpenPaper);
 
-let state: { relevance: number } = reactive({
-    relevance: 0,
+
+let commentState: { data: string } = reactive({
+    data: ""
+});
+
+let relevanceState: { data: number } = reactive({
+    data: 0
 });
 
 // Method to change comment of the paper currently viewed
 let changeComment = (comment: string): void => {
-    
-    console.log(comment);
+    console.log("Change comment " + comment);
 }
 
-
+// Method to change the relevance of a paper
 let changeRelevance = (relevance: number): void => {
-    console.log(relevance);
+    console.log("Change relevance " + relevance);
 }
 
-watch(state, async (value) => {
-    changeRelevance(value.relevance);
+watch(relevanceState, async (value) => {
+    changeRelevance(value.data);
 });
-
-
-
-
-let changeRelevance = () => {
-    console.log("relevance " + state.relevance);
-}
-
-// TODO Nur wegen Test man.....
-openPaperStore.setPaper(testOpenPaper);
 
 //let openPaper: OpenPaper = openPaperStore.getPaper;
 
@@ -66,8 +62,8 @@ let deleteTag = (): void => {
 
             <div class="mt-4">
                 <span class="text-h5">{{ $t('detailSidebar.comments') }}</span>
-                <v-textarea hide-details variant="outlined" class="mt-2 lara-field"></v-textarea>
-                <lara-button class="mt-2" type="primary">{{ $t('detailSidebar.save') }}</lara-button>
+                <v-textarea hide-details variant="outlined" class="mt-2 lara-field" v-model="commentState.data"></v-textarea>
+                <lara-button class="mt-2" type="primary" @click="changeComment(commentState.data)">{{ $t('detailSidebar.save') }}</lara-button>
                 <v-divider class="my-3"></v-divider>
             </div>
 
@@ -84,17 +80,14 @@ let deleteTag = (): void => {
                 <span class="text-h5">{{ $t('detailSidebar.relevance') }}</span>
                 
                 <div>
-                    <v-rating v-model="state.relevance"
+                    <v-rating
+                        v-model="relevanceState.data"
                         length="3"
-                        size="100"
-                    >
-                        <template v-slot:item="props">
-                            <v-icon
-                            :icon="props.isFilled ? 'mdi-star' : 'mdi-star-outline'"
-                            color="orange"
-                            ></v-icon>
-                        </template>
-                    </v-rating>
+                        size="65"
+                        full-icon="mdi-star"
+                        empty-icon="mdi-star-outline"
+                        color="orange"
+                    ></v-rating>
                 </div>
                 
 
@@ -103,11 +96,3 @@ let deleteTag = (): void => {
         </div>
     </v-navigation-drawer>
 </template>
-
-<style scope>
-
-.lara-star {
-    color: #ffcd59;
-}
-
-</style>
