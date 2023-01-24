@@ -10,11 +10,7 @@ export const useOpenPaperStore = defineStore('openPaper', {
 
     getters: {
         getPaper(state) {
-            if (state.paper?.saved) {
-                return state.paper?.savedPaper;
-            }
-
-            return state.paper?.paper;
+            return state.paper;
         }
     },
 
