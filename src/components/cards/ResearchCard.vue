@@ -8,7 +8,7 @@
         <v-card-subtitle>gestartet am {{ startedAt }}</v-card-subtitle>
 
         <v-card-actions class="ml-4 mr-4 mb-2 mt-2 pa-0">
-            <lara-button type="primary" class="w-50">Öffnen</lara-button>
+            <lara-button type="primary" class="w-50" @click="openResearch(id)">Öffnen</lara-button>
 
             <v-spacer></v-spacer>
 
@@ -22,15 +22,20 @@
 <script setup lang="ts">
 import LaraButton from "@/components/basic/LaraButton.vue";
 import ResearchEditDialog from "@/components/dialogs/ResearchEditDialog.vue";
+import router from "@/router";
 
-defineProps(["title", "description", "added", "enqueued", "startedAt"])
+defineProps(["id", "title", "description", "added", "enqueued", "startedAt"]);
 
 function onDataChange(title: String, description: String) {
     console.debug("Edit event received emitting data change event");
-    emit("data-change", title, description)
+    emit("data-change", title, description);
 }
 
 const emit = defineEmits<{
     (event: 'data-change', title: String, description: String): void
-}>()
+}>();
+
+function openResearch(id: string) {
+    router.push('/paper?id=' + id);
+}
 </script>

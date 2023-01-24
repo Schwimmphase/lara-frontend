@@ -1,19 +1,27 @@
 import BasicApiHandler from "../BasicApiHandler";
 import { ResearchApiCaller } from "./ResearchApiCaller";
 
-import type { User } from "@/model/User";
-import type { Comment } from "@/model/Comment";
-import type { Research } from "@/model/Research";
+import { User } from "@/model/User";
+import { Comment } from "@/model/Comment";
+import { Research } from "@/model/Research";
 import type { Paper } from "@/model/Paper";
 import { SaveState } from "@/model/SaveState";
 import type { Organizer } from "@/model/Organizer";
 import { RecommendationMethod } from "@/model/RecommendationMethod";
+import { useResearchesStore } from "@/stores/researches";
+import { UserCategory } from "@/model/UserCategory";
 
 export class ResearchApiHandler {
     public static getAllResearchesByUser(user: User) {
         ResearchApiCaller.getAllResearchesByUser(user.userId)
             .then(response => {
-                let data = BasicApiHandler.tryParseJson(response.data);
+                let data = BasicApiHandler.tryParseJson(response.data.researches);
+                let store = useResearchesStore();
+                store.reset();
+                for (let researchJSON of data) {
+                    let research = new Research(researchJSON.id, researchJSON.title, new Date(researchJSON.started), new Comment(researchJSON.description), new User("", "", "", new UserCategory("", "", "")));
+                    store.addResearch(research);
+                }
             });
     }
 
@@ -63,6 +71,7 @@ export class ResearchApiHandler {
         ResearchApiCaller.getPapersFromResearch(research.id, JSON.stringify(organizers))
             .then(response => {
                 let data = BasicApiHandler.tryParseJson(response.data);
+                console.log(data);
             });
     }
 

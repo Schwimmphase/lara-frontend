@@ -16,6 +16,9 @@
 import { reactive } from 'vue';
 import LaraButton from '@/components/basic/LaraButton.vue';
 import { AuthApiHandler } from '@/api/Auth/AuthApiHandler';
+import { useCurrentUserStore } from '@/stores/currentUser';
+import { User } from '@/model/User';
+import { UserCategory } from '@/model/UserCategory';
 
 let loginData = reactive({
     userId: "",
@@ -24,6 +27,7 @@ let loginData = reactive({
 
 function login() {
     AuthApiHandler.login(loginData.userId, loginData.password);
+    useCurrentUserStore().setCurrentUser(new User("", loginData.userId, loginData.password, new UserCategory("", "", "")));
 }
 </script>
 
