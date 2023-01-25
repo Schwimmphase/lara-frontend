@@ -30,7 +30,7 @@ export const testTag3 = new Tag("id12347", "Ultra wichtig", "#2c3e50");
 
 export const testPaper = new Paper("id12345", "Das ist der Titel eines Papers, moin!", [testAuthor],
     2023, "Das ist der Absrtract eines sehr coolen Papers, das aber keinen Zweck hat sonder nur Test ist.",
-    10, 3, "NEG", "https://www.orimi.com/pdf-test.pdf");
+    1, 0, "NEG", "https://www.orimi.com/pdf-test.pdf");
 
 export const testSavedPaper1 = new SavedPaper(testPaper, testResearch, testComment1, [testTag1, testTag2, testTag3], 1, SaveState.enqueued);
 export const testSavedPaper2 = new SavedPaper(testPaper, testResearch, testComment2, [testTag1, testTag2, testTag3], 2, SaveState.hidden);
@@ -46,6 +46,7 @@ export const testSavedPaper11 = new SavedPaper(testPaper, testResearch, testComm
 export const testSavedPaper12 = new SavedPaper(testPaper, testResearch, testComment3, [testTag1, testTag2, testTag3], 0, SaveState.added);
 
 export const testOpenPaper = new OpenPaper(null, testSavedPaper1, true);
+export const testOpenPaper2 = new OpenPaper(testPaper, null, false);
 
 export const testSavedPaperList: SavedPaper[] = [
     testSavedPaper1,

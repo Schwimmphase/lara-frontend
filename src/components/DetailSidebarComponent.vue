@@ -11,21 +11,24 @@ import type { SavedPaper } from '../model/SavedPaper';
 import type { Paper } from '../model/Paper';
 
 // TODO nur wegen Test
-import { testOpenPaper } from '../model/_testResearch';
+import { testOpenPaper, testOpenPaper2 } from '../model/_testResearch';
 import { watch } from 'vue';
 
 let openPaperStore = useOpenPaperStore();
 
 // TODO Nur wegen Test man.....
-openPaperStore.setPaper(testOpenPaper);
+openPaperStore.setPaper(testOpenPaper2);
+
+// Set the openPaper to the openPaper saved in the store
+let openPaper: OpenPaper = openPaperStore.getPaper;
 
 
 let commentState: { data: string } = reactive({
-    data: ""
+    data: openPaper.saved ? openPaper.savedPaper?.comment.text : ""
 });
 
 let relevanceState: { data: number } = reactive({
-    data: 0
+    data: openPaper.saved ? openPaper.savedPaper?.relevance : 0
 });
 
 // Method to change comment of the paper currently viewed
@@ -42,12 +45,8 @@ watch(relevanceState, async (value) => {
     changeRelevance(value.data);
 });
 
-let openPaper: OpenPaper = openPaperStore.getPaper;
-
-console.log()
-
-let deleteTag = (): void => {
-    console.log("Close");
+let deleteTag = (id: string): void => {
+    console.log("Close " + id);
 }
 
 </script>
@@ -61,9 +60,9 @@ let deleteTag = (): void => {
                 <div>
                     <span class="text-h5">{{ $t('detailSidebar.informations') }}</span><br>
                     <div>
-                        <span v-for="(author, index) in openPaper.savedPaper.paper.authors" :key="index" class="font-weight-bold">{{ author.name }}</span>
+                        <span v-for="(author, index) in openPaper.savedPaper?.paper.authors" :key="index" class="font-weight-bold">{{ author.name }}</span>
                     </div>
-                    <span>2022 - DAGV - 100 mal zitiert - 12 Referenzen</span>
+                    <span>{{ openPaper.savedPaper?.paper.year }} - {{ openPaper.savedPaper?.paper.venue }} - {{ openPaper.savedPaper?.paper.citationCount }} mal zitiert - {{ openPaper.savedPaper?.paper.referenceCount }} Referenzen</span>
                     <v-divider class="my-3"></v-divider>
                 </div>
 
@@ -77,7 +76,7 @@ let deleteTag = (): void => {
                 <div class="mt-4">
                     <span class="text-h5">{{ $t('detailSidebar.tags') }}</span>
                     <div class="mt-2">
-                        <v-chip @click:close="deleteTag" closable :color="'#eb4034'" class="lara-chip mr-2 mb-1">Hallo</v-chip>
+                        <v-chip v-for="(tag, index) in openPaper.savedPaper?.tags" :key="index" @click:close="deleteTag(tag.id)" closable :color="tag.color" class="lara-chip mr-2 mb-1">{{ tag.name }}</v-chip>
                         
                     </div>
                     <v-divider class="my-3"></v-divider>
@@ -99,6 +98,24 @@ let deleteTag = (): void => {
                     
 
                     <v-divider class="my-3"></v-divider>
+                </div>
+            </div>
+            
+            <!-- Section for a saved paper -->
+            <div v-if="!openPaper.saved">
+                <div>
+                    <span class="text-h5">{{ $t('detailSidebar.informations') }}</span><br>
+                    <div>
+                        <span v-for="(author, index) in openPaper.paper?.authors" :key="index" class="font-weight-bold">{{ author.name }}</span>
+                    </div>
+                    <span>{{ openPaper.paper?.year }} - {{ openPaper.paper?.venue }} - {{ $t('detailSidebar.citations', { n: openPaper.paper?.citationCount}) }} - {{ $t('detailSidebar.references', {n: openPaper.paper?.referenceCount}) }}</span>
+                    <v-divider class="my-3"></v-divider>
+                </div>
+                
+                <div class="mt-4">
+                    <lara-button type="primary">{{ $t('detailSidebar.add') }}</lara-button>
+                    <lara-button class="mt-2" type="secondary">{{ $t('detailSidebar.enqueue') }}</lara-button>
+                    <v-divider class="my-3"></v-divider>    
                 </div>
             </div>
         </div>
