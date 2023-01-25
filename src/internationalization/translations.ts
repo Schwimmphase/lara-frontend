@@ -10,11 +10,15 @@ export const messages = {
         },
 
         detailSidebar: {
+            citations: 'No Citations | One Citation | {n} Citations',
+            references: 'No Reference | One References | {n} references',
             informations: 'Informations',
             comments: 'Comments',
-            save: 'save',
+            save: 'Save',
             tags: 'Tags',
             relevance: 'Relevance',
+            enqueue: 'Enqueue',
+            add: 'Add',
         },
 
         login: {
@@ -35,11 +39,15 @@ export const messages = {
         },
 
         detailSidebar: {
+            citations: 'Keine Zitate | Ein Zitat | {n} Zitate',
+            references: 'Keine Referenzen | Eine Referenz | {n} Referenzen',
             informations: 'Informationen',
             comments: 'Kommentare',
             tags: 'Tags',
             relevance: 'Relevanz',
-            save: 'speichern'
+            save: 'Speichern',
+            enqueue: 'Merken',
+            add: 'Hinzufügen',
         },
 
         login: {
