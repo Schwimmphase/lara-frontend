@@ -1,6 +1,6 @@
 <template>
     <v-container class="w-75 pt-8">
-        <h1 class="text-h3 font-weight-bold">Hallo Sebastian!</h1>
+        <h1 class="text-h3 font-weight-bold">Hallo {{ currentUser.username }}!</h1>
 
         <div style="width: 300px">
             <lara-button class="mt-8 mb-8" type="primary">Neue Recherche starten</lara-button>
@@ -30,7 +30,7 @@ import LaraButton from "@/components/basic/LaraButton.vue";
 import type {Research} from "@/model/Research";
 import { useResearchesStore } from "@/stores/researches";
 import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
-import { useCurrentUserStore } from "@/stores/currentUser";
+import { useCurrentUserStore } from "@/stores/currentUser.js";
 
 function onEdited(research: Research, title: String, description: String) {
     console.debug("New name and title for research: ");
@@ -38,7 +38,8 @@ function onEdited(research: Research, title: String, description: String) {
     console.debug("Title: " + title + " - description: " + description);
 }
 
-ResearchApiHandler.getAllResearchesByUser(useCurrentUserStore().getUser);
+let currentUser = useCurrentUserStore().getCurrentUser;
+ResearchApiHandler.getAllResearchesByUser(currentUser);
 let researches = useResearchesStore().getResearches;
 </script>
 
