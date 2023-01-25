@@ -10,8 +10,8 @@ export const messages = {
         },
 
         detailSidebar: {
-            citations: 'No Citations | One Citation | {n} Citations',
-            references: 'No Reference | One References | {n} references',
+            citationCount: 'No Citations | One Citation | {n} Citations',
+            referenceCount: 'No Reference | One References | {n} references',
             informations: 'Informations',
             comments: 'Comments',
             save: 'Save',
@@ -39,8 +39,8 @@ export const messages = {
         },
 
         detailSidebar: {
-            citations: 'Keine Zitate | Ein Zitat | {n} Zitate',
-            references: 'Keine Referenzen | Eine Referenz | {n} Referenzen',
+            citationCount: 'Keine Zitate | Ein Zitat | {n} Zitate',
+            referenceCount: 'Keine Referenzen | Eine Referenz | {n} Referenzen',
             informations: 'Informationen',
             comments: 'Kommentare',
             tags: 'Tags',
@@ -48,6 +48,9 @@ export const messages = {
             save: 'Speichern',
             enqueue: 'Merken',
             add: 'Hinzufügen',
+            recommendations: 'Empfehlungen',
+            citations: 'Empfehlungen',
+            references: 'Referenzen',
         },
 
         login: {

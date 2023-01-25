@@ -13,11 +13,12 @@ import type { Paper } from '../model/Paper';
 // TODO nur wegen Test
 import { testOpenPaper, testOpenPaper2 } from '../model/_testResearch';
 import { watch } from 'vue';
+import { SaveState } from '../model/SaveState';
 
 let openPaperStore = useOpenPaperStore();
 
 // TODO Nur wegen Test man.....
-openPaperStore.setPaper(testOpenPaper2);
+openPaperStore.setPaper(testOpenPaper);
 
 // Set the openPaper to the openPaper saved in the store
 let openPaper: OpenPaper = openPaperStore.getPaper;
@@ -38,15 +39,24 @@ let changeComment = (comment: string): void => {
 
 // Method to change the relevance of a paper
 let changeRelevance = (relevance: number): void => {
-    console.log("Change relevance " + relevance);
+    console.log("Change relevance : " + relevance);
 }
 
+// Watcher for the state of the relevance
 watch(relevanceState, async (value) => {
     changeRelevance(value.data);
 });
 
 let deleteTag = (id: string): void => {
-    console.log("Close " + id);
+    console.log("Close Tag" + id);
+}
+
+let createSavedPaper = (paper: Paper, state: SaveState) => {
+    console.debug("Save Paper : " + paper.id + " = " + state);
+}
+
+let hidePaper = (paper: SavedPaper) => {
+    console.debug("Hide paper : " + paper.research.id + paper.paper.id);
 }
 
 </script>
@@ -77,14 +87,12 @@ let deleteTag = (id: string): void => {
                     <span class="text-h5">{{ $t('detailSidebar.tags') }}</span>
                     <div class="mt-2">
                         <v-chip v-for="(tag, index) in openPaper.savedPaper?.tags" :key="index" @click:close="deleteTag(tag.id)" closable :color="tag.color" class="lara-chip mr-2 mb-1">{{ tag.name }}</v-chip>
-                        
                     </div>
                     <v-divider class="my-3"></v-divider>
                 </div>
 
                 <div class="mt-4">
                     <span class="text-h5">{{ $t('detailSidebar.relevance') }}</span>
-                    
                     <div>
                         <v-rating
                             v-model="relevanceState.data"
@@ -94,28 +102,27 @@ let deleteTag = (id: string): void => {
                             empty-icon="mdi-star-outline"
                             color="orange"
                         ></v-rating>
+                        <v-icon class="lara-link" @click="hidePaper(openPaper.savedPaper)">mdi-eye-off</v-icon>
                     </div>
-                    
-
                     <v-divider class="my-3"></v-divider>
                 </div>
             </div>
             
-            <!-- Section for a saved paper -->
+            <!-- Section for a paper thats not saved -->
             <div v-if="!openPaper.saved">
                 <div>
                     <span class="text-h5">{{ $t('detailSidebar.informations') }}</span><br>
                     <div>
                         <span v-for="(author, index) in openPaper.paper?.authors" :key="index" class="font-weight-bold">{{ author.name }}</span>
                     </div>
-                    <span>{{ openPaper.paper?.year }} - {{ openPaper.paper?.venue }} - {{ $t('detailSidebar.citations', { n: openPaper.paper?.citationCount}) }} - {{ $t('detailSidebar.references', {n: openPaper.paper?.referenceCount}) }}</span>
+                    <span>{{ openPaper.paper?.year }} - {{ openPaper.paper?.venue }} - {{ $t('detailSidebar.citationCount', { n: openPaper.paper?.citationCount}) }} - {{ $t('detailSidebar.referenceCount', {n: openPaper.paper?.referenceCount}) }}</span>
                     <v-divider class="my-3"></v-divider>
                 </div>
                 
                 <div class="mt-4">
-                    <lara-button type="primary">{{ $t('detailSidebar.add') }}</lara-button>
-                    <lara-button class="mt-2" type="secondary">{{ $t('detailSidebar.enqueue') }}</lara-button>
-                    <v-divider class="my-3"></v-divider>    
+                    <lara-button type="primary" @click="createSavedPaper(openPaper.paper, SaveState.added)">{{ $t('detailSidebar.add') }}</lara-button>
+                    <lara-button class="mt-2" type="secondary" @click="createSavedPaper(openPaper.paper, SaveState.enqueued)">{{ $t('detailSidebar.enqueue') }}</lara-button>
+                    <v-divider class="my-3"></v-divider>
                 </div>
             </div>
         </div>
