@@ -1,4 +1,4 @@
-import axios, { type AxiosInstance, type AxiosResponse } from "axios";
+import axios, { type AxiosInstance } from "axios";
 
 // defines basic functionality used by every specific api caller
 class BasicApiCaller {
@@ -15,8 +15,6 @@ class BasicApiCaller {
 
         // axios interceptor for requests
         this.axiosInstance.interceptors.request.use(config => {
-            console.log("request url: ", config.baseURL, config.url);
-            console.log("request method: ", config.method);
             return config;
         }, error => {
             console.log("error code: ", error.code);
@@ -26,7 +24,6 @@ class BasicApiCaller {
 
         // axios interceptor for responses
         this.axiosInstance.interceptors.response.use(response => {
-            console.log("response status: ", response.status);
             return response;
         }, error => {
             console.log("error code: ", error.code);
