@@ -18,7 +18,7 @@ import { SaveState } from '../model/SaveState';
 let openPaperStore = useOpenPaperStore();
 
 // TODO Nur wegen Test man.....
-openPaperStore.setPaper(testOpenPaper);
+openPaperStore.setPaper(testOpenPaper2);
 
 // Set the openPaper to the openPaper saved in the store
 let openPaper: OpenPaper = openPaperStore.getPaper;
@@ -57,6 +57,10 @@ let createSavedPaper = (paper: Paper, state: SaveState) => {
 
 let hidePaper = (paper: SavedPaper) => {
     console.debug("Hide paper : " + paper.research.id + paper.paper.id);
+}
+
+let showPaper = (paper: SavedPaper) => {
+    console.debug("Show paper : " + paper.research.id + paper.paper.id);
 }
 
 </script>
@@ -102,7 +106,8 @@ let hidePaper = (paper: SavedPaper) => {
                             empty-icon="mdi-star-outline"
                             color="orange"
                         ></v-rating>
-                        <v-icon class="lara-link" @click="hidePaper(openPaper.savedPaper)">mdi-eye-off</v-icon>
+                        <v-icon v-if="openPaper.savedPaper?.saveState != SaveState.hidden" class="lara-hide-button" @click="hidePaper(openPaper.savedPaper)">mdi-eye-off</v-icon>
+                        <v-icon v-if="openPaper.savedPaper?.saveState == SaveState.hidden" class="lara-hide-button" @click="hidePaper(openPaper.savedPaper)">mdi-eye</v-icon>
                     </div>
                     <v-divider class="my-3"></v-divider>
                 </div>
@@ -122,9 +127,25 @@ let hidePaper = (paper: SavedPaper) => {
                 <div class="mt-4">
                     <lara-button type="primary" @click="createSavedPaper(openPaper.paper, SaveState.added)">{{ $t('detailSidebar.add') }}</lara-button>
                     <lara-button class="mt-2" type="secondary" @click="createSavedPaper(openPaper.paper, SaveState.enqueued)">{{ $t('detailSidebar.enqueue') }}</lara-button>
+                    <lara-button class="lara-hide-button mt-2" @click="createSavedPaper(openPaper.paper, SaveState.hidden)">
+                        <v-icon>mdi-eye-off</v-icon>
+                    </lara-button>
                     <v-divider class="my-3"></v-divider>
                 </div>
             </div>
         </div>
     </v-navigation-drawer>
 </template>
+
+<style scoped>
+
+.lara-hide-button {
+    color: #000;
+    transition: color ease-in-out 0.3s;
+}
+
+.lara-hide-button:hover {
+    color: rgb(175, 175, 175);
+}
+
+</style>

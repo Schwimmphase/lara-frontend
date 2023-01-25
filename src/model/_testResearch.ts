@@ -32,7 +32,7 @@ export const testPaper = new Paper("id12345", "Das ist der Titel eines Papers, m
     2023, "Das ist der Absrtract eines sehr coolen Papers, das aber keinen Zweck hat sonder nur Test ist.",
     1, 0, "NEG", "https://www.orimi.com/pdf-test.pdf");
 
-export const testSavedPaper1 = new SavedPaper(testPaper, testResearch, testComment1, [testTag1, testTag2, testTag3], 1, SaveState.enqueued);
+export const testSavedPaper1 = new SavedPaper(testPaper, testResearch, testComment1, [testTag1, testTag2, testTag3], 1, SaveState.hidden);
 export const testSavedPaper2 = new SavedPaper(testPaper, testResearch, testComment2, [testTag1, testTag2, testTag3], 2, SaveState.hidden);
 export const testSavedPaper3 = new SavedPaper(testPaper, testResearch, testComment3, [testTag1, testTag2, testTag3], 0, SaveState.added);
 export const testSavedPaper4 = new SavedPaper(testPaper, testResearch, testComment1, [testTag1, testTag2, testTag3], 1, SaveState.enqueued);
