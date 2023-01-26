@@ -6,7 +6,7 @@ import type { Paper } from "@/model/Paper";
 
 export class ExportApiHandler {
     public static exportResearch(research: Research, organizers: Organizer[]) {
-        ExportApiCaller.exportResearch(research.id, JSON.stringify(organizers))
+        ExportApiCaller.exportResearch(research.id, organizers)
             .then(response => {
                 let data = BasicApiHandler.tryParseJson(response.data);
             })

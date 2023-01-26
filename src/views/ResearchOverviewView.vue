@@ -32,15 +32,16 @@
 import OrganizableList from "@/components/basic/OrganizableList.vue";
 import {testResearch, testSavedPaperList} from "@/model/_testResearch";
 import type {Research} from "@/model/Research";
-import {useResearchStore} from "@/stores/research";
+import {useOpenResearchStore} from "@/stores/openResearch.js";
 import ResearchOverviewCard from "@/components/cards/ResearchOverviewCard.vue";
 import type {Slot} from "@/components/basic/OrganizableList.vue";
 
 // Pinia store for the research
-const store = useResearchStore();
+const store = useOpenResearchStore();
 
 // TODO Nur zu Testzwecken drin... sobald die Research Papers gesetzt werden, kann das wieder weg
-store.setOpenResearch(testResearch, testSavedPaperList);
+store.setOpenResearch(testResearch);
+store.setResearchPapers(testSavedPaperList);
 
 // Get the research from the store
 let research: Research | null = store.getResearch;

@@ -1,3 +1,4 @@
+import type { Organizer } from "@/model/Organizer";
 import BasicApiCaller from "../BasicApiCaller";
 
 export class ExportApiCaller {
@@ -5,10 +6,10 @@ export class ExportApiCaller {
     static urlResearch = '/research/';
     static urlPaper = '/paper/';
 
-    public static exportResearch(researchId: string, organizerList: string) {
+    public static exportResearch(researchId: string, organizers: Organizer[]) {
         return BasicApiCaller.axiosInstance.post(this.urlExport + this.urlResearch + researchId, {
             data: {
-                "organizers": organizerList
+                "organizers": organizers
             }
         });
     }

@@ -9,64 +9,40 @@ import type { Tag } from "@/model/Tag"
 import { SaveState } from "@/model/SaveState"
 import type { Organizer } from "@/model/Organizer"
 import { RecommendationMethod } from "@/model/RecommendationMethod"
+import { plainToInstance } from "class-transformer"
+import type { Research } from "@/model/Research"
 
-export class PaperApiHandler { // what about JWT token?
-    public static getDetailsOfPaper(paper: Paper) {
-        PaperApiCaller.getDetailsOfPaper(paper.id)
-            .then(response => {
-                let data = basicApiHandler.tryParseJson(response.data);
-                console.log("response of gedDetailsOfPaper: ", data);
-                let paper = PaperApiHandler.buildPaper(data); // update html component here
-            });
+export class PaperApiHandler {
+    public static async getDetailsOfPaper(paper: Paper): Promise<unknown[]> {
+        const response = await PaperApiCaller.getDetailsOfPaper(paper.id);
+        let data = basicApiHandler.tryParseJson(response.data);
+        return plainToInstance(Paper.constructor(), data);
     }
 
-    public static addTagToPaper(savedPaper: SavedPaper, tag: Tag) {
-        PaperApiCaller.addTagToPaper(savedPaper.paper.id, savedPaper.research.id, tag.id)
-            .then(response => {
-                let data = basicApiHandler.tryParseJson(response.data);
-                console.log("response of addTagToPaper: ", data); // update html component here
-            });
+    public static async addTagToPaper(savedPaper: SavedPaper, tag: Tag): Promise<void> {
+        await PaperApiCaller.addTagToPaper(savedPaper.paper.id, savedPaper.research.id, tag.id);
     }
 
-    public static removeTagFromPaper(savedPaper: SavedPaper, tag: Tag) {
-        PaperApiCaller.removeTagFromPaper(savedPaper.paper.id, savedPaper.research.id, tag.id)
-            .then(response => {
-                let data = basicApiHandler.tryParseJson(response.data);
-                console.log("response of removeTagFromPaper: ", data); // update html component here
-            });
+    public static async removeTagFromPaper(savedPaper: SavedPaper, tag: Tag): Promise<void> {
+        await PaperApiCaller.removeTagFromPaper(savedPaper.paper.id, savedPaper.research.id, tag.id);
     }
 
-    public static changeComment(savedPaper: SavedPaper, comment: Comment) {
-        PaperApiCaller.changeComment(savedPaper.paper.id, savedPaper.research.id, comment.text)
-        .then(response => {
-            let data = basicApiHandler.tryParseJson(response.data);
-            console.log("response of changeComment: ", data); // update html component here
-        });
+    public static async changeComment(savedPaper: SavedPaper, comment: Comment): Promise<void> {
+        await PaperApiCaller.changeComment(savedPaper.paper.id, savedPaper.research.id, comment.text);
     }
 
-    public static changeSaveState(savedPaper: SavedPaper, saveState: SaveState) {
-        PaperApiCaller.changeSaveState(savedPaper.paper.id, savedPaper.research.id, SaveState[saveState])
-            .then(response => {
-                let data = basicApiHandler.tryParseJson(response.data);
-                console.log("response of changeSaveState: ", data); // update html component here
-            });
+    public static async changeSaveState(savedPaper: SavedPaper, saveState: SaveState): Promise<void> {
+        await PaperApiCaller.changeSaveState(savedPaper.paper.id, savedPaper.research.id, SaveState[saveState]);
     }
 
-    public static changeRelevance(savedPaper: SavedPaper, relevance: number) {
-        PaperApiCaller.changeRelevance(savedPaper.paper.id, savedPaper.research.id, relevance)
-            .then(response => {
-                let data = basicApiHandler.tryParseJson(response.data);
-                console.log("response of changeRelevance: ", data); // update html component here
-            });
+    public static async changeRelevance(savedPaper: SavedPaper, relevance: number): Promise<void> {
+        await PaperApiCaller.changeRelevance(savedPaper.paper.id, savedPaper.research.id, relevance);
     }
 
-    public static getRecommendationsOfPaper(paper: Paper, method: RecommendationMethod, organizers: Organizer[]) {
-        PaperApiCaller.getRecommendationsOfPaper(paper.id, RecommendationMethod[method], JSON.stringify(organizers))
-            .then(response => {
-                let data = basicApiHandler.tryParseJson(response.data);
-                console.log("response of changeSaveState: ", data);
-                let recommendations = PaperApiHandler.buildRecommendations(data); // update html component here
-            });
+    public static async getRecommendationsOfPaper(paper: Paper, research: Research, method: RecommendationMethod, organizers: Organizer[]): Promise<Paper[]> {
+        const response = await PaperApiCaller.getRecommendationsOfPaper(paper.id, research.id, RecommendationMethod[method], organizers)
+        let data = basicApiHandler.tryParseJson(response.data);
+        return plainToInstance(Paper.constructor(), data);
     }
 
     public static getReferencesOfPaper(paper: Paper) {
@@ -75,38 +51,5 @@ export class PaperApiHandler { // what about JWT token?
 
     public static getCitationsOfPaper(paper: Paper) {
         return // not defined in yaml
-    }
-
-    
-    // example helper methods
-
-    private static buildPaper(data: any): Paper {
-        let authors: Author[] = [];
-
-        for (let authorJSON of data.authors) {
-            let author = new Author(authorJSON.id, authorJSON.name);
-            authors.push(author);
-        }
-
-        return new Paper(data.id, data.title, authors, +data.year, data.abstract, +data.citationCount, +data.referenceCount,
-            data.venue, data.pdfUrl);
-    }
-
-    private static buildRecommendations(data: any): Paper[] {
-        let recommendations: Paper[] = [];
-
-        for (let paperJSON of data) {
-            let authors: Author[] = [];
-            for (let authorJSON of paperJSON.authors) {
-                let author = new Author(authorJSON.id, authorJSON.name);
-                authors.push(author);
-            }
-
-            let paper = new Paper(paperJSON.id, paperJSON.title, authors, +paperJSON.year, paperJSON.abstract,
-                +paperJSON.citationCount, +paperJSON.referenceCount, paperJSON.venue, paperJSON.pdfUrl)
-            recommendations.push(paper);
-        }
-
-        return recommendations;
     }
 }
