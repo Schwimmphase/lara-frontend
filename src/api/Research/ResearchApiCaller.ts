@@ -1,3 +1,4 @@
+import type { Organizer } from "@/model/Organizer";
 import BasicApiCaller from "../BasicApiCaller";
 
 export class ResearchApiCaller {
@@ -14,19 +15,15 @@ export class ResearchApiCaller {
 
     public static createResearch(title: string, description: string) {
         return BasicApiCaller.axiosInstance.post(this.urlResearch, {
-            data: {
-                "title": title,
-                "description": description
-            }
+            "title": title,
+            "description": description
         });
     }
 
     public static updateResearch(researchId: string, title: string, description: string) {
         return BasicApiCaller.axiosInstance.patch(this.urlResearch + researchId, {
-            data: {
-                "title": title,
-                "description": description
-            }
+            "title": title,
+            "description": description
         });
     }
 
@@ -35,7 +32,7 @@ export class ResearchApiCaller {
     }
 
     public static savePaperToResearch(researchId: string, paperId: string, saveState: string) {
-        return BasicApiCaller.axiosInstance.put(this.urlResearch + researchId + this.urlPaper, {
+        return BasicApiCaller.axiosInstance.put(this.urlResearch + researchId + this.urlPaper, {}, {
             params: {
                 "paperId": paperId,
                 "state": saveState
@@ -55,11 +52,9 @@ export class ResearchApiCaller {
         return BasicApiCaller.axiosInstance.delete(this.urlResearch + researchId + this.urlTags);
     }
 
-    public static getPapersFromResearch(researchId: string, organizerList: string) {
+    public static getPapersFromResearch(researchId: string, organizers: Organizer[]) {
         return BasicApiCaller.axiosInstance.post(this.urlResearch + researchId + this.urlPapers, {
-            data: {
-                "organizers": organizerList
-            }
+            "organizers": organizers
         });
     }
 
@@ -72,7 +67,7 @@ export class ResearchApiCaller {
     }
 
     public static getRecommendations(researchId: string, method: string) {
-        return BasicApiCaller.axiosInstance.post(this.urlResearch + researchId + this.urlRecommendations, {
+        return BasicApiCaller.axiosInstance.post(this.urlResearch + researchId + this.urlRecommendations, {}, {
             params: {
                 "method": method
             }
@@ -81,12 +76,12 @@ export class ResearchApiCaller {
 
     public static searchByKeywords(query: string, organizerList: string) {
         return BasicApiCaller.axiosInstance.post(this.urlResearch + this.urlSearch, {
-            params: {
-                "query": query
-            },
-            data: {
                 "organizers": organizerList
+            }, {
+                params: {
+                    "query": query
+                }
             }
-        });
+        );
     }
 }

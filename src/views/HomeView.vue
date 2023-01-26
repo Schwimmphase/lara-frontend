@@ -29,10 +29,10 @@
 import ResearchCard from "@/components/cards/ResearchCard.vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
 import type {Research} from "@/model/Research";
-import { useResearchesStore } from "@/stores/researches";
-import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
-import { useCurrentUserStore } from "@/stores/currentUser.js";
 import { testResearch } from "@/model/_testResearch";
+import { useCurrentUserStore } from "@/stores/currentUser";
+import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
+import { useResearchesStore } from "@/stores/researches";
 
 function onEdited(research: Research, title: String, description: String) {
     console.debug("New name and title for research: ");
@@ -40,11 +40,17 @@ function onEdited(research: Research, title: String, description: String) {
     console.debug("Title: " + title + " - description: " + description);
 }
 
+
 // get username & researches of user
 let currentUser = useCurrentUserStore().getCurrentUser;
 ResearchApiHandler.getAllResearchesByUser(currentUser);
 let researches = useResearchesStore().getResearches;
 researches.push(testResearch);
+
+/*
+let currentUser = testUser;
+let researches = [testResearch];
+*/
 </script>
 
 <style>
