@@ -10,7 +10,10 @@ import { Paper } from '../model/Paper';
 import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
 import { stat } from 'fs/promises';
 
-let state: {loading: boolean} = reactive({ loading: true });
+let detailState: {loading: boolean, openPaper: OpenPaper | null } = reactive({
+    loading: true,
+    openPaper: null
+});
 
 let route = useRoute();
 
@@ -31,29 +34,40 @@ let setPaper = async () => {
 }
 
 setPaper();
-state.loading = false;
+detailState.loading = false;
 
 
 let openPaperStore = useOpenPaperStore();
-console.log(openPaperStore)
-let openPaper: OpenPaper = openPaperStore.getPaper;
+
+detailState.openPaper = openPaperStore.getPaper;
+
+openPaperStore.$subscribe((mutation, state) => {
+    // When a change in the paper is detected, update the state
+    detailState.openPaper = state.paper;
+
+    console.log("PDF URL")
+    //console.log(detailState.openPaper.paper?.pdfUrl);
+})
+
 
 </script>
 
 <template>
-    <div v-if="!state.loading">
+    <div v-if="!detailState.loading" class="w-100 h-100">
         <detail-sidebar-component></detail-sidebar-component>
         
-        <div v-if="openPaper.saved && openPaper.savedPaper?.paper.pdfUrl != null">
-            <iframe src="{{ openPaper.savedPaper?.paper.pdfUrl }}" frameborder="0"></iframe>
+        <div class="w-100 h-100" v-if="!detailState.openPaper?.saved && detailState.openPaper?.paper?.pdfUrl != null">
+            <iframe src="https://arxiv.org/pdf/2110.11697.pdf" class="w-100 h-100" frameborder="0"></iframe>
 
 
 
         </div>
-        
-        
-        
-        <iframe src="{{ openPaper }}" frameborder="0"></iframe>
+
+        <div v-if="!detailState.openPaper?.saved && detailState.openPaper?.paper?.pdfUrl != null">
+
+
+
+        </div>
     </div>
     
     <div v-else class="d-flex justify-center h-100 align-center">
