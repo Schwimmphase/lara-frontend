@@ -24,11 +24,8 @@ let matchesSaveState = (paper: SavedPaper, state: SaveState): boolean => {
 }
 
 let openSavedPaper = (savedPaper: SavedPaper): void => {
-    // Build id from research and paper id
-    let id: string = savedPaper.research.id + "-" + savedPaper.paper.id;
-
     // Navigate to paperDetail-route
-    router.push({name: 'paperDetails', query: {id: id}});
+    router.push({name: 'paperDetails', query: {research: savedPaper.research.id, paper: savedPaper.paper.id}});
 }
 
 let changeSaveState = (savedPaper: SavedPaper, saveState: SaveState) => {
@@ -107,23 +104,6 @@ let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveStat
             </expandable-list>
         </div>
     </v-navigation-drawer>
-
-    <!--
-    <v-navigation-drawer>
-
-        <v-list>
-            <v-list-item>
-
-            </v-list-item>
-
-
-            <v-list-item v-bind:key="index" v-for="(savedPaper, index) in researchPapers">
-                {{ savedPaper.paper.title }}
-            </v-list-item>
-
-        </v-list>
-    </v-navigation-drawer>
-    -->
 </template>
 
 <style scoped>
