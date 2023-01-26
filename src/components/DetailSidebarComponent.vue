@@ -22,6 +22,7 @@ openPaperStore.setPaper(testOpenPaper2);
 
 // Set the openPaper to the openPaper saved in the store
 let openPaper: OpenPaper = openPaperStore.getPaper;
+console.log(openPaper)
 
 
 let commentState: { data: string } = reactive({
@@ -118,7 +119,8 @@ let showPaper = (paper: SavedPaper) => {
                 <div>
                     <span class="text-h5">{{ $t('detailSidebar.informations') }}</span><br>
                     <div>
-                        <span v-for="(author, index) in openPaper.paper?.authors" :key="index" class="font-weight-bold">{{ author.name }}</span>
+                        <!-- TODO SOBALD DAS FELD AUTHORS HEIßT WIEDER RAUSNEHMEN!! -->
+                        <span v-for="(author, index) in openPaper.paper?.author" :key="index" class="font-weight-bold">{{ author.name }}</span>
                     </div>
                     <span>{{ openPaper.paper?.year }} - {{ openPaper.paper?.venue }} - {{ $t('detailSidebar.citationCount', { n: openPaper.paper?.citationCount}) }} - {{ $t('detailSidebar.referenceCount', {n: openPaper.paper?.referenceCount}) }}</span>
                     <v-divider class="my-3"></v-divider>

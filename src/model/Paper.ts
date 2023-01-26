@@ -2,9 +2,10 @@ import type { Author } from './Author'
 
 // Model-class of a paper
 export class Paper {
-    readonly id: string;
+    readonly paperId: string;
     readonly title: string;
-    readonly authors: Author[];
+    // TODO ONLY TEST, change to authors
+    readonly author: Author[];
     readonly year: number;
     readonly abstract: string;
     readonly citationCount: number;
@@ -12,10 +13,10 @@ export class Paper {
     readonly venue: string;
     readonly pdfUrl: string;
 
-    constructor(id: string, title: string, authors: Author[], year: number, abstract: string, citationCount: number, referenceCount: number, venue: string, pdfUrl: string) {
-        this.id = id;
+    constructor(paperId: string, title: string, authors: Author[], year: number, abstract: string, citationCount: number, referenceCount: number, venue: string, pdfUrl: string) {
+        this.paperId = paperId;
         this.title = title;
-        this.authors = authors;
+        this.author = authors;
         this.year = year;
         this.abstract = abstract;
         this.citationCount = citationCount;

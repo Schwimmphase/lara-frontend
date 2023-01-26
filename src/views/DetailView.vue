@@ -6,25 +6,32 @@ import { useOpenPaperStore } from '../stores/openPaper';
 
 import { useRoute } from 'vue-router';
 import { reactive } from '@vue/reactivity';
+import { Paper } from '../model/Paper';
 import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
+import { stat } from 'fs/promises';
 
 let state: {loading: boolean} = reactive({ loading: true });
 
 let route = useRoute();
 
-let setPaper = () => {
+let setPaper = async () => {
     console.log(route);
 
     let researchId = route.query.research;
     let paperId = route.query.paper;
 
-    console.log("IDS " + researchId + " : " + paperId);
+    // TODO pass researchId when its implemented
+    let response = await PaperApiHandler.getDetailsOfPaper(paperId as string) as Paper;
 
-    // TODO Get Paper from API
-    
+    let openPaperFromAPI: OpenPaper = new OpenPaper(response, null, false);
+
+    console.log(openPaperFromAPI)
+
+    openPaperStore.setPaper(openPaperFromAPI);
 }
 
 setPaper();
+state.loading = false;
 
 
 let openPaperStore = useOpenPaperStore();
@@ -36,7 +43,17 @@ let openPaper: OpenPaper = openPaperStore.getPaper;
 <template>
     <div v-if="!state.loading">
         <detail-sidebar-component></detail-sidebar-component>
-    
+        
+        <div v-if="openPaper.saved && openPaper.savedPaper?.paper.pdfUrl != null">
+            <iframe src="{{ openPaper.savedPaper?.paper.pdfUrl }}" frameborder="0"></iframe>
+
+
+
+        </div>
+        
+        
+        
+        <iframe src="{{ openPaper }}" frameborder="0"></iframe>
     </div>
     
     <div v-else class="d-flex justify-center h-100 align-center">

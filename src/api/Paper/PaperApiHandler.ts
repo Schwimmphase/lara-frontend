@@ -13,10 +13,12 @@ import { plainToInstance } from "class-transformer"
 import type { Research } from "@/model/Research"
 
 export class PaperApiHandler {
-    public static async getDetailsOfPaper(paper: Paper): Promise<unknown[]> {
-        const response = await PaperApiCaller.getDetailsOfPaper(paper.id);
+    public static async getDetailsOfPaper(paperId: string): Promise<unknown> {
+        const response = await PaperApiCaller.getDetailsOfPaper(paperId);
         let data = basicApiHandler.tryParseJson(response.data);
-        return plainToInstance(Paper.constructor(), data);
+        console.log("DATA")
+        console.log(data);
+        return plainToInstance(Paper, data);
     }
 
     public static async addTagToPaper(savedPaper: SavedPaper, tag: Tag): Promise<void> {

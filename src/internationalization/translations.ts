@@ -11,7 +11,7 @@ export const messages = {
 
         detailSidebar: {
             citationCount: 'No Citations | One Citation | {n} Citations',
-            referenceCount: 'No Reference | One References | {n} references',
+            referenceCount: 'No Reference | One References | {n} References',
             informations: 'Informations',
             comments: 'Comments',
             save: 'Save',
