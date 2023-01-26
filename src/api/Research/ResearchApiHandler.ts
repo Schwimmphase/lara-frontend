@@ -10,6 +10,8 @@ import type { Organizer } from "@/model/Organizer";
 import { RecommendationMethod } from "@/model/RecommendationMethod";
 import { useResearchesStore } from "@/stores/researches";
 import { UserCategory } from "@/model/UserCategory";
+import { SavedPaper } from "@/model/SavedPaper";
+import { plainToInstance } from "class-transformer";
 
 export class ResearchApiHandler {
     public static getAllResearchesByUser(user: User) {
@@ -71,7 +73,40 @@ export class ResearchApiHandler {
         ResearchApiCaller.getPapersFromResearch(research.id, JSON.stringify(organizers))
             .then(response => {
                 let data = BasicApiHandler.tryParseJson(response.data);
-                console.log(data);
+                /*
+                let papers: SavedPaper[] = [];
+                for (let savedPaperJSON of data) {
+                    let paperJSON = savedPaperJSON.paper;
+                    let authors: Author[] = [];
+                    for (let authorJSON of paperJSON.authors) {
+                        let author = new Author(authorJSON.id, authorJSON.name);
+                        authors.push(author);
+                    }
+                    let paper = new Paper(paperJSON.id, paperJSON.title, authors, +paperJSON.year, paperJSON.abstract, +paperJSON.citationCount, +paperJSON.referenceCount, paperJSON.venue, paperJSON.pdfUrl);
+                    let comment = new Comment(savedPaperJSON.comment);
+                    let tags: Tag[] = [];
+                    for (let tagJSON of savedPaperJSON.tags) {
+                        let tag = new Tag(tagJSON.id, tagJSON.name, tagJSON.color);
+                        tags.push(tag);
+                    }
+                    if (savedPaperJSON.saveState === SaveState.added.toString()) {
+                        var saveState = SaveState.added;
+                    } else if (savedPaperJSON.saveState === SaveState.enqueued.toString()) {
+                        var saveState = SaveState.enqueued;
+                    } else {
+                        var saveState = SaveState.hidden;
+                    }
+                    let savedPaper = new SavedPaper(paper, research, comment, tags, +savedPaperJSON.relevance, saveState);
+                    papers.push(savedPaper);
+                }
+                useOpenResearchStore().setResearchPapers(papers);
+                console.log(useOpenResearchStore().getResearchPapers);
+                */
+                let savedPapers: SavedPaper[] = [];
+                for (let savedPaperJSON of data.papers) {
+                    let savedPaper = plainToInstance(SavedPaper.constructor(), data.papers);
+                    console.log(savedPaper);
+                }
             });
     }
 

@@ -17,6 +17,7 @@
                                :added="69"
                                :enqueued="420"
                                :started-at="research.started.toLocaleDateString()"
+                               :research="research"
                                @data-change="(newTitle: String, newDescription: String) => onEdited(research, newTitle, newDescription)"
                 />
             </div>
@@ -31,6 +32,7 @@ import type {Research} from "@/model/Research";
 import { useResearchesStore } from "@/stores/researches";
 import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
 import { useCurrentUserStore } from "@/stores/currentUser.js";
+import { testResearch } from "@/model/_testResearch";
 
 function onEdited(research: Research, title: String, description: String) {
     console.debug("New name and title for research: ");
@@ -38,9 +40,11 @@ function onEdited(research: Research, title: String, description: String) {
     console.debug("Title: " + title + " - description: " + description);
 }
 
+// get username & researches of user
 let currentUser = useCurrentUserStore().getCurrentUser;
 ResearchApiHandler.getAllResearchesByUser(currentUser);
 let researches = useResearchesStore().getResearches;
+researches.push(testResearch);
 </script>
 
 <style>
