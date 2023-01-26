@@ -2,7 +2,6 @@ import basicApiHandler from "../BasicApiHandler"
 import { PaperApiCaller } from "./PaperApiCaller"
 
 import { Paper } from "@/model/Paper"
-import { Author } from "@/model/Author"
 import type { SavedPaper } from "@/model/SavedPaper"
 import type { Comment } from "@/model/Comment"
 import type { Tag } from "@/model/Tag"
@@ -13,8 +12,8 @@ import { plainToInstance } from "class-transformer"
 import type { Research } from "@/model/Research"
 
 export class PaperApiHandler {
-    public static async getDetailsOfPaper(paper: Paper): Promise<unknown[]> {
-        const response = await PaperApiCaller.getDetailsOfPaper(paper.id);
+    public static async getDetailsOfPaper(paper: Paper, research: Research): Promise<unknown[]> {
+        const response = await PaperApiCaller.getDetailsOfPaper(paper.id, research.id);
         let data = basicApiHandler.tryParseJson(response.data);
         return plainToInstance(Paper.constructor(), data);
     }
@@ -40,7 +39,7 @@ export class PaperApiHandler {
     }
 
     public static async getRecommendationsOfPaper(paper: Paper, research: Research, method: RecommendationMethod, organizers: Organizer[]): Promise<Paper[]> {
-        const response = await PaperApiCaller.getRecommendationsOfPaper(paper.id, research.id, RecommendationMethod[method], organizers)
+        const response = await PaperApiCaller.getRecommendationsOfPaper(paper.id, research.id, RecommendationMethod[method], organizers.toString())
         let data = basicApiHandler.tryParseJson(response.data);
         return plainToInstance(Paper.constructor(), data);
     }

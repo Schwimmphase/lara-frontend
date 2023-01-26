@@ -2,63 +2,47 @@ import BasicApiHandler from "../BasicApiHandler";
 import { AdminApiCaller } from "./AdminApiCaller";
 
 import type { Organizer } from "@/model/Organizer";
-import type { UserCategory } from "@/model/UserCategory";
-import type { User } from "@/model/User";
+import { UserCategory } from "@/model/UserCategory";
+import { User } from "@/model/User";
+import { plainToInstance } from "class-transformer";
 
 export class AdminApiHandler {
-    public static getUsers(organizers: Organizer[]) {
-        AdminApiCaller.getUsers(JSON.stringify(organizers))
-            .then(response => {
-                let data = BasicApiHandler.tryParseJson(response.data);
-            })
+    public static async getUsers(organizers: Organizer[]): Promise<unknown[]> {
+        const response = await AdminApiCaller.getUsers(JSON.stringify(organizers));
+        let data = BasicApiHandler.tryParseJson(response.data);
+        return plainToInstance(User.constructor(), data);
     }
 
-    public static createUser(username: string, password: string, userCategory: UserCategory) {
-        AdminApiCaller.createUser(username, password, JSON.stringify(userCategory))
-            .then(response => {
-                let data = BasicApiHandler.tryParseJson(response.data);
-            });
+    public static async createUser(username: string, password: string, userCategory: UserCategory): Promise<unknown[]> {
+        const response = await AdminApiCaller.createUser(username, password, JSON.stringify(userCategory));
+        let data = BasicApiHandler.tryParseJson(response.data);
+        return plainToInstance(User.constructor(), data);
+        
     }
 
-    public static updateUser(user: User, username: string, password: string, userCategory: UserCategory) {
-        AdminApiCaller.updateUser(user.userId, username, password, JSON.stringify(userCategory))
-            .then(response => {
-                let data = BasicApiHandler.tryParseJson(response.data);
-            });
+    public static async updateUser(user: User, username: string, password: string, userCategory: UserCategory): Promise<void> {
+        await AdminApiCaller.updateUser(user.userId, username, password, JSON.stringify(userCategory));
     }
 
-    public static deleteUser(user: User) {
-        AdminApiCaller.deleteUser(user.userId)
-            .then(response => {
-                let data = BasicApiHandler.tryParseJson(response.data);
-            });
+    public static async deleteUser(user: User): Promise<void> {
+        await AdminApiCaller.deleteUser(user.userId);
     }
 
-    public static getUserCategories() {
-        AdminApiCaller.getUserCategories()
-            .then(response => {
-                let data = BasicApiHandler.tryParseJson(response.data);
-            });
+    public static async getUserCategories(): Promise<unknown[]> {
+        const response = await AdminApiCaller.getUserCategories();
+        let data = BasicApiHandler.tryParseJson(response.data);
+        return plainToInstance(UserCategory.constructor(), data);
     }
 
-    public static createUserCategory(name: string, color: string) {
-        AdminApiCaller.createUserCategory(name, color)
-            .then(response => {
-                let data = BasicApiHandler.tryParseJson(response.data);
-            });
+    public static async createUserCategory(name: string, color: string): Promise<void> {
+        await AdminApiCaller.createUserCategory(name, color);
     }
 
-    public static updateUserCategory(userCategory: UserCategory, name: string, color: string) {
-        AdminApiCaller.updateUserCategory(userCategory.id, name, color)
-            .then(response => {
-                let data = BasicApiHandler.tryParseJson(response.data);
-            });
+    public static async updateUserCategory(userCategory: UserCategory, name: string, color: string): Promise<void> {
+        await AdminApiCaller.updateUserCategory(userCategory.id, name, color);
     }
 
-    public static deleteUserCategory(userCategory: UserCategory) {
-        AdminApiCaller.deleteUserCategory(userCategory.id)
-            .then(response => {
-                let data = BasicApiHandler.tryParseJson(response.data);
-            });
+    public static async deleteUserCategory(userCategory: UserCategory): Promise<void> {
+        await AdminApiCaller.deleteUserCategory(userCategory.id);
     }
 }

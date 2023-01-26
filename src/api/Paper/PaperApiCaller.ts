@@ -1,4 +1,3 @@
-import type { Organizer } from "@/model/Organizer";
 import basicApiCaller from "../BasicApiCaller";
 
 export class PaperApiCaller {
@@ -9,7 +8,7 @@ export class PaperApiCaller {
     static urlRelevance = '/relevance';
     static urlRecommendations = '/recommendations';
 
-    public static getDetailsOfPaper(paperId: string) { // TODO: researchId needed
+    public static getDetailsOfPaper(paperId: string, researchId: string) { // TODO: researchId needed
         return basicApiCaller.axiosInstance.get(this.urlPath + paperId);
     }
 
@@ -60,7 +59,7 @@ export class PaperApiCaller {
         });
     }
     
-    public static getRecommendationsOfPaper(paperId: string, researchId: string, method: string, organizers: Organizer[]) {
+    public static getRecommendationsOfPaper(paperId: string, researchId: string, method: string, organizers: string) {
         return basicApiCaller.axiosInstance.post(this.urlPath + paperId + this.urlRecommendations, {
                 "organizers": organizers
             }, {

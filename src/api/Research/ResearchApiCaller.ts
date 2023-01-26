@@ -1,4 +1,3 @@
-import type { Organizer } from "@/model/Organizer";
 import BasicApiCaller from "../BasicApiCaller";
 
 export class ResearchApiCaller {
@@ -52,7 +51,7 @@ export class ResearchApiCaller {
         return BasicApiCaller.axiosInstance.delete(this.urlResearch + researchId + this.urlTags);
     }
 
-    public static getPapersFromResearch(researchId: string, organizers: Organizer[]) {
+    public static getPapersFromResearch(researchId: string, organizers: string) {
         return BasicApiCaller.axiosInstance.post(this.urlResearch + researchId + this.urlPapers, {
             "organizers": organizers
         });
