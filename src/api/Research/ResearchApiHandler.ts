@@ -1,8 +1,8 @@
 import BasicApiHandler from "../BasicApiHandler";
 import { ResearchApiCaller } from "./ResearchApiCaller";
 
-import type { User } from "@/model/User";
-import type { Comment } from "@/model/Comment";
+import { User } from "@/model/User";
+import { Comment } from "@/model/Comment";
 import { Research } from "@/model/Research";
 import { Paper } from "@/model/Paper";
 import { SaveState } from "@/model/SaveState";
@@ -11,12 +11,18 @@ import { RecommendationMethod } from "@/model/RecommendationMethod";
 import { SavedPaper } from "@/model/SavedPaper";
 import { plainToInstance } from "class-transformer";
 import { Tag } from "@/model/Tag";
+import { UserCategory } from "@/model/UserCategory";
 
 export class ResearchApiHandler {
     public static async getAllResearchesByUser(user: User): Promise<unknown[]> {
         const response = await ResearchApiCaller.getAllResearchesByUser(user.userId);
         let data = BasicApiHandler.tryParseJson(response.data.researches);
-        return plainToInstance(Research.constructor(), data.researches);
+        let researches: Research[] = [];
+        for (let research of data) {
+            researches.push(new Research(research.id, research.title, new Date(research.startDate), new Comment(research.comment), new User(user.username, user.userId,
+                user.password, new UserCategory(user.userCategory.id, user.userCategory.color, user.userCategory.name))));
+        }
+        return researches;
     }
 
     public static async createResearch(user: User, title: string, description: Comment): Promise<unknown[]> { // user should be used somewhere (not defined in yaml)
