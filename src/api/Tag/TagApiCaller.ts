@@ -5,22 +5,20 @@ export class TagApiCaller {
 
     public static createTag(researchId: string, name: string, color: string) {
         return BasicApiCaller.axiosInstance.post(this.urlTag, {
-            params: {
-                "researchId": researchId
             },
-            data: {
-                "name": name,
-                "color": color
+            {
+                params: {
+                    "researchId": researchId,
+                    "name": name
+                }
             }
-        });
+        );
     }
 
     public static updateTag(id: string, name: string, color: string) {
         return BasicApiCaller.axiosInstance.patch(this.urlTag + id, {
-            data: {
-                "name": name,
-                "color": color
-            }
+            "name": name,
+            "color": color
         });
     }
 

@@ -10,7 +10,7 @@ import type { SavedPaper } from '@/model/SavedPaper';
 import type { Research } from '@/model/Research';
 import { SaveState } from '@/model/SaveState';
 
-import { useResearchStore } from '@/stores/research';
+import { useOpenResearchStore } from '@/stores/openResearch';
 
 // TODO nur testzwecke
 import '../../model/_testResearch';
@@ -43,10 +43,11 @@ let navigateToResearchOverview = (research: Research) => {
 
 
 // Pinia store for the research
-const store = useResearchStore();
+const store = useOpenResearchStore();
 
 // TODO Nur zu Testzwecken drin... sobald die Research Papers gesetzt werden, kann das wieder weg 
-store.setOpenResearch(testResearch, testSavedPaperList);
+// store.setOpenResearch(testResearch);
+// store.setResearchPapers(testSavedPaperList);
 
 // Get the research from the store
 let research: Research | null = store.getResearch;

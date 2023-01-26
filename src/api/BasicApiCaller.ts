@@ -9,7 +9,7 @@ class BasicApiCaller {
             baseURL: 'https://api.lara.gregyyy.dev',
             timeout: 10000, // ms
             headers: {
-                Authorization: document.cookie
+                Authorization: 'Bearer ' + document.cookie.split("=")[1]
             }
         });
 
