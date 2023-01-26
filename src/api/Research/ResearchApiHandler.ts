@@ -70,7 +70,7 @@ export class ResearchApiHandler {
     }
 
     public static getPapersFromResearch(research: Research, organizers: Organizer[]) {
-        ResearchApiCaller.getPapersFromResearch(research.id, JSON.stringify(organizers))
+        ResearchApiCaller.getPapersFromResearch(research.id, organizers)
             .then(response => {
                 let data = BasicApiHandler.tryParseJson(response.data);
                 /*
