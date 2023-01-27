@@ -5,12 +5,11 @@ import { OpenPaper } from '../stores/model/OpenPaper';
 import { useOpenPaperStore } from '../stores/openPaper';
 
 import type { Paper } from '../model/Paper';
-import { Author } from '../model/Author';
+import type { SavedPaper } from '../model/SavedPaper';
 import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
 
 import { useRoute } from 'vue-router';
 import { reactive } from '@vue/reactivity';
-import { SavedPaper } from '../model/SavedPaper';
 
 // State for the page, the openPaper and a indicator to know, if the page is loading
 let detailState: {loading: boolean, openPaper: OpenPaper | null } = reactive({
@@ -29,19 +28,16 @@ let setPaper = async () => {
     let paperId = route.query.paper;
 
     let openPaperFromAPI: OpenPaper;
-    // TODO pass researchId when its implemented
+
     if (researchId == undefined) {
         let response = await PaperApiHandler.getDetailsOfPaper(paperId as string) as Paper;
         openPaperFromAPI = new OpenPaper(response, null, false);
     } else {
         let response = await PaperApiHandler.getDetailsOfPaper(paperId as string, researchId as string) as SavedPaper;
         openPaperFromAPI = new OpenPaper(null, response, false);
-    }    
-
-    // TODO AUTOREN MÜSSEN NOCH GEPARSED WERDEN
+    }
 
     openPaperStore.setPaper(openPaperFromAPI);
-
 }
 
 // Set the paper from the query
@@ -82,7 +78,7 @@ openPaperStore.$subscribe((mutation, state) => {
                 <div class="mt-5">
                     <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.informations') }}</span><br>
                     <div class="mb-2 text-h4">
-                        <!-- TODO Sobald AUTHORS wieder rausnehmen -->
+                        <!-- TODO Sobald AUTHORS wieder ändern -->
                         <span v-for="(author, index) in detailState.openPaper?.paper?.author" :key="index" class="font-weight-bold text-h5">{{ author.name }}</span>
                     </div>
                     <span class="text-h5">{{ detailState.openPaper?.paper?.year }} - {{ detailState.openPaper?.paper?.venue }} - {{ detailState.openPaper?.paper?.citationCount }} mal zitiert - {{ detailState.openPaper?.paper?.referenceCount }} Referenzen</span>
@@ -129,7 +125,7 @@ openPaperStore.$subscribe((mutation, state) => {
             <iframe :src="detailState.openPaper.paper?.pdfUrl" class="w-100 h-100" frameborder="0"></iframe>
         </div>
 
-        <div v-else>Lieder ist ein Fehler aufgetreten!</div>
+        <div v-else>Leider ist ein Fehler aufgetreten!</div>
     </div>
     
     <!-- API Call still loading -->
