@@ -10,7 +10,7 @@ export class PaperApiCaller {
     static urlRecommendations = '/recommendations';
 
     public static getDetails(paperId: string, researchId?: string) {
-        return basicApiCaller.axiosInstance.get(this.urlPath + paperId);
+        return basicApiCaller.axiosInstance.get(this.urlPath + paperId); // TODO: use optional researchId the way the backend people want
     }
 
     public static addTag(paperId: string, researchId: string, tagId: string) {
