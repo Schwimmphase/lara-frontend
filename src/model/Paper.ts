@@ -5,7 +5,7 @@ export class Paper {
     readonly paperId: string;
     readonly title: string;
     // TODO ONLY TEST, change to authors
-    readonly author: Author[];
+    author: Author[];
     readonly year: number;
     readonly abstract: string;
     readonly citationCount: number;

@@ -4,10 +4,10 @@ import type { CachedPaperType } from "./CachedPaperType";
 
 // Model-class of a cachedPaper
 export class CachedPaper {
-    readonly paper: Paper;
-    readonly parentPaper: Paper;
-    readonly research: Research;
-    readonly type: CachedPaperType;
+    paper: Paper;
+    parentPaper: Paper;
+    research: Research;
+    type: CachedPaperType;
 
     constructor(paper: Paper, parentPaper: Paper, research: Research, type: CachedPaperType) {
         this.paper = paper;
