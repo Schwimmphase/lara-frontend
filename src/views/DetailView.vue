@@ -44,9 +44,6 @@ detailState.openPaper = openPaperStore.getPaper;
 openPaperStore.$subscribe((mutation, state) => {
     // When a change in the paper is detected, update the state
     detailState.openPaper = state.paper;
-
-    console.log("PDF URL")
-    //console.log(detailState.openPaper.paper?.pdfUrl);
 })
 
 
@@ -57,10 +54,7 @@ openPaperStore.$subscribe((mutation, state) => {
         <detail-sidebar-component></detail-sidebar-component>
         
         <div class="w-100 h-100" v-if="!detailState.openPaper?.saved && detailState.openPaper?.paper?.pdfUrl != null">
-            <iframe src="https://arxiv.org/pdf/2110.11697.pdf" class="w-100 h-100" frameborder="0"></iframe>
-
-
-
+            <iframe :src="detailState.openPaper.paper.pdfUrl" class="w-100 h-100" frameborder="0"></iframe>
         </div>
 
         <div v-if="!detailState.openPaper?.saved && detailState.openPaper?.paper?.pdfUrl != null">
