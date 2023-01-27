@@ -13,34 +13,34 @@ import { plainToInstance } from "class-transformer"
 import type { Research } from "@/model/Research"
 
 export class PaperApiHandler {
-    public static async getDetailsOfPaper(paper: Paper): Promise<unknown[]> {
-        const response = await PaperApiCaller.getDetailsOfPaper(paper.id);
+    public static async getDetailsOfPaper(paperId: string): Promise<unknown> {
+        const response = await PaperApiCaller.getDetailsOfPaper(paperId);
         let data = basicApiHandler.tryParseJson(response.data);
-        return plainToInstance(Paper.constructor(), data);
+        return plainToInstance(Paper, data);
     }
 
     public static async addTagToPaper(savedPaper: SavedPaper, tag: Tag): Promise<void> {
-        await PaperApiCaller.addTagToPaper(savedPaper.paper.id, savedPaper.research.id, tag.id);
+        await PaperApiCaller.addTagToPaper(savedPaper.paper.paperId, savedPaper.research.id, tag.id);
     }
 
     public static async removeTagFromPaper(savedPaper: SavedPaper, tag: Tag): Promise<void> {
-        await PaperApiCaller.removeTagFromPaper(savedPaper.paper.id, savedPaper.research.id, tag.id);
+        await PaperApiCaller.removeTagFromPaper(savedPaper.paper.paperId, savedPaper.research.id, tag.id);
     }
 
     public static async changeComment(savedPaper: SavedPaper, comment: Comment): Promise<void> {
-        await PaperApiCaller.changeComment(savedPaper.paper.id, savedPaper.research.id, comment.text);
+        await PaperApiCaller.changeComment(savedPaper.paper.paperId, savedPaper.research.id, comment.text);
     }
 
     public static async changeSaveState(savedPaper: SavedPaper, saveState: SaveState): Promise<void> {
-        await PaperApiCaller.changeSaveState(savedPaper.paper.id, savedPaper.research.id, SaveState[saveState]);
+        await PaperApiCaller.changeSaveState(savedPaper.paper.paperId, savedPaper.research.id, SaveState[saveState]);
     }
 
     public static async changeRelevance(savedPaper: SavedPaper, relevance: number): Promise<void> {
-        await PaperApiCaller.changeRelevance(savedPaper.paper.id, savedPaper.research.id, relevance);
+        await PaperApiCaller.changeRelevance(savedPaper.paper.paperId, savedPaper.research.id, relevance);
     }
 
     public static async getRecommendationsOfPaper(paper: Paper, research: Research, method: RecommendationMethod, organizers: Organizer[]): Promise<Paper[]> {
-        const response = await PaperApiCaller.getRecommendationsOfPaper(paper.id, research.id, RecommendationMethod[method], organizers)
+        const response = await PaperApiCaller.getRecommendationsOfPaper(paper.paperId, research.id, RecommendationMethod[method], organizers)
         let data = basicApiHandler.tryParseJson(response.data);
         return plainToInstance(Paper.constructor(), data);
     }

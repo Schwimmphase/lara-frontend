@@ -52,15 +52,15 @@ let deleteTag = (id: string): void => {
 }
 
 let createSavedPaper = (paper: Paper, state: SaveState) => {
-    console.debug("Save Paper : " + paper.id + " = " + state);
+    console.debug("Save Paper : " + paper.paperId + " = " + state);
 }
 
 let hidePaper = (paper: SavedPaper) => {
-    console.debug("Hide paper : " + paper.research.id + paper.paper.id);
+    console.debug("Hide paper : " + paper.research.id + paper.paper.paperId);
 }
 
 let showPaper = (paper: SavedPaper) => {
-    console.debug("Show paper : " + paper.research.id + paper.paper.id);
+    console.debug("Show paper : " + paper.research.id + paper.paper.paperId);
 }
 
 </script>
@@ -74,7 +74,8 @@ let showPaper = (paper: SavedPaper) => {
                 <div>
                     <span class="text-h5">{{ $t('detailSidebar.informations') }}</span><br>
                     <div>
-                        <span v-for="(author, index) in openPaper.savedPaper?.paper.authors" :key="index" class="font-weight-bold">{{ author.name }}</span>
+                        <!-- TODO Sobald AUTHORS wieder rausnehmen -->
+                        <span v-for="(author, index) in openPaper.savedPaper?.paper.author" :key="index" class="font-weight-bold">{{ author.name }}</span>
                     </div>
                     <span>{{ openPaper.savedPaper?.paper.year }} - {{ openPaper.savedPaper?.paper.venue }} - {{ openPaper.savedPaper?.paper.citationCount }} mal zitiert - {{ openPaper.savedPaper?.paper.referenceCount }} Referenzen</span>
                     <v-divider class="my-3"></v-divider>
@@ -118,7 +119,8 @@ let showPaper = (paper: SavedPaper) => {
                 <div>
                     <span class="text-h5">{{ $t('detailSidebar.informations') }}</span><br>
                     <div>
-                        <span v-for="(author, index) in openPaper.paper?.authors" :key="index" class="font-weight-bold">{{ author.name }}</span>
+                        <!-- TODO SOBALD DAS FELD AUTHORS HEIßT WIEDER RAUSNEHMEN!! -->
+                        <span v-for="(author, index) in openPaper.paper?.author" :key="index" class="font-weight-bold">{{ author.name }}</span>
                     </div>
                     <span>{{ openPaper.paper?.year }} - {{ openPaper.paper?.venue }} - {{ $t('detailSidebar.citationCount', { n: openPaper.paper?.citationCount}) }} - {{ $t('detailSidebar.referenceCount', {n: openPaper.paper?.referenceCount}) }}</span>
                     <v-divider class="my-3"></v-divider>
