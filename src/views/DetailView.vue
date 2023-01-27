@@ -6,9 +6,10 @@ import { useOpenPaperStore } from '../stores/openPaper';
 
 import { useRoute } from 'vue-router';
 import { reactive } from '@vue/reactivity';
-import { Paper } from '../model/Paper';
+import type { Paper } from '../model/Paper';
+import { Author } from '../model/Author';
 import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
-import { stat } from 'fs/promises';
+import { plainToInstance } from 'class-transformer';
 
 let detailState: {loading: boolean, openPaper: OpenPaper | null } = reactive({
     loading: true,
@@ -27,6 +28,11 @@ let setPaper = async () => {
     let response = await PaperApiHandler.getDetailsOfPaper(paperId as string) as Paper;
 
     let openPaperFromAPI: OpenPaper = new OpenPaper(response, null, false);
+
+    for(let x of response.author) {
+        console.log("AURHASODNAPidwh")
+        console.log(plainToInstance(Author, x));
+    }
 
     console.log(openPaperFromAPI)
 
@@ -74,17 +80,4 @@ openPaperStore.$subscribe((mutation, state) => {
     
 
     
-
-
-   
-    <!--
-    <div v-if="openPaper.saved">
-        <iframe class="w-100 h-100" src="{{ openPaper.paper.pdfUrl }}" frameborder="0"></iframe>
-    </div>
-
-    <div v-else>
-        <iframe class="w-100 h-100" src="{{ openPaper.pdfUrl }}" frameborder="0"></iframe>
-    </div>
-
-    -->
 </template>
