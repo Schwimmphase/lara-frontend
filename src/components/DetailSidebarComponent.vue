@@ -110,10 +110,15 @@ let showPaper = (paper: SavedPaper | undefined | null): void => {
     // TODO Call API to add paper and force reload
 }
 
+// Method to get the recommendations, citations and references of the openedPaper
+let getRecommendations = () => {
+    console.log("getRecommendations")
+}
+
 </script>
 
 <template>
-    <v-navigation-drawer location="right" width="400">
+    <v-navigation-drawer location="right" width="400" permanent>
         <div class="mx-8 my-3">
 
             <!-- Section for a saved paper -->
@@ -185,9 +190,23 @@ let showPaper = (paper: SavedPaper | undefined | null): void => {
 
 
 
-            <!-- Section for the recommendations of the paper currently viewes -->
-            <div>
-                
+            <!-- Section for the recommendations of the paper currently viewed -->
+            <div class="mt-3">
+                <!-- TODO Use recommendations from API -->
+                <div>
+                    <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.recommendations') }}</span><br>
+
+                </div>
+                <div class="mt-2">
+                    <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.citations') }}</span><br>
+
+                    <router-link class="text-h6 lara-recommendation-link" :to="{ name: 'paperDetails', query: {paper: '12345'}}">Titel 1 von Paper</router-link><br>
+                    <router-link class="text-h6 lara-recommendation-link" :to="{ name: 'paperDetails', query: {paper: '12345'}}">Titel 1 von Paper</router-link><br>
+                </div>
+                <div class="mt-2">
+                    <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.references') }}</span><br>
+                    
+                </div>
             </div>
         </div>
     </v-navigation-drawer>
@@ -202,6 +221,18 @@ let showPaper = (paper: SavedPaper | undefined | null): void => {
 
 .lara-hide-button:hover {
     color: rgb(175, 175, 175);
+}
+
+.lara-recommendation-link {
+    color: #000;
+    transition: color ease-in-out 0.3s;
+    text-decoration: none;
+}
+
+.lara-recommendation-link:hover {
+    cursor: pointer;
+    color: rgb(175, 175, 175);
+    text-decoration: none;
 }
 
 </style>
