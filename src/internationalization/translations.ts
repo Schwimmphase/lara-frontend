@@ -32,6 +32,11 @@ export const messages = {
                 password: 'New password',
                 userCategory: 'User category'
             }
+        },
+
+        organizableList: {
+            organizeButton: 'Filter settings',
+            organize: 'organize'
         }
     },
     de: {
@@ -67,6 +72,11 @@ export const messages = {
                 password: 'Neues Passwort',
                 userCategory: 'Nutzerkategorie'
             }
+        },
+
+        organizableList: {
+            organizeButton: 'Filtereinstellungen',
+            organize: 'Filtern'
         }
     }
 }

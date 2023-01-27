@@ -1,6 +1,10 @@
 <template>
     <div class="d-flex justify-space-between gap-8">
-        <lara-button type="outline" icon="mdi-filter" class="mt-4 w-100" id="filter-button">Filtereinstellungen</lara-button>
+        <organizer-dialog :slots="organizeSlots">
+            <template v-for="slot in organizeSlots" v-slot:slot>
+                <slot :name="slot"></slot>
+            </template>
+        </organizer-dialog>
         <lara-button type="primary" class="mt-4 w-100" id="export-button" v-if="rightButton" @click="$emit('clickRightButton')">
             {{ rightButton }}
         </lara-button>
@@ -16,6 +20,7 @@
 
 <script setup lang="ts">
 import LaraButton from "@/components/basic/LaraButton.vue";
+import OrganizerDialog from "@/components/dialogs/OrganizerDialog.vue";
 
 export interface Slot {
     id: String,
@@ -24,6 +29,7 @@ export interface Slot {
 
 defineProps<{
     slots: Slot[],
+    organizeSlots: String[],
     rightButton?: string
 }>()
 
@@ -34,15 +40,6 @@ defineEmits<{
 </script>
 
 <style scoped>
-
-#filter-button {
-    max-width: 300px;
-    min-width: 100px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
 #export-button {
     max-width: 300px;
 }

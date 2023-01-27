@@ -9,11 +9,15 @@
 
         <h2 class="text-h4 font-weight-bold mt-8">{{ $t('admin.userOverview') }}</h2>
 
-        <organizable-list :slots="[{ id: 'users'}]">
+        <organizable-list :slots="[{ id: 'users'}]" :organize-slots="organizeSlots">
             <template v-slot:users>
                 <user-card v-for="user in users" :user="user" :deletable="true" :user-categories="categories"
                            @delete="onUserDelete(user)" @update="(username, password) => onUpdateUser(user, username, password)">
                 </user-card>
+            </template>
+
+            <template v-slot:test>
+                <p>Hallo</p>
             </template>
         </organizable-list>
     </v-container>
@@ -29,6 +33,8 @@ import type {User} from "@/model/User";
 const users = [testResearch.user, testResearch.user, testResearch.user];
 
 const categories = [testUserCategory]
+
+const organizeSlots = ["test"]
 
 function onUserDelete(user: User) {
     console.debug("delete user;");
