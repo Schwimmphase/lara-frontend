@@ -9,7 +9,7 @@ export class PaperApiCaller {
     static urlRelevance = '/relevance';
     static urlRecommendations = '/recommendations';
 
-    public static getDetails(paperId: string, researchId: string) {
+    public static getDetails(paperId: string, researchId?: string) {
         return basicApiCaller.axiosInstance.get(this.urlPath + paperId);
     }
 
