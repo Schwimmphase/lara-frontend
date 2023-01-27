@@ -24,16 +24,16 @@ let route = useRoute();
 let setPaper = async () => {
     console.log(route);
 
-    let researchId = route.query.research;
-    let paperId = route.query.paper;
+    let researchId = route.query.research as string;
+    let paperId = route.query.paper as string;
 
     let openPaperFromAPI: OpenPaper;
 
     if (researchId == undefined) {
-        let response = await PaperApiHandler.getDetailsOfPaper(paperId as string) as Paper;
+        let response = await PaperApiHandler.getDetails(paperId as string, researchId as null) as Paper;
         openPaperFromAPI = new OpenPaper(response, null, false);
     } else {
-        let response = await PaperApiHandler.getDetailsOfPaper(paperId as string, researchId as string) as SavedPaper;
+        let response = await PaperApiHandler.getDetails(paperId as string, researchId as string) as SavedPaper;
         openPaperFromAPI = new OpenPaper(null, response, false);
     }
 

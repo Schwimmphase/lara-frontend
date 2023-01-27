@@ -9,11 +9,11 @@ export class PaperApiCaller {
     static urlRelevance = '/relevance';
     static urlRecommendations = '/recommendations';
 
-    public static getDetailsOfPaper(paperId: string) { // TODO: researchId needed
+    public static getDetails(paperId: string, researchId: string) {
         return basicApiCaller.axiosInstance.get(this.urlPath + paperId);
     }
 
-    public static addTagToPaper(paperId: string, researchId: string, tagId: string) {
+    public static addTag(paperId: string, researchId: string, tagId: string) {
         return basicApiCaller.axiosInstance.put(this.urlPath + paperId + this.urlTag, {}, {
             params: {
                 "researchId": researchId,
@@ -22,7 +22,7 @@ export class PaperApiCaller {
         });
     }
     
-    public static removeTagFromPaper(paperId: string, researchId: string, tagId: string) {
+    public static removeTag(paperId: string, researchId: string, tagId: string) {
         return basicApiCaller.axiosInstance.delete(this.urlPath + paperId + this.urlTag, {
             params: {
                 "researchId": researchId,
@@ -60,7 +60,7 @@ export class PaperApiCaller {
         });
     }
     
-    public static getRecommendationsOfPaper(paperId: string, researchId: string, method: string, organizers: Organizer[]) {
+    public static getRecommendationsOrReferencesOrCitations(paperId: string, researchId: string, method: string, organizers: Organizer[]) {
         return basicApiCaller.axiosInstance.post(this.urlPath + paperId + this.urlRecommendations, {
                 "organizers": organizers
             }, {
@@ -70,13 +70,5 @@ export class PaperApiCaller {
                 }
             }
         );
-    }
-
-    public static getReferencesOfPaper(paperId: string) {
-        return // not defined in yaml
-    }
-
-    public static getCitationsOfPaper(paperId: string) {
-        return // not defined in yaml
     }
 }

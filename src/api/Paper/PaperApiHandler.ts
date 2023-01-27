@@ -11,20 +11,21 @@ import type { Organizer } from "@/model/Organizer"
 import { RecommendationMethod } from "@/model/RecommendationMethod"
 import { plainToInstance } from "class-transformer"
 import type { Research } from "@/model/Research"
+import { CachedPaper } from "@/model/CachedPaper"
 
 export class PaperApiHandler {
-    public static async getDetailsOfPaper(paperId: string): Promise<unknown> {
-        const response = await PaperApiCaller.getDetailsOfPaper(paperId);
+    public static async getDetails(paperId: string, researchId: string): Promise<unknown> {
+        const response = await PaperApiCaller.getDetails(paperId, researchId);
         let data = basicApiHandler.tryParseJson(response.data);
         return plainToInstance(Paper, data);
     }
 
-    public static async addTagToPaper(savedPaper: SavedPaper, tag: Tag): Promise<void> {
-        await PaperApiCaller.addTagToPaper(savedPaper.paper.paperId, savedPaper.research.id, tag.id);
+    public static async addTag(savedPaper: SavedPaper, tag: Tag): Promise<void> {
+        await PaperApiCaller.addTag(savedPaper.paper.paperId, savedPaper.research.id, tag.id);
     }
 
-    public static async removeTagFromPaper(savedPaper: SavedPaper, tag: Tag): Promise<void> {
-        await PaperApiCaller.removeTagFromPaper(savedPaper.paper.paperId, savedPaper.research.id, tag.id);
+    public static async removeTag(savedPaper: SavedPaper, tag: Tag): Promise<void> {
+        await PaperApiCaller.removeTag(savedPaper.paper.paperId, savedPaper.research.id, tag.id);
     }
 
     public static async changeComment(savedPaper: SavedPaper, comment: Comment): Promise<void> {
@@ -39,17 +40,21 @@ export class PaperApiHandler {
         await PaperApiCaller.changeRelevance(savedPaper.paper.paperId, savedPaper.research.id, relevance);
     }
 
-    public static async getRecommendationsOfPaper(paper: Paper, research: Research, method: RecommendationMethod, organizers: Organizer[]): Promise<Paper[]> {
-        const response = await PaperApiCaller.getRecommendationsOfPaper(paper.paperId, research.id, RecommendationMethod[method], organizers)
+    public static async getRecommendations(paper: Paper, research: Research, organizers: Organizer[]): Promise<Paper[]> {
+        const response = await PaperApiCaller.getRecommendationsOrReferencesOrCitations(paper.paperId, research.id, RecommendationMethod.algorithm.toString(), organizers)
         let data = basicApiHandler.tryParseJson(response.data);
-        return plainToInstance(Paper.constructor(), data);
+        return plainToInstance(Paper, data);
     }
 
-    public static getReferencesOfPaper(paper: Paper) {
-        return // not defined in yaml
+    public static async getReferences(paper: Paper, research: Research, organizers: Organizer[]): Promise<CachedPaper[]> {
+        const response = await PaperApiCaller.getRecommendationsOrReferencesOrCitations(paper.paperId, research.id, RecommendationMethod.references.toString(), organizers)
+        let data = basicApiHandler.tryParseJson(response.data);
+        return plainToInstance(CachedPaper, data);
     }
 
-    public static getCitationsOfPaper(paper: Paper) {
-        return // not defined in yaml
+    public static async getCitations(paper: Paper, research: Research, organizers: Organizer[]): Promise<CachedPaper[]> {
+        const response = await PaperApiCaller.getRecommendationsOrReferencesOrCitations(paper.paperId, research.id, RecommendationMethod.citations.toString(), organizers)
+        let data = basicApiHandler.tryParseJson(response.data);
+        return plainToInstance(CachedPaper, data);
     }
 }
