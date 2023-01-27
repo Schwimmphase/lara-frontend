@@ -14,10 +14,16 @@ import type { Research } from "@/model/Research"
 import { CachedPaper } from "@/model/CachedPaper"
 
 export class PaperApiHandler {
-    public static async getDetails(paperId: string, researchId: string): Promise<unknown> {
-        const response = await PaperApiCaller.getDetails(paperId, researchId);
-        let data = basicApiHandler.tryParseJson(response.data);
-        return plainToInstance(Paper, data);
+    public static async getDetails(paperId: string, researchId: string | null): Promise<unknown> {
+        if (researchId == null) {
+            // If the research id is null, the details of a "normal" paper should be requested
+            const response = await PaperApiCaller.getDetails(paperId);
+            let data = basicApiHandler.tryParseJson(response.data);
+            return plainToInstance(Paper, data);
+        }
+
+        // Get the details of a SavedPaper if the research id is not null
+
     }
 
     public static async addTag(savedPaper: SavedPaper, tag: Tag): Promise<void> {
