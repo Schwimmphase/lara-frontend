@@ -11,6 +11,7 @@ import ResearchOverviewView from '../views/ResearchOverviewView.vue'
 import DetailView from '../views/DetailView.vue'
 import SearchView from '../views/SearchView.vue'
 import RecommendationsView from '../views/RecommendationsView.vue'
+import { useOpenResearchStore } from '@/stores/openResearch'
 
 
 const router = createRouter({
@@ -57,7 +58,13 @@ const router = createRouter({
       name: 'paperDetails',
       props: true,
       component: DetailView,
-      meta: { showSidebar: true }
+      meta: { showSidebar: true },
+      beforeEnter: (to, from) => {
+        if (useOpenResearchStore().getResearch == null) {
+          console.error("NAVIGATION DENIED : no open research");
+          return { name: 'home' }
+        }
+      }
     },
 
     {

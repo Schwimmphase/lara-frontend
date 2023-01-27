@@ -1,40 +1,38 @@
 import BasicApiHandler from "../BasicApiHandler";
 import { ResearchApiCaller } from "./ResearchApiCaller";
 
-import { User } from "@/model/User";
-import { Comment } from "@/model/Comment";
-import { Research } from "@/model/Research";
-import { Paper } from "@/model/Paper";
+import type { User } from "@/model/User";
+import type { Comment } from "@/model/Comment";
+import type { Research } from "@/model/Research";
+import type { Paper } from "@/model/Paper";
 import { SaveState } from "@/model/SaveState";
 import type { Organizer } from "@/model/Organizer";
 import { RecommendationMethod } from "@/model/RecommendationMethod";
-import { UserCategory } from "@/model/UserCategory";
-import { SavedPaper } from "@/model/SavedPaper";
-import { plainToInstance } from "class-transformer";
-import { Tag } from "@/model/Tag";
+import type { SavedPaper } from "@/model/SavedPaper";
+import type { Tag } from "@/model/Tag";
+import type { CachedPaper } from "@/model/CachedPaper";
 
 export class ResearchApiHandler {
-    public static async getAllResearchesByUser(user: User): Promise<unknown[]> {
+    public static async getAllResearchesByUser(user: User): Promise<Research[]> {
         const response = await ResearchApiCaller.getAllResearchesByUser(user.userId);
         let data = BasicApiHandler.tryParseJson(response.data.researches);
         let researches: Research[] = [];
-        for (let research of data) {
-            researches.push(new Research(research.id, research.title, new Date(research.startDate), new Comment(research.comment), new User(user.username, user.userId,
-                user.password, new UserCategory(user.userCategory.id, user.userCategory.color, user.userCategory.name))));
+        for (let research of data.researches) {
+            researches.push(BasicApiHandler.buildResearch(research));
         }
         return researches;
     }
 
-    public static async createResearch(user: User, title: string, description: Comment): Promise<unknown> {
+    public static async createResearch(user: User, title: string, description: Comment): Promise<Research> {
         const response = await ResearchApiCaller.createResearch(user.userId, title, description.text);
         let data = BasicApiHandler.tryParseJson(response.data);
-        return plainToInstance(Research.constructor(), data);
+        return BasicApiHandler.buildResearch(data);
     }
 
-    public static async updateResearch(research: Research, title: string, description: Comment): Promise<unknown> {
+    public static async updateResearch(research: Research, title: string, description: Comment): Promise<Research> {
         const response = await ResearchApiCaller.updateResearch(research.id, title, description.text);
         let data = BasicApiHandler.tryParseJson(response.data);
-        return plainToInstance(Research.constructor(), data);
+        return BasicApiHandler.buildResearch(data);
     }
 
     public static async deleteResearch(research: Research): Promise<void> {
@@ -49,39 +47,63 @@ export class ResearchApiHandler {
         await ResearchApiCaller.removePaper(research.id, paper.paperId);
     }
 
-    public static async getTags(research: Research): Promise<unknown[]> {
+    public static async getTags(research: Research): Promise<Tag[]> {
         const response = await ResearchApiCaller.getTags(research.id);
         let data = BasicApiHandler.tryParseJson(response.data);
-        return plainToInstance(Tag, data.tags);
+        let tags: Tag[] = [];
+        for (let tag of data.tags) {
+            tags.push(BasicApiHandler.buildTag(tag));
+        }
+        return tags;
     }
 
-    public static async getPapers(research: Research, organizers: Organizer[]): Promise<unknown[]> {
+    public static async getSavedPapers(research: Research, organizers: Organizer[]): Promise<SavedPaper[]> {
         const response = await ResearchApiCaller.getPapers(research.id, organizers.toString());
         let data = BasicApiHandler.tryParseJson(response.data);
-        return plainToInstance(SavedPaper, data.papers);
+        let savedPapers: SavedPaper[] = [];
+        for (let savedPaper of data.savedPapers) {
+            savedPapers.push(BasicApiHandler.buildSavedPaper(savedPaper));
+        }
+        return savedPapers;
     }
 
-    public static async getRecommendations(research: Research, organizers: Organizer[]): Promise<unknown[]> {
+    public static async getRecommendations(research: Research, organizers: Organizer[]): Promise<Paper[]> {
         const response = await ResearchApiCaller.getRecommendationsOrReferencesOrCitations(research.id, organizers.toString(), RecommendationMethod.algorithm.toString());
         let data = BasicApiHandler.tryParseJson(response.data);
-        return plainToInstance(Paper, data.recommendations);
+        let recommendations: Paper[] = [];
+        for (let recommendation of data.recommendations) {
+            recommendations.push(BasicApiHandler.buildPaper(recommendation));
+        }
+        return recommendations;
     }
 
-    public static async getReferences(research: Research, organizers: Organizer[]): Promise<unknown[]> {
+    public static async getReferences(research: Research, organizers: Organizer[]): Promise<CachedPaper[]> {
         const response = await ResearchApiCaller.getRecommendationsOrReferencesOrCitations(research.id, organizers.toString(), RecommendationMethod.references.toString());
         let data = BasicApiHandler.tryParseJson(response.data);
-        return plainToInstance(Paper, data.recommendations);
+        let references: CachedPaper[] = [];
+        for (let reference of data.recommendations) {
+            references.push(BasicApiHandler.buildCachedPaper(reference));
+        }
+        return references;
     }
 
-    public static async getCitations(research: Research, organizers: Organizer[]): Promise<unknown[]> {
+    public static async getCitations(research: Research, organizers: Organizer[]): Promise<CachedPaper[]> {
         const response = await ResearchApiCaller.getRecommendationsOrReferencesOrCitations(research.id, organizers.toString(), RecommendationMethod.citations.toString());
         let data = BasicApiHandler.tryParseJson(response.data);
-        return plainToInstance(Paper, data.recommendations);
+        let citations: CachedPaper[] = [];
+        for (let citation of data.recommendations) {
+            citations.push(BasicApiHandler.buildCachedPaper(citation));
+        }
+        return citations;
     }
     
-    public static async searchByKeywords(query: string, organizers: Organizer[]): Promise<unknown[]> {
+    public static async searchByKeywords(query: string, organizers: Organizer[]): Promise<Paper[]> {
         const response = await ResearchApiCaller.searchByKeywords(query, JSON.stringify(organizers));
         let data = BasicApiHandler.tryParseJson(response.data);
-        return plainToInstance(Paper, data.papers);
+        let papers: Paper[] = [];
+        for (let paper of data.papers) {
+            papers.push(BasicApiHandler.buildPaper(paper));
+        }
+        return papers;
     }
 }

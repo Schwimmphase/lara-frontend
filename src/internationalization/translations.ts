@@ -14,11 +14,14 @@ export const messages = {
             referenceCount: 'No Reference | One References | {n} References',
             informations: 'Informations',
             comments: 'Comments',
-            save: 'Save',
             tags: 'Tags',
             relevance: 'Relevance',
+            save: 'Save',
             enqueue: 'Enqueue',
             add: 'Add',
+            recommendations: 'Recommendations',
+            citations: 'Citations',
+            references: 'References',
         },
 
         login: {
@@ -28,6 +31,7 @@ export const messages = {
             button: 'submit'
         }
     },
+    
     de: {
         test: 'Das ist ein kleiner Test!',
 
@@ -49,7 +53,7 @@ export const messages = {
             enqueue: 'Merken',
             add: 'Hinzufügen',
             recommendations: 'Empfehlungen',
-            citations: 'Empfehlungen',
+            citations: 'Zitationen',
             references: 'Referenzen',
         },
 

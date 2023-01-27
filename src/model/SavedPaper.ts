@@ -6,12 +6,12 @@ import type { Research } from "./Research";
 
 // Model-class of a savedPaper
 export class SavedPaper {
-    readonly paper: Paper;
-    readonly research: Research;
-    readonly comment: Comment;
-    readonly tags: Tag[];
+    paper: Paper;
+    research: Research;
+    comment: Comment;
+    tags: Tag[];
     readonly relevance: number;
-    readonly saveState: SaveState;
+    saveState: SaveState;
 
     constructor(paper: Paper, research: Research, comment: Comment, tags: Tag[], relevance: number, saveState: SaveState) {
         this.paper = paper;
