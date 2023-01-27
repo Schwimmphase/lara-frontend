@@ -66,16 +66,16 @@ let deleteTag = (id: string): void => {
     console.debug("Close Tag" + id);
 }
 
-let createSavedPaper = (paper: Paper | null | undefined, state: SaveState): void => {
-    if (paper == null || paper == undefined) {
+let createSavedPaper = (paper: Paper | null, state: SaveState): void => {
+    if (paper == null) {
         return;
     }
 
     console.debug("Save Paper : " + paper.paperId + " = " + state);
 }
 
-let hidePaper = (paper: SavedPaper | null | undefined): void => {
-    if (paper == null || paper == undefined) {
+let hidePaper = (paper: SavedPaper | null): void => {
+    if (paper == null) {
         return;
     }
     console.debug("Hide paper : " + paper.research.id + paper.paper.paperId);
@@ -129,8 +129,8 @@ let showPaper = (paper: SavedPaper): void => {
                             empty-icon="mdi-star-outline"
                             color="orange"
                         ></v-rating>
-                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState != SaveState.hidden" class="lara-hide-button" @click="hidePaper(detailState.openPaper?.savedPaper)">mdi-eye-off</v-icon>
-                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState == SaveState.hidden" class="lara-hide-button" @click="hidePaper(detailState.openPaper?.savedPaper)">mdi-eye</v-icon>
+                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState != SaveState.hidden" class="lara-hide-button" @click="detailState.openPaper !== null ? hidePaper(detailState.openPaper.savedPaper) : null">mdi-eye-off</v-icon>
+                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState == SaveState.hidden" class="lara-hide-button" @click="detailState.openPaper !== null ? hidePaper(detailState.openPaper.savedPaper) : null">mdi-eye</v-icon>
                     </div>
                     <v-divider class="my-3"></v-divider>
                 </div>
@@ -149,9 +149,9 @@ let showPaper = (paper: SavedPaper): void => {
                 </div>
                 
                 <div class="mt-4">
-                    <lara-button type="primary" @click="createSavedPaper(detailState.openPaper?.paper, SaveState.added)">{{ $t('detailSidebar.add') }}</lara-button>
-                    <lara-button class="mt-2" type="secondary" @click="createSavedPaper(detailState.openPaper?.paper, SaveState.enqueued)">{{ $t('detailSidebar.enqueue') }}</lara-button>
-                    <lara-button class="lara-hide-button mt-2" type="outline" @click="createSavedPaper(detailState.openPaper?.paper, SaveState.hidden)">
+                    <lara-button type="primary" @click="detailState.openPaper !== null ? createSavedPaper( detailState.openPaper.paper, SaveState.added) : null">{{ $t('detailSidebar.add') }}</lara-button>
+                    <lara-button class="mt-2" type="secondary" @click="detailState.openPaper !== null ? createSavedPaper(detailState.openPaper.paper, SaveState.enqueued) : null">{{ $t('detailSidebar.enqueue') }}</lara-button>
+                    <lara-button class="lara-hide-button mt-2" type="outline" @click="detailState.openPaper !== null ? createSavedPaper(detailState.openPaper.paper, SaveState.hidden) : null">
                         <v-icon>mdi-eye-off</v-icon>
                     </lara-button>
                     <v-divider class="my-3"></v-divider>
