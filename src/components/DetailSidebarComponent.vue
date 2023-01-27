@@ -29,6 +29,7 @@ let researchState: { research: Research | null } = reactive({
 
 researchStore.$subscribe((mutation, state) => {
     // If the research is changed, set the state for the openResearch to that new research
+    console.log("RECHERCHE GEÄNDERT")
     researchState.research = state.openResearch;
 });
 
@@ -122,7 +123,8 @@ let deleteTag = (tag: Tag): void => {
 
 // Method to create a saved Paper from a paper with a given saveState
 let createSavedPaper = (paper: Paper | null | undefined, state: SaveState): void => {
-    if (paper == null || paper == undefined || researchState.research == null) {
+    console.log(researchState)
+    if (paper == null || paper == undefined || researchState.research == null) {
         console.error("CREATE_SAVE_PAPER : Argument null / undefined");
         return;
     }

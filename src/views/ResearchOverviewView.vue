@@ -6,7 +6,9 @@
                 <research-overview-card v-for="savedPaper in testSavedPaperList"
                                         :title="savedPaper.paper.title"
                                         :comment="savedPaper.comment === undefined ? '' : savedPaper.comment.text"
-                                        :tags="savedPaper.tags">
+                                        :tags="savedPaper.tags"
+                                        @click="openPaper(savedPaper)"
+                                        >
                 </research-overview-card>
             </template>
             <template v-slot:enqueued>
@@ -32,9 +34,11 @@
 import OrganizableList from "@/components/basic/OrganizableList.vue";
 import {testResearch, testSavedPaperList} from "@/model/_testResearch";
 import type {Research} from "@/model/Research";
+import type { SavedPaper } from "@/model/SavedPaper";
 import {useOpenResearchStore} from "@/stores/openResearch.js";
 import ResearchOverviewCard from "@/components/cards/ResearchOverviewCard.vue";
 import type {Slot} from "@/components/basic/OrganizableList.vue";
+import router from "../router";
 
 // Pinia store for the research
 const store = useOpenResearchStore();
@@ -50,5 +54,10 @@ let slots: Slot[] = [
     { id: "added" },
     { id: "enqueued", name: "Für später gemerkt" },
     { id: "hidden", name: "Ausgeblendet" }
-]
+];
+
+let openPaper = (savedPaper: SavedPaper) => {
+    router.push({ name: 'paperDetails', query: { research: savedPaper.research.id, paper: savedPaper.paper.paperId } });
+}
+
 </script>

@@ -20,6 +20,7 @@
 </template>
 
 <script setup lang="ts">
+
 import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
 import LaraButton from "@/components/basic/LaraButton.vue";
 import ResearchEditDialog from "@/components/dialogs/ResearchEditDialog.vue";
@@ -41,7 +42,7 @@ const emit = defineEmits<{
 
 function openResearch(research: Research) {
     useOpenResearchStore().setOpenResearch(research);
-    ResearchApiHandler.getPapers(research, []);
-    router.push('/paper?id=' + research.id);
+    router.push({ name: 'researchOverview', query: { research: research.id} });
 }
+
 </script>

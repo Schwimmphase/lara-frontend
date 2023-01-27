@@ -22,8 +22,6 @@ let route = useRoute();
 
 // Method to fetch the correct paper from the API and safe it to the store
 let setPaper = async () => {
-    console.log(route);
-
     let researchId = route.query.research as string;
     let paperId = route.query.paper as string;
 
