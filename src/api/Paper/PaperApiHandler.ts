@@ -3,7 +3,7 @@ import { PaperApiCaller } from "./PaperApiCaller"
 
 import { Paper } from "@/model/Paper"
 import { Author } from "@/model/Author"
-import type { SavedPaper } from "@/model/SavedPaper"
+import { SavedPaper } from "@/model/SavedPaper"
 import type { Comment } from "@/model/Comment"
 import type { Tag } from "@/model/Tag"
 import { SaveState } from "@/model/SaveState"
@@ -20,10 +20,12 @@ export class PaperApiHandler {
             const response = await PaperApiCaller.getDetails(paperId);
             let data = basicApiHandler.tryParseJson(response.data);
             return plainToInstance(Paper, data);
+        } else {
+            // Get the details of a SavedPaper if the research id is not null
+            const response = await PaperApiCaller.getDetails(paperId, researchId);
+            let data = basicApiHandler.tryParseJson(response.data);
+            return plainToInstance(SavedPaper, data);
         }
-
-        // Get the details of a SavedPaper if the research id is not null
-
     }
 
     public static async addTag(savedPaper: SavedPaper, tag: Tag): Promise<void> {
