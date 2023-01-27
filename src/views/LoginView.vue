@@ -16,14 +16,30 @@
 import { reactive } from 'vue';
 import LaraButton from '@/components/basic/LaraButton.vue';
 import { AuthApiHandler } from '@/api/Auth/AuthApiHandler';
+import { plainToInstance } from 'class-transformer';
+import { User } from '@/model/User';
+import { useCurrentUserStore } from '@/stores/currentUser';
+import router from '@/router';
 
 let loginData = reactive({
     userId: "",
     password: "",
 });
 
-function login() {
-    AuthApiHandler.login(loginData.userId, loginData.password);
+async function login() {
+    const response = await AuthApiHandler.login(loginData.userId, loginData.password);
+    const token = response[0] as string;
+    const user = plainToInstance(User, response[1]);
+
+    // create cookie for token
+    let date = new Date();
+    date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000);
+    document.cookie = "lara-token=" + token + ";expires=" + date.toUTCString() + ";path=/";
+    
+    // store user & redirect to HomeView
+    console.log(atob(token.split(".")[1]));
+    useCurrentUserStore().setCurrentUser(user);
+    router.push({ name: 'home'});
 }
 </script>
 

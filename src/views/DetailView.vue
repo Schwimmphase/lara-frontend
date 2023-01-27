@@ -21,11 +21,11 @@ let route = useRoute();
 let setPaper = async () => {
     console.log(route);
 
-    let researchId = route.query.research;
-    let paperId = route.query.paper;
+    let researchId = route.query.research as string;
+    let paperId = route.query.paper as string;
 
     // TODO pass researchId when its implemented
-    let response = await PaperApiHandler.getDetailsOfPaper(paperId as string) as Paper;
+    let response = await PaperApiHandler.getDetails(paperId , researchId) as Paper;
 
     let openPaperFromAPI: OpenPaper = new OpenPaper(response, null, false);
 

@@ -8,9 +8,7 @@ export class ExportApiCaller {
 
     public static exportResearch(researchId: string, organizers: Organizer[]) {
         return BasicApiCaller.axiosInstance.post(this.urlExport + this.urlResearch + researchId, {
-            data: {
-                "organizers": organizers
-            }
+            "organizers": organizers
         });
     }
 
