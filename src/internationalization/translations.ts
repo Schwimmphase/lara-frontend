@@ -26,7 +26,12 @@ export const messages = {
             createCategory: 'Create user category',
             greeting: 'Hello Admin {name}!',
             userOverview: 'User overview',
-            editUser: 'Edit user'
+            editUser: 'Edit user',
+            editDialog: {
+                username: 'Username',
+                password: 'New password',
+                userCategory: 'User category'
+            }
         }
     },
     de: {
@@ -56,7 +61,12 @@ export const messages = {
             createCategory: 'Nutzerkategorie anlegen',
             greeting: 'Hallo Admin {name}!',
             userOverview: 'Nutzerübersicht',
-            editUser: 'Nutzer bearbeiten'
+            editUser: 'Nutzer bearbeiten',
+            editDialog: {
+                username: 'Nutzername',
+                password: 'Neues Passwort',
+                userCategory: 'Nutzerkategorie'
+            }
         }
     }
 }

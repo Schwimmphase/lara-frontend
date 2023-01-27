@@ -11,7 +11,8 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn size="small" variant="text" icon="mdi-pencil" @click="$emit('delete')"></v-btn>
+            <user-edit-dialog :user="user" @save="(username, password) => onDialogSave(username, password)"
+                              :user-categories="userCategories"></user-edit-dialog>
             <v-btn size="small" color="red" variant="text" icon="mdi-delete"
                    v-if="deletable" @click="$emit('delete')">
             </v-btn>
@@ -22,15 +23,23 @@
 <script setup lang="ts">
 import type {User} from "@/model/User";
 import LaraButton from "@/components/basic/LaraButton.vue";
+import UserEditDialog from "@/components/dialogs/UserEditDialog.vue";
+import {UserCategory} from "@/model/UserCategory";
 
 defineProps<{
     user: User,
-    deletable: boolean
+    deletable: boolean,
+    userCategories: UserCategory[]
 }>();
 
-defineEmits<{
-    delete(): void
+const emits = defineEmits<{
+    (e: 'delete'): void
+    (e: 'update', username: String, password?: String): void
 }>()
+
+function onDialogSave(username: String, password?: String) {
+    emits('update', username, password);
+}
 </script>
 
 <style scoped>

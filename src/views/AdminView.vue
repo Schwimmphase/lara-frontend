@@ -11,7 +11,9 @@
 
         <organizable-list :slots="[{ id: 'users'}]">
             <template v-slot:users>
-                <user-card v-for="user in users" :user="user" :deletable="true"></user-card>
+                <user-card v-for="user in users" :user="user" :deletable="true" :user-categories="categories"
+                           @delete="onUserDelete(user)" @update="(username, password) => onUpdateUser(user, username, password)">
+                </user-card>
             </template>
         </organizable-list>
     </v-container>
@@ -21,9 +23,22 @@ import LaraButton from "@/components/basic/LaraButton.vue";
 import OrganizableList from "@/components/basic/OrganizableList.vue";
 import UserCard from "@/components/cards/UserCard.vue";
 
-import {testResearch} from "@/model/_testResearch";
+import {testResearch, testUserCategory} from "@/model/_testResearch";
+import type {User} from "@/model/User";
 
 const users = [testResearch.user, testResearch.user, testResearch.user];
+
+const categories = [testUserCategory]
+
+function onUserDelete(user: User) {
+    console.debug("delete user;");
+    console.debug(user);
+}
+
+function onUpdateUser(user: User, newName: String, newPassword?: String) {
+    console.debug("update user: newName: " + newName + " - newPassword: " + newPassword);
+    console.debug(user);
+}
 </script>
 
 <style>
