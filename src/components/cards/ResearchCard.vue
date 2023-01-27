@@ -41,7 +41,7 @@ const emit = defineEmits<{
 
 function openResearch(research: Research) {
     useOpenResearchStore().setOpenResearch(research);
-    ResearchApiHandler.getPapers(research, []);
+    ResearchApiHandler.getSavedPapers(research, []);
     router.push('/paper?id=' + research.id);
 }
 </script>

@@ -4,9 +4,9 @@ import type { User } from "./User";
 export class Research {
     readonly id: string;
     readonly title: string;
-    readonly started: Date;
-    readonly comment: Comment;
-    readonly user: User;
+    started: Date;
+    comment: Comment;
+    user: User;
 
     constructor(id: string, title: string, started: Date, comment: Comment, user: User) {
         this.id = id;

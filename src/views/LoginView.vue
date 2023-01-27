@@ -27,9 +27,7 @@ let loginData = reactive({
 });
 
 async function login() {
-    const response = await AuthApiHandler.login(loginData.userId, loginData.password);
-    const token = response[0] as string;
-    const user = plainToInstance(User, response[1]);
+    const [token, user] = await AuthApiHandler.login(loginData.userId, loginData.password);
 
     // create cookie for token
     let date = new Date();

@@ -5,8 +5,8 @@ export class User {
     readonly username: string;
     readonly userId: string;
     readonly password: string;
-    readonly activeResearch?: Research;
-    readonly userCategory: UserCategory;
+    activeResearch?: Research;
+    userCategory: UserCategory;
 
 	constructor(username: string, userId: string, password: string, userCategory: UserCategory) {
         this.username = username;
