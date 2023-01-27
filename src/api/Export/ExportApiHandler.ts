@@ -13,7 +13,7 @@ export class ExportApiHandler {
     }
 
     public static exportPaper(paper: Paper) {
-        ExportApiCaller.exportPaper(paper.id)
+        ExportApiCaller.exportPaper(paper.paperId)
             .then(response => {
                 let data =BasicApiHandler.tryParseJson(response.data);
             })

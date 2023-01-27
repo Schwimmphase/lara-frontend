@@ -21,29 +21,41 @@ let openPaperStore = useOpenPaperStore();
 openPaperStore.setPaper(testOpenPaper2);
 
 // Set the openPaper to the openPaper saved in the store
-let openPaper: OpenPaper = openPaperStore.getPaper;
+let openPaper: OpenPaper | null = openPaperStore.getPaper;
 
 
-let commentState: { data: string } = reactive({
-    data: openPaper.saved ? openPaper.savedPaper?.comment.text : ""
+let commentState: { data: string | undefined } = reactive({
+    data: openPaper?.saved ? openPaper.savedPaper?.comment.text : ""
 });
 
-let relevanceState: { data: number } = reactive({
-    data: openPaper.saved ? openPaper.savedPaper?.relevance : 0
+let relevanceState: { data: number | undefined } = reactive({
+    data: openPaper?.saved ? openPaper.savedPaper?.relevance : 0
 });
 
 // Method to change comment of the paper currently viewed
-let changeComment = (comment: string): void => {
+let changeComment = (comment: string | undefined): void => {
+    if (comment == undefined) {
+        return;
+    }
+    
     console.log("Change comment " + comment);
 }
 
 // Method to change the relevance of a paper
-let changeRelevance = (relevance: number): void => {
+let changeRelevance = (relevance: number | undefined): void => {
+    if (relevance == undefined) {
+        return;
+    }
+
     console.log("Change relevance : " + relevance);
 }
 
 // Watcher for the state of the relevance
 watch(relevanceState, async (value) => {
+    if (value == undefined) {
+        return;
+    }
+
     changeRelevance(value.data);
 });
 
@@ -51,15 +63,22 @@ let deleteTag = (id: string): void => {
     console.log("Close Tag" + id);
 }
 
-let createSavedPaper = (paper: Paper, state: SaveState) => {
+let createSavedPaper = (paper: Paper | null | undefined, state: SaveState): void => {
+    if (paper == null || paper == undefined) {
+        return;
+    }
+
     console.debug("Save Paper : " + paper.paperId + " = " + state);
 }
 
-let hidePaper = (paper: SavedPaper) => {
+let hidePaper = (paper: SavedPaper | null | undefined): void => {
+    if (paper == null || paper == undefined) {
+        return;
+    }
     console.debug("Hide paper : " + paper.research.id + paper.paper.paperId);
 }
 
-let showPaper = (paper: SavedPaper) => {
+let showPaper = (paper: SavedPaper): void => {
     console.debug("Show paper : " + paper.research.id + paper.paper.paperId);
 }
 
@@ -70,14 +89,14 @@ let showPaper = (paper: SavedPaper) => {
         <div class="mx-8 my-3">
 
             <!-- Section for a saved paper -->
-            <div v-if="openPaper.saved">
+            <div v-if="openPaper?.saved">
                 <div>
                     <span class="text-h5">{{ $t('detailSidebar.informations') }}</span><br>
                     <div>
                         <!-- TODO Sobald AUTHORS wieder rausnehmen -->
-                        <span v-for="(author, index) in openPaper.savedPaper?.paper.author" :key="index" class="font-weight-bold">{{ author.name }}</span>
+                        <span v-for="(author, index) in openPaper?.savedPaper?.paper.author" :key="index" class="font-weight-bold">{{ author.name }}</span>
                     </div>
-                    <span>{{ openPaper.savedPaper?.paper.year }} - {{ openPaper.savedPaper?.paper.venue }} - {{ openPaper.savedPaper?.paper.citationCount }} mal zitiert - {{ openPaper.savedPaper?.paper.referenceCount }} Referenzen</span>
+                    <span>{{ openPaper?.savedPaper?.paper.year }} - {{ openPaper?.savedPaper?.paper.venue }} - {{ openPaper.savedPaper?.paper.citationCount }} mal zitiert - {{ openPaper.savedPaper?.paper.referenceCount }} Referenzen</span>
                     <v-divider class="my-3"></v-divider>
                 </div>
 
@@ -91,7 +110,7 @@ let showPaper = (paper: SavedPaper) => {
                 <div class="mt-4">
                     <span class="text-h5">{{ $t('detailSidebar.tags') }}</span>
                     <div class="mt-2">
-                        <v-chip v-for="(tag, index) in openPaper.savedPaper?.tags" :key="index" @click:close="deleteTag(tag.id)" closable :color="tag.color" class="lara-chip mr-2 mb-1">{{ tag.name }}</v-chip>
+                        <v-chip v-for="(tag, index) in openPaper?.savedPaper?.tags" :key="index" @click:close="deleteTag(tag.id)" closable :color="tag.color" class="lara-chip mr-2 mb-1">{{ tag.name }}</v-chip>
                     </div>
                     <v-divider class="my-3"></v-divider>
                 </div>
@@ -107,29 +126,29 @@ let showPaper = (paper: SavedPaper) => {
                             empty-icon="mdi-star-outline"
                             color="orange"
                         ></v-rating>
-                        <v-icon v-if="openPaper.savedPaper?.saveState != SaveState.hidden" class="lara-hide-button" @click="hidePaper(openPaper.savedPaper)">mdi-eye-off</v-icon>
-                        <v-icon v-if="openPaper.savedPaper?.saveState == SaveState.hidden" class="lara-hide-button" @click="hidePaper(openPaper.savedPaper)">mdi-eye</v-icon>
+                        <v-icon v-if="openPaper.savedPaper?.saveState != SaveState.hidden" class="lara-hide-button" @click="hidePaper(openPaper?.savedPaper)">mdi-eye-off</v-icon>
+                        <v-icon v-if="openPaper.savedPaper?.saveState == SaveState.hidden" class="lara-hide-button" @click="hidePaper(openPaper?.savedPaper)">mdi-eye</v-icon>
                     </div>
                     <v-divider class="my-3"></v-divider>
                 </div>
             </div>
             
             <!-- Section for a paper thats not saved -->
-            <div v-if="!openPaper.saved">
+            <div v-if="!openPaper?.saved">
                 <div>
                     <span class="text-h5">{{ $t('detailSidebar.informations') }}</span><br>
                     <div>
                         <!-- TODO SOBALD DAS FELD AUTHORS HEIßT WIEDER RAUSNEHMEN!! -->
-                        <span v-for="(author, index) in openPaper.paper?.author" :key="index" class="font-weight-bold">{{ author.name }}</span>
+                        <span v-for="(author, index) in openPaper?.paper?.author" :key="index" class="font-weight-bold">{{ author.name }}</span>
                     </div>
-                    <span>{{ openPaper.paper?.year }} - {{ openPaper.paper?.venue }} - {{ $t('detailSidebar.citationCount', { n: openPaper.paper?.citationCount}) }} - {{ $t('detailSidebar.referenceCount', {n: openPaper.paper?.referenceCount}) }}</span>
+                    <span>{{ openPaper?.paper?.year }} - {{ openPaper?.paper?.venue }} - {{ $t('detailSidebar.citationCount', { n: openPaper?.paper?.citationCount}) }} - {{ $t('detailSidebar.referenceCount', {n: openPaper?.paper?.referenceCount}) }}</span>
                     <v-divider class="my-3"></v-divider>
                 </div>
                 
                 <div class="mt-4">
-                    <lara-button type="primary" @click="createSavedPaper(openPaper.paper, SaveState.added)">{{ $t('detailSidebar.add') }}</lara-button>
-                    <lara-button class="mt-2" type="secondary" @click="createSavedPaper(openPaper.paper, SaveState.enqueued)">{{ $t('detailSidebar.enqueue') }}</lara-button>
-                    <lara-button class="lara-hide-button mt-2" @click="createSavedPaper(openPaper.paper, SaveState.hidden)">
+                    <lara-button type="primary" @click="createSavedPaper(openPaper?.paper, SaveState.added)">{{ $t('detailSidebar.add') }}</lara-button>
+                    <lara-button class="mt-2" type="secondary" @click="createSavedPaper(openPaper?.paper, SaveState.enqueued)">{{ $t('detailSidebar.enqueue') }}</lara-button>
+                    <lara-button class="lara-hide-button mt-2" @click="createSavedPaper(openPaper?.paper, SaveState.hidden)">
                         <v-icon>mdi-eye-off</v-icon>
                     </lara-button>
                     <v-divider class="my-3"></v-divider>

@@ -49,14 +49,14 @@ export class ResearchApiHandler {
     }
 
     public static savePaperToResearch(research: Research, paper: Paper, saveState: SaveState) {
-        ResearchApiCaller.savePaperToResearch(research.id, paper.id, SaveState[saveState])
+        ResearchApiCaller.savePaperToResearch(research.id, paper.paperId, SaveState[saveState])
             .then(response => {
                 let data = BasicApiHandler.tryParseJson(response.data);
             });
     }
 
     public static removePaperFromResearch(research: Research, paper: Paper) {
-        ResearchApiCaller.removePaperFromResearch(research.id, paper.id)
+        ResearchApiCaller.removePaperFromResearch(research.id, paper.paperId)
             .then(response => {
                 let data = BasicApiHandler.tryParseJson(response.data);
             });

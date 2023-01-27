@@ -25,7 +25,7 @@ let matchesSaveState = (paper: SavedPaper, state: SaveState): boolean => {
 
 let openSavedPaper = (savedPaper: SavedPaper): void => {
     // Navigate to paperDetail-route
-    router.push({name: 'paperDetails', query: {research: savedPaper.research.id, paper: savedPaper.paper.id}});
+    router.push({name: 'paperDetails', query: {research: savedPaper.research.id, paper: savedPaper.paper.paperId}});
 }
 
 let changeSaveState = (savedPaper: SavedPaper, saveState: SaveState) => {
