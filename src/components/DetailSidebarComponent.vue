@@ -13,8 +13,10 @@ import type { Paper } from '../model/Paper';
 import { watch } from 'vue';
 import { SaveState } from '../model/SaveState';
 
+// Use the store for the openPaper
 let openPaperStore = useOpenPaperStore();
 
+// State for the openPaper
 let detailState: { openPaper: OpenPaper | null} = reactive({
     openPaper: null
 });
@@ -22,15 +24,17 @@ let detailState: { openPaper: OpenPaper | null} = reactive({
 openPaperStore.$subscribe((mutation, state) => {
     // When a change in the paper is detected, update the state
     detailState.openPaper = state.paper;
-})
+});
 
-// Set the openPaper to the openPaper saved in the store
+// Set the openPaperState to the openPaper saved in the store
 detailState.openPaper = openPaperStore.getPaper;
 
+// State for the comment of the openPaper
 let commentState: { data: string | undefined } = reactive({
     data: detailState.openPaper?.saved ? detailState.openPaper.savedPaper?.comment.text : ""
 });
 
+// State for the relevance of the openPaper
 let relevanceState: { data: number | undefined } = reactive({
     data: detailState.openPaper?.saved ? detailState.openPaper.savedPaper?.relevance : 0
 });
@@ -42,6 +46,8 @@ let changeComment = (comment: string | undefined): void => {
     }
     
     console.debug("Change comment " + comment);
+
+    // TODO Call API to change the comment and force reload
 }
 
 // Method to change the relevance of a paper
@@ -51,6 +57,8 @@ let changeRelevance = (relevance: number | undefined): void => {
     }
 
     console.debug("Change relevance : " + relevance);
+
+    // TODO Call API to change the relevance and force reload
 }
 
 // Watcher for the state of the relevance
@@ -62,27 +70,44 @@ watch(relevanceState, async (value) => {
     changeRelevance(value.data);
 });
 
+// Method to delete a given tag
 let deleteTag = (id: string): void => {
     console.debug("Close Tag" + id);
+
+    // TODO Call API to delete tag and force reload
 }
 
+// Method to create a saved Paper from a paper with a given saveState
 let createSavedPaper = (paper: Paper | null | undefined, state: SaveState): void => {
     if (paper == null || paper == undefined) {
         return;
     }
 
     console.debug("Save Paper : " + paper.paperId + " = " + state);
+
+    // TODO Call API to create paper and force reload
 }
 
-let hidePaper = (paper: SavedPaper | null | undefined): void => {
-    if (paper == null || paper == undefined) {
+// Method to hide a savedPaper
+let hidePaper = (paper: SavedPaper | undefined | null): void => {
+    if (paper == null || paper == undefined) {
         return;
     }
+
     console.debug("Hide paper : " + paper.research.id + paper.paper.paperId);
+
+    // TODO Call API to hide savedPaper and force reload
 }
 
-let showPaper = (paper: SavedPaper): void => {
+// Method to show / add a savedPaper
+let showPaper = (paper: SavedPaper | undefined | null): void => {
+    if (paper == null || paper == undefined) {
+        return;
+    }
+
     console.debug("Show paper : " + paper.research.id + paper.paper.paperId);
+
+    // TODO Call API to add paper and force reload
 }
 
 </script>
@@ -156,6 +181,13 @@ let showPaper = (paper: SavedPaper): void => {
                     </lara-button>
                     <v-divider class="my-3"></v-divider>
                 </div>
+            </div>
+
+
+
+            <!-- Section for the recommendations of the paper currently viewes -->
+            <div>
+                
             </div>
         </div>
     </v-navigation-drawer>
