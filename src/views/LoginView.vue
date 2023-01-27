@@ -16,9 +16,6 @@
 import { reactive } from 'vue';
 import LaraButton from '@/components/basic/LaraButton.vue';
 import { AuthApiHandler } from '@/api/Auth/AuthApiHandler';
-import { plainToInstance } from 'class-transformer';
-import { User } from '@/model/User';
-import { useCurrentUserStore } from '@/stores/currentUser';
 import router from '@/router';
 
 let loginData = reactive({
@@ -36,7 +33,7 @@ async function login() {
     
     // store user & redirect to HomeView
     console.log(atob(token.split(".")[1]));
-    useCurrentUserStore().setCurrentUser(user);
+    //useCurrentUserStore().setCurrentUser(user); // TODO: uncomment once the backend people have updated their api response according to the yml definition
     router.push({ name: 'home'});
 }
 </script>

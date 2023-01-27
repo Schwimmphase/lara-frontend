@@ -57,13 +57,13 @@ export class ResearchApiCaller {
         return BasicApiCaller.axiosInstance.delete(this.urlResearch + researchId + this.urlTags);
     }
 
-    public static getPapers(researchId: string, organizers: string) {
+    public static getPapers(researchId: string, organizers: Organizer[]) {
         return BasicApiCaller.axiosInstance.post(this.urlResearch + researchId + this.urlPapers, {
             "organizers": organizers
         });
     }
 
-    public static getRecommendationsOrReferencesOrCitations(researchId: string, organizers: string, method: string) {
+    public static getRecommendationsOrReferencesOrCitations(researchId: string, organizers: Organizer[], method: string) {
         return BasicApiCaller.axiosInstance.post(this.urlResearch + researchId + this.urlRecommendations, {
             "organizers": organizers
         }, {
@@ -73,7 +73,7 @@ export class ResearchApiCaller {
         });
     }
 
-    public static searchByKeywords(query: string, organizers: string) {
+    public static searchByKeywords(query: string, organizers: Organizer[]) {
         return BasicApiCaller.axiosInstance.post(this.urlResearch + this.urlSearch, {
             "organizers": organizers
         }, {

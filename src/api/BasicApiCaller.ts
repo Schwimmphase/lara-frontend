@@ -8,13 +8,13 @@ class BasicApiCaller {
         this.axiosInstance = axios.create({
             baseURL: 'https://api.lara.gregyyy.dev',
             timeout: 10000, // ms
-            headers: {
-                Authorization: 'Bearer ' + document.cookie.split("=")[1]
-            }
         });
 
         // axios interceptor for requests
         this.axiosInstance.interceptors.request.use(config => {
+            if (config.url !== '/login') {
+                config.headers['Authorization'] = 'Bearer ' + document.cookie.split("=")[1];
+            }
             return config;
         }, error => {
             console.log("error code: ", error.code);

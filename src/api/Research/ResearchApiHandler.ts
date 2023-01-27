@@ -17,7 +17,7 @@ export class ResearchApiHandler {
         const response = await ResearchApiCaller.getAllResearchesByUser(user.userId);
         let data = BasicApiHandler.tryParseJson(response.data.researches);
         let researches: Research[] = [];
-        for (let research of data.researches) {
+        for (let research of data) { // TODO: replace data with data.researches once the backend people have updated their api response according to the yml definition
             researches.push(BasicApiHandler.buildResearch(research));
         }
         return researches;
@@ -58,17 +58,17 @@ export class ResearchApiHandler {
     }
 
     public static async getSavedPapers(research: Research, organizers: Organizer[]): Promise<SavedPaper[]> {
-        const response = await ResearchApiCaller.getPapers(research.id, organizers.toString());
+        const response = await ResearchApiCaller.getPapers(research.id, organizers);
         let data = BasicApiHandler.tryParseJson(response.data);
         let savedPapers: SavedPaper[] = [];
-        for (let savedPaper of data.savedPapers) {
+        for (let savedPaper of data.papers) { // TODO: change data.papers to data.savedPapers once the backend people have updated their api response according to the yml definition
             savedPapers.push(BasicApiHandler.buildSavedPaper(savedPaper));
         }
         return savedPapers;
     }
 
     public static async getRecommendations(research: Research, organizers: Organizer[]): Promise<Paper[]> {
-        const response = await ResearchApiCaller.getRecommendationsOrReferencesOrCitations(research.id, organizers.toString(), RecommendationMethod.algorithm.toString());
+        const response = await ResearchApiCaller.getRecommendationsOrReferencesOrCitations(research.id, organizers, RecommendationMethod.algorithm.toString());
         let data = BasicApiHandler.tryParseJson(response.data);
         let recommendations: Paper[] = [];
         for (let recommendation of data.recommendations) {
@@ -78,7 +78,7 @@ export class ResearchApiHandler {
     }
 
     public static async getReferences(research: Research, organizers: Organizer[]): Promise<CachedPaper[]> {
-        const response = await ResearchApiCaller.getRecommendationsOrReferencesOrCitations(research.id, organizers.toString(), RecommendationMethod.references.toString());
+        const response = await ResearchApiCaller.getRecommendationsOrReferencesOrCitations(research.id, organizers, RecommendationMethod.references.toString());
         let data = BasicApiHandler.tryParseJson(response.data);
         let references: CachedPaper[] = [];
         for (let reference of data.recommendations) {
@@ -88,7 +88,7 @@ export class ResearchApiHandler {
     }
 
     public static async getCitations(research: Research, organizers: Organizer[]): Promise<CachedPaper[]> {
-        const response = await ResearchApiCaller.getRecommendationsOrReferencesOrCitations(research.id, organizers.toString(), RecommendationMethod.citations.toString());
+        const response = await ResearchApiCaller.getRecommendationsOrReferencesOrCitations(research.id, organizers, RecommendationMethod.citations.toString());
         let data = BasicApiHandler.tryParseJson(response.data);
         let citations: CachedPaper[] = [];
         for (let citation of data.recommendations) {
@@ -98,7 +98,7 @@ export class ResearchApiHandler {
     }
     
     public static async searchByKeywords(query: string, organizers: Organizer[]): Promise<Paper[]> {
-        const response = await ResearchApiCaller.searchByKeywords(query, JSON.stringify(organizers));
+        const response = await ResearchApiCaller.searchByKeywords(query, organizers);
         let data = BasicApiHandler.tryParseJson(response.data);
         let papers: Paper[] = [];
         for (let paper of data.papers) {
