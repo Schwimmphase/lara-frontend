@@ -1,4 +1,5 @@
 export enum RecommendationMethod {
     algorithm,
-    citations_references
+    citations,
+    references
 }

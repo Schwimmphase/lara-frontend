@@ -6,23 +6,19 @@ import type { Research } from "@/model/Research";
 import { Tag } from "@/model/Tag";
 
 export class TagApiHandler {
-    public static async createTag(research: Research, name: string, color: string) {
+    public static async createTag(research: Research, name: string, color: string): Promise<unknown> {
         const response = await TagApiCaller.createTag(research.id, name, color);
         let data = BasicApiHandler.tryParseJson(response.data);
-        return plainToInstance(Tag.constructor(), data);
+        return plainToInstance(Tag, data);
     }
 
-    public static updateTag(tag: Tag, name: string, color: string) {
-        TagApiCaller.updateTag(tag.id, name, color)
-            .then(response => {
-                    let data = BasicApiHandler.tryParseJson(response.data);
-            });
+    public static async updateTag(tag: Tag, name: string, color: string): Promise<unknown> {
+        const response = await TagApiCaller.updateTag(tag.id, name, color)
+        let data = BasicApiHandler.tryParseJson(response.data);
+        return plainToInstance(Tag, data);
     }
 
-    public static deleteTag(tag: Tag) {
-        TagApiCaller.deleteTag(tag.id)
-            .then(response => {
-                let data = BasicApiHandler.tryParseJson(response.data);
-            });
+    public static async deleteTag(tag: Tag): Promise<void> {
+        await TagApiCaller.deleteTag(tag.id);
     }
 }
