@@ -2,16 +2,35 @@
 
 import LaraButton from './basic/LaraButton.vue';
 
-import type { OpenPaper } from '../stores/model/OpenPaper';
-
 import { useOpenPaperStore } from '../stores/openPaper'
 import { reactive } from '@vue/reactivity';
+import { watch } from 'vue';
+
+import { ResearchApiHandler } from '@/api/Research/ResearchApiHandler';
+import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
 
 import type { SavedPaper } from '../model/SavedPaper';
 import type { Paper } from '../model/Paper';
-
-import { watch } from 'vue';
+import { Comment } from '../model/Comment'
+import type { Tag } from '../model/Tag'
+import type { OpenPaper } from '../stores/model/OpenPaper';
 import { SaveState } from '../model/SaveState';
+import type { Research } from '../model/Research';
+import { useOpenResearchStore } from '@/stores/openResearch';
+
+
+// Store for the openResearch
+let researchStore = useOpenResearchStore();
+
+// State for the research currently opened
+let researchState: { research: Research | null } = reactive({
+    research: null,
+});
+
+researchStore.$subscribe((mutation, state) => {
+    // If the research is changed, set the state for the openResearch to that new research
+    researchState.research = state.openResearch;
+});
 
 // Use the store for the openPaper
 let openPaperStore = useOpenPaperStore();
@@ -39,24 +58,41 @@ let relevanceState: { data: number | undefined } = reactive({
     data: detailState.openPaper?.saved ? detailState.openPaper.savedPaper?.relevance : 0
 });
 
+
 // Method to change comment of the paper currently viewed
-let changeComment = (comment: string | undefined): void => {
-    if (comment == undefined) {
+let changeComment = (text: string | undefined): void => {
+    if (text == undefined || detailState.openPaper == null) {
+        console.error("CHANGE_COMMENT : Argument null / undefined");
+        return;
+    }
+
+    if (detailState.openPaper.savedPaper == null) {
+        console.error("CHANGE_COMMENT : No saved paper");
         return;
     }
     
-    console.debug("Change comment " + comment);
+    console.debug("Change comment " + text);
+
+    PaperApiHandler.changeComment(detailState.openPaper.savedPaper, new Comment(text));
 
     // TODO Call API to change the comment and force reload
 }
 
 // Method to change the relevance of a paper
 let changeRelevance = (relevance: number | undefined): void => {
-    if (relevance == undefined) {
+    if (relevance == undefined || detailState.openPaper == null) {
+        console.error("CHANGE_RELEVANCE : Argument null / undefined");
+        return;
+    }
+
+    if (detailState.openPaper.savedPaper == null) {
+        console.error("CHANGE_RELEVANCE : No saved paper");
         return;
     }
 
     console.debug("Change relevance : " + relevance);
+
+    PaperApiHandler.changeRelevance(detailState.openPaper.savedPaper, relevance);
 
     // TODO Call API to change the relevance and force reload
 }
@@ -71,48 +107,49 @@ watch(relevanceState, async (value) => {
 });
 
 // Method to delete a given tag
-let deleteTag = (id: string): void => {
-    console.debug("Close Tag" + id);
+let deleteTag = (tag: Tag): void => {
+    if (detailState.openPaper == null || detailState.openPaper.savedPaper == null) {
+        console.error("DELETE_TAG : No saved paper");
+        return;
+    }
+
+    console.debug("Close Tag" + tag.name);
+
+    PaperApiHandler.removeTag(detailState.openPaper.savedPaper, tag);
 
     // TODO Call API to delete tag and force reload
 }
 
 // Method to create a saved Paper from a paper with a given saveState
 let createSavedPaper = (paper: Paper | null | undefined, state: SaveState): void => {
-    if (paper == null || paper == undefined) {
+    if (paper == null || paper == undefined || researchState.research == null) {
+        console.error("CREATE_SAVE_PAPER : Argument null / undefined");
         return;
     }
 
     console.debug("Save Paper : " + paper.paperId + " = " + state);
 
+    ResearchApiHandler.savePaper(researchState.research, paper, state);
+
     // TODO Call API to create paper and force reload
 }
 
-// Method to hide a savedPaper
-let hidePaper = (paper: SavedPaper | undefined | null): void => {
-    if (paper == null || paper == undefined) {
+let changeSaveState = (savedPaper: SavedPaper | undefined, state: SaveState): void => {
+    if (savedPaper == null || savedPaper == undefined) {
+        console.error("CHANGE_SAVE_STATE : No valid savedPaper provided");
         return;
     }
 
-    console.debug("Hide paper : " + paper.research.id + paper.paper.paperId);
+    PaperApiHandler.changeSaveState(savedPaper, state);
 
-    // TODO Call API to hide savedPaper and force reload
-}
-
-// Method to show / add a savedPaper
-let showPaper = (paper: SavedPaper | undefined | null): void => {
-    if (paper == null || paper == undefined) {
-        return;
-    }
-
-    console.debug("Show paper : " + paper.research.id + paper.paper.paperId);
-
-    // TODO Call API to add paper and force reload
-}
+    // TODO Call API and force reload
+} 
 
 // Method to get the recommendations, citations and references of the openedPaper
 let getRecommendations = () => {
     console.log("getRecommendations")
+
+    // TODO Get recommendations from API and display them
 }
 
 </script>
@@ -143,7 +180,7 @@ let getRecommendations = () => {
                 <div class="mt-4">
                     <span class="text-h5">{{ $t('detailSidebar.tags') }}</span>
                     <div class="mt-2">
-                        <v-chip v-for="(tag, index) in detailState.openPaper?.savedPaper?.tags" :key="index" @click:close="deleteTag(tag.id)" closable :color="tag.color" class="lara-chip mr-2 mb-1">{{ tag.name }}</v-chip>
+                        <v-chip v-for="(tag, index) in detailState.openPaper?.savedPaper?.tags" :key="index" @click:close="deleteTag(tag)" closable :color="tag.color" class="lara-chip mr-2 mb-1">{{ tag.name }}</v-chip>
                     </div>
                     <v-divider class="my-3"></v-divider>
                 </div>
@@ -159,8 +196,8 @@ let getRecommendations = () => {
                             empty-icon="mdi-star-outline"
                             color="orange"
                         ></v-rating>
-                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState != SaveState.hidden" class="lara-hide-button" @click="hidePaper(detailState.openPaper?.savedPaper)">mdi-eye-off</v-icon>
-                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState == SaveState.hidden" class="lara-hide-button" @click="hidePaper(detailState.openPaper?.savedPaper)">mdi-eye</v-icon>
+                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState != SaveState.hidden" class="lara-hide-button" @click="changeSaveState(detailState.openPaper?.savedPaper, SaveState.added)">mdi-eye-off</v-icon>
+                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState == SaveState.hidden" class="lara-hide-button" @click="changeSaveState(detailState.openPaper?.savedPaper, SaveState.hidden)">mdi-eye</v-icon>
                     </div>
                     <v-divider class="my-3"></v-divider>
                 </div>
