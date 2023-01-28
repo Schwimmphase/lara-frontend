@@ -18,6 +18,9 @@ import { testResearch, testSavedPaperList } from '@/model/_testResearch';
 import ExpandableList from "@/components/basic/ExpandableList.vue";
 import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
 
+let props = defineProps({
+    showSearch: Boolean
+});
 
 let matchesSaveState = (paper: SavedPaper, state: SaveState): boolean => {
     return paper.saveState == state;
@@ -60,7 +63,7 @@ let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveStat
     <v-navigation-drawer width="300" permanent>
         <div class="mx-2 my-3">
             <div class="w-75">
-                <SearchbarComponent />
+                <SearchbarComponent v-if="props.showSearch" />
                 <RecommendationsButtonComponent class="mt-2"/>
                 <ReturnButtonComponent class="mt-2"/>
             </div>
