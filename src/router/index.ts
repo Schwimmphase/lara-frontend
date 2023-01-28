@@ -50,7 +50,10 @@ const router = createRouter({
       path: '/research',
       name: 'researchOverview',
       component: ResearchOverviewView,
-      meta: { showSidebar: false }
+      meta: { showSidebar: false },
+      beforeEnter: (to, from) => {
+        return checkResearch();
+      }
     },
 
     {
@@ -60,10 +63,7 @@ const router = createRouter({
       component: DetailView,
       meta: { showSidebar: true },
       beforeEnter: (to, from) => {
-        if (useOpenResearchStore().getResearch == null) {
-          console.error("NAVIGATION DENIED : no open research");
-          return { name: 'home' }
-        }
+        return checkResearch();
       }
     },
 
@@ -71,17 +71,34 @@ const router = createRouter({
       path: '/search',
       name: 'search',
       component: SearchView,
-      meta: { showSidebar: true }
+      meta: { showSidebar: true },
+      beforeEnter: (to, from) => {
+        return checkResearch();
+      }
     },
 
     {
       path: '/recommendations',
       name: 'recommendations',
       component: RecommendationsView,
-      meta: { showSidebar: true }
+      meta: { showSidebar: true },
+      beforeEnter: (to, from) => {
+        return checkResearch();
+      }
     }
   ]
 });
+
+let checkResearch = () => {
+  if (useOpenResearchStore().getResearch == null) {
+    console.error("NAVIGATION DENIED : no open research");
+    return { name: 'home' }
+  } else if (useOpenResearchStore().getResearch != null) {
+    // Research is set
+    console.log(useOpenResearchStore().getResearch);
+    return true;
+  }
+}
 
 router.beforeEach(async (to, from) => {
   if (!document.cookie.includes("lara-token") && to.name !== 'login') {
