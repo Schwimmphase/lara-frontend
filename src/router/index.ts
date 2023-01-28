@@ -51,10 +51,9 @@ const router = createRouter({
       name: 'researchOverview',
       component: ResearchOverviewView,
       meta: { showSidebar: false },
-      /* TODO FIXXXX
       beforeEnter: (to, from) => {
         return checkResearch();
-      }*/
+      }
     },
 
     {
@@ -63,11 +62,9 @@ const router = createRouter({
       props: true,
       component: DetailView,
       meta: { showSidebar: true },
-      /*
       beforeEnter: (to, from) => {
         return checkResearch();
       }
-      */
     },
 
     {
@@ -90,9 +87,11 @@ let checkResearch = () => {
   if (useOpenResearchStore().getResearch == null) {
     console.error("NAVIGATION DENIED : no open research");
     return { name: 'home' }
+  } else if (useOpenResearchStore().getResearch != null) {
+    console.log(useOpenResearchStore().getResearch);
+    return true;
   }
-
-  return false;
+  
 }
 
 router.beforeEach(async (to, from) => {
