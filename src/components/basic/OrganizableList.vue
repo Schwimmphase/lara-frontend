@@ -1,10 +1,23 @@
 <template>
     <div class="d-flex justify-space-between gap-8">
-        <organizer-dialog :slots="organizeSlots">
-            <template v-for="slot in organizeSlots" v-slot:slot>
-                <slot :name="slot"></slot>
-            </template>
-        </organizer-dialog>
+        <div class="d-flex gap-8">
+            <organizer-dialog :slots="organizeSlots" @organize="$emit('organize')">
+                <template v-for="slot in organizeSlots" #[slot.id]>
+                    <slot :name="slot.id"></slot>
+                </template>
+            </organizer-dialog>
+
+            <div class="d-flex gap-4">
+                <v-chip v-for="organizer of selectedOrganizers" class="lara-chip h-100" id="organizer-chip">
+                    <span id="organizer-chip-text">{{ organizer.name }}: {{ organizer.value }}</span>
+                    <v-btn size="small" variant="text" icon="mdi-close-circle"
+                           @click="$emit('removeOrganizer', organizer.name)">
+
+                    </v-btn>
+                </v-chip>
+            </div>
+        </div>
+
         <lara-button type="primary" class="mt-4 w-100" id="export-button" v-if="rightButton" @click="$emit('clickRightButton')">
             {{ rightButton }}
         </lara-button>
@@ -27,20 +40,37 @@ export interface Slot {
     name?: String
 }
 
+export interface Organizer {
+    name: String,
+    value: String
+}
+
 defineProps<{
     slots: Slot[],
-    organizeSlots: String[],
-    rightButton?: string
+    organizeSlots: Slot[],
+    rightButton?: string,
+    selectedOrganizers: Organizer[]
 }>()
 
 defineEmits<{
-    clickRightButton(): void
+    (event: "clickRightButton"): void
+    (event: "organize"): void
+    (event: "removeOrganizer", name: String): void
 }>()
-
 </script>
 
 <style scoped>
 #export-button {
     max-width: 300px;
+}
+
+#organizer-chip {
+    max-width: 250px;
+}
+
+#organizer-chip-text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 </style>

@@ -9,17 +9,31 @@
 
         <h2 class="text-h4 font-weight-bold mt-8">{{ $t('admin.userOverview') }}</h2>
 
-        <organizable-list :slots="[{ id: 'users'}]" :organize-slots="organizeSlots">
-            <template v-slot:users>
-                <user-card v-for="user in users" :user="user" :deletable="true" :user-categories="categories"
-                           @delete="onUserDelete(user)" @update="(username, password) => onUpdateUser(user, username, password)">
-                </user-card>
-            </template>
+        <div class="mt-4">
+            <organizable-list :slots="[{ id: 'users'}]" :organize-slots="organizeSlots"
+                              :selected-organizers="selectedOrganizers" @organize="onOrganize"
+                              @remove-organizer="(name) => onRemoveOrganizer(name)">
+                <template v-slot:users>
+                    <user-card v-for="user in users" :user="user" :deletable="true" :user-categories="categories"
+                               @delete="onUserDelete(user)"
+                               @update="(username, password) => onUpdateUser(user, username, password)">
+                    </user-card>
+                </template>
 
-            <template v-slot:test>
-                <p>Hallo</p>
-            </template>
-        </organizable-list>
+                <template v-slot:organizer-tags>
+                    <div id="tag-select" class="mt-4">
+                        <v-select class="lara-field" :label="$t('admin.organize.userCategories')"
+                                  variant="outlined" :items="userCategoriesStrings" multiple clearable>
+                            <template v-slot:selection="{ item, index }">
+                                <v-chip class="lara-chip" :color="categories.filter(category => category.name === item.title)[0].color">
+                                    {{ item.title }}
+                                </v-chip>
+                            </template>
+                        </v-select>
+                    </div>
+                </template>
+            </organizable-list>
+        </div>
     </v-container>
 </template>
 <script setup lang="ts">
@@ -29,12 +43,23 @@ import UserCard from "@/components/cards/UserCard.vue";
 
 import {testResearch, testUserCategory} from "@/model/_testResearch";
 import type {User} from "@/model/User";
+import {computed} from "vue";
 
 const users = [testResearch.user, testResearch.user, testResearch.user];
 
-const categories = [testUserCategory]
+const categories = [testUserCategory];
 
-const organizeSlots = ["test"]
+const organizeSlots = [{ id: "organizer-tags", name: "Tags" }];
+
+const selectedOrganizers = [{ name: "Tag", value: "Cooler Type, Das ist ein sehr sehr sehr langer Tag-Name" }]
+
+const userCategoriesStrings = computed<String[]>(() => {
+    let strings: String[] = [];
+    for (let userCategory of categories) {
+        strings.push(userCategory.name)
+    }
+    return strings;
+})
 
 function onUserDelete(user: User) {
     console.debug("delete user;");
@@ -44,6 +69,14 @@ function onUserDelete(user: User) {
 function onUpdateUser(user: User, newName: String, newPassword?: String) {
     console.debug("update user: newName: " + newName + " - newPassword: " + newPassword);
     console.debug(user);
+}
+
+function onOrganize() {
+    console.debug("organize");
+}
+
+function onRemoveOrganizer(name: String) {
+    console.debug("organizer removed: " + name);
 }
 </script>
 
@@ -60,5 +93,11 @@ function onUpdateUser(user: User, newName: String, newPassword?: String) {
 #create-category-button {
     min-width: 250px;
     max-width: 300px;
+}
+
+#tag-select {
+    width: 100%;
+    min-width: 250px;
+    max-width: 350px;
 }
 </style>

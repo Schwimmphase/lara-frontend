@@ -60,5 +60,6 @@ defineProps({
     position: absolute;
     top: 6px;
     right: 10px;
+    padding-left: 4px;
 }
 </style>

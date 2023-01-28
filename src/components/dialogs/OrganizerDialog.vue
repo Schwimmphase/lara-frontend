@@ -1,15 +1,16 @@
 <template>
     <div>
-        <lara-button type="outline" icon="mdi-filter" class="mt-4 w-100" id="filter-button">
-            {{ $('organizableList.organizeButton') }}
+        <lara-button type="outline" icon="mdi-filter" class="w-100" id="filter-button" @click="state.dialog = true">
+            {{ $t('organizableList.organizeButton') }}
         </lara-button>
         <v-dialog v-model="state.dialog" persistent>
             <v-card id="dialog">
                 <v-card-text>
                     <v-form v-model="valid">
                         <div class="d-flex flex-column">
-                            <div v-for="slot in slots">
-                                <slot :name="slot"></slot>
+                            <div class="d-flex flex-row justify-space-between" v-for="slot in slots" >
+                                <p class="text-h5 mt-auto mb-auto">{{ slot.name }}</p>
+                                <slot :name="slot.id"></slot>
                             </div>
                         </div>
                     </v-form>
@@ -27,6 +28,7 @@
 <script setup lang="ts">
 import {reactive} from "vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
+import type {Slot} from "@/components/basic/OrganizableList.vue";
 
 let state = reactive({
     dialog: false
@@ -35,17 +37,17 @@ let state = reactive({
 let valid = false;
 
 const props = defineProps<{
-    slots: String[],
+    slots: Slot[],
 }>()
 
 const emit = defineEmits<{
-    (event: 'filter'): void
+    (event: 'organize'): void
 }>()
 
 function closeDialog() {
     state.dialog = false
-    console.debug("Dialog closed emitting filter event");
-    emit("filter");
+    console.debug("Dialog closed emitting organize event");
+    emit("organize");
 }
 </script>
 

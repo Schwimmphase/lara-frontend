@@ -31,6 +31,9 @@ export const messages = {
                 username: 'Username',
                 password: 'New password',
                 userCategory: 'User category'
+            },
+            organize: {
+                userCategories: 'User categories'
             }
         },
 
@@ -71,6 +74,9 @@ export const messages = {
                 username: 'Nutzername',
                 password: 'Neues Passwort',
                 userCategory: 'Nutzerkategorie'
+            },
+            organize: {
+                userCategories: 'Nutzerkategorien'
             }
         },
 
