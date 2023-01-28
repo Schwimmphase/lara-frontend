@@ -33,3 +33,7 @@
 .lara-field .v-field__outline__end {
     border-radius: 0 !important;
 }
+
+.lara-clickable {
+    cursor: pointer;
+}

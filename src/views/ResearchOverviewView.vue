@@ -3,27 +3,37 @@
         <h1 class="text-h3 font-weight-bold">Übersicht {{ research != null ? research.title : null }}</h1>
         <organizable-list :slots="slots">
             <template v-slot:added>
-                <research-overview-card v-for="savedPaper in testSavedPaperList"
+                <research-overview-card v-for="(savedPaper, index) in testSavedPaperList"
+                                        :key="index"
                                         :title="savedPaper.paper.title"
                                         :comment="savedPaper.comment === undefined ? '' : savedPaper.comment.text"
                                         :tags="savedPaper.tags"
-                                        @click="openPaper(savedPaper)"
+                                        :paper="savedPaper"
+                                        @open-card="(paper) => openPaper(paper)"
                                         >
                 </research-overview-card>
             </template>
             <template v-slot:enqueued>
-                <research-overview-card v-for="savedPaper in testSavedPaperList"
+                <research-overview-card v-for="(savedPaper, index) in testSavedPaperList"
+                                        :key="index"
                                         :title="savedPaper.paper.title"
                                         :comment="savedPaper.comment === undefined ? '' : savedPaper.comment.text"
                                         :tags="savedPaper.tags"
-                                        :add-button="true">
+                                        :paper="savedPaper"
+                                        :add-button="true"
+                                        @open-card="(paper) => openPaper(paper)"
+                                        >
                 </research-overview-card>
             </template>
             <template v-slot:hidden>
-                <research-overview-card v-for="savedPaper in testSavedPaperList"
+                <research-overview-card v-for="(savedPaper, index) in testSavedPaperList"
+                                        :key="index"
                                         :title="savedPaper.paper.title"
                                         :comment="savedPaper.comment === undefined ? '' : savedPaper.comment.text"
-                                        :tags="savedPaper.tags">
+                                        :tags="savedPaper.tags"
+                                        :paper="savedPaper"
+                                        @open-card="(paper) => openPaper(paper)"
+                                        >
                 </research-overview-card>
             </template>
         </organizable-list>
@@ -44,7 +54,6 @@ import router from "../router";
 const store = useOpenResearchStore();
 
 // TODO Nur zu Testzwecken drin... sobald die Research Papers gesetzt werden, kann das wieder weg
-store.setOpenResearch(testResearch);
 store.setResearchPapers(testSavedPaperList);
 
 // Get the research from the store

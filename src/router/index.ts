@@ -71,14 +71,20 @@ const router = createRouter({
       path: '/search',
       name: 'search',
       component: SearchView,
-      meta: { showSidebar: true }
+      meta: { showSidebar: true },
+      beforeEnter: (to, from) => {
+        return checkResearch();
+      }
     },
 
     {
       path: '/recommendations',
       name: 'recommendations',
       component: RecommendationsView,
-      meta: { showSidebar: true }
+      meta: { showSidebar: true },
+      beforeEnter: (to, from) => {
+        return checkResearch();
+      }
     }
   ]
 });
@@ -88,10 +94,10 @@ let checkResearch = () => {
     console.error("NAVIGATION DENIED : no open research");
     return { name: 'home' }
   } else if (useOpenResearchStore().getResearch != null) {
+    // Research is set
     console.log(useOpenResearchStore().getResearch);
     return true;
   }
-  
 }
 
 router.beforeEach(async (to, from) => {
