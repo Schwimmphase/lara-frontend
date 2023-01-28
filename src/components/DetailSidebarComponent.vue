@@ -169,6 +169,7 @@ let getRecommendations = () => {
                         <span v-for="(author, index) in detailState.openPaper?.savedPaper?.paper.author" :key="index" class="font-weight-bold">{{ author.name }}</span>
                     </div>
                     <span>{{ detailState.openPaper?.savedPaper?.paper.year }} - {{ detailState.openPaper?.savedPaper?.paper.venue }} - {{ detailState.openPaper.savedPaper?.paper.citationCount }} mal zitiert - {{ detailState.openPaper.savedPaper?.paper.referenceCount }} Referenzen</span>
+                    <span>{{ detailState.openPaper?.paper?.year }} - {{ detailState.openPaper?.paper?.venue }} - {{ $t('detailSidebar.citationCount', { n: detailState.openPaper?.paper?.citationCount}) }} - {{ $t('detailSidebar.referenceCount', {n: detailState.openPaper?.paper?.referenceCount}) }}</span>
                     <v-divider class="my-3"></v-divider>
                 </div>
 
