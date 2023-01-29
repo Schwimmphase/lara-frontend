@@ -27,10 +27,13 @@ export const messages = {
             greeting: 'Hello Admin {name}!',
             userOverview: 'User overview',
             editUser: 'Edit user',
-            editDialog: {
+            userDialog: {
                 username: 'Username',
-                password: 'New password',
-                userCategory: 'User category'
+                passwordNew: 'New password',
+                password: 'Password',
+                userCategory: 'User category',
+                buttonCreate: 'Nutzer erstellen',
+                buttonEdit: 'Save'
             },
             organize: {
                 userCategories: 'User categories'
@@ -72,8 +75,11 @@ export const messages = {
             editUser: 'Nutzer bearbeiten',
             editDialog: {
                 username: 'Nutzername',
-                password: 'Neues Passwort',
-                userCategory: 'Nutzerkategorie'
+                passwordNew: 'Neues Passwort',
+                password: 'Passwort',
+                userCategory: 'Nutzerkategorie',
+                buttonCreate: 'Nutzer erstellen',
+                buttonEdit: 'Speichern'
             },
             organize: {
                 userCategories: 'Nutzerkategorien'

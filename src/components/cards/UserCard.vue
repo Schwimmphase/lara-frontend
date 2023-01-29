@@ -12,7 +12,10 @@
             <v-spacer></v-spacer>
 
             <user-edit-dialog :user="user" @save="(username, password) => onDialogSave(username, password)"
-                              :user-categories="userCategories"></user-edit-dialog>
+                              :user-categories="userCategories" :button-text="$t('admin.userDialog.buttonEdit')"
+                              :password-change="true">
+                <v-btn size="small" color="surface-variant" variant="text" icon="mdi-pencil"></v-btn>
+            </user-edit-dialog>
             <v-btn size="small" color="red" variant="text" icon="mdi-delete"
                    v-if="deletable" @click="$emit('delete')">
             </v-btn>
@@ -23,8 +26,13 @@
 <script setup lang="ts">
 import type {User} from "@/model/User";
 import LaraButton from "@/components/basic/LaraButton.vue";
-import UserEditDialog from "@/components/dialogs/UserEditDialog.vue";
-import {UserCategory} from "@/model/UserCategory";
+import UserEditDialog from "@/components/dialogs/UserDialog.vue";
+import type {UserCategory} from "@/model/UserCategory";
+import {reactive} from "vue";
+
+const state = reactive({
+    editDialog: false
+})
 
 defineProps<{
     user: User,
@@ -34,11 +42,12 @@ defineProps<{
 
 const emits = defineEmits<{
     (e: 'delete'): void
-    (e: 'update', username: String, password?: String): void
-}>()
+    (e: 'update', username: String, userCategory: UserCategory, password?: String): void
+}>();
 
-function onDialogSave(username: String, password?: String) {
-    emits('update', username, password);
+function onDialogSave(username: String, userCategory: UserCategory, password?: String) {
+    state.editDialog = false;
+    emits('update', username, userCategory, password);
 }
 </script>
 

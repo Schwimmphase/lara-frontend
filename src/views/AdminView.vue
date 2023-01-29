@@ -3,7 +3,12 @@
         <h1 class="text-h3 font-weight-bold">{{ $t('admin.greeting', { name: 'Bernd' }) }}</h1>
 
         <div class="d-flex flex-row gap-8 mt-8">
-            <lara-button type="primary" id="create-user-button" class="w-100">{{ $t('admin.createUser') }}</lara-button>
+            <user-dialog :button-text="$t('admin.userDialog.buttonCreate')" :password-change="false"
+                         :user-categories="categories"
+                         @save="(username, category, password) => onUserCreate(username, category, password)">
+                <lara-button type="primary" id="create-user-button" class="w-100">{{ $t('admin.createUser') }}</lara-button>
+            </user-dialog>
+
             <lara-button type="secondary" id="create-category-button">{{ $t('admin.createCategory') }}</lara-button>
         </div>
 
@@ -16,7 +21,7 @@
                 <template v-slot:users>
                     <user-card v-for="user in users" :user="user" :deletable="true" :user-categories="categories"
                                @delete="onUserDelete(user)"
-                               @update="(username, password) => onUpdateUser(user, username, password)">
+                               @update="(username, category, password) => onUpdateUser(user, username, category, password)">
                     </user-card>
                 </template>
 
@@ -44,6 +49,8 @@ import UserCard from "@/components/cards/UserCard.vue";
 import {testResearch, testUserCategory} from "@/model/_testResearch";
 import type {User} from "@/model/User";
 import {computed} from "vue";
+import UserDialog from "@/components/dialogs/UserDialog.vue";
+import {UserCategory} from "@/model/UserCategory";
 
 const users = [testResearch.user, testResearch.user, testResearch.user];
 
@@ -61,12 +68,16 @@ const userCategoriesStrings = computed<String[]>(() => {
     return strings;
 })
 
+function onUserCreate(username: String, userCategory: UserCategory, password: String) {
+    console.debug("new user: username: " + username + " - category: " + userCategory.name + " - password: " + password);
+}
+
 function onUserDelete(user: User) {
-    console.debug("delete user;");
+    console.debug("delete user:");
     console.debug(user);
 }
 
-function onUpdateUser(user: User, newName: String, newPassword?: String) {
+function onUpdateUser(user: User, newName: String, userCategory: UserCategory, newPassword?: String) {
     console.debug("update user: newName: " + newName + " - newPassword: " + newPassword);
     console.debug(user);
 }
