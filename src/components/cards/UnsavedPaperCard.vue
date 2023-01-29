@@ -3,11 +3,38 @@
 import LaraButton from "../basic/LaraButton.vue";
 
 import { Paper } from "../../model/Paper";
+import { SaveState } from "@/model/SaveState";
+import { useOpenResearchStore } from "@/stores/openResearch";
+import { Research } from "../../model/Research";
+import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
+import router from "@/router";
 
 
-defineProps({
+let props = defineProps({
     paper: Paper,
+    research: Research
 });
+
+let createSavedPaper = (state: SaveState): void => {
+    if (props.research == undefined || props.paper == undefined) {
+        console.error("CREATE_SAVED_PAPER : Invalid Arguments provided");
+        return;
+    }
+
+    console.debug("Create save paper");
+    console.debug(props.paper.title);
+    console.debug(props.research.title);
+    ResearchApiHandler.savePaper(props.research, props.paper, state);
+}
+
+let openPaper = (): void => {
+    if (props.paper == undefined) {
+        console.error("OPEN_PAPER : Invalid paper provided");
+        return;
+    }
+    
+    router.push({ name: 'paperDetails', query: { paper: props.paper.paperId }});
+}
 
 </script>
 
@@ -20,9 +47,9 @@ defineProps({
             <span>{{ paper?.abstract }}</span>
         </div>
         <div class="mx-4 mb-2 d-flex flex-row">
-            <lara-button class="mt-2 mr-2 w-25" type="primary">{{ $t('detailSidebar.enqueue') }}</lara-button>
-            <lara-button class="mt-2 mr-2 w-25" type="secondary">{{ $t('detailSidebar.open') }}</lara-button>
-            <lara-button class="mt-2 w-25" type="outline">
+            <lara-button @click="createSavedPaper(SaveState.enqueued)" class="mt-2 mr-2 w-25" type="primary">{{ $t('detailSidebar.enqueue') }}</lara-button>
+            <lara-button @click="openPaper" class="mt-2 mr-2 w-25" type="secondary">{{ $t('detailSidebar.open') }}</lara-button>
+            <lara-button @click="createSavedPaper(SaveState.hidden)" class="mt-2 w-25" type="outline">
                 <v-icon>mdi-eye-off</v-icon>
             </lara-button>
         </div>
