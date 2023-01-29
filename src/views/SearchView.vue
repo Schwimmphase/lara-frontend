@@ -27,7 +27,6 @@ console.log("RESEARCH")
 console.log(searchState.research);
 
 openResearchStore.$subscribe((mutation, state) => {
-    console.log("Modified")
     searchState.research = state.openResearch;
 });
 
@@ -57,7 +56,7 @@ searchState.results = testPaperList;
     <div class="ma-4">
         <!-- Searchbar on top of the page -->
         <SearchbarComponent :input-string="searchState.query" />
-        <UnsavedPaperCard v-for="(paper, index) in searchState.results" :key="index" :paper="paper"></UnsavedPaperCard>
+        <UnsavedPaperCard v-for="(paper, index) in searchState.results" :key="index" :research="(searchState.research != null ? searchState.research : undefined)" :paper="paper"></UnsavedPaperCard>
     </div>
 
 

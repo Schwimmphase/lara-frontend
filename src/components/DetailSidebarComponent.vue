@@ -24,7 +24,7 @@ let researchStore = useOpenResearchStore();
 
 // State for the research currently opened
 let researchState: { research: Research | null } = reactive({
-    research: null,
+    research: researchStore.openResearch,
 });
 
 researchStore.$subscribe((mutation, state) => {
