@@ -23,7 +23,7 @@ export const messages = {
 
         admin: {
             createUser: 'Create user',
-            createCategory: 'Create user category',
+            editCategories: 'Edit user categories',
             greeting: 'Hello Admin {name}!',
             userOverview: 'User overview',
             editUser: 'Edit user',
@@ -69,7 +69,7 @@ export const messages = {
 
         admin: {
             createUser: 'Nutzer anlegen',
-            createCategory: 'Nutzerkategorie anlegen',
+            editCategories: 'Nutzerkategorie verwalten',
             greeting: 'Hallo Admin {name}!',
             userOverview: 'Nutzerübersicht',
             editUser: 'Nutzer bearbeiten',

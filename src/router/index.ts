@@ -11,6 +11,7 @@ import ResearchOverviewView from '../views/ResearchOverviewView.vue'
 import DetailView from '../views/DetailView.vue'
 import SearchView from '../views/SearchView.vue'
 import RecommendationsView from '../views/RecommendationsView.vue'
+import UserCategoryView from "@/views/UserCategoriesView.vue";
 
 
 const router = createRouter({
@@ -33,6 +34,12 @@ const router = createRouter({
       path: '/admin',
       name: 'admin',
       component: AdminView
+    },
+
+    {
+      path: '/admin/user-categories',
+      name: 'user-categories',
+      component: UserCategoryView
     },
 
     {

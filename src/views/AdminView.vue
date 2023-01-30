@@ -9,7 +9,9 @@
                 <lara-button type="primary" id="create-user-button" class="w-100">{{ $t('admin.createUser') }}</lara-button>
             </user-dialog>
 
-            <lara-button type="secondary" id="create-category-button">{{ $t('admin.createCategory') }}</lara-button>
+            <router-link to="/admin/user-categoris">
+                <lara-button type="secondary" id="create-category-button">{{ $t('admin.editeCategories') }}</lara-button>
+            </router-link>
         </div>
 
         <h2 class="text-h4 font-weight-bold mt-8">{{ $t('admin.userOverview') }}</h2>
