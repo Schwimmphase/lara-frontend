@@ -1,20 +1,29 @@
 import { defineStore } from "pinia";
-
-import { User } from "@/model/User";
-import { UserCategory } from "@/model/UserCategory";
+import type { User } from "@/model/User";
 
 export const useCurrentUserStore = defineStore('currentUser', {
-    state: (): { currentUser: User } => ({
-        currentUser: new User("username", "userId", "password", new UserCategory("id", "color", "name"))
+    state: (): { currentUser: User | null, isAdmin: boolean } => ({
+        currentUser: null,
+        isAdmin: false
     }),
     getters: {
         getCurrentUser(state) {
             return state.currentUser;
+        },
+        getIsAdmin(state) {
+            return state.isAdmin;
         }
     },
     actions: {
         setCurrentUser(currentUser: User) {
             this.currentUser = currentUser;
+        },
+        setAdmin(isAdmin: boolean) {
+            this.isAdmin = isAdmin;
+        },
+        resetStore() {
+            this.$reset();
         }
-    }
+    },
+    persist: true
 });

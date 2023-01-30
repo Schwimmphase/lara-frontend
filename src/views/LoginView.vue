@@ -4,7 +4,7 @@
 
         <v-form class="mt-8">
             <v-text-field class="lara-field" variant="outlined" :label=" $t('login.userId') "
-                          v-model="loginData.userId" @keyup.enter="login"></v-text-field>
+                          v-model="loginData.userId" @keyup.enter="login" autofocus></v-text-field>
             <v-text-field class="lara-field" variant="outlined" :label=" $t('login.password') "
                           v-model="loginData.password" @keyup.enter="login"></v-text-field>
             <lara-button type="primary" @click="login">{{ $t('login.button') }}</lara-button>
@@ -17,23 +17,33 @@ import { reactive } from 'vue';
 import LaraButton from '@/components/basic/LaraButton.vue';
 import { AuthApiHandler } from '@/api/Auth/AuthApiHandler';
 import router from '@/router';
+import { useCurrentUserStore } from '@/stores/currentUser';
+import { testUser } from '@/model/_testResearch';
 
 let loginData = reactive({
     userId: "",
     password: "",
 });
 
-async function login() {
-    const [token, user] = await AuthApiHandler.login(loginData.userId, loginData.password);
-
-    // create cookie for token
-    let date = new Date();
-    date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000);
-    document.cookie = "lara-token=" + token + ";expires=" + date.toUTCString() + ";path=/";
+async function login(): Promise<void> {
+    const token = await AuthApiHandler.login(loginData.userId, loginData.password);
     
-    // store user & redirect to HomeView
-    console.log(atob(token.split(".")[1]));
-    //useCurrentUserStore().setCurrentUser(user); // TODO: uncomment once the backend people have updated their api response according to the yml definition
+    // parse token
+    let tokenPayload = JSON.parse(atob(token.split('.')[1]));
+    let expiryDate = new Date();
+    expiryDate.setTime(expiryDate.getTime() + tokenPayload.exp); // this should not work but it does (but not completely correct) ???
+    //let userNew = BasicApiHandler.buildUser(tokenPayload.user);
+    // let isAdmin = tokenPayload.isAdmin;
+    let userNew = testUser; // TODO: remove & uncomment the lines above once the backend people have updated the generation of jwt token
+    let isAdmin = true; // TODO: remove once & uncomment the lines above the backend people have updated the generation of jwt token
+    
+    // create cookie for token
+    document.cookie = "lara-token=" + token + ";expires=" + expiryDate.toUTCString(); + ";path=/";
+
+    // store user
+    useCurrentUserStore().setCurrentUser(userNew); 
+    useCurrentUserStore().setAdmin(isAdmin);
+
     router.push({ name: 'home'});
 }
 </script>
