@@ -25,6 +25,7 @@ const router = createRouter({
       meta: {
         showSidebar: true,
         showSearchInSidebar: true,
+        showRecommendationsInSidebar: true,
       }
     },
 
@@ -35,6 +36,7 @@ const router = createRouter({
       meta: {
         showSidebar: false,
         showSearchInSidebar: false,
+        showRecommendationsInSidebar: false,
       }
     },
 
@@ -45,6 +47,7 @@ const router = createRouter({
       meta: {
         showSidebar: false,
         showSearchInSidebar: false,
+        showRecommendationsInSidebar: false,
       }
     },
 
@@ -55,6 +58,7 @@ const router = createRouter({
       meta: {
         showSidebar: false,
         showSearchInSidebar: false,
+        showRecommendationsInSidebar: false,
       }
     },
 
@@ -65,6 +69,7 @@ const router = createRouter({
       meta: {
         showSidebar: false,
         showSearchInSidebar: false,
+        showRecommendationsInSidebar: false,
       },
       beforeEnter: (to, from) => {
         return checkResearch();
@@ -79,6 +84,7 @@ const router = createRouter({
       meta: {
         showSidebar: true,
         showSearchInSidebar: true,
+        showRecommendationsInSidebar: true,
       },
       beforeEnter: (to, from) => {
         return checkResearch();
@@ -92,6 +98,7 @@ const router = createRouter({
       meta: {
         showSidebar: true,
         showSearchInSidebar: false,
+        showRecommendationsInSidebar: true,
       },
       beforeEnter: (to, from) => {
         return checkResearch();
@@ -103,8 +110,9 @@ const router = createRouter({
       name: 'recommendations',
       component: RecommendationsView,
       meta: {
-        showSidebar: false,
+        showSidebar: true,
         showSearchInSidebar: true,
+        showRecommendationsInSidebar: false,
       },
       beforeEnter: (to, from) => {
         return checkResearch();
