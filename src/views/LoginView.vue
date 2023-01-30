@@ -19,7 +19,6 @@ import { AuthApiHandler } from '@/api/Auth/AuthApiHandler';
 import router from '@/router';
 import { useCurrentUserStore } from '@/stores/currentUser';
 import { testUser } from '@/model/_testResearch';
-import BasicApiHandler from '@/api/BasicApiHandler';
 
 let loginData = reactive({
     userId: "",
@@ -32,14 +31,14 @@ async function login(): Promise<void> {
     // parse token
     let tokenPayload = JSON.parse(atob(token.split('.')[1]));
     let expiryDate = new Date();
-    expiryDate.setTime(tokenPayload.exp);
-    let userNew = BasicApiHandler.buildUser(tokenPayload.user);
-    let isAdmin = tokenPayload.isAdmin;
-    userNew = testUser; // TODO: remove once the backend people have updated the generation of jwt token
-    isAdmin = true; // TODO: remove once the backend people have updated the generation of jwt token
+    expiryDate.setTime(expiryDate.getTime() + tokenPayload.exp); // this should not work but it does (but not completely correct) ???
+    //let userNew = BasicApiHandler.buildUser(tokenPayload.user);
+    // let isAdmin = tokenPayload.isAdmin;
+    let userNew = testUser; // TODO: remove & uncomment the lines above once the backend people have updated the generation of jwt token
+    let isAdmin = true; // TODO: remove once & uncomment the lines above the backend people have updated the generation of jwt token
     
     // create cookie for token
-    document.cookie = "lara-token=" + token + ";expires=" + expiryDate.toUTCString() + ";path=/";
+    document.cookie = "lara-token=" + token + ";expires=" + expiryDate.toUTCString(); + ";path=/";
 
     // store user
     useCurrentUserStore().setCurrentUser(userNew); 
