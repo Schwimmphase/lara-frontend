@@ -12,6 +12,8 @@ import DetailView from '../views/DetailView.vue'
 import SearchView from '../views/SearchView.vue'
 import RecommendationsView from '../views/RecommendationsView.vue'
 import { useOpenResearchStore } from '@/stores/openResearch'
+import { watch } from 'vue'
+import { PiniaVuePlugin } from 'pinia'
 
 
 const router = createRouter({
@@ -100,11 +102,20 @@ let checkResearch = () => {
   }
 }
 
-router.beforeEach(async (to, from) => {
-  if (!document.cookie.includes("lara-token") && to.name !== 'login') {
-      return { name: 'login' };
+function getCookies(): Map<string, string> {
+  let cookies = new Map<string, string>();
+  for (let cookie of document.cookie.split(";")) {
+    cookies.set(cookie.split("=")[0], cookie.split("=")[1]);
   }
-  if (document.cookie.includes("lara-token") && to.name === 'login') {
+  return cookies;
+}
+
+router.beforeEach(async (to, from) => {
+  let cookies = getCookies();
+  if (to.name !== 'login' && !cookies.get("lara-token")) {
+    return { name: 'login' };
+  }
+  if (to.name === 'login' && cookies.get("lara-token")) {
     return from;
   }
 });

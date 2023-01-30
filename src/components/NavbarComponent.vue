@@ -8,26 +8,28 @@
 import router from '../router';
 
 import { LanguageService } from '../internationalization/LanguageService';
-import type { Language } from '../internationalization/Language';
 
 import { i18n } from '../internationalization/i18n'
+import { useCurrentUserStore } from '@/stores/currentUser';
 
 // Function to logout the user
 function logout(): void {
-    // TODO Implement: Log out the user
-    console.log("logout");
+    useCurrentUserStore().resetStore();
 
-    // Navigate to the login view
+    // delete token
+    let inOneSecond = new Date();
+    inOneSecond.setSeconds(inOneSecond.getSeconds() + 1);
+    document.cookie = "lara-token=; expires " + inOneSecond.toUTCString() + "; path=/;";
+
     router.push({ name: 'login' });
 }
 
-// Method to check, if the user is a admin
-function checkAdmin(): boolean {
-    let isAdmin: boolean = true;
-    
-    console.log("Check admin");
+function isUserLoggedIn(): boolean {
+    return useCurrentUserStore().getCurrentUser !== null;
+}
 
-    return isAdmin;
+function isUserAdmin(): boolean {
+    return useCurrentUserStore().getIsAdmin;
 }
 
 let changeLanguage = (lang: string) => {
@@ -49,11 +51,10 @@ let changeLanguage = (lang: string) => {
 
 let languages = LanguageService.getLanguages();
 
-let showLogout: boolean = true;
-
 </script>
 
 <template>
+
     <v-app-bar :elevation="5" class="lara-navbar">
         <div class="ml-6">
             <v-app-bar-title>
@@ -79,12 +80,11 @@ let showLogout: boolean = true;
             </v-menu>
         </div>
         <div class="mr-6">
-            <router-link class="ml-6 lara-navbar-link" v-if="checkAdmin()" :to="{ name: 'admin' }">{{ $t('navbar.manageUsers') }}</router-link>
-            <router-link class="ml-6 lara-navbar-link" :to="{ name: 'home' }">{{ $t('navbar.home') }}</router-link>
-            <span v-if="showLogout" class="ml-6 lara-navbar-link" @click="logout()">{{ $t('navbar.logout') }}</span>
+            <router-link class="ml-6 lara-navbar-link" v-if="isUserAdmin()" :to="{ name: 'admin' }">{{ $t('navbar.manageUsers') }}</router-link>
+            <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'home' }">{{ $t('navbar.home') }}</router-link>
+            <span v-if="isUserLoggedIn()" class="ml-6 lara-navbar-link" @click="logout()">{{ $t('navbar.logout') }}</span>
         </div>
     </v-app-bar>
-    
 
 </template>
 

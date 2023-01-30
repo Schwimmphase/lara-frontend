@@ -1,6 +1,7 @@
 <template>
+
     <v-container class="w-75 pt-8">
-        <h1 class="text-h3 font-weight-bold">Hallo {{ currentUser.username }}!</h1>
+        <h1 class="text-h3 font-weight-bold">Hallo {{ currentUser!.username }}!</h1>
 
         <div style="width: 300px">
             <lara-button class="mt-8 mb-8" type="primary">Neue Recherche starten</lara-button>
@@ -23,9 +24,11 @@
             </div>
         </div>
     </v-container>
+
 </template>
 
 <script setup lang="ts">
+
 import ResearchCard from "@/components/cards/ResearchCard.vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
 import type {Research} from "@/model/Research";
@@ -40,17 +43,12 @@ function onEdited(research: Research, title: String, description: String) {
     console.debug("Title: " + title + " - description: " + description);
 }
 
-
 // get username & researches of user
 let currentUser = useCurrentUserStore().getCurrentUser;
-ResearchApiHandler.getAllResearchesByUser(currentUser);
+ResearchApiHandler.getAllResearchesByUser(currentUser!);
 let researches = useResearchesStore().getResearches;
 researches.push(testResearch);
 
-/*
-let currentUser = testUser;
-let researches = [testResearch];
-*/
 </script>
 
 <style>
