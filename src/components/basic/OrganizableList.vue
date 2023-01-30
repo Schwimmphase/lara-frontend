@@ -2,7 +2,7 @@
     <div class="d-flex justify-space-between gap-8">
         <div class="d-flex gap-8">
             <organizer-dialog :slots="organizeSlots" @organize="$emit('organize')">
-                <template v-for="slot in organizeSlots" #[slot.id]>
+                <template v-for="slot in organizeSlots" slot:[slot.id]>
                     <slot :name="slot.id"></slot>
                 </template>
             </organizer-dialog>
@@ -50,13 +50,13 @@ defineProps<{
     organizeSlots: Slot[],
     rightButton?: string,
     selectedOrganizers: Organizer[]
-}>()
+}>();
 
 defineEmits<{
     (event: "clickRightButton"): void
     (event: "organize"): void
     (event: "removeOrganizer", name: String): void
-}>()
+}>();
 </script>
 
 <style scoped>

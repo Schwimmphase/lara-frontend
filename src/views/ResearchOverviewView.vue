@@ -1,7 +1,7 @@
 <template>
     <v-container class="pt-8 px-16">
         <h1 class="text-h3 font-weight-bold">Übersicht {{ research != null ? research.title : null }}</h1>
-        <organizable-list :slots="slots" right-button="Exportieren">
+        <organizable-list :slots="slots" :organize-slots="[]" right-button="Exportieren">
             <template v-slot:added>
                 <research-overview-card v-for="savedPaper in testSavedPaperList"
                                         :title="savedPaper.paper.title"

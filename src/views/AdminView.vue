@@ -52,7 +52,7 @@ import {testResearch, testUserCategory} from "@/model/_testResearch";
 import type {User} from "@/model/User";
 import {computed} from "vue";
 import UserDialog from "@/components/dialogs/UserDialog.vue";
-import {UserCategory} from "@/model/UserCategory";
+import type {UserCategory} from "@/model/UserCategory";
 
 const users = [testResearch.user, testResearch.user, testResearch.user];
 
@@ -70,7 +70,7 @@ const userCategoriesStrings = computed<String[]>(() => {
     return strings;
 })
 
-function onUserCreate(username: String, userCategory: UserCategory, password: String) {
+function onUserCreate(username: String, userCategory: UserCategory, password?: String) {
     console.debug("new user: username: " + username + " - category: " + userCategory.name + " - password: " + password);
 }
 
