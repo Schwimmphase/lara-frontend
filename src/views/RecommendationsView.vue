@@ -3,6 +3,9 @@
 import OrganizableList from "@/components/basic/OrganizableList.vue";
 import UnsavedPaperCard from "@/components/cards/UnsavedPaperCard.vue";
 
+// TODO  Nur wegen Test
+import { testPaperList } from "@/model/_testResearch";
+
 import type { Paper } from "@/model/Paper";
 import type { Research } from "@/model/Research";
 
@@ -32,8 +35,14 @@ let researchStore = useOpenResearchStore();
 let setRecommendations = () => {
     state.research = researchStore.openResearch;
 
+    state.recommendations = testPaperList;
+    state.references = testPaperList;
+    state.citations = testPaperList;
+
     // Get Paper Lists from API
 }
+
+setRecommendations();
 
 </script>
 
@@ -57,16 +66,16 @@ let setRecommendations = () => {
         
         <div class="mt-3">
             <OrganizableList v-if="!state.showCitations" :slots="slotsRecommended">
-                <template v-slot:recommended>
-                    <UnsavedPaperCard v-for="(paper, index) in state.recommendations" :key="index" :paper="paper" />
+                <template v-slot:recommendations>
+                    <UnsavedPaperCard v-for="(paper, index) in state.recommendations" :key="index" :paper="paper" :research="(state.research ? state.research : undefined)" />
                 </template>
             </OrganizableList>
             <OrganizableList v-if="state.showCitations" :slots="slotsReferences">
                 <template v-slot:citations>
-                    <UnsavedPaperCard v-for="(paper, index) in state.citations" :key="index" :paper="paper" />
+                    <UnsavedPaperCard v-for="(paper, index) in state.citations" :key="index" :paper="paper" :research="(state.research ? state.research : undefined)" />
                 </template>
                 <template v-slot:references>
-                    <UnsavedPaperCard v-for="(paper, index) in state.references" :key="index" :paper="paper" />
+                    <UnsavedPaperCard v-for="(paper, index) in state.references" :key="index" :paper="paper" :research="(state.research ? state.research : undefined)" />
                 </template>
             </OrganizableList>
         </div>
