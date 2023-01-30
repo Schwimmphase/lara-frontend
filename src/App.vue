@@ -14,11 +14,7 @@ const meta = computed(() => route.meta);
 <template>
   <v-app>
       <NavbarComponent :show-logout="true"></NavbarComponent>
-<<<<<<< HEAD
       <SidebarComponent v-if="meta.showSidebar" :show-search="(meta.showSearchInSidebar ? true : false)" :show-recommendations="(meta.showRecommendationsInSidebar ? true : false)"/>  
-=======
-      <SidebarComponent v-if="meta.showSidebar" :show-search="(meta.showSearchInSidebar ? true : false)" />  
->>>>>>> main
       <v-main>
           <router-view :key="route.fullPath"></router-view>
       </v-main>
