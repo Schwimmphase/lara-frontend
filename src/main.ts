@@ -1,23 +1,24 @@
-import { createApp } from 'vue'
+import { createApp } from 'vue';
 
 // Pinia for shared storage
-import { createPinia } from 'pinia'
+import { createPinia } from 'pinia';
+import piniaPluginPersistedState from "pinia-plugin-persistedstate";
 
-import { i18n } from './internationalization/i18n'
+import { i18n } from './internationalization/i18n';
 
-import App from './App.vue'
-import router from './router'
+import App from './App.vue';
+import router from './router';
 
 // Vuetify
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import 'vuetify/styles';
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/components';
+import * as directives from 'vuetify/directives';
 import {aliases, mdi} from "vuetify/iconsets/mdi";
 import {fa} from "vuetify/iconsets/fa";
 import "@mdi/font/css/materialdesignicons.css";
 
-import './assets/main.css'
+import './assets/main.css';
 
 const vuetify = createVuetify({
     components,
@@ -30,13 +31,15 @@ const vuetify = createVuetify({
             fa,
         },
     }
-})
+});
 
-const app = createApp(App)
+const app = createApp(App);
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedState);
 
-app.use(createPinia())
-app.use(router)
-app.use(vuetify)
-app.use(i18n)
+app.use(pinia);
+app.use(router);
+app.use(vuetify);
+app.use(i18n);
 
-app.mount('#app')
+app.mount('#app');

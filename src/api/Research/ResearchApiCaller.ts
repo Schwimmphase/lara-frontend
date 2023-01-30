@@ -1,4 +1,4 @@
-import { title } from "process";
+import type { Organizer } from "@/model/Organizer";
 import BasicApiCaller from "../BasicApiCaller";
 
 export class ResearchApiCaller {
@@ -9,25 +9,26 @@ export class ResearchApiCaller {
     static urlRecommendations = '/recommendations';
     static urlSearch = '/search';
 
-    public static getAllResearchesByUser(userId: string) { // needs user id? where?
-        return BasicApiCaller.axiosInstance.get(this.urlResearch);
+    public static getAllResearchesByUser(userId: string) {
+        return BasicApiCaller.axiosInstance.get(this.urlResearch, {
+            params: {
+                "userId": userId
+            }
+        });
     }
 
-    public static createResearch(title: string, description: string) {
+    public static createResearch(userId: string, title: string, description: string) {
         return BasicApiCaller.axiosInstance.post(this.urlResearch, {
-            data: {
-                "title": title,
-                "description": description
-            }
+            "userId": userId,
+            "title": title,
+            "description": description
         });
     }
 
     public static updateResearch(researchId: string, title: string, description: string) {
         return BasicApiCaller.axiosInstance.patch(this.urlResearch + researchId, {
-            data: {
-                "title": title,
-                "description": description
-            }
+            "title": title,
+            "description": description
         });
     }
 
@@ -35,8 +36,8 @@ export class ResearchApiCaller {
         return BasicApiCaller.axiosInstance.delete(this.urlResearch + researchId);
     }
 
-    public static savePaperToResearch(researchId: string, paperId: string, saveState: string) {
-        return BasicApiCaller.axiosInstance.put(this.urlResearch + researchId + this.urlPaper, {
+    public static savePaper(researchId: string, paperId: string, saveState: string) {
+        return BasicApiCaller.axiosInstance.put(this.urlResearch + researchId + this.urlPaper, {}, {
             params: {
                 "paperId": paperId,
                 "state": saveState
@@ -44,7 +45,7 @@ export class ResearchApiCaller {
         });
     }
 
-    public static removePaperFromResearch(researchId: string, paperId: string) {
+    public static removePaper(researchId: string, paperId: string) {
         return BasicApiCaller.axiosInstance.delete(this.urlResearch + researchId + this.urlPaper, {
             params: {
                 "paperId": paperId
@@ -52,41 +53,32 @@ export class ResearchApiCaller {
         });
     }
 
-    public static getTagsFromResearch(researchId: string) {
+    public static getTags(researchId: string) {
         return BasicApiCaller.axiosInstance.delete(this.urlResearch + researchId + this.urlTags);
     }
 
-    public static getPapersFromResearch(researchId: string, organizerList: string) {
+    public static getPapers(researchId: string, organizers: Organizer[]) {
         return BasicApiCaller.axiosInstance.post(this.urlResearch + researchId + this.urlPapers, {
-            data: {
-                "organizers": organizerList
-            }
+            "organizers": organizers
         });
     }
 
-    public static getReferences() {
-        // not defined in yaml
-    }
-
-    public static getCitations() {
-        // not defined in yaml
-    }
-
-    public static getRecommendations(researchId: string, method: string) {
+    public static getRecommendationsOrReferencesOrCitations(researchId: string, organizers: Organizer[], method: string) {
         return BasicApiCaller.axiosInstance.post(this.urlResearch + researchId + this.urlRecommendations, {
+            "organizers": organizers
+        }, {
             params: {
                 "method": method
             }
         });
     }
 
-    public static searchByKeywords(query: string, organizerList: string) {
+    public static searchByKeywords(query: string, organizers: Organizer[]) {
         return BasicApiCaller.axiosInstance.post(this.urlResearch + this.urlSearch, {
+            "organizers": organizers
+        }, {
             params: {
                 "query": query
-            },
-            data: {
-                "organizers": organizerList
             }
         });
     }

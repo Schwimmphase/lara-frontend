@@ -1,112 +1,79 @@
 import basicApiHandler from "../BasicApiHandler"
 import { PaperApiCaller } from "./PaperApiCaller"
 
-import { Paper } from "@/model/Paper"
-import { Author } from "@/model/Author"
+import type { Paper } from "@/model/Paper"
 import type { SavedPaper } from "@/model/SavedPaper"
 import type { Comment } from "@/model/Comment"
 import type { Tag } from "@/model/Tag"
 import { SaveState } from "@/model/SaveState"
 import type { Organizer } from "@/model/Organizer"
 import { RecommendationMethod } from "@/model/RecommendationMethod"
+import type { Research } from "@/model/Research"
+import type { CachedPaper } from "@/model/CachedPaper"
+import BasicApiHandler from "../BasicApiHandler"
 
-export class PaperApiHandler { // what about JWT token?
-    public static getDetailsOfPaper(paper: Paper) {
-        PaperApiCaller.getDetailsOfPaper(paper.id)
-            .then(response => {
-                let data = basicApiHandler.tryParseJson(response.data);
-                console.log("response of gedDetailsOfPaper: ", data);
-                let paper = PaperApiHandler.buildPaper(data); // update html component here
-            });
-    }
-
-    public static addTagToPaper(savedPaper: SavedPaper, tag: Tag) {
-        PaperApiCaller.addTagToPaper(savedPaper.paper.id, savedPaper.research.id, tag.id)
-            .then(response => {
-                let data = basicApiHandler.tryParseJson(response.data);
-                console.log("response of addTagToPaper: ", data); // update html component here
-            });
-    }
-
-    public static removeTagFromPaper(savedPaper: SavedPaper, tag: Tag) {
-        PaperApiCaller.removeTagFromPaper(savedPaper.paper.id, savedPaper.research.id, tag.id)
-            .then(response => {
-                let data = basicApiHandler.tryParseJson(response.data);
-                console.log("response of removeTagFromPaper: ", data); // update html component here
-            });
-    }
-
-    public static changeComment(savedPaper: SavedPaper, comment: Comment) {
-        PaperApiCaller.changeComment(savedPaper.paper.id, savedPaper.research.id, comment.text)
-        .then(response => {
+export class PaperApiHandler {
+    public static async getDetails(paperId: string, researchId: string | null): Promise<unknown> {
+        if (researchId == null) {
+            // If the research id is null, the details of a "normal" paper should be requested
+            const response = await PaperApiCaller.getDetails(paperId);
             let data = basicApiHandler.tryParseJson(response.data);
-            console.log("response of changeComment: ", data); // update html component here
-        });
-    }
-
-    public static changeSaveState(savedPaper: SavedPaper, saveState: SaveState) {
-        PaperApiCaller.changeSaveState(savedPaper.paper.id, savedPaper.research.id, SaveState[saveState])
-            .then(response => {
-                let data = basicApiHandler.tryParseJson(response.data);
-                console.log("response of changeSaveState: ", data); // update html component here
-            });
-    }
-
-    public static changeRelevance(savedPaper: SavedPaper, relevance: number) {
-        PaperApiCaller.changeRelevance(savedPaper.paper.id, savedPaper.research.id, relevance)
-            .then(response => {
-                let data = basicApiHandler.tryParseJson(response.data);
-                console.log("response of changeRelevance: ", data); // update html component here
-            });
-    }
-
-    public static getRecommendationsOfPaper(paper: Paper, method: RecommendationMethod, organizers: Organizer[]) {
-        PaperApiCaller.getRecommendationsOfPaper(paper.id, RecommendationMethod[method], JSON.stringify(organizers))
-            .then(response => {
-                let data = basicApiHandler.tryParseJson(response.data);
-                console.log("response of changeSaveState: ", data);
-                let recommendations = PaperApiHandler.buildRecommendations(data); // update html component here
-            });
-    }
-
-    public static getReferencesOfPaper(paper: Paper) {
-        return // not defined in yaml
-    }
-
-    public static getCitationsOfPaper(paper: Paper) {
-        return // not defined in yaml
-    }
-
-    
-    // example helper methods
-
-    private static buildPaper(data: any): Paper {
-        let authors: Author[] = [];
-
-        for (let authorJSON of data.authors) {
-            let author = new Author(authorJSON.id, authorJSON.name);
-            authors.push(author);
+            return BasicApiHandler.buildPaper(data);
+        } else {
+            // Get the details of a SavedPaper if the research id is not null
+            const response = await PaperApiCaller.getDetails(paperId, researchId);
+            let data = basicApiHandler.tryParseJson(response.data);
+            return BasicApiHandler.buildSavedPaper(data);
         }
-
-        return new Paper(data.id, data.title, authors, +data.year, data.abstract, +data.citationCount, +data.referenceCount,
-            data.venue, data.pdfUrl);
     }
 
-    private static buildRecommendations(data: any): Paper[] {
+    public static async addTag(savedPaper: SavedPaper, tag: Tag): Promise<void> {
+        await PaperApiCaller.addTag(savedPaper.paper.paperId, savedPaper.research.id, tag.id);
+    }
+
+    public static async removeTag(savedPaper: SavedPaper, tag: Tag): Promise<void> {
+        await PaperApiCaller.removeTag(savedPaper.paper.paperId, savedPaper.research.id, tag.id);
+    }
+
+    public static async changeComment(savedPaper: SavedPaper, comment: Comment): Promise<void> {
+        await PaperApiCaller.changeComment(savedPaper.paper.paperId, savedPaper.research.id, comment.text);
+    }
+
+    public static async changeSaveState(savedPaper: SavedPaper, saveState: SaveState): Promise<void> {
+        await PaperApiCaller.changeSaveState(savedPaper.paper.paperId, savedPaper.research.id, SaveState[saveState]);
+    }
+
+    public static async changeRelevance(savedPaper: SavedPaper, relevance: number): Promise<void> {
+        await PaperApiCaller.changeRelevance(savedPaper.paper.paperId, savedPaper.research.id, relevance);
+    }
+
+    public static async getRecommendations(paper: Paper, research: Research, organizers: Organizer[]): Promise<Paper[]> {
+        const response = await PaperApiCaller.getRecommendationsOrReferencesOrCitations(paper.paperId, research.id, RecommendationMethod.algorithm.toString(), organizers)
+        let data = basicApiHandler.tryParseJson(response.data);
         let recommendations: Paper[] = [];
-
-        for (let paperJSON of data) {
-            let authors: Author[] = [];
-            for (let authorJSON of paperJSON.authors) {
-                let author = new Author(authorJSON.id, authorJSON.name);
-                authors.push(author);
-            }
-
-            let paper = new Paper(paperJSON.id, paperJSON.title, authors, +paperJSON.year, paperJSON.abstract,
-                +paperJSON.citationCount, +paperJSON.referenceCount, paperJSON.venue, paperJSON.pdfUrl)
-            recommendations.push(paper);
+        for (let recommendation of data.recommendations) {
+            recommendations.push(BasicApiHandler.buildPaper(recommendation));
         }
-
         return recommendations;
+    }
+
+    public static async getReferences(paper: Paper, research: Research, organizers: Organizer[]): Promise<CachedPaper[]> {
+        const response = await PaperApiCaller.getRecommendationsOrReferencesOrCitations(paper.paperId, research.id, RecommendationMethod.references.toString(), organizers)
+        let data = basicApiHandler.tryParseJson(response.data);
+        let references: CachedPaper[] = [];
+        for (let reference of data.recommendations) {
+            references.push(BasicApiHandler.buildCachedPaper(reference));
+        }
+        return references;
+    }
+
+    public static async getCitations(paper: Paper, research: Research, organizers: Organizer[]): Promise<CachedPaper[]> {
+        const response = await PaperApiCaller.getRecommendationsOrReferencesOrCitations(paper.paperId, research.id, RecommendationMethod.citations.toString(), organizers)
+        let data = basicApiHandler.tryParseJson(response.data);
+        let citations: CachedPaper[] = [];
+        for (let citation of data.recommendations) {
+            citations.push(BasicApiHandler.buildCachedPaper(citation));
+        }
+        return citations;
     }
 }

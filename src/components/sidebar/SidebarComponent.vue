@@ -10,7 +10,7 @@ import type { SavedPaper } from '@/model/SavedPaper';
 import type { Research } from '@/model/Research';
 import { SaveState } from '@/model/SaveState';
 
-import { useResearchStore } from '@/stores/research';
+import { useOpenResearchStore } from '@/stores/openResearch';
 
 // TODO nur testzwecke
 import '../../model/_testResearch';
@@ -24,11 +24,8 @@ let matchesSaveState = (paper: SavedPaper, state: SaveState): boolean => {
 }
 
 let openSavedPaper = (savedPaper: SavedPaper): void => {
-    // Build id from research and paper id
-    let id: string = savedPaper.research.id + "-" + savedPaper.paper.id;
-
     // Navigate to paperDetail-route
-    router.push({name: 'paperDetails', query: {id: id}});
+    router.push({name: 'paperDetails', query: {research: savedPaper.research.id, paper: savedPaper.paper.paperId}});
 }
 
 let changeSaveState = (savedPaper: SavedPaper, saveState: SaveState) => {
@@ -46,10 +43,11 @@ let navigateToResearchOverview = (research: Research) => {
 
 
 // Pinia store for the research
-const store = useResearchStore();
+const store = useOpenResearchStore();
 
 // TODO Nur zu Testzwecken drin... sobald die Research Papers gesetzt werden, kann das wieder weg 
-store.setOpenResearch(testResearch, testSavedPaperList);
+// store.setOpenResearch(testResearch);
+// store.setResearchPapers(testSavedPaperList);
 
 // Get the research from the store
 let research: Research | null = store.getResearch;
@@ -107,23 +105,6 @@ let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveStat
             </expandable-list>
         </div>
     </v-navigation-drawer>
-
-    <!--
-    <v-navigation-drawer>
-
-        <v-list>
-            <v-list-item>
-
-            </v-list-item>
-
-
-            <v-list-item v-bind:key="index" v-for="(savedPaper, index) in researchPapers">
-                {{ savedPaper.paper.title }}
-            </v-list-item>
-
-        </v-list>
-    </v-navigation-drawer>
-    -->
 </template>
 
 <style scoped>

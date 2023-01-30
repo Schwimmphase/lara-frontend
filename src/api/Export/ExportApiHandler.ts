@@ -5,17 +5,15 @@ import type { Organizer } from "@/model/Organizer";
 import type { Paper } from "@/model/Paper";
 
 export class ExportApiHandler {
-    public static exportResearch(research: Research, organizers: Organizer[]) {
-        ExportApiCaller.exportResearch(research.id, JSON.stringify(organizers))
-            .then(response => {
-                let data = BasicApiHandler.tryParseJson(response.data);
-            })
+    public static async exportResearch(research: Research, organizers: Organizer[]): Promise<string> {
+        const response = await ExportApiCaller.exportResearch(research.id, organizers)
+        let data = BasicApiHandler.tryParseJson(response.data);
+        return data.export;
     }
 
-    public static exportPaper(paper: Paper) {
-        ExportApiCaller.exportPaper(paper.id)
-            .then(response => {
-                let data =BasicApiHandler.tryParseJson(response.data);
-            })
+    public static async exportPaper(paper: Paper): Promise<string> {
+        const response = await ExportApiCaller.exportPaper(paper.paperId)
+        let data =BasicApiHandler.tryParseJson(response.data);
+        return data.export;
     }
 }

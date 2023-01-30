@@ -1,6 +1,7 @@
 <template>
+
     <v-container class="w-75 pt-8">
-        <h1 class="text-h3 font-weight-bold">Hallo Sebastian!</h1>
+        <h1 class="text-h3 font-weight-bold">Hallo {{ currentUser!.username }}!</h1>
 
         <div style="width: 300px">
             <lara-button class="mt-8 mb-8" type="primary">Neue Recherche starten</lara-button>
@@ -11,24 +12,30 @@
         <div class="mt-4 d-flex flex-wrap flex-row gap-8">
             <div v-for="research in researches">
                 <research-card v-if="research != null"
+                               :id="research.id"
                                :title="research.title"
                                :description="research.comment.text"
                                :added="69"
                                :enqueued="420"
                                :started-at="research.started.toLocaleDateString()"
+                               :research="research"
                                @data-change="(newTitle: String, newDescription: String) => onEdited(research, newTitle, newDescription)"
                 />
             </div>
         </div>
     </v-container>
+
 </template>
 
 <script setup lang="ts">
+
 import ResearchCard from "@/components/cards/ResearchCard.vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
 import type {Research} from "@/model/Research";
-import {useResearchStore} from "@/stores/research";
-import {testResearch, testSavedPaperList} from "@/model/_testResearch";
+import { testResearch } from "@/model/_testResearch";
+import { useCurrentUserStore } from "@/stores/currentUser";
+import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
+import { useResearchesStore } from "@/stores/researches";
 
 function onEdited(research: Research, title: String, description: String) {
     console.debug("New name and title for research: ");
@@ -36,16 +43,12 @@ function onEdited(research: Research, title: String, description: String) {
     console.debug("Title: " + title + " - description: " + description);
 }
 
-// Pinia store for the research
-const store = useResearchStore();
+// get username & researches of user
+let currentUser = useCurrentUserStore().getCurrentUser;
+ResearchApiHandler.getAllResearchesByUser(currentUser!);
+let researches = useResearchesStore().getResearches;
+researches.push(testResearch);
 
-// TODO Nur zu Testzwecken drin... sobald die Research Papers gesetzt werden, kann das wieder weg
-store.setOpenResearch(testResearch, testSavedPaperList);
-
-// Get the research from the store
-let research1: Research | null = store.getResearch;
-
-let researches = [research1, research1, research1, research1];
 </script>
 
 <style>

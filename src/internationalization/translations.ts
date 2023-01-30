@@ -3,15 +3,25 @@ export const messages = {
         test: 'This is a small test',
 
         navbar: {
-            logout: 'logout',
-            home: 'home',
-            manageUsers: 'manage users',
-            changeLanguage: 'change language'
+            logout: 'Logout',
+            home: 'Home',
+            manageUsers: 'Manage users',
+            changeLanguage: 'Change language'
         },
 
         detailSidebar: {
+            citationCount: 'No Citations | One Citation | {n} Citations',
+            referenceCount: 'No Reference | One References | {n} References',
+            informations: 'Informations',
             comments: 'Comments',
-            save: 'save'
+            tags: 'Tags',
+            relevance: 'Relevance',
+            save: 'Save',
+            enqueue: 'Enqueue',
+            add: 'Add',
+            recommendations: 'Recommendations',
+            citations: 'Citations',
+            references: 'References',
         },
 
         login: {
@@ -45,6 +55,7 @@ export const messages = {
             organize: 'organize'
         }
     },
+    
     de: {
         test: 'Das ist ein kleiner Test!',
 
@@ -56,8 +67,18 @@ export const messages = {
         },
 
         detailSidebar: {
+            citationCount: 'Keine Zitate | Ein Zitat | {n} Zitate',
+            referenceCount: 'Keine Referenzen | Eine Referenz | {n} Referenzen',
+            informations: 'Informationen',
             comments: 'Kommentare',
-            save: 'speichern'
+            tags: 'Tags',
+            relevance: 'Relevanz',
+            save: 'Speichern',
+            enqueue: 'Merken',
+            add: 'Hinzufügen',
+            recommendations: 'Empfehlungen',
+            citations: 'Zitationen',
+            references: 'Referenzen',
         },
 
         login: {
