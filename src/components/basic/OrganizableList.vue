@@ -8,11 +8,10 @@
             </organizer-dialog>
 
             <div class="d-flex gap-4">
-                <v-chip v-for="organizer of selectedOrganizers" class="lara-chip h-100" id="organizer-chip">
+                <v-chip v-for="(organizer, index) of selectedOrganizers" :key="index" class="lara-chip h-100" id="organizer-chip">
                     <span id="organizer-chip-text">{{ organizer.name }}: {{ organizer.value }}</span>
                     <v-btn size="small" variant="text" icon="mdi-close-circle"
                            @click="$emit('removeOrganizer', organizer.name)">
-
                     </v-btn>
                 </v-chip>
             </div>
