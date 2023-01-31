@@ -1,8 +1,8 @@
 <template>
     <v-container class="pt-8 px-16">
-        <h1 class="text-h3 font-weight-bold">{{ $t('researchOverviewCard.overview') }} {{ research != null ? research.title : null }}</h1>
+        <h1 class="text-h3 font-weight-bold">{{ $t('researchOverview.overview') }} "{{ research != null ? research.title : null }}"</h1>
         <organizable-list :slots="slots" :organize-slots="organizeSlots" right-button="Exportieren"
-                          :selected-organizers="selectedOrganizers">
+                          :selected-organizers="selectedOrganizers"> <!-- TODO: "Exportieren" übersetzen -->
             <template v-slot:added>
                 <research-overview-card v-for="(savedPaper, index) in testSavedPaperList"
                                         :key="index"

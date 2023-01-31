@@ -71,12 +71,18 @@ export const messages = {
         },
 
         organizableList: {
+            organizeButton: 'Organize',
             filterSettings: "Filter settings",
             export: "Export"
         },
 
         researchOverviewCard: {
             add: 'Add'
+        },
+
+        sidebar: {
+            recommendationsButton: 'Recommendations',
+            returnButton: 'Return'
         }
     },
     
@@ -152,12 +158,18 @@ export const messages = {
         },
 
         organizableList: {
+            organizeButton: 'Organisieren',
             filterSettings: 'Filtereinstellungen',
             export: 'Exportieren'
         },
 
         researchOverviewCard: {
             add: 'Hinzufügen'
+        },
+
+        sidebar: {
+            recommendationsButton: 'Empfehlungen',
+            returnButton: 'Zurück'
         }
     }
 }
