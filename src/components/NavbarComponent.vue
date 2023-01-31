@@ -33,8 +33,6 @@ function isUserAdmin(): boolean {
 }
 
 let changeLanguage = (lang: string) => {
-    console.log(lang)
-
     switch (lang) {
         case 'de':
             i18n.global.locale.value = 'de';        

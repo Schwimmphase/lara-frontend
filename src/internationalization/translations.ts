@@ -29,6 +29,35 @@ export const messages = {
             userId: 'User ID',
             password: 'Password',
             button: 'submit'
+        },
+
+        home: {
+            greetings: 'Hello',
+            startNewResearch: 'Start new research',
+            myResearches: 'My researches',
+        },
+
+        researchCard: {
+            added: 'added',
+            enqueued: 'enqueued',
+            paper: 'Paper',
+            startedOn: 'started on',
+            open: 'Open'
+        },
+
+        researchOverview: {
+            overview: 'Overview',
+            enqueued: 'Enqueued',
+            hidden: 'Hidden'
+        },
+
+        organizableList: {
+            filterSettings: "Filter settings",
+            export: "Export"
+        },
+
+        researchOverviewCard: {
+            add: 'Add'
         }
     },
     
@@ -62,6 +91,35 @@ export const messages = {
             userId: 'Nutzer-ID',
             password: 'Passwort',
             button: 'anmelden'
+        },
+
+        home: {
+            greetings: 'Hallo',
+            startNewResearch: 'Neue Recherche starten',
+            myResearches: 'Meine Recherchen',
+        },
+
+        researchCard: {
+            added: 'hinzugefügte',
+            enqueued: 'gemerkte',
+            paper: 'Artikel',
+            startedOn: 'gestartet am',
+            open: 'Öffnen'
+        },
+
+        researchOverview: {
+            overview: 'Übersicht',
+            enqueued: 'Für später gemerkt',
+            hidden: 'Ausgeblendet'
+        },
+
+        organizableList: {
+            filterSettings: 'Filtereinstellungen',
+            export: 'Exportieren'
+        },
+
+        researchOverviewCard: {
+            add: 'Hinzufügen'
         }
     }
 }

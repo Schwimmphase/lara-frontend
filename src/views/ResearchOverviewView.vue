@@ -1,6 +1,6 @@
 <template>
     <v-container class="pt-8 px-16">
-        <h1 class="text-h3 font-weight-bold">Übersicht {{ research != null ? research.title : null }}</h1>
+        <h1 class="text-h3 font-weight-bold">{{ $t('researchOverview.overview')  }} "{{ research != null ? research.title : null }}"</h1>
         <organizable-list :slots="slots">
             <template v-slot:added>
                 <research-overview-card v-for="(savedPaper, index) in testSavedPaperList"
@@ -49,6 +49,7 @@ import {useOpenResearchStore} from "@/stores/openResearch.js";
 import ResearchOverviewCard from "@/components/cards/ResearchOverviewCard.vue";
 import type {Slot} from "@/components/basic/OrganizableList.vue";
 import router from "../router";
+import { messages } from "@/internationalization/translations";
 
 // Pinia store for the research
 const store = useOpenResearchStore();
@@ -61,8 +62,8 @@ let research: Research | null = store.getResearch;
 
 let slots: Slot[] = [
     { id: "added" },
-    { id: "enqueued", name: "Für später gemerkt" },
-    { id: "hidden", name: "Ausgeblendet" }
+    { id: "enqueued", name: ('researchOverview.enqueued') }, // TODO: how do you insert translations in js?
+    { id: "hidden", name: ('researchOverview.hidden') } // TODO: how do you insert translations in js?
 ];
 
 let openPaper = (savedPaper: SavedPaper) => {

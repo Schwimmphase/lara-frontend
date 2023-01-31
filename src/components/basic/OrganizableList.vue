@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex justify-space-between gap-8">
-        <lara-button type="outline" icon="mdi-filter" class="mt-4 w-100" id="filter-button">Filtereinstellungen</lara-button>
-        <lara-button type="primary" class="mt-4 w-100" id="export-button">Exportieren</lara-button>
+        <lara-button type="outline" icon="mdi-filter" class="mt-4 w-100" id="filter-button">{{ $t('organizableList.filterSettings') }}</lara-button>
+        <lara-button type="primary" class="mt-4 w-100" id="export-button">{{ $t('organizableList.export') }}</lara-button>
     </div>
     <div v-for="slot in slots">
         <h4 class="text-h4 font-weight-bold mt-8" v-if="slot.name">{{ slot.name }}</h4>

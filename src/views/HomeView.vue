@@ -1,13 +1,13 @@
 <template>
 
     <v-container class="w-75 pt-8">
-        <h1 class="text-h3 font-weight-bold">Hallo {{ currentUser!.username }}!</h1>
+        <h1 class="text-h3 font-weight-bold">{{ $t('home.greetings') }} {{ currentUser!.username }}!</h1>
 
         <div style="width: 300px">
-            <lara-button class="mt-8 mb-8" type="primary">Neue Recherche starten</lara-button>
+            <lara-button class="mt-8 mb-8" type="primary">{{ $t('home.startNewResearch') }}</lara-button>
         </div>
 
-        <h2 class="text-h4 font-weight-bold">Meine Recherchen</h2>
+        <h2 class="text-h4 font-weight-bold">{{ $t('home.myResearches') }}</h2>
 
         <div class="mt-4 d-flex flex-wrap flex-row gap-8">
             <div v-for="research in researches">
