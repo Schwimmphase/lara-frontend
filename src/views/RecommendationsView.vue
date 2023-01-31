@@ -2,6 +2,7 @@
 
 import OrganizableList from "@/components/basic/OrganizableList.vue";
 import UnsavedPaperCard from "@/components/cards/UnsavedPaperCard.vue";
+import YearOrganizer from "@/components/organizers/YearOrganizer.vue"
 
 // TODO  Nur wegen Test
 import { testPaperList } from "@/model/_testResearch";
@@ -13,16 +14,20 @@ import { useOpenResearchStore } from "@/stores/openResearch";
 
 import { reactive } from "@vue/reactivity";
 
-let slotsRecommended = [
+const slotsRecommended = [
     {id: "recommendations", name: "Empfehlungen"}
 ];
 
-let slotsReferences = [
+const slotsReferences = [
     {id: "citations", name: "Zitate"},
     {id: "references", name: "Referenzen"},
 ];
 
-let state: { showCitations: boolean, citations: Paper[] | null, references: Paper[] | null, recommendations: Paper[] | null, research: Research | null } = reactive({
+const organizerSlots = [
+    {id: "organizer-year", name: "Jahr"},
+];
+
+let state: { showCitations: boolean, citations: Paper[] | null, references: Paper[] | null, recommendations: Paper[] | null, research: Research | null } = reactive({
     showCitations: false,
     citations: null,
     references: null,
@@ -30,16 +35,31 @@ let state: { showCitations: boolean, citations: Paper[] | null, references: Pape
     research: null,
 });
 
+let organizerState: { yearValue: number[] } = reactive({
+    yearValue: [],
+});
+
+let onOrganize = () => {
+    console.debug(organizerState.yearValue);
+}
+
 let researchStore = useOpenResearchStore();
 
 let setRecommendations = () => {
     state.research = researchStore.openResearch;
 
+    // TODO Nur wegen Test dies das
     state.recommendations = testPaperList;
     state.references = testPaperList;
     state.citations = testPaperList;
 
     // Get Paper Lists from API
+}
+
+
+let yearChange = (value: number[]) => {
+    console.log("YEAR CAHNGE");
+    organizerState.yearValue = value
 }
 
 setRecommendations();
@@ -65,12 +85,19 @@ setRecommendations();
         </div>
         
         <div class="mt-3">
-            <OrganizableList v-if="!state.showCitations" :slots="slotsRecommended">
+            <OrganizableList v-if="!state.showCitations" :slots="slotsRecommended" :organize-slots="organizerSlots" :selected-organizers="[]" @organize="onOrganize">
                 <template v-slot:recommendations>
                     <UnsavedPaperCard v-for="(paper, index) in state.recommendations" :key="index" :paper="paper" :research="(state.research ? state.research : undefined)" />
                 </template>
+
+                <template v-slot:organizer-year>
+                    <div class="w-75 mt-6 mx-5">
+                        <!--<YearOrganizer @year-change="(value) => yearChange(value)" />-->
+                        <YearOrganizer />
+                    </div>
+                </template>
             </OrganizableList>
-            <OrganizableList v-if="state.showCitations" :slots="slotsReferences">
+            <OrganizableList v-if="state.showCitations" :slots="slotsReferences" :organize-slots="organizerSlots" :selected-organizers="[]">
                 <template v-slot:citations>
                     <UnsavedPaperCard v-for="(paper, index) in state.citations" :key="index" :paper="paper" :research="(state.research ? state.research : undefined)" />
                 </template>
