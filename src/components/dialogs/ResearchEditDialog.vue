@@ -1,7 +1,7 @@
 <template>
-    <v-btn size="small" color="surface-variant" variant="text" icon="mdi-pencil" @click="$emit('edit')"></v-btn>
-    <v-btn size="small" color="surface-variant" variant="text" icon="mdi-pencil">
-        <v-dialog v-model="state.dialog" activator="parent" persistent>
+    <div>
+        <v-btn size="small" color="surface-variant" variant="text" icon="mdi-pencil" @click="state.dialog = true"></v-btn>
+        <v-dialog v-model="state.dialog" persistent>
             <v-card id="dialog">
                 <v-card-text>
                     <v-form v-model="valid">
@@ -20,8 +20,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-    </v-btn>
-
+    </div>
 </template>
 
 <script setup lang="ts">

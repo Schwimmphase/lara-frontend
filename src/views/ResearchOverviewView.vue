@@ -1,7 +1,8 @@
 <template>
     <v-container class="pt-8 px-16">
-        <h1 class="text-h3 font-weight-bold">{{ $t('researchOverview.overview')  }} "{{ research != null ? research.title : null }}"</h1>
-        <organizable-list :slots="slots">
+        <h1 class="text-h3 font-weight-bold">{{ $t('researchOverviewCard.overview') }} {{ research != null ? research.title : null }}</h1>
+        <organizable-list :slots="slots" :organize-slots="organizeSlots" right-button="Exportieren"
+                          :selected-organizers="selectedOrganizers">
             <template v-slot:added>
                 <research-overview-card v-for="(savedPaper, index) in testSavedPaperList"
                                         :key="index"
@@ -42,6 +43,7 @@
 
 <script setup lang="ts">
 import OrganizableList from "@/components/basic/OrganizableList.vue";
+import type {Organizer} from "@/components/basic/OrganizableList.vue";
 import {testResearch, testSavedPaperList} from "@/model/_testResearch";
 import type {Research} from "@/model/Research";
 import type { SavedPaper } from "@/model/SavedPaper";
@@ -59,6 +61,10 @@ store.setResearchPapers(testSavedPaperList);
 
 // Get the research from the store
 let research: Research | null = store.getResearch;
+
+const organizeSlots: Slot[] = [];
+
+const selectedOrganizers: Organizer[] = [];
 
 let slots: Slot[] = [
     { id: "added" },

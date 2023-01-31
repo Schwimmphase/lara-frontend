@@ -31,6 +31,25 @@ export const messages = {
             button: 'submit'
         },
 
+        admin: {
+            createUser: 'Create user',
+            editCategories: 'Edit user categories',
+            greeting: 'Hello Admin {name}!',
+            userOverview: 'User overview',
+            editUser: 'Edit user',
+            userDialog: {
+                username: 'Username',
+                passwordNew: 'New password',
+                password: 'Password',
+                userCategory: 'User category',
+                buttonCreate: 'Nutzer erstellen',
+                buttonEdit: 'Save'
+            },
+            organize: {
+                userCategories: 'User categories'
+            }
+        },
+
         home: {
             greetings: 'Hello',
             startNewResearch: 'Start new research',
@@ -91,6 +110,25 @@ export const messages = {
             userId: 'Nutzer-ID',
             password: 'Passwort',
             button: 'anmelden'
+        },
+
+        admin: {
+            createUser: 'Nutzer anlegen',
+            editCategories: 'Nutzerkategorie verwalten',
+            greeting: 'Hallo Admin {name}!',
+            userOverview: 'Nutzerübersicht',
+            editUser: 'Nutzer bearbeiten',
+            editDialog: {
+                username: 'Nutzername',
+                passwordNew: 'Neues Passwort',
+                password: 'Passwort',
+                userCategory: 'Nutzerkategorie',
+                buttonCreate: 'Nutzer erstellen',
+                buttonEdit: 'Speichern'
+            },
+            organize: {
+                userCategories: 'Nutzerkategorien'
+            }
         },
 
         home: {

@@ -11,9 +11,10 @@ import ResearchOverviewView from '../views/ResearchOverviewView.vue'
 import DetailView from '../views/DetailView.vue'
 import SearchView from '../views/SearchView.vue'
 import RecommendationsView from '../views/RecommendationsView.vue'
-import { useOpenResearchStore } from '@/stores/openResearch'
-import { watch } from 'vue'
-import { PiniaVuePlugin } from 'pinia'
+import UserCategoryView from "@/views/UserCategoriesView.vue";
+import { useOpenResearchStore } from '@/stores/openResearch';
+import { watch } from 'vue';
+import { PiniaVuePlugin } from 'pinia';
 
 
 const router = createRouter({
@@ -39,6 +40,12 @@ const router = createRouter({
       name: 'admin',
       component: AdminView,
       meta: { showSidebar: false }
+    },
+
+    {
+      path: '/admin/user-categories',
+      name: 'user-categories',
+      component: UserCategoryView
     },
 
     {
