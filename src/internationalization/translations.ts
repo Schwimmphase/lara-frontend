@@ -51,29 +51,27 @@ export const messages = {
         },
 
         home: {
-            greetings: 'Hello',
+            greetings: 'Hello {username}!',
             startNewResearch: 'Start new research',
             myResearches: 'My researches',
         },
 
         researchCard: {
-            added: 'added',
-            enqueued: 'enqueued',
-            paper: 'Paper',
-            startedOn: 'started on',
+            addedAndEnqueuedPapers: '{added} added, {enqueued} enqueued papers',
+            startedOn: 'started on {startedOn}',
             open: 'Open'
         },
 
         researchOverview: {
             overview: 'Overview',
             enqueued: 'Enqueued',
-            hidden: 'Hidden'
+            hidden: 'Hidden',
+            export: 'Export'
         },
 
         organizableList: {
             organizeButton: 'Organize',
-            filterSettings: "Filter settings",
-            export: "Export"
+            filterSettings: 'Filter settings',
         },
 
         researchOverviewCard: {
@@ -81,8 +79,12 @@ export const messages = {
         },
 
         sidebar: {
+            searchBar: 'Search...',
             recommendationsButton: 'Recommendations',
-            returnButton: 'Return'
+            returnButton: 'Return',
+            enqueued: 'enqueued',
+            added: 'added',
+            hidden: 'hidden'
         }
     },
     
@@ -138,29 +140,27 @@ export const messages = {
         },
 
         home: {
-            greetings: 'Hallo',
+            greetings: 'Hallo {username}!',
             startNewResearch: 'Neue Recherche starten',
             myResearches: 'Meine Recherchen',
         },
 
         researchCard: {
-            added: 'hinzugefügte',
-            enqueued: 'gemerkte',
-            paper: 'Artikel',
-            startedOn: 'gestartet am',
+            addedAndEnqueuedPapers: '{added} hinzugefügte, {enqueued} gemerkte Artikel',
+            startedOn: 'gestartet am {startedOn}',
             open: 'Öffnen'
         },
 
         researchOverview: {
             overview: 'Übersicht',
             enqueued: 'Für später gemerkt',
-            hidden: 'Ausgeblendet'
+            hidden: 'Ausgeblendet',
+            export: 'Exportieren'
         },
 
         organizableList: {
             organizeButton: 'Organisieren',
             filterSettings: 'Filtereinstellungen',
-            export: 'Exportieren'
         },
 
         researchOverviewCard: {
@@ -168,8 +168,12 @@ export const messages = {
         },
 
         sidebar: {
+            searchBar: 'Suche...',
             recommendationsButton: 'Empfehlungen',
-            returnButton: 'Zurück'
+            returnButton: 'Zurück',
+            enqueued: 'gemerkt',
+            added: 'hinzugefügt',
+            hidden: 'ausgeblendet'
         }
     }
 }

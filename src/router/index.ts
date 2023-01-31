@@ -104,7 +104,6 @@ let checkResearch = () => {
     return { name: 'home' }
   } else if (useOpenResearchStore().getResearch != null) {
     // Research is set
-    console.log(useOpenResearchStore().getResearch);
     return true;
   }
 }

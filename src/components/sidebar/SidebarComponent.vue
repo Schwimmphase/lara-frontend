@@ -75,7 +75,7 @@ let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveStat
             </div>
 
             <!-- Section for the enqueued papers -->
-            <expandable-list title="gemerkt" :expanded="true">
+            <expandable-list :title="$t('sidebar.enqueued')" :expanded="true">
                 <v-list-item v-bind:key=index
                              v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState === SaveState.enqueued})">
                     <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
@@ -85,7 +85,7 @@ let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveStat
             </expandable-list>
 
             <!-- Section for the added papers -->
-            <expandable-list title="hinzugefügt" :expanded="true">
+            <expandable-list :title="$t('sidebar.added')" :expanded="true">
                 <!-- List of the added papers -->
                 <v-list-item v-bind:key="index"
                              v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState === SaveState.added})">
@@ -95,7 +95,7 @@ let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveStat
 
 
             <!-- Section for the hidden papers -->
-            <expandable-list title="ausgeblendet" icon="mdi-eye-off" :hidden="true">
+            <expandable-list :title="$t('sidebar.hidden')" icon="mdi-eye-off" :hidden="true">
                 <v-list-item v-bind:key="index"
                              v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState === SaveState.hidden})">
                     <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>

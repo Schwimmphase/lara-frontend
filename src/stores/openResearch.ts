@@ -22,6 +22,10 @@ export const useOpenResearchStore = defineStore('openResearch', {
         },
         setResearchPapers(researchPapers: SavedPaper[]) {
             this.researchPapers = researchPapers;
+        },
+        resetStore() {
+            this.$reset();
         }
-    }
+    },
+    persist: true
 });

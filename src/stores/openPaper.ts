@@ -7,16 +7,18 @@ export const useOpenPaperStore = defineStore('openPaper', {
     state: (): { paper: OpenPaper | null } => ({
         paper: null
     }),
-
     getters: {
         getPaper(state) {
             return state.paper;
         }
     },
-
     actions: {
         setPaper(paper: OpenPaper) {
             this.paper = paper;
+        },
+        resetStore() {
+            this.$reset();
         }
-    }
+    },
+    persist: true
 });

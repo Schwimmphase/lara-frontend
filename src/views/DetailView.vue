@@ -25,14 +25,12 @@ let setPaper = async () => {
     let researchId = route.query.research as string;
     let paperId = route.query.paper as string;
 
-    let openPaperFromAPI: OpenPaper;
-
     if (researchId == undefined) {
-        let response = await PaperApiHandler.getDetails(paperId as string, researchId as null) as Paper;
-        openPaperFromAPI = new OpenPaper(response, null, false);
+        let response = await PaperApiHandler.getDetails(paperId, researchId as null) as Paper;
+        var openPaperFromAPI = new OpenPaper(response, null, false);
     } else {
-        let response = await PaperApiHandler.getDetails(paperId as string, researchId as string) as SavedPaper;
-        openPaperFromAPI = new OpenPaper(null, response, false);
+        let response = await PaperApiHandler.getDetails(paperId, researchId) as SavedPaper;
+        var openPaperFromAPI = new OpenPaper(null, response, false);
     }
 
     openPaperStore.setPaper(openPaperFromAPI);

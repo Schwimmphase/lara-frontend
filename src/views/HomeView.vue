@@ -1,7 +1,7 @@
 <template>
 
     <v-container class="w-75 pt-8">
-        <h1 class="text-h3 font-weight-bold">{{ $t('home.greetings') }} {{ currentUser!.username }}!</h1>
+        <h1 class="text-h3 font-weight-bold">{{ $t('home.greetings', {username: currentUser!.username}) }}</h1>
 
         <div style="width: 300px">
             <lara-button class="mt-8 mb-8" type="primary">{{ $t('home.startNewResearch') }}</lara-button>
