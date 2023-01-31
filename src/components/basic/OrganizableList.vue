@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-space-between gap-8">
+    <div class="d-flex justify-space-between gap-8 mt-8">
         <div class="d-flex gap-8">
             <organizer-dialog :slots="organizeSlots" @organize="$emit('organize')">
                 <template v-for="slot in organizeSlots" slot:[slot.id]>
@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <lara-button type="primary" class="mt-4 w-100" id="export-button" v-if="rightButton" @click="$emit('clickRightButton')">
+        <lara-button type="primary" class="w-100" id="export-button" v-if="rightButton" @click="$emit('clickRightButton')">
             {{ rightButton }}
         </lara-button>
     </div>

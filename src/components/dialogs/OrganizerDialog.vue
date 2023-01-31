@@ -3,7 +3,7 @@
         <lara-button type="outline" icon="mdi-filter" class="w-100" id="filter-button" @click="state.dialog = true">
             {{ $t('organizableList.filterSettings') }}
         </lara-button>
-        <v-dialog v-model="state.dialog" persistent>
+        <v-dialog v-model="state.dialog">
             <v-card id="dialog">
                 <v-card-text>
                     <v-form v-model="valid">
