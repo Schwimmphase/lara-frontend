@@ -4,11 +4,11 @@
 
         <v-card-text>{{ description }}</v-card-text>
 
-        <v-card-subtitle>{{ added }} hinzugefügt, {{ enqueued }} gemerkte Artikel</v-card-subtitle>
-        <v-card-subtitle>gestartet am {{ startedAt }}</v-card-subtitle>
+        <v-card-subtitle>{{ added }} {{ $t('researchCard.added') }}, {{ enqueued }} {{ $t('researchCard.enqueued') }} {{ $t('researchCard.paper') }}</v-card-subtitle>
+        <v-card-subtitle>{{  $t('researchCard.startedOn')  }} {{ startedAt }}</v-card-subtitle>
 
         <v-card-actions class="ml-4 mr-4 mb-2 mt-2 pa-0">
-            <lara-button type="primary" class="w-50" @click="openResearch(research)">Öffnen</lara-button>
+            <lara-button type="primary" class="w-50" @click="openResearch(research)">{{ $t('researchCard.open') }}</lara-button>
 
             <v-spacer></v-spacer>
 

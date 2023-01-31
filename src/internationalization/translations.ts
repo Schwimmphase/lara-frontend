@@ -51,9 +51,39 @@ export const messages = {
             }
         },
 
+        home: {
+            greetings: 'Hello',
+            startNewResearch: 'Start new research',
+            myResearches: 'My researches',
+        },
+
+        researchCard: {
+            added: 'added',
+            enqueued: 'enqueued',
+            paper: 'Paper',
+            startedOn: 'started on',
+            open: 'Open'
+        },
+
+        researchOverview: {
+            overview: 'Overview',
+            enqueued: 'Enqueued',
+            hidden: 'Hidden'
+        },
+
         organizableList: {
-            organizeButton: 'Filter settings',
-            organize: 'organize'
+            organizeButton: 'Organize',
+            filterSettings: "Filter settings",
+            export: "Export"
+        },
+
+        researchOverviewCard: {
+            add: 'Add'
+        },
+
+        sidebar: {
+            recommendationsButton: 'Recommendations',
+            returnButton: 'Return'
         }
     },
     
@@ -109,9 +139,39 @@ export const messages = {
             }
         },
 
+        home: {
+            greetings: 'Hallo',
+            startNewResearch: 'Neue Recherche starten',
+            myResearches: 'Meine Recherchen',
+        },
+
+        researchCard: {
+            added: 'hinzugefügte',
+            enqueued: 'gemerkte',
+            paper: 'Artikel',
+            startedOn: 'gestartet am',
+            open: 'Öffnen'
+        },
+
+        researchOverview: {
+            overview: 'Übersicht',
+            enqueued: 'Für später gemerkt',
+            hidden: 'Ausgeblendet'
+        },
+
         organizableList: {
-            organizeButton: 'Filtereinstellungen',
-            organize: 'Filtern'
+            organizeButton: 'Organisieren',
+            filterSettings: 'Filtereinstellungen',
+            export: 'Exportieren'
+        },
+
+        researchOverviewCard: {
+            add: 'Hinzufügen'
+        },
+
+        sidebar: {
+            recommendationsButton: 'Empfehlungen',
+            returnButton: 'Zurück'
         }
     }
 }

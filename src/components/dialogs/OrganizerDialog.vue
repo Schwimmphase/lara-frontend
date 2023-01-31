@@ -1,7 +1,7 @@
 <template>
     <div>
         <lara-button type="outline" icon="mdi-filter" class="w-100" id="filter-button" @click="state.dialog = true">
-            {{ $t('organizableList.organizeButton') }}
+            {{ $t('organizableList.filterSettings') }}
         </lara-button>
         <v-dialog v-model="state.dialog" persistent>
             <v-card id="dialog">
@@ -17,7 +17,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-container>
-                        <lara-button type="primary" @click="closeDialog">{{ $t('organizableList.organize') }}</lara-button>
+                        <lara-button type="primary" @click="closeDialog">{{ $t('organizableList.organizeButton') }}</lara-button>
                     </v-container>
                 </v-card-actions>
             </v-card>

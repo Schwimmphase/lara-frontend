@@ -11,5 +11,5 @@ let navigateToRecommendations = ():void => {
 </script>
 
 <template>
-    <lara-button type="primary" @click="navigateToRecommendations">Empfehlungen</lara-button>
+    <lara-button type="primary" @click="navigateToRecommendations">{{ $t('sidebar.recommendationsButton') }}</lara-button>
 </template>
