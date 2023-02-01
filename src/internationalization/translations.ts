@@ -85,6 +85,12 @@ export const messages = {
             enqueued: 'enqueued',
             added: 'added',
             hidden: 'hidden'
+        },
+
+        researchEditDialog: {
+            title: 'Title',
+            description: 'Description',
+            save: 'Save changes'
         }
     },
     
@@ -160,7 +166,7 @@ export const messages = {
 
         organizableList: {
             organizeButton: 'Organisieren',
-            filterSettings: 'Filtereinstellungen',
+            filterSettings: 'Filtereinstellungen'
         },
 
         researchOverviewCard: {
@@ -174,6 +180,12 @@ export const messages = {
             enqueued: 'gemerkt',
             added: 'hinzugefügt',
             hidden: 'ausgeblendet'
+        },
+
+        researchEditDialog: {
+            title: 'Titel',
+            description: 'Beschreibung',
+            save: 'Änderungen speichern'
         }
     }
 }
