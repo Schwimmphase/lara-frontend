@@ -50,7 +50,7 @@ class BasicApiHandler {
     public buildResearch(data: string): Research {
         let research = testResearch; // TODO: replace this line by the commented line below once the backend people have updated their api response according to the yml definition
         //let research = plainToInstance(Research, data); // TODO: check if research.started was translated correctly
-        research.comment = this.buildComment(research.comment.text.toString());
+        research.comment = this.buildComment(research.comment.toString());
         //research.user = this.buildUser(research.user.toString()); // TODO: uncomment once the backend people have updated their api response according to the yml definition
         return research;
     }
@@ -71,12 +71,11 @@ class BasicApiHandler {
         //let savedPaper = plainToInstance(SavedPaper, data);
         savedPaper.paper = this.buildPaper(savedPaper.paper.toString());
         savedPaper.research = this.buildResearch(savedPaper.research.toString());
-        savedPaper.comment = this.buildComment(savedPaper.comment.text.toString());
+        savedPaper.comment = this.buildComment(savedPaper.comment.toString());
         let tags: Tag[] = [];
         for (let tag of savedPaper.tags) {
             tags.push(this.buildTag(tag.toString()));
         }
-        console.log(savedPaper.saveState);
         return savedPaper;
     }
 
