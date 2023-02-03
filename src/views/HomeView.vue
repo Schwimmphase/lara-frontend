@@ -48,7 +48,7 @@ function onEdited(research: Research, title: String, description: String) {
 
 // get username & researches of user
 let currentUser = useCurrentUserStore().getCurrentUser;
-ResearchApiHandler.getAllResearchesByUser(currentUser!);
+ResearchApiHandler.getAllResearchesByUser();
 let researches = useResearchesStore().getResearches;
 researches.push(testResearch); // TODO: nur zu Testzwecken
 
