@@ -4,8 +4,7 @@ import type { Author } from './Author'
 export class Paper {
     readonly paperId: string;
     readonly title: string;
-    // TODO ONLY TEST, change to authors
-    author: Author[];
+    authors: Author[];
     readonly year: number;
     readonly abstract: string;
     readonly citationCount: number;
@@ -16,7 +15,7 @@ export class Paper {
     constructor(paperId: string, title: string, authors: Author[], year: number, abstract: string, citationCount: number, referenceCount: number, venue: string, pdfUrl: string) {
         this.paperId = paperId;
         this.title = title;
-        this.author = authors;
+        this.authors = authors;
         this.year = year;
         this.abstract = abstract;
         this.citationCount = citationCount;

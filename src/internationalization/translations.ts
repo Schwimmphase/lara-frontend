@@ -69,6 +69,11 @@ export const messages = {
             open: 'Open'
         },
 
+        newResearchDialog: {
+            title: 'Title',
+            description: 'Description'
+        },
+
         researchOverview: {
             overview: 'Overview',
             enqueued: 'Enqueued',
@@ -169,6 +174,11 @@ export const messages = {
             addedAndEnqueuedPapers: '{added} hinzugefügte, {enqueued} gemerkte Artikel',
             startedOn: 'gestartet am {startedOn}',
             open: 'Öffnen'
+        },
+
+        newResearchDialog: {
+            title: 'Titel',
+            description: 'Beschreibung'
         },
 
         researchOverview: {

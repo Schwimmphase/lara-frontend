@@ -4,7 +4,9 @@
         <h1 class="text-h3 font-weight-bold">{{ $t('home.greetings', {username: currentUser!.username}) }}</h1>
 
         <div style="width: 300px">
-            <lara-button class="mt-8 mb-8" type="primary">{{ $t('home.startNewResearch') }}</lara-button>
+            <NewResearchDialog :button-text="$t('home.startNewResearch')" title="" description="" @save="(title, description) => newResearchCreated(title, description)">
+                <lara-button class="mt-8 mb-8" type="primary" @click="">{{ $t('home.startNewResearch') }}</lara-button>
+            </NewResearchDialog>
         </div>
 
         <h2 class="text-h4 font-weight-bold">{{ $t('home.myResearches') }}</h2>
@@ -39,6 +41,8 @@ import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
 import { useResearchesStore } from "@/stores/researches";
 import { useOpenResearchStore } from "@/stores/openResearch";
 import { useOpenPaperStore } from "@/stores/openPaper";
+import NewResearchDialog from "@/components/dialogs/NewResearchDialog.vue";
+import { Comment } from "@/model/Comment";
 
 function onEdited(research: Research, title: String, description: String) {
     console.debug("New name and title for research: ");
@@ -55,6 +59,12 @@ researches.push(testResearch); // TODO: nur zu Testzwecken
 // reset open research/paper
 useOpenResearchStore().resetStore();
 useOpenPaperStore().resetStore();
+
+async function newResearchCreated(title: string, description: string) {
+    const research = await ResearchApiHandler.createResearch(title, new Comment(description));
+    useResearchesStore().addResearch(research);
+    researches = useResearchesStore().getResearches;
+}
 
 </script>
 
