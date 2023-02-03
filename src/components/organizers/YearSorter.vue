@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { reactive } from "@vue/reactivity";
+import { defineEmits } from "vue";
 
 let state = reactive({
     sortByYear: false,
-    descending: true,
+    descending: 'true',
 });
 
 let emit = defineEmits(['update']);
