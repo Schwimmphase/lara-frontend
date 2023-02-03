@@ -63,7 +63,7 @@ openPaperStore.$subscribe((mutation, state) => {
             <div class="ma-10">
                 <span class="text-h2 font-weight-bold">{{ detailState.openPaper?.paper?.title }}</span><br>
                 <div class="mt-5">
-                    <span class="text-h4 font-weight-bold">Abstract</span><br>
+                    <span class="text-h4 font-weight-bold">{{ $t('detailView.abstract') }}</span><br>
                     <span class="text-h5">
                         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
                     </span>
@@ -72,25 +72,25 @@ openPaperStore.$subscribe((mutation, state) => {
                 <v-divider class="mt-5"></v-divider>
 
                 <div class="mt-5">
-                    <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.informations') }}</span><br>
+                    <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.information') }}</span><br>
                     <div class="mb-2 text-h4">
                         <!-- TODO Sobald AUTHORS wieder ändern -->
                         <span v-for="(author, index) in detailState.openPaper?.paper?.author" :key="index" class="font-weight-bold text-h5">{{ author.name }}</span>
                     </div>
-                    <span class="text-h5">{{ detailState.openPaper?.paper?.year }} - {{ detailState.openPaper?.paper?.venue }} - {{ detailState.openPaper?.paper?.citationCount }} mal zitiert - {{ detailState.openPaper?.paper?.referenceCount }} Referenzen</span>
+                    <span class="text-h5">{{ $t('detailView.year_venue_timesCited_timesReferenced', {year: detailState.openPaper?.paper?.year, venue: detailState.openPaper?.paper?.venue, timesCited: detailState.openPaper?.paper?.citationCount, timesReferenced: detailState.openPaper?.paper?.referenceCount}) }}</span>
                     <v-divider class="my-3"></v-divider>
                 </div>
                 
             </div>
         </div>
 
-        <!-- Paper is not saved but pdf is not available -->
+        <!-- Paper is saved but pdf is not available -->
         <div class="w-100 h-100" v-if="detailState.openPaper?.saved && !detailState.openPaper?.savedPaper?.paper.pdfUrl == null">
             <!-- Display the abstract of the paper and some additional informations -->
             <div class="ma-10">
                 <span class="text-h2 font-weight-bold">{{ detailState.openPaper?.paper?.title }}</span><br>
                 <div class="mt-5">
-                    <span class="text-h4 font-weight-bold">Abstract</span><br>
+                    <span class="text-h4 font-weight-bold">{{ $t('detailView.abstract') }}</span><br>
                     <span class="text-h5">
                         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
                     </span>
@@ -99,12 +99,12 @@ openPaperStore.$subscribe((mutation, state) => {
                 <v-divider class="mt-5"></v-divider>
 
                 <div class="mt-5">
-                    <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.informations') }}</span><br>
+                    <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.information') }}</span><br>
                     <div class="mb-2 text-h4">
                         <!-- TODO Sobald AUTHORS wieder rausnehmen -->
                         <span v-for="(author, index) in detailState.openPaper?.paper?.author" :key="index" class="font-weight-bold text-h5">{{ author.name }}</span>
                     </div>
-                    <span class="text-h5">{{ detailState.openPaper?.paper?.year }} - {{ detailState.openPaper?.paper?.venue }} - {{ detailState.openPaper?.paper?.citationCount }} mal zitiert - {{ detailState.openPaper?.paper?.referenceCount }} Referenzen</span>
+                    <span class="text-h5">{{ $t('detailView.year_venue_timesCited_timesReferenced', {year: detailState.openPaper?.paper?.year, venue: detailState.openPaper?.paper?.venue, timesCited: detailState.openPaper?.paper?.citationCount, timesReferenced: detailState.openPaper?.paper?.referenceCount}) }}</span>
                     <v-divider class="my-3"></v-divider>
                 </div>
                 
@@ -121,7 +121,7 @@ openPaperStore.$subscribe((mutation, state) => {
             <iframe :src="detailState.openPaper.paper?.pdfUrl" class="w-100 h-100" frameborder="0"></iframe>
         </div>
 
-        <div v-else>Leider ist ein Fehler aufgetreten!</div>
+        <div v-else>{{ $t('detailView.errorGettingPdf') }}</div>
     </div>
     
     <!-- API Call still loading -->

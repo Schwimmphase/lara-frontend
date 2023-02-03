@@ -9,9 +9,15 @@ export const messages = {
             changeLanguage: 'Change language'
         },
 
+        detailView: {
+            abstract: 'Abstract',
+            year_venue_timesCited_timesReferenced: '{year} - {venue} - cited {timesCited} times - referenced {timesReferenced} times',
+            errorGettingPdf: 'Unfortunately there has been an error!'
+        },
+
         detailSidebar: {
             citationCount: 'No Citations | One Citation | {n} Citations',
-            referenceCount: 'No Reference | One References | {n} References',
+            referenceCount: 'No Reference | One Reference | {n} References',
             information: 'Information',
             comments: 'Comments',
             tags: 'Tags',
@@ -96,6 +102,12 @@ export const messages = {
     
     de: {
         test: 'Das ist ein kleiner Test!',
+        
+        detailView: {
+            abstract: 'Abstract',
+            year_venue_timesCited_timesReferenced: '{year} - {venue} - {timesCited} mal zitiert - {timesReferenced} mal referenziert',
+            errorGettingPdf: 'Leider ist ein Fehler aufgetreten!'
+        },
 
         navbar: {
             logout: 'Abmelden',
