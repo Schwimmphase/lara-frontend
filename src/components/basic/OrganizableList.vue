@@ -35,8 +35,8 @@ import LaraButton from "@/components/basic/LaraButton.vue";
 import OrganizerDialog from "@/components/dialogs/OrganizerDialog.vue";
 
 export interface Slot {
-    id: String,
-    name?: String
+    id: string,
+    name?: string
 }
 
 export interface Organizer {
