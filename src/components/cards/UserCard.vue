@@ -7,15 +7,14 @@
         </v-card-title>
 
         <v-card-actions class="my-2 mx-4 pa-0">
-            <lara-button type="primary" id="edit-button">{{ $t('admin.editUser') }}</lara-button>
-
-            <v-spacer></v-spacer>
-
             <user-edit-dialog :user="user" @save="(username, password) => onDialogSave(username, password)"
                               :user-categories="userCategories" :button-text="$t('admin.userDialog.buttonEdit')"
                               :password-change="true">
-                <v-btn size="small" color="surface-variant" variant="text" icon="mdi-pencil"></v-btn>
+                <lara-button type="primary" id="edit-button">{{ $t('admin.editUser') }}</lara-button>
             </user-edit-dialog>
+
+            <v-spacer></v-spacer>
+
             <v-btn size="small" color="red" variant="text" icon="mdi-delete"
                    v-if="deletable" @click="$emit('delete')">
             </v-btn>
