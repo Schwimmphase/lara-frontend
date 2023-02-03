@@ -1,18 +1,20 @@
+import type { Organizer } from "@/model/Organizer";
 import BasicApiCaller from "../BasicApiCaller";
+import type { UserCategory } from "@/model/UserCategory";
 
 export class AdminApiCaller {
     static urlUsermanagement = '/usermanagement/';
     static urlCategory = '/category/';
 
-    public static getUsers(organizerList: string) {
+    public static getUsers(organizers: Organizer[]) {
         return BasicApiCaller.axiosInstance.get(this.urlUsermanagement, {
             data: {
-                "organizers": organizerList
+                "organizers": organizers
             }
         });
     }
 
-    public static createUser(username: string, password: string, userCategory: string) {
+    public static createUser(username: string, password: string, userCategory: UserCategory) {
         return BasicApiCaller.axiosInstance.post(this.urlUsermanagement, {
             data: {
                 "username": username,
@@ -22,7 +24,7 @@ export class AdminApiCaller {
         });
     }
 
-    public static updateUser(userId: string, username: string, password: string, userCategory: string) {
+    public static updateUser(userId: string, username: string, password: string, userCategory: UserCategory) {
         return BasicApiCaller.axiosInstance.patch(this.urlUsermanagement + userId, {
             data: {
                 "username": username,

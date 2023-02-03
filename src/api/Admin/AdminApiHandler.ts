@@ -7,7 +7,7 @@ import type { User } from "@/model/User";
 
 export class AdminApiHandler {
     public static async getUsers(organizers: Organizer[]): Promise<User[]> {
-        const response = await AdminApiCaller.getUsers(JSON.stringify(organizers));
+        const response = await AdminApiCaller.getUsers(organizers);
         let data = BasicApiHandler.tryParseJson(response.data);
         let users: User[] = []
         for (let user of data) {
@@ -17,13 +17,13 @@ export class AdminApiHandler {
     }
 
     public static async createUser(username: string, password: string, userCategory: UserCategory): Promise<User> {
-        const response = await AdminApiCaller.createUser(username, password, JSON.stringify(userCategory));
+        const response = await AdminApiCaller.createUser(username, password, userCategory);
         let data = BasicApiHandler.tryParseJson(response.data);
         return BasicApiHandler.buildUser(data);
     }
 
     public static async updateUser(user: User, username: string, password: string, userCategory: UserCategory): Promise<User> {
-        const response = await AdminApiCaller.updateUser(user.userId, username, password, JSON.stringify(userCategory));
+        const response = await AdminApiCaller.updateUser(user.userId, username, password, userCategory);
         let data = BasicApiHandler.tryParseJson(response.data);
         return BasicApiHandler.buildUser(data);
     }
