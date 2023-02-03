@@ -6,7 +6,7 @@ import LaraButton from "../basic/LaraButton.vue";
 
 const emit = defineEmits(['year-change']);
 
-let extremas = reactive({ min: 1950, max: (new Date()).getFullYear()});
+let extremas = reactive({ min: 1900, max: (new Date()).getFullYear()});
 let state = ref([extremas.min + 20, extremas.max - 20]);
 
 let updateParent = () => {
@@ -17,21 +17,18 @@ watch(state, (newState, oldState) => {
     updateParent();
 });
 
-let calcChange = () => {
-    if (state.value[0] < extremas.min) {
-        extremas.min = state.value[0];
-    }
-
-    if (state.value[1] > extremas.max) {
-        extremas.max = state.value[1];
-    }
-
-    updateParent();
+// Method for the user to increase the max by button click
+let increaseMax = () => {
+    extremas.max += 5;
+    state.value[1] = extremas.max;
 }
 
-
-let test = () => {
-    console.log("MOin");
+// Method for the user to decrease the min by button click
+let decreaseMin = () => {
+    if (extremas.min >= 5) {
+        extremas.min -= 5;
+        state.value[0] = extremas.min;
+    }
 }
 
 </script>
@@ -39,6 +36,15 @@ let test = () => {
 <template>
     <div class="d-flex">
         <v-range-slider @change:modelValue="updateParent" v-model:model-value="state" :step="1" strict :min="extremas.min" :max="extremas.max" thumb-label="always">
+            <template v-slot:prepend>
+                <lara-button icon="mdi-calendar" @click="decreaseMin" type="outline">früher</lara-button>
+            </template>
+
+            <template v-slot:append>
+                <lara-button icon="mdi-calendar" @click="increaseMax" type="outline">später</lara-button>
+            </template>
+
+            <!--
             <template v-slot:prepend>
                 <v-text-field
                     v-model:model-value="state[0]"
@@ -65,7 +71,14 @@ let test = () => {
                     
                 ></v-text-field>
             </template>
+            -->
         </v-range-slider>
     </div>
     
 </template>
+
+<style scoped>
+
+@import '../../assets/main.css';
+
+</style>
