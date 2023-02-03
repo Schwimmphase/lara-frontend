@@ -1,7 +1,7 @@
 <template>
 
     <v-container class="w-75 pt-8">
-        <h1 class="text-h3 font-weight-bold">{{ $t('home.greetings') }} {{ currentUser!.username }}!</h1>
+        <h1 class="text-h3 font-weight-bold">{{ $t('home.greetings', {username: currentUser!.username}) }}</h1>
 
         <div style="width: 300px">
             <lara-button class="mt-8 mb-8" type="primary">{{ $t('home.startNewResearch') }}</lara-button>
@@ -27,6 +27,7 @@
 
 </template>
 
+
 <script setup lang="ts">
 
 import ResearchCard from "@/components/cards/ResearchCard.vue";
@@ -36,6 +37,8 @@ import { testResearch } from "@/model/_testResearch";
 import { useCurrentUserStore } from "@/stores/currentUser";
 import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
 import { useResearchesStore } from "@/stores/researches";
+import { useOpenResearchStore } from "@/stores/openResearch";
+import { useOpenPaperStore } from "@/stores/openPaper";
 
 function onEdited(research: Research, title: String, description: String) {
     console.debug("New name and title for research: ");
@@ -47,9 +50,14 @@ function onEdited(research: Research, title: String, description: String) {
 let currentUser = useCurrentUserStore().getCurrentUser;
 ResearchApiHandler.getAllResearchesByUser(currentUser!);
 let researches = useResearchesStore().getResearches;
-researches.push(testResearch);
+researches.push(testResearch); // TODO: nur zu Testzwecken
+
+// reset open research/paper
+useOpenResearchStore().resetStore();
+useOpenPaperStore().resetStore();
 
 </script>
+
 
 <style>
 

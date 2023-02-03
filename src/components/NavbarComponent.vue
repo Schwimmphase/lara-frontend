@@ -5,23 +5,23 @@
 
 <script setup lang="ts">
 
-import router from '../router';
-
 import { LanguageService } from '../internationalization/LanguageService';
 
 import { i18n } from '../internationalization/i18n'
 import { useCurrentUserStore } from '@/stores/currentUser';
+import { useOpenResearchStore } from '@/stores/openResearch';
+import { useOpenPaperStore } from '@/stores/openPaper';
 
-// Function to logout the user
+// function to logout the user
 function logout(): void {
+    useOpenResearchStore().resetStore();
+    useOpenPaperStore().resetStore();
     useCurrentUserStore().resetStore();
 
     // delete token
     let inOneSecond = new Date();
     inOneSecond.setSeconds(inOneSecond.getSeconds() + 1);
     document.cookie = "lara-token=; expires " + inOneSecond.toUTCString() + "; path=/;";
-
-    router.push({ name: 'login' });
 }
 
 function isUserLoggedIn(): boolean {
@@ -50,6 +50,7 @@ let changeLanguage = (lang: string) => {
 let languages = LanguageService.getLanguages();
 
 </script>
+
 
 <template>
 
@@ -80,11 +81,12 @@ let languages = LanguageService.getLanguages();
         <div class="mr-6">
             <router-link class="ml-6 lara-navbar-link" v-if="isUserAdmin()" :to="{ name: 'admin' }">{{ $t('navbar.manageUsers') }}</router-link>
             <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'home' }">{{ $t('navbar.home') }}</router-link>
-            <span v-if="isUserLoggedIn()" class="ml-6 lara-navbar-link" @click="logout()">{{ $t('navbar.logout') }}</span>
+            <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'login' }" @click.native="logout">{{ $t('navbar.logout') }}</router-link>
         </div>
     </v-app-bar>
 
 </template>
+
 
 <style scoped>
 

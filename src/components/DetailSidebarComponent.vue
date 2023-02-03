@@ -13,54 +13,51 @@ import type { SavedPaper } from '../model/SavedPaper';
 import type { Paper } from '../model/Paper';
 import { Comment } from '../model/Comment'
 import type { Tag } from '../model/Tag'
-import type { OpenPaper } from '../stores/model/OpenPaper';
+import { OpenPaper } from '../stores/model/OpenPaper';
 import { SaveState } from '../model/SaveState';
 import type { Research } from '../model/Research';
 import { useOpenResearchStore } from '@/stores/openResearch';
+import { CachedPaper } from '@/model/CachedPaper';
+import { testOpenPaper, testPaper, testResearch } from '@/model/_testResearch';
+import router from '@/router';
+import { CachedPaperType } from '@/model/CachedPaperType';
 
 
-// Store for the openResearch
-let researchStore = useOpenResearchStore();
-
-// State for the research currently opened
-let researchState: { research: Research | null } = reactive({
-    research: null,
-});
-
-researchStore.$subscribe((mutation, state) => {
-    // If the research is changed, set the state for the openResearch to that new research
-    console.log("RECHERCHE GEÄNDERT")
-    researchState.research = state.openResearch;
-});
-
-// Use the store for the openPaper
+// Store for the openResearch and openPaper
+let openResearchStore = useOpenResearchStore();
 let openPaperStore = useOpenPaperStore();
 
-// State for the openPaper
-let detailState: { openPaper: OpenPaper | null} = reactive({
-    openPaper: null
+// States for the research/paper currently opened
+let researchState: { research: Research | undefined } = reactive({
+    research: undefined
+});
+let detailState: { openPaper: OpenPaper | undefined} = reactive({
+    openPaper: undefined
 });
 
+// Set the openResearch/openPaper state to the openResearch/openPaper saved in the store
+researchState.research = openResearchStore.getResearch;
+detailState.openPaper = openPaperStore.getPaper;
+openResearchStore.$subscribe((mutation, state) => {
+    // If the research is changed, set the state for the openResearch to that new research
+    console.log("RECHERCHE GEÄNDERT");
+    researchState.research = state.openResearch;
+});
 openPaperStore.$subscribe((mutation, state) => {
     // When a change in the paper is detected, update the state
     detailState.openPaper = state.paper;
 });
 
-// Set the openPaperState to the openPaper saved in the store
-detailState.openPaper = openPaperStore.getPaper;
-
-// State for the comment of the openPaper
+// State for the comment/relevance of the openPaper
 let commentState: { data: string | undefined } = reactive({
     data: detailState.openPaper?.saved ? detailState.openPaper.savedPaper?.comment.text : ""
 });
-
-// State for the relevance of the openPaper
 let relevanceState: { data: number | undefined } = reactive({
     data: detailState.openPaper?.saved ? detailState.openPaper.savedPaper?.relevance : 0
 });
 
 
-// Method to change comment of the paper currently viewed
+// Methods to change comment/tag/saveState/relevance of the paper currently viewed
 let changeComment = (text: string | undefined): void => {
     if (text == undefined || detailState.openPaper == null) {
         console.error("CHANGE_COMMENT : Argument null / undefined");
@@ -75,11 +72,31 @@ let changeComment = (text: string | undefined): void => {
     console.debug("Change comment " + text);
 
     PaperApiHandler.changeComment(detailState.openPaper.savedPaper, new Comment(text));
-
-    // TODO Call API to change the comment and force reload
+    router.go(0); // reload the page
 }
 
-// Method to change the relevance of a paper
+let deleteTag = (tag: Tag): void => {
+    if (detailState.openPaper == null || detailState.openPaper.savedPaper == null) {
+        console.error("DELETE_TAG : No saved paper");
+        return;
+    }
+    
+    console.debug("Close Tag" + tag.name);
+    
+    PaperApiHandler.removeTag(detailState.openPaper.savedPaper, tag);
+    router.go(0); // reload the page
+}
+
+let changeSaveState = (savedPaper: SavedPaper | undefined, state: SaveState): void => {
+    if (savedPaper === undefined) {
+        console.error("CHANGE_SAVE_STATE : No valid savedPaper provided");
+        return;
+    }
+    
+    PaperApiHandler.changeSaveState(savedPaper, state);
+    router.go(0); // reload the page
+}
+
 let changeRelevance = (relevance: number | undefined): void => {
     if (relevance == undefined || detailState.openPaper == null) {
         console.error("CHANGE_RELEVANCE : Argument null / undefined");
@@ -94,11 +111,9 @@ let changeRelevance = (relevance: number | undefined): void => {
     console.debug("Change relevance : " + relevance);
 
     PaperApiHandler.changeRelevance(detailState.openPaper.savedPaper, relevance);
-
-    // TODO Call API to change the relevance and force reload
+    router.go(0); // reload the page
 }
 
-// Watcher for the state of the relevance
 watch(relevanceState, async (value) => {
     if (value == undefined) {
         return;
@@ -107,19 +122,6 @@ watch(relevanceState, async (value) => {
     changeRelevance(value.data);
 });
 
-// Method to delete a given tag
-let deleteTag = (tag: Tag): void => {
-    if (detailState.openPaper == null || detailState.openPaper.savedPaper == null) {
-        console.error("DELETE_TAG : No saved paper");
-        return;
-    }
-
-    console.debug("Close Tag" + tag.name);
-
-    PaperApiHandler.removeTag(detailState.openPaper.savedPaper, tag);
-
-    // TODO Call API to delete tag and force reload
-}
 
 // Method to create a saved Paper from a paper with a given saveState
 let createSavedPaper = (paper: Paper | null | undefined, state: SaveState): void => {
@@ -128,31 +130,41 @@ let createSavedPaper = (paper: Paper | null | undefined, state: SaveState): void
         console.error("CREATE_SAVE_PAPER : Argument null / undefined");
         return;
     }
-
-    console.debug("Save Paper : " + paper.paperId + " = " + state);
-
-    ResearchApiHandler.savePaper(researchState.research, paper, state);
-
-    // TODO Call API to create paper and force reload
-}
-
-let changeSaveState = (savedPaper: SavedPaper | null, state: SaveState): void => {
-    if (savedPaper == null) {
-        console.error("CHANGE_SAVE_STATE : No valid savedPaper provided");
-        return;
-    }
     
-    PaperApiHandler.changeSaveState(savedPaper, state);
-
-    // TODO Call API and force reload
+    console.debug("Save Paper : " + paper.paperId + " = " + state);
+    
+    ResearchApiHandler.savePaper(researchState.research, paper, state);
+    router.go(0); // reload the page
 }
 
-// Method to get the recommendations, citations and references of the openedPaper
-let getRecommendations = () => {
-    console.log("getRecommendations")
 
-    // TODO Get recommendations from API and display them
+// state and methods to accumulate recommendations, citations and references of openPaper
+let recommendationsStore: { recommendations: Paper[], citations: CachedPaper[], references: CachedPaper[] } = reactive({
+    recommendations: [],
+    citations: [],
+    references: []
+});
+
+let getRecommendations = async () => {
+    //let recommendations = await PaperApiHandler.getRecommendations(testPaper, testResearch, []);
+    let recommendations = [testPaper, testPaper]; // TODO: nur zu Testzwecken
+    recommendations.forEach(recommendation => recommendationsStore.recommendations.push(recommendation));
 }
+getRecommendations();
+
+let getCitations = async () => {
+    //let citations = await PaperApiHandler.getCitations(testPaper, testResearch, []);
+    let citations = [new CachedPaper(testPaper, testPaper, testResearch, CachedPaperType.reference), new CachedPaper(testPaper, testPaper, testResearch, CachedPaperType.reference)]; // TODO: nur zu Testzwecken
+    citations.forEach(citation => recommendationsStore.citations.push(citation));
+}
+getCitations();
+
+let getReferences = async () => {
+    // let references = await PaperApiHandler.getReferences(testPaper, testResearch, []);
+    let references = [new CachedPaper(testPaper, testPaper, testResearch, CachedPaperType.reference), new CachedPaper(testPaper, testPaper, testResearch, CachedPaperType.reference)]; // TODO: nur zu Testzwecken
+    references.forEach(reference => recommendationsStore.references.push(reference));
+}
+getReferences();
 
 </script>
 
@@ -163,7 +175,7 @@ let getRecommendations = () => {
             <!-- Section for a saved paper -->
             <div v-if="detailState.openPaper?.saved">
                 <div>
-                    <span class="text-h5">{{ $t('detailSidebar.informations') }}</span><br>
+                    <span class="text-h5">{{ $t('detailSidebar.information') }}</span><br>
                     <div>
                         <!-- TODO Sobald AUTHORS wieder rausnehmen -->
                         <span v-for="(author, index) in detailState.openPaper?.savedPaper?.paper.author" :key="index" class="font-weight-bold">{{ author.name }}</span>
@@ -198,8 +210,8 @@ let getRecommendations = () => {
                             empty-icon="mdi-star-outline"
                             color="orange"
                         ></v-rating>
-                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState != SaveState.hidden" class="lara-hide-button" @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper.savedPaper, SaveState.hidden) : null">mdi-eye-off</v-icon>
-                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState == SaveState.hidden" class="lara-hide-button" @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper.savedPaper, SaveState.hidden) : null">mdi-eye</v-icon>
+                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState != SaveState.hidden" class="lara-hide-button" @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.hidden) : null">mdi-eye-off</v-icon>
+                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState == SaveState.hidden" class="lara-hide-button" @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.hidden) : null">mdi-eye</v-icon>
                     </div>
                     <v-divider class="my-3"></v-divider>
                 </div>
@@ -208,7 +220,7 @@ let getRecommendations = () => {
             <!-- Section for a paper thats not saved -->
             <div v-if="!detailState.openPaper?.saved">
                 <div>
-                    <span class="text-h5">{{ $t('detailSidebar.informations') }}</span><br>
+                    <span class="text-h5">{{ $t('detailSidebar.information') }}</span><br>
                     <div>
                         <!-- TODO SOBALD DAS FELD AUTHORS HEIßT WIEDER RAUSNEHMEN!! -->
                         <span v-for="(author, index) in detailState.openPaper?.paper?.author" :key="index" class="font-weight-bold">{{ author.name }}</span>
@@ -218,9 +230,9 @@ let getRecommendations = () => {
                 </div>
                 
                 <div class="mt-4">
-                    <lara-button type="primary" @click="detailState.openPaper !== null ? createSavedPaper( detailState.openPaper.paper, SaveState.added) : null">{{ $t('detailSidebar.add') }}</lara-button>
-                    <lara-button class="mt-2" type="secondary" @click="detailState.openPaper !== null ? createSavedPaper(detailState.openPaper.paper, SaveState.enqueued) : null">{{ $t('detailSidebar.enqueue') }}</lara-button>
-                    <lara-button class="lara-hide-button mt-2" type="outline" @click="detailState.openPaper !== null ? createSavedPaper(detailState.openPaper.paper, SaveState.hidden) : null">
+                    <lara-button type="primary" @click="detailState.openPaper !== null ? createSavedPaper( detailState.openPaper?.paper, SaveState.added) : null">{{ $t('detailSidebar.add') }}</lara-button>
+                    <lara-button class="mt-2" type="secondary" @click="detailState.openPaper !== null ? createSavedPaper(detailState.openPaper?.paper, SaveState.enqueued) : null">{{ $t('detailSidebar.enqueue') }}</lara-button>
+                    <lara-button class="lara-hide-button mt-2" type="outline" @click="detailState.openPaper !== null ? createSavedPaper(detailState.openPaper?.paper, SaveState.hidden) : null">
                         <v-icon>mdi-eye-off</v-icon>
                     </lara-button>
                     <v-divider class="my-3"></v-divider>
@@ -229,22 +241,28 @@ let getRecommendations = () => {
 
 
 
-            <!-- Section for the recommendations of the paper currently viewed -->
+            <!-- Section for the recommendations, citations and references of the paper currently viewed -->
             <div class="mt-3">
-                <!-- TODO Use recommendations from API -->
                 <div>
                     <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.recommendations') }}</span><br>
 
+                    <div v-for="recommendation in recommendationsStore.recommendations">
+                        <router-link class="text-h6 lara-recommendation-link" :to="{ name: 'paperDetails', query: {paper: recommendation.paperId}}" @click.native="openPaperStore.setPaper(new OpenPaper(recommendation, undefined, false))">{{ recommendation.title }}</router-link><br>
+                    </div>
                 </div>
                 <div class="mt-2">
                     <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.citations') }}</span><br>
 
-                    <router-link class="text-h6 lara-recommendation-link" :to="{ name: 'paperDetails', query: {paper: '12345'}}">Titel 1 von Paper</router-link><br>
-                    <router-link class="text-h6 lara-recommendation-link" :to="{ name: 'paperDetails', query: {paper: '12345'}}">Titel 1 von Paper</router-link><br>
+                    <div v-for="citation in recommendationsStore.citations">
+                        <router-link class="text-h6 lara-recommendation-link" :to="{ name: 'paperDetails', query: {paper: citation.paper.paperId}}" @click.native="openPaperStore.setPaper(new OpenPaper(citation.paper, undefined, false))">{{ citation.paper.title }}</router-link><br>
+                    </div>
                 </div>
                 <div class="mt-2">
                     <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.references') }}</span><br>
-                    
+
+                    <div v-for="reference in recommendationsStore.references">
+                        <router-link class="text-h6 lara-recommendation-link" :to="{ name: 'paperDetails', query: {paper: reference.paper.paperId}}" @click.native="openPaperStore.setPaper(new OpenPaper(reference.paper, undefined, false))">{{ reference.paper.title }}</router-link><br>
+                    </div>
                 </div>
             </div>
         </div>

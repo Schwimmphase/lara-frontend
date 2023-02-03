@@ -7,15 +7,15 @@
                     <v-form v-model="valid">
                         <div class="d-flex flex-column">
                             <v-text-field class="lara-field" variant="outlined"
-                                          v-model="state.title" :counter="32" label="Titel"></v-text-field>
+                                          v-model="state.title" :counter="32" :label="$t('researchEditDialog.title')"></v-text-field>
                             <v-textarea class="lara-field mt-4" variant="outlined"
-                                        v-model="state.description" :counter="256" label="Beschreibung"></v-textarea>
+                                        v-model="state.description" :counter="256" :label="$t('researchEditDialog.description')"></v-textarea>
                         </div>
                     </v-form>
                 </v-card-text>
                 <v-card-actions>
                     <v-container>
-                        <lara-button type="primary" @click="closeDialog">Speichern</lara-button>
+                        <lara-button type="primary" @click="closeDialog">{{ $t('researchEditDialog.save') }}</lara-button>
                     </v-container>
                 </v-card-actions>
             </v-card>

@@ -1,6 +1,6 @@
 <template>
     <v-container id="container" class="w-75">
-        <h1 class="text-h3 font-weight-bold">{{ $t('admin.greeting', { name: 'Bernd' }) }}</h1>
+        <h1 class="text-h3 font-weight-bold">{{ $t('admin.greeting', { name: currentUser!.username }) }}</h1>
 
         <div class="d-flex flex-row gap-8 mt-8">
             <user-dialog :button-text="$t('admin.userDialog.buttonCreate')" :password-change="false"
@@ -10,7 +10,7 @@
             </user-dialog>
 
             <router-link to="/admin/user-categoris">
-                <lara-button type="secondary" id="create-category-button">{{ $t('admin.editeCategories') }}</lara-button>
+                <lara-button type="secondary" id="create-category-button">{{ $t('admin.editCategories') }}</lara-button>
             </router-link>
         </div>
 
@@ -53,6 +53,13 @@ import type {User} from "@/model/User";
 import {computed} from "vue";
 import UserDialog from "@/components/dialogs/UserDialog.vue";
 import type {UserCategory} from "@/model/UserCategory";
+import { useCurrentUserStore } from "@/stores/currentUser";
+import { useOpenPaperStore } from "@/stores/openPaper";
+import { useOpenResearchStore } from "@/stores/openResearch";
+
+// reset open research/paper store
+useOpenResearchStore().resetStore();
+useOpenPaperStore().resetStore();
 
 const users = [testResearch.user, testResearch.user, testResearch.user];
 
@@ -69,6 +76,8 @@ const userCategoriesStrings = computed<String[]>(() => {
     }
     return strings;
 })
+
+let currentUser = useCurrentUserStore().getCurrentUser;
 
 function onUserCreate(username: String, userCategory: UserCategory, password?: String) {
     console.debug("new user: username: " + username + " - category: " + userCategory.name + " - password: " + password);
