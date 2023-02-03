@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { reactive, ref, watch } from "vue";
+import { reactive, ref, watch, defineEmits } from "vue";
 
 import LaraButton from "../basic/LaraButton.vue";
 
@@ -9,26 +9,38 @@ const emit = defineEmits(['year-change']);
 let extremas = reactive({ min: 1900, max: (new Date()).getFullYear()});
 let state = ref([extremas.min + 20, extremas.max - 20]);
 
+const extremaInterval = 50;
+const maxYear = 3000;
+
 let updateParent = () => {
     emit('year-change', state.value[0], state.value[1]);
 }
 
+updateParent();
+
 watch(state, (newState, oldState) => {
+    console.log("moniasd")
     updateParent();
 });
 
 // Method for the user to increase the max by button click
 let increaseMax = () => {
-    extremas.max += 5;
-    state.value[1] = extremas.max;
+    if (extremas.max <= maxYear - extremaInterval) {
+        extremas.max += extremaInterval;
+        state.value[1] = extremas.max;
+    }
+
+    updateParent();
 }
 
 // Method for the user to decrease the min by button click
 let decreaseMin = () => {
-    if (extremas.min >= 5) {
-        extremas.min -= 5;
+    if (extremas.min >= extremaInterval) {
+        extremas.min -= extremaInterval;
         state.value[0] = extremas.min;
     }
+
+    updateParent();
 }
 
 </script>
