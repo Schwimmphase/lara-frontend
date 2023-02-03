@@ -6,9 +6,6 @@
             <template v-slot:added>
                 <research-overview-card v-for="(savedPaper, index) in testSavedPaperList"
                                         :key="index"
-                                        :title="savedPaper.paper.title"
-                                        :comment="savedPaper.comment === undefined ? '' : savedPaper.comment.text"
-                                        :tags="savedPaper.tags"
                                         :paper="savedPaper"
                                         @open-card="(paper) => openPaper(paper)"
                                         >
@@ -17,9 +14,6 @@
             <template v-slot:enqueued>
                 <research-overview-card v-for="(savedPaper, index) in testSavedPaperList"
                                         :key="index"
-                                        :title="savedPaper.paper.title"
-                                        :comment="savedPaper.comment === undefined ? '' : savedPaper.comment.text"
-                                        :tags="savedPaper.tags"
                                         :paper="savedPaper"
                                         :add-button="true"
                                         @open-card="(paper) => openPaper(paper)"
@@ -29,9 +23,6 @@
             <template v-slot:hidden>
                 <research-overview-card v-for="(savedPaper, index) in testSavedPaperList"
                                         :key="index"
-                                        :title="savedPaper.paper.title"
-                                        :comment="savedPaper.comment === undefined ? '' : savedPaper.comment.text"
-                                        :tags="savedPaper.tags"
                                         :paper="savedPaper"
                                         @open-card="(paper) => openPaper(paper)"
                                         >
@@ -43,8 +34,9 @@
 
 <script setup lang="ts">
 import OrganizableList from "@/components/basic/OrganizableList.vue";
-import type { Organizer } from "@/components/basic/OrganizableList.vue";
-import { testSavedPaperList } from "@/model/_testResearch";
+import type {Organizer} from "@/components/basic/OrganizableList.vue";
+import {testSavedPaperList} from "@/model/_testResearch";
+import type {Research} from "@/model/Research";
 import type { SavedPaper } from "@/model/SavedPaper";
 import { useOpenResearchStore } from "@/stores/openResearch.js";
 import ResearchOverviewCard from "@/components/cards/ResearchOverviewCard.vue";
