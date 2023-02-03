@@ -32,22 +32,19 @@ function isUserAdmin(): boolean {
     return useCurrentUserStore().getIsAdmin;
 }
 
-let changeLanguage = (lang: string) => {
-    switch (lang) {
-        case 'de':
-            i18n.global.locale.value = 'de';        
-            break;
-
-        case 'en':
-            i18n.global.locale.value = 'en';        
-            break;
-        
-        default:
-            i18n.global.locale.value = 'en';
-    }
-}
 
 let languages = LanguageService.getLanguages();
+
+if (!localStorage.getItem('lang')) {
+    localStorage.setItem('lang', i18n.global.locale.value);
+} else {
+    i18n.global.locale.value = localStorage.getItem('lang')! as "en" | "de";
+}
+
+let changeLanguage = (lang: string) => {
+    i18n.global.locale.value = lang as "en" | "de";
+    localStorage.setItem('lang', lang);
+}
 
 </script>
 
@@ -71,8 +68,7 @@ let languages = LanguageService.getLanguages();
                 <v-list>
                     <v-list-item
                     v-for="(language, index) in languages" :key="index" :value="language.abbreviation"
-                    @click="changeLanguage(language.abbreviation)" class="" :class="{ 'lara-selected': (language.abbreviation == (i18n.global.locale).value), 'lara-language-option': (language.abbreviation != (i18n.global.locale).value) }"
-                    >
+                    @click="changeLanguage(language.abbreviation)" class="" :class="{ 'lara-selected': (language.abbreviation == (i18n.global.locale).value), 'lara-language-option': (language.abbreviation != (i18n.global.locale).value) }">
                         <span>{{ language.name }}</span>
                     </v-list-item>
                 </v-list>

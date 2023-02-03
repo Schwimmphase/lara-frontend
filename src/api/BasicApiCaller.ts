@@ -17,8 +17,8 @@ class BasicApiCaller {
             }
             return config;
         }, error => {
-            console.log("error code: ", error.code);
-            console.log("error message: ", error.message);
+            console.log("error code:", error.code);
+            console.log("error message:", error.message);
             return error;
         });
 
@@ -26,23 +26,22 @@ class BasicApiCaller {
         this.axiosInstance.interceptors.response.use(response => {
             return response;
         }, error => {
-            console.log("error code: ", error.code);
-            console.log("error message: ", error.message);
+            console.log("error code:", error.code);
+            console.log("error message:", error.message);
 
             if (error.response) {
                 if (error.response.status == "400") {
-                    throw new Error("False arguments of request, recieved error message: " + error.response.message);
+                    console.error("False arguments of request, recieved error message: " + error.response.message);
                 } else if (error.response.status == "401") {
-                    throw new Error("User not authentificated, recieved error message: " + error.response.message);
+                    console.error("User not authentificated, recieved error message: " + error.response.message);
                 } else if (error.response.status == "403") {
-                    throw new Error("Access forbidden, recieved error message: " + error.response.message);
+                    console.error("Access forbidden, recieved error message: " + error.response.message);
                 } else {
-                    console.log(error.toJSON());
-                    throw new Error("Something went wrong regarding the response of an api call, responded with http status code: "
+                    console.error("Something went wrong regarding the response of an api call, responded with http status code: "
                         + error.response.status);
                 }
             } else {
-                throw new Error("Something went wrong: " + error.code + ", " + error.message);
+                console.error("Something went wrong: " + error.code + ", " + error.message);
             }
         });
     }
