@@ -6,6 +6,7 @@ import YearOrganizer from "@/components/organizers/YearOrganizer.vue"
 
 // TODO  Nur wegen Test
 import { testPaperList } from "@/model/_testResearch";
+import { Organizer } from "@/model/Organizer";
 
 import type { Paper } from "@/model/Paper";
 import type { Research } from "@/model/Research";
@@ -39,12 +40,17 @@ let organizerState: { yearValue: number[] } = reactive({
     yearValue: [],
 });
 
+// Method to call to build the Organizers
 let onOrganize = () => {
-    console.debug(organizerState.yearValue);
+    // Build the year organizer
+    const yearOrganizer = new Organizer("year", JSON.stringify(organizerState.yearValue));
+    console.log(yearOrganizer);
 }
 
+// Get the persistent saved OpenResearch
 let researchStore = useOpenResearchStore();
 
+// Method to get the Recommendations from the API
 let setRecommendations = () => {
     state.research = researchStore.openResearch;
 
@@ -57,9 +63,9 @@ let setRecommendations = () => {
 }
 
 
-let yearChange = (value: number[]) => {
-    console.log("YEAR CAHNGE");
-    organizerState.yearValue = value
+// Method to set the state for the year organizer
+let yearChange = (from: number, to: number) => {
+    organizerState.yearValue = [from, to];
 }
 
 setRecommendations();
@@ -91,9 +97,9 @@ setRecommendations();
                 </template>
 
                 <template v-slot:organizer-year>
-                    <div class="w-75 mt-6 mx-5">
+                    <div class="w-100 mt-6 mx-5">
                         <!--<YearOrganizer @year-change="(value) => yearChange(value)" />-->
-                        <YearOrganizer />
+                        <YearOrganizer @year-change="(from, to) => yearChange(from, to)" />
                     </div>
                 </template>
             </OrganizableList>
