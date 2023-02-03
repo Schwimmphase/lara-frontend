@@ -5,8 +5,6 @@
 
 <script setup lang="ts">
 
-import router from '../router';
-
 import { LanguageService } from '../internationalization/LanguageService';
 
 import { i18n } from '../internationalization/i18n'
@@ -14,14 +12,10 @@ import { useCurrentUserStore } from '@/stores/currentUser';
 import { useOpenResearchStore } from '@/stores/openResearch';
 import { useOpenPaperStore } from '@/stores/openPaper';
 
-function resetOpenStores(): void {
+// function to logout the user
+function logout(): void {
     useOpenResearchStore().resetStore();
     useOpenPaperStore().resetStore();
-}
-
-// Function to logout the user
-function resetStoresAndCookies(): void {
-    resetOpenStores();
     useCurrentUserStore().resetStore();
 
     // delete token
@@ -57,6 +51,7 @@ let languages = LanguageService.getLanguages();
 
 </script>
 
+
 <template>
 
     <v-app-bar :elevation="5" class="lara-navbar">
@@ -84,13 +79,14 @@ let languages = LanguageService.getLanguages();
             </v-menu>
         </div>
         <div class="mr-6">
-            <router-link class="ml-6 lara-navbar-link" v-if="isUserAdmin()" :to="{ name: 'admin' }" @click.native="resetOpenStores">{{ $t('navbar.manageUsers') }}</router-link>
-            <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'home' }" @click.native="resetOpenStores">{{ $t('navbar.home') }}</router-link>
-            <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'login' }" @click.native="resetStoresAndCookies">{{ $t('navbar.logout') }}</router-link>
+            <router-link class="ml-6 lara-navbar-link" v-if="isUserAdmin()" :to="{ name: 'admin' }">{{ $t('navbar.manageUsers') }}</router-link>
+            <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'home' }">{{ $t('navbar.home') }}</router-link>
+            <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'login' }" @click.native="logout">{{ $t('navbar.logout') }}</router-link>
         </div>
     </v-app-bar>
 
 </template>
+
 
 <style scoped>
 

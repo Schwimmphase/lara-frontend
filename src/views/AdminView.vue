@@ -54,6 +54,12 @@ import {computed} from "vue";
 import UserDialog from "@/components/dialogs/UserDialog.vue";
 import type {UserCategory} from "@/model/UserCategory";
 import { useCurrentUserStore } from "@/stores/currentUser";
+import { useOpenPaperStore } from "@/stores/openPaper";
+import { useOpenResearchStore } from "@/stores/openResearch";
+
+// reset open research/paper store
+useOpenResearchStore().resetStore();
+useOpenPaperStore().resetStore();
 
 const users = [testResearch.user, testResearch.user, testResearch.user];
 
