@@ -70,7 +70,7 @@ let languages = LanguageService.getLanguages();
                 <v-list>
                     <v-list-item
                     v-for="(language, index) in languages" :key="index" :value="language.abbreviation"
-                    @click="changeLanguage(language.abbreviation)"
+                    @click="changeLanguage(language.abbreviation)" class="" :class="{ 'lara-selected': (language.abbreviation == (i18n.global.locale).value), 'lara-language-option': (language.abbreviation != (i18n.global.locale).value) }"
                     >
                         <span>{{ language.name }}</span>
                     </v-list-item>
@@ -92,6 +92,14 @@ let languages = LanguageService.getLanguages();
     color: #000;
     transition: color ease-in-out 0.3s;
     text-decoration: none;
+}
+
+.lara-selected {
+    color: #000;
+}
+
+.lara-language-option {
+    color: rgb(114, 114, 114);
 }
 
 .lara-navbar-link:hover {
