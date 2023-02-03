@@ -4,7 +4,7 @@ import type { CachedPaperType } from "@/model/CachedPaperType";
 import { Comment } from "@/model/Comment";
 import type { Paper } from "@/model/Paper";
 import type { Research } from "@/model/Research";
-import type { SaveState } from "@/model/SaveState";
+import { SaveState } from "@/model/SaveState";
 import type { SavedPaper } from "@/model/SavedPaper";
 import { Tag } from "@/model/Tag";
 import { User } from "@/model/User";
@@ -50,7 +50,7 @@ class BasicApiHandler {
     public buildResearch(data: string): Research {
         let research = testResearch; // TODO: replace this line by the commented line below once the backend people have updated their api response according to the yml definition
         //let research = plainToInstance(Research, data); // TODO: check if research.started was translated correctly
-        research.comment = this.buildComment(research.comment.toString());
+        research.comment = this.buildComment(research.comment.text.toString());
         //research.user = this.buildUser(research.user.toString()); // TODO: uncomment once the backend people have updated their api response according to the yml definition
         return research;
     }
@@ -71,12 +71,12 @@ class BasicApiHandler {
         //let savedPaper = plainToInstance(SavedPaper, data);
         savedPaper.paper = this.buildPaper(savedPaper.paper.toString());
         savedPaper.research = this.buildResearch(savedPaper.research.toString());
-        savedPaper.comment = this.buildComment(savedPaper.comment.toString());
+        savedPaper.comment = this.buildComment(savedPaper.comment.text.toString());
         let tags: Tag[] = [];
         for (let tag of savedPaper.tags) {
             tags.push(this.buildTag(tag.toString()));
         }
-        savedPaper.saveState = savedPaper.saveState as SaveState; // TODO: check if enum-cast works correctly
+        console.log(savedPaper.saveState);
         return savedPaper;
     }
 
@@ -85,7 +85,6 @@ class BasicApiHandler {
         cachedPaper.paper = this.buildPaper(cachedPaper.paper.toString());
         cachedPaper.parentPaper = this.buildPaper(cachedPaper.parentPaper.toString());
         cachedPaper.research = this.buildResearch(cachedPaper.research.toString());
-        cachedPaper.type = cachedPaper.type as CachedPaperType; // TODO: check if enum-cast works correctly
         return cachedPaper;
     }
 }

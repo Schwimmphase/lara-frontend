@@ -1,4 +1,4 @@
 export enum CachedPaperType {
-    citation,
-    reference
+    citation = "citation",
+    reference = "reference"
 }

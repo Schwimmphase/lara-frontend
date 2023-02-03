@@ -1,5 +1,5 @@
 export enum RecommendationMethod {
-    algorithm,
-    citations,
-    references
+    algorithm ="algorithm",
+    citations = "citations",
+    references = "references"
 }
