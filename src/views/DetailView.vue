@@ -12,9 +12,9 @@ import { useRoute } from 'vue-router';
 import { reactive } from '@vue/reactivity';
 
 // State for the page, the openPaper and a indicator to know, if the page is loading
-let detailState: {loading: boolean, openPaper: OpenPaper | null } = reactive({
+let detailState: {loading: boolean, openPaper: OpenPaper | undefined } = reactive({
     loading: true,
-    openPaper: null
+    openPaper: undefined
 });
 
 // Access the route to get the the ids for the paper from the query
@@ -27,10 +27,10 @@ let setPaper = async () => {
 
     if (researchId == undefined) {
         let response = await PaperApiHandler.getDetails(paperId, researchId as null) as Paper;
-        var openPaperFromAPI = new OpenPaper(response, null, false);
+        var openPaperFromAPI = new OpenPaper(response, undefined, false);
     } else {
         let response = await PaperApiHandler.getDetails(paperId, researchId) as SavedPaper;
-        var openPaperFromAPI = new OpenPaper(null, response, false);
+        var openPaperFromAPI = new OpenPaper(undefined, response, false);
     }
 
     openPaperStore.setPaper(openPaperFromAPI);

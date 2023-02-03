@@ -45,8 +45,8 @@ export const testSavedPaper10 = new SavedPaper(testPaper, testResearch, testComm
 export const testSavedPaper11 = new SavedPaper(testPaper, testResearch, testComment2, [testTag1, testTag2, testTag3], 2, SaveState.hidden);
 export const testSavedPaper12 = new SavedPaper(testPaper, testResearch, testComment3, [testTag1, testTag2, testTag3], 0, SaveState.added);
 
-export const testOpenPaper = new OpenPaper(null, testSavedPaper1, true);
-export const testOpenPaper2 = new OpenPaper(testPaper, null, false);
+export const testOpenPaper = new OpenPaper(undefined, testSavedPaper1, true);
+export const testOpenPaper2 = new OpenPaper(testPaper, undefined, false);
 
 export const testSavedPaperList: SavedPaper[] = [
     testSavedPaper1,

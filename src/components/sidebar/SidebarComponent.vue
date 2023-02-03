@@ -50,7 +50,7 @@ const store = useOpenResearchStore();
 // store.setResearchPapers(testSavedPaperList);
 
 // Get the research from the store
-let research: Research | null = store.getResearch;
+let research: Research | undefined = store.getResearch;
 let researchPapers: SavedPaper[] = store.getResearchPapers;
 
 let addedPapers: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveState(savedPaper, SaveState.added));

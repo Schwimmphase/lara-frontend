@@ -50,6 +50,11 @@ import { useOpenResearchStore } from "@/stores/openResearch.js";
 import ResearchOverviewCard from "@/components/cards/ResearchOverviewCard.vue";
 import type { Slot } from "@/components/basic/OrganizableList.vue";
 import router from "../router";
+import { useOpenPaperStore } from "@/stores/openPaper";
+import { OpenPaper } from "@/stores/model/OpenPaper";
+
+// reset open paper
+useOpenPaperStore().resetStore();
 
 // Pinia store for the research
 const store = useOpenResearchStore();
@@ -71,6 +76,7 @@ let slots: Slot[] = [
 ];
 
 let openPaper = (savedPaper: SavedPaper) => {
+    useOpenPaperStore().setPaper(new OpenPaper(undefined, savedPaper, true));
     router.push({ name: 'paperDetails', query: { research: savedPaper.research.id, paper: savedPaper.paper.paperId } });
 }
 

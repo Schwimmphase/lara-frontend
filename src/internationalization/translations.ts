@@ -12,7 +12,7 @@ export const messages = {
         detailSidebar: {
             citationCount: 'No Citations | One Citation | {n} Citations',
             referenceCount: 'No Reference | One References | {n} References',
-            informations: 'Informations',
+            information: 'Information',
             comments: 'Comments',
             tags: 'Tags',
             relevance: 'Relevance',
@@ -107,7 +107,7 @@ export const messages = {
         detailSidebar: {
             citationCount: 'Keine Zitate | Ein Zitat | {n} Zitate',
             referenceCount: 'Keine Referenzen | Eine Referenz | {n} Referenzen',
-            informations: 'Informationen',
+            information: 'Informationen',
             comments: 'Kommentare',
             tags: 'Tags',
             relevance: 'Relevanz',

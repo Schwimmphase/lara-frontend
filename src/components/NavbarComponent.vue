@@ -11,17 +11,23 @@ import { LanguageService } from '../internationalization/LanguageService';
 
 import { i18n } from '../internationalization/i18n'
 import { useCurrentUserStore } from '@/stores/currentUser';
+import { useOpenResearchStore } from '@/stores/openResearch';
+import { useOpenPaperStore } from '@/stores/openPaper';
+
+function resetOpenStores(): void {
+    useOpenResearchStore().resetStore();
+    useOpenPaperStore().resetStore();
+}
 
 // Function to logout the user
-function logout(): void {
+function resetStoresAndCookies(): void {
+    resetOpenStores();
     useCurrentUserStore().resetStore();
 
     // delete token
     let inOneSecond = new Date();
     inOneSecond.setSeconds(inOneSecond.getSeconds() + 1);
     document.cookie = "lara-token=; expires " + inOneSecond.toUTCString() + "; path=/;";
-
-    router.push({ name: 'login' });
 }
 
 function isUserLoggedIn(): boolean {
@@ -78,9 +84,9 @@ let languages = LanguageService.getLanguages();
             </v-menu>
         </div>
         <div class="mr-6">
-            <router-link class="ml-6 lara-navbar-link" v-if="isUserAdmin()" :to="{ name: 'admin' }">{{ $t('navbar.manageUsers') }}</router-link>
-            <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'home' }">{{ $t('navbar.home') }}</router-link>
-            <span v-if="isUserLoggedIn()" class="ml-6 lara-navbar-link" @click="logout()">{{ $t('navbar.logout') }}</span>
+            <router-link class="ml-6 lara-navbar-link" v-if="isUserAdmin()" :to="{ name: 'admin' }" @click.native="resetOpenStores">{{ $t('navbar.manageUsers') }}</router-link>
+            <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'home' }" @click.native="resetOpenStores">{{ $t('navbar.home') }}</router-link>
+            <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'login' }" @click.native="resetStoresAndCookies">{{ $t('navbar.logout') }}</router-link>
         </div>
     </v-app-bar>
 
