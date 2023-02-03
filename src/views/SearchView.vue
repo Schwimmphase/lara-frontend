@@ -17,14 +17,13 @@ import { testPaperList } from "@/model/_testResearch";
 
 let openResearchStore = useOpenResearchStore();
 
+let slots = [{ id: "search-results", name: "Suchergebnisse" }];
+
 let searchState: { results: Paper[] | null, research: Research | null, query: string | undefined } = reactive({
     results: null,
     research: openResearchStore.getResearch,
     query: useRoute().query.search as string,
 });
-
-console.log("RESEARCH")
-console.log(searchState.research);
 
 openResearchStore.$subscribe((mutation, state) => {
     searchState.research = state.openResearch;
@@ -56,7 +55,12 @@ searchState.results = testPaperList;
     <div class="ma-4">
         <!-- Searchbar on top of the page -->
         <SearchbarComponent :input-string="searchState.query" />
-        <UnsavedPaperCard v-for="(paper, index) in searchState.results" :key="index" :research="(searchState.research != null ? searchState.research : undefined)" :paper="paper"></UnsavedPaperCard>
+
+        <OrganizableList :slots="slots" :organize-slots="[]" :selected-organizers="[]">
+            <template v-slot:search-results>
+                <UnsavedPaperCard v-for="(paper, index) in searchState.results" :key="index" :research="(searchState.research != null ? searchState.research : undefined)" :paper="paper"></UnsavedPaperCard>            
+            </template>
+        </OrganizableList>
     </div>
 
 

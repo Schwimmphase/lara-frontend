@@ -112,8 +112,6 @@ setRecommendations();
 </script>
 
 
-
-
 <template>
     <div class="ma-4">
         <div class="d-flex">
