@@ -34,12 +34,12 @@ const organizerSlots = [
     {id: "sort-year", name: "Jahr sortieren"},
 ];
 
-let state: { showCitations: boolean, citations: Paper[] | null, references: Paper[] | null, recommendations: Paper[] | null, research: Research | null } = reactive({
+let state: { showCitations: boolean, citations: Paper[] | undefined, references: Paper[] | undefined, recommendations: Paper[] | undefined, research: Research | undefined } = reactive({
     showCitations: false,
-    citations: null,
-    references: null,
-    recommendations: null,
-    research: null,
+    citations: undefined,
+    references: undefined,
+    recommendations: undefined,
+    research: undefined,
 });
 
 let organizerState: { yearValue: number[], sortByYear: boolean, descending: boolean | string } = reactive({
