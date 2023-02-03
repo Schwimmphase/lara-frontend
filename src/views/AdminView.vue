@@ -100,8 +100,15 @@ let getUsers = (organizers: Organizer[]) => {
 
 getUsers([]);
 
-function onUserCreate(username: String, userCategory: UserCategory, password?: String) {
+function onUserCreate(username: string, userCategory: UserCategory, password?: string) {
     console.debug("new user: username: " + username + " - category: " + userCategory.name + " - password: " + password);
+
+    if (password == undefined) {
+        console.error("Password is not defined");
+        return;
+    }
+
+    AdminApiHandler.createUser(username, password, userCategory)
 }
 
 function onUserDelete(user: User) {

@@ -145,6 +145,8 @@ function getCookies(): Map<string, string> {
 router.beforeEach(async (to, from) => {
   let cookies = getCookies();
   if (to.name !== 'login' && !cookies.get("lara-token")) {
+    console.error("ERROR")
+    console.log(cookies.get("lara-token"))
     return { name: 'login' };
   }
   if (to.name === 'login' && cookies.get("lara-token")) {
