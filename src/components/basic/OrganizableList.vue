@@ -2,17 +2,16 @@
     <div class="d-flex justify-space-between gap-8 mt-8">
         <div class="d-flex gap-8">
             <organizer-dialog :slots="organizeSlots" @organize="$emit('organize')">
-                <template v-for="slot in organizeSlots" slot:[slot.id]>
+                <template v-for="slot in organizeSlots" v-slot:[slot.id]>
                     <slot :name="slot.id"></slot>
                 </template>
             </organizer-dialog>
 
             <div class="d-flex gap-4">
-                <v-chip v-for="organizer of selectedOrganizers" class="lara-chip h-100" id="organizer-chip">
+                <v-chip v-for="(organizer, index) of selectedOrganizers" :key="index" class="lara-chip h-100" id="organizer-chip">
                     <span id="organizer-chip-text">{{ organizer.name }}: {{ organizer.value }}</span>
                     <v-btn size="small" variant="text" icon="mdi-close-circle"
                            @click="$emit('removeOrganizer', organizer.name)">
-
                     </v-btn>
                 </v-chip>
             </div>
@@ -36,8 +35,8 @@ import LaraButton from "@/components/basic/LaraButton.vue";
 import OrganizerDialog from "@/components/dialogs/OrganizerDialog.vue";
 
 export interface Slot {
-    id: String,
-    name?: String
+    id: string,
+    name?: string
 }
 
 export interface Organizer {

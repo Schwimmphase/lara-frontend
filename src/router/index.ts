@@ -20,46 +20,60 @@ import { PiniaVuePlugin } from 'pinia';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    // TODO One test route
+    // TODO Test route
     {
       path: '/test',
       name: 'test',
       component: TestView,
-      meta: { showSidebar: true }
+      meta: {
+        showSidebar: true,
+        showSearchInSidebar: true,
+        showRecommendationsInSidebar: true,
+      }
     },
 
     {
       path: '/',
       name: 'home',
       component: HomeView,
-      meta: { showSidebar: false }
+      meta: {
+        showSidebar: false,
+        showSearchInSidebar: false,
+        showRecommendationsInSidebar: false,
+      }
     },
 
     {
       path: '/admin',
       name: 'admin',
       component: AdminView,
-      meta: { showSidebar: false }
-    },
-
-    {
-      path: '/admin/user-categories',
-      name: 'user-categories',
-      component: UserCategoryView
+      meta: {
+        showSidebar: false,
+        showSearchInSidebar: false,
+        showRecommendationsInSidebar: false,
+      }
     },
 
     {
       path: '/login',
       name: 'login',
       component: LoginView,
-      meta: { showSidebar: false }
+      meta: {
+        showSidebar: false,
+        showSearchInSidebar: false,
+        showRecommendationsInSidebar: false,
+      }
     },
 
     {
       path: '/research',
       name: 'researchOverview',
       component: ResearchOverviewView,
-      meta: { showSidebar: false },
+      meta: {
+        showSidebar: false,
+        showSearchInSidebar: false,
+        showRecommendationsInSidebar: false,
+      },
       beforeEnter: (to, from) => {
         return checkResearch();
       }
@@ -70,7 +84,11 @@ const router = createRouter({
       name: 'paperDetails',
       props: true,
       component: DetailView,
-      meta: { showSidebar: true },
+      meta: {
+        showSidebar: true,
+        showSearchInSidebar: true,
+        showRecommendationsInSidebar: true,
+      },
       beforeEnter: (to, from) => {
         return checkResearch();
       }
@@ -80,7 +98,11 @@ const router = createRouter({
       path: '/search',
       name: 'search',
       component: SearchView,
-      meta: { showSidebar: true },
+      meta: {
+        showSidebar: true,
+        showSearchInSidebar: false,
+        showRecommendationsInSidebar: true,
+      },
       beforeEnter: (to, from) => {
         return checkResearch();
       }
@@ -90,7 +112,11 @@ const router = createRouter({
       path: '/recommendations',
       name: 'recommendations',
       component: RecommendationsView,
-      meta: { showSidebar: true },
+      meta: {
+        showSidebar: true,
+        showSearchInSidebar: true,
+        showRecommendationsInSidebar: false,
+      },
       beforeEnter: (to, from) => {
         return checkResearch();
       }
@@ -126,4 +152,4 @@ router.beforeEach(async (to, from) => {
   }
 });
 
-export default router
+export default router;

@@ -18,6 +18,10 @@ import { testResearch, testSavedPaperList } from '@/model/_testResearch';
 import ExpandableList from "@/components/basic/ExpandableList.vue";
 import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
 
+let props = defineProps({
+    showSearch: Boolean,
+    showRecommendations: Boolean
+});
 
 let matchesSaveState = (paper: SavedPaper, state: SaveState): boolean => {
     return paper.saveState == state;
@@ -32,6 +36,7 @@ let changeSaveState = (savedPaper: SavedPaper, saveState: SaveState) => {
     console.log("Change state of paper! " + savedPaper.paper.title);
     // TODO Call API to change save state of paper
     PaperApiHandler.changeSaveState(savedPaper, saveState);
+    
     // TODO Force a new fetch of the researchPapers
 }
 
@@ -45,10 +50,6 @@ let navigateToResearchOverview = (research: Research) => {
 // Pinia store for the research
 const store = useOpenResearchStore();
 
-// TODO Nur zu Testzwecken drin... sobald die Research Papers gesetzt werden, kann das wieder weg 
-// store.setOpenResearch(testResearch);
-// store.setResearchPapers(testSavedPaperList);
-
 // Get the research from the store
 let research: Research | undefined = store.getResearch;
 let researchPapers: SavedPaper[] = store.getResearchPapers;
@@ -60,11 +61,11 @@ let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveStat
 
 <template>
     <!-- Navigations-drawer for the sidebar to manage the paper of a research -->
-    <v-navigation-drawer width="300">
+    <v-navigation-drawer width="300" permanent>
         <div class="mx-2 my-3">
             <div class="w-75">
-                <SearchbarComponent />
-                <RecommendationsButtonComponent class="mt-2"/>
+                <SearchbarComponent v-if="props.showSearch" />
+                <RecommendationsButtonComponent v-if="props.showRecommendations" class="mt-2"/>
                 <ReturnButtonComponent class="mt-2"/>
             </div>
 

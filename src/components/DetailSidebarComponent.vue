@@ -23,21 +23,30 @@ import router from '@/router';
 import { CachedPaperType } from '@/model/CachedPaperType';
 
 
-// Store for the openResearch and openPaper
+// Store for the openResearch
 let openResearchStore = useOpenResearchStore();
+
+// State for the research currently opened
+let researchState: { research: Research | undefined } = reactive({
+    research: undefined,
+});
+
+openResearchStore.$subscribe((mutation, state) => {
+    // If the research is changed, set the state for the openResearch to that new research
+    console.log("RECHERCHE GEÄNDERT")
+    researchState.research = state.openResearch;
+});
+
+// Use the store for the openPaper
 let openPaperStore = useOpenPaperStore();
 
-// States for the research/paper currently opened
-let researchState: { research: Research | undefined } = reactive({
-    research: undefined
-});
 let detailState: { openPaper: OpenPaper | undefined} = reactive({
     openPaper: undefined
 });
 
 // Set the openResearch/openPaper state to the openResearch/openPaper saved in the store
 researchState.research = openResearchStore.getResearch;
-detailState.openPaper = openPaperStore.getPaper;
+detailState.openPaper = openPaperStore.paper;
 openResearchStore.$subscribe((mutation, state) => {
     // If the research is changed, set the state for the openResearch to that new research
     console.log("RECHERCHE GEÄNDERT");
@@ -181,6 +190,7 @@ getReferences();
                         <span v-for="(author, index) in detailState.openPaper?.savedPaper?.paper.author" :key="index" class="font-weight-bold">{{ author.name }}</span>
                     </div>
                     <span>{{ detailState.openPaper?.savedPaper?.paper.year }} - {{ detailState.openPaper?.savedPaper?.paper.venue }} - {{ detailState.openPaper.savedPaper?.paper.citationCount }} mal zitiert - {{ detailState.openPaper.savedPaper?.paper.referenceCount }} Referenzen</span>
+                    <span>{{ detailState.openPaper?.paper?.year }} - {{ detailState.openPaper?.paper?.venue }} - {{ $t('detailSidebar.citationCount', { n: detailState.openPaper?.paper?.citationCount}) }} - {{ $t('detailSidebar.referenceCount', {n: detailState.openPaper?.paper?.referenceCount}) }}</span>
                     <v-divider class="my-3"></v-divider>
                 </div>
 
@@ -246,22 +256,22 @@ getReferences();
                 <div>
                     <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.recommendations') }}</span><br>
 
-                    <div v-for="recommendation in recommendationsStore.recommendations">
-                        <router-link class="text-h6 lara-recommendation-link" :to="{ name: 'paperDetails', query: {paper: recommendation.paperId}}" @click.native="openPaperStore.setPaper(new OpenPaper(recommendation, undefined, false))">{{ recommendation.title }}</router-link><br>
+                    <div v-for="(recommendation, index) in recommendationsStore.recommendations" :key="index">
+                        <router-link class="text-h6 lara-recommendation-link" :to="{ name: 'paperDetails', query: {paper: recommendation.paperId}}" @click="openPaperStore.setPaper(new OpenPaper(recommendation, undefined, false))">{{ recommendation.title }}</router-link><br>
                     </div>
                 </div>
                 <div class="mt-2">
                     <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.citations') }}</span><br>
 
-                    <div v-for="citation in recommendationsStore.citations">
-                        <router-link class="text-h6 lara-recommendation-link" :to="{ name: 'paperDetails', query: {paper: citation.paper.paperId}}" @click.native="openPaperStore.setPaper(new OpenPaper(citation.paper, undefined, false))">{{ citation.paper.title }}</router-link><br>
+                    <div v-for="(citation, index) in recommendationsStore.citations" :key="index">
+                        <router-link class="text-h6 lara-recommendation-link" :to="{ name: 'paperDetails', query: {paper: citation.paper.paperId}}" @click="openPaperStore.setPaper(new OpenPaper(citation.paper, undefined, false))">{{ citation.paper.title }}</router-link><br>
                     </div>
                 </div>
                 <div class="mt-2">
                     <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.references') }}</span><br>
 
-                    <div v-for="reference in recommendationsStore.references">
-                        <router-link class="text-h6 lara-recommendation-link" :to="{ name: 'paperDetails', query: {paper: reference.paper.paperId}}" @click.native="openPaperStore.setPaper(new OpenPaper(reference.paper, undefined, false))">{{ reference.paper.title }}</router-link><br>
+                    <div v-for="(reference, index) in recommendationsStore.references" :key="index">
+                        <router-link class="text-h6 lara-recommendation-link" :to="{ name: 'paperDetails', query: {paper: reference.paper.paperId}}" @click="openPaperStore.setPaper(new OpenPaper(reference.paper, undefined, false))">{{ reference.paper.title }}</router-link><br>
                     </div>
                 </div>
             </div>
