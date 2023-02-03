@@ -12,6 +12,7 @@
     </v-container>
 </template>
 
+
 <script setup lang="ts">
 import { reactive } from 'vue';
 import LaraButton from '@/components/basic/LaraButton.vue';
@@ -47,6 +48,7 @@ async function login(): Promise<void> {
     router.push({ name: 'home'});
 }
 </script>
+
 
 <style>
 #login-form {

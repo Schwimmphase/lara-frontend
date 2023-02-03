@@ -4,7 +4,6 @@ import LaraButton from "../basic/LaraButton.vue";
 
 import { Paper } from "../../model/Paper";
 import { SaveState } from "@/model/SaveState";
-import { useOpenResearchStore } from "@/stores/openResearch";
 import { Research } from "../../model/Research";
 import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
 import router from "@/router";
@@ -38,6 +37,7 @@ let openPaper = (): void => {
 
 </script>
 
+
 <template>
     <v-card class="lara-card mt-4">
         <v-card-title class="font-weight-bold">{{ paper?.title }}</v-card-title>
@@ -55,6 +55,7 @@ let openPaper = (): void => {
         </div>
     </v-card>
 </template>
+
 
 <style scoped>
 

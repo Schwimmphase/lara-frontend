@@ -28,6 +28,7 @@
     </v-card>
 </template>
 
+
 <script setup lang="ts">
 import LaraButton from "@/components/basic/LaraButton.vue";
 import type {SavedPaper} from "@/model/SavedPaper";
@@ -37,6 +38,7 @@ defineProps<{
     paper: SavedPaper
 }>()
 </script>
+
 
 <style scoped>
     @import '../../assets/main.css';

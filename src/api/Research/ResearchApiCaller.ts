@@ -1,5 +1,5 @@
-import type { Organizer } from "@/model/Organizer";
 import BasicApiCaller from "../BasicApiCaller";
+import type { Organizer } from "@/model/Organizer";
 
 export class ResearchApiCaller {
     static urlResearch = '/research/';

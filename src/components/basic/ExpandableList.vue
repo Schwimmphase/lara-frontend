@@ -19,6 +19,7 @@
     </v-expand-transition>
 </template>
 
+
 <script setup lang="ts">
 import { reactive } from "vue";
 
@@ -38,6 +39,7 @@ let toggleExpanded = (): void => {
 }
 
 </script>
+
 
 <style scoped>
 .lara-collapse-div {

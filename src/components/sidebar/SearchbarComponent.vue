@@ -18,6 +18,7 @@ let navigateToSearch = (): void => {
 
 </script>
 
+
 <template>
     <div>
         <v-text-field @keypress.enter="navigateToSearch" hide-details @click:append-inner="navigateToSearch" v-model="state.searchQuery" :label="$t('sidebar.searchBar')" variant="outlined" append-inner-icon="mdi-magnify"></v-text-field>

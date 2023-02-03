@@ -35,11 +35,12 @@
     </v-dialog>
 </template>
 
+
 <script setup lang="ts">
-import type {User} from "@/model/User";
-import {computed, reactive} from "vue";
+import type { User } from "@/model/User";
+import { computed, reactive } from "vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
-import type {UserCategory} from "@/model/UserCategory";
+import type { UserCategory } from "@/model/UserCategory";
 
 let valid = false;
 
@@ -82,6 +83,7 @@ function closeDialog() {
     }
 }
 </script>
+
 
 <style scoped>
 #dialog {

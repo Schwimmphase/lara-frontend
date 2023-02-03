@@ -30,6 +30,7 @@
     </div>
 </template>
 
+
 <script setup lang="ts">
 import LaraButton from "@/components/basic/LaraButton.vue";
 import OrganizerDialog from "@/components/dialogs/OrganizerDialog.vue";
@@ -57,6 +58,7 @@ defineEmits<{
     (event: "removeOrganizer", name: String): void
 }>();
 </script>
+
 
 <style scoped>
 #export-button {

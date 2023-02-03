@@ -43,7 +43,10 @@
         </div>
     </v-container>
 </template>
+
+
 <script setup lang="ts">
+
 import LaraButton from "@/components/basic/LaraButton.vue";
 import OrganizableList from "@/components/basic/OrganizableList.vue";
 import UserCard from "@/components/cards/UserCard.vue";
@@ -102,7 +105,9 @@ function onRemoveOrganizer(name: String) {
 }
 </script>
 
+
 <style>
+
 #container {
     min-width: 300px;
 }
@@ -122,4 +127,5 @@ function onRemoveOrganizer(name: String) {
     min-width: 250px;
     max-width: 350px;
 }
+
 </style>

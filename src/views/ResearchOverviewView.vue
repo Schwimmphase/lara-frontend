@@ -32,11 +32,12 @@
     </v-container>
 </template>
 
+
 <script setup lang="ts">
+
 import OrganizableList from "@/components/basic/OrganizableList.vue";
 import type {Organizer} from "@/components/basic/OrganizableList.vue";
 import {testSavedPaperList} from "@/model/_testResearch";
-import type {Research} from "@/model/Research";
 import type { SavedPaper } from "@/model/SavedPaper";
 import { useOpenResearchStore } from "@/stores/openResearch.js";
 import ResearchOverviewCard from "@/components/cards/ResearchOverviewCard.vue";

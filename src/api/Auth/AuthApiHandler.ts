@@ -1,6 +1,5 @@
-import { AuthApiCaller } from "./AuthApiCaller";
 import BasicApiHandler from "../BasicApiHandler";
-import type { User } from "@/model/User";
+import { AuthApiCaller } from "./AuthApiCaller";
 
 export class AuthApiHandler {
     public static async login(userId: string, password: string): Promise<string> {

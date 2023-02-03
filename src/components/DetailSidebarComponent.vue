@@ -177,6 +177,7 @@ getReferences();
 
 </script>
 
+
 <template>
     <v-navigation-drawer location="right" width="400" permanent>
         <div class="mx-8 my-3">
@@ -278,6 +279,7 @@ getReferences();
         </div>
     </v-navigation-drawer>
 </template>
+
 
 <style scoped>
 

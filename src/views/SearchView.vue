@@ -54,6 +54,7 @@ searchState.results = testPaperList;
 
 </script>
 
+
 <template>
     <div class="ma-4">
         <!-- Searchbar on top of the page -->
@@ -66,12 +67,8 @@ searchState.results = testPaperList;
         </OrganizableList>
     </div>
 
-
-
-    
-    
-
 </template>
+
 
 <style scope>
 

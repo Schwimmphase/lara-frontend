@@ -52,6 +52,7 @@ openPaperStore.$subscribe((mutation, state) => {
 
 </script>
 
+
 <template>
     <!-- Render if the API Call is complete -->
     <div v-if="!detailState.loading" class="w-100 h-100">
@@ -128,4 +129,5 @@ openPaperStore.$subscribe((mutation, state) => {
     <div v-else class="d-flex justify-center h-100 align-center">
         <v-progress-circular indeterminate></v-progress-circular>
     </div>
+
 </template>

@@ -25,10 +25,11 @@
     </div>
 </template>
 
+
 <script setup lang="ts">
-import {reactive} from "vue";
+import { reactive } from "vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
-import type {Slot} from "@/components/basic/OrganizableList.vue";
+import type { Slot } from "@/components/basic/OrganizableList.vue";
 
 let state = reactive({
     dialog: false
@@ -50,6 +51,7 @@ function closeDialog() {
     emit("organize");
 }
 </script>
+
 
 <style scoped>
 #dialog {

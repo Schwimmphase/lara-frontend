@@ -5,11 +5,11 @@ import SidebarComponent from "@/components/sidebar/SidebarComponent.vue";
 import {computed} from "vue";
 
 const route = useRoute();
-const currentRouteName = computed(() => route.name);
+const currentRouteName = computed(() => route.name); // TODO: Kunst oder kann weg?
 const meta = computed(() => route.meta);
 
-
 </script>
+
 
 <template>
   <v-app>
@@ -19,7 +19,9 @@ const meta = computed(() => route.meta);
           <router-view :key="route.fullPath"></router-view>
       </v-main>
   </v-app>
+
 </template>
+
 
 <style scoped>
 </style>

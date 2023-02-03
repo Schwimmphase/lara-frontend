@@ -59,6 +59,7 @@ let enqueued: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveSt
 let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveState(savedPaper, SaveState.hidden));
 </script>
 
+
 <template>
     <!-- Navigations-drawer for the sidebar to manage the paper of a research -->
     <v-navigation-drawer width="300" permanent>
@@ -107,6 +108,7 @@ let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveStat
         </div>
     </v-navigation-drawer>
 </template>
+
 
 <style scoped>
 

@@ -23,8 +23,9 @@
     </div>
 </template>
 
+
 <script setup lang="ts">
-import {reactive} from "vue";
+import { reactive } from "vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
 
 const props = defineProps<{
@@ -50,8 +51,9 @@ function closeDialog() {
     emit("save", state.title, state.description);
 }
 
-// rules
+// TODO: rules
 </script>
+
 
 <style scoped>
 #dialog {

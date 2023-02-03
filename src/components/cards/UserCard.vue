@@ -22,6 +22,7 @@
     </v-card>
 </template>
 
+
 <script setup lang="ts">
 import type {User} from "@/model/User";
 import LaraButton from "@/components/basic/LaraButton.vue";
@@ -49,6 +50,7 @@ function onDialogSave(username: String, userCategory: UserCategory, password?: S
     emits('update', username, userCategory, password);
 }
 </script>
+
 
 <style scoped>
 #user-card {

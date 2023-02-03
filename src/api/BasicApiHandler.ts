@@ -1,10 +1,8 @@
 import { Author } from "@/model/Author";
 import { CachedPaper } from "@/model/CachedPaper";
-import type { CachedPaperType } from "@/model/CachedPaperType";
 import { Comment } from "@/model/Comment";
 import type { Paper } from "@/model/Paper";
 import type { Research } from "@/model/Research";
-import { SaveState } from "@/model/SaveState";
 import type { SavedPaper } from "@/model/SavedPaper";
 import { Tag } from "@/model/Tag";
 import { User } from "@/model/User";

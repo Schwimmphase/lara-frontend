@@ -7,12 +7,14 @@
     </div>
 </template>
 
+
 <script setup lang="ts">
 defineProps({
     type: String,
     icon: { type: String, required: false }
 })
 </script>
+
 
 <style scoped>
 .lara-button {

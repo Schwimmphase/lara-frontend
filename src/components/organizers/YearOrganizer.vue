@@ -33,6 +33,7 @@ let decreaseMin = () => {
 
 </script>
 
+
 <template>
     <div class="d-flex">
         <v-range-slider @change:modelValue="updateParent" v-model:model-value="state" :step="1" strict :min="extremas.min" :max="extremas.max" thumb-label="always">
@@ -44,7 +45,7 @@ let decreaseMin = () => {
                 <lara-button icon="mdi-calendar" @click="increaseMax" type="outline">später</lara-button>
             </template>
 
-            <!--
+            <!-- TODO: behalten oder nicht?
             <template v-slot:prepend>
                 <v-text-field
                     v-model:model-value="state[0]"
@@ -76,6 +77,7 @@ let decreaseMin = () => {
     </div>
     
 </template>
+
 
 <style scoped>
 
