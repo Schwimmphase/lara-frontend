@@ -6,8 +6,8 @@ export class AdminApiCaller {
 
     public static getUsers(organizerList: string) {
         return BasicApiCaller.axiosInstance.get(this.urlUsermanagement, {
-            params: {
-                "organizers": organizerList
+            data: {
+                "organizers": organizerList   
             }
         });
     }
