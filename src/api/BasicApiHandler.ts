@@ -1,9 +1,9 @@
 import { Author } from "@/model/Author";
 import { CachedPaper } from "@/model/CachedPaper";
 import { Comment } from "@/model/Comment";
-import type { Paper } from "@/model/Paper";
+import { Paper } from "@/model/Paper";
 import type { Research } from "@/model/Research";
-import type { SavedPaper } from "@/model/SavedPaper";
+import { SavedPaper } from "@/model/SavedPaper";
 import { Tag } from "@/model/Tag";
 import { User } from "@/model/User";
 import { UserCategory } from "@/model/UserCategory";
@@ -54,19 +54,19 @@ class BasicApiHandler {
     }
     
     public buildPaper(data: string): Paper {
-        let paper = testPaper; // TODO: replace this line by the commented line below once the backend people have updated their api response according to the yml definition
-        //let paper = plainToInstance(Paper, data);
+        let paper = plainToInstance(Paper, data);
         let authors: Author[] = [];
-        for (let author of paper.author) {
+        for (let author of paper.authors) {
             authors.push(plainToInstance(Author, author));
         }
-        paper.author = authors;
+        paper.authors = authors;
         return paper;
     }
 
     public buildSavedPaper(data: string): SavedPaper {
-        let savedPaper = testSavedPaper1; // TODO: replace this line by the commented line below once the backend people have updated their api response according to the yml definition
-        //let savedPaper = plainToInstance(SavedPaper, data);
+        //let savedPaper = testSavedPaper1; // TODO: replace this line by the commented line below once the backend people have updated their api response according to the yml definition
+        let savedPaper = plainToInstance(SavedPaper, data);
+        console.log(savedPaper)
         savedPaper.paper = this.buildPaper(savedPaper.paper.toString());
         savedPaper.research = this.buildResearch(savedPaper.research.toString());
         savedPaper.comment = this.buildComment(savedPaper.comment.toString());

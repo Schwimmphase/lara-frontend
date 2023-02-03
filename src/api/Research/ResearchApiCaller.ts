@@ -9,17 +9,12 @@ export class ResearchApiCaller {
     static urlRecommendations = '/recommendations';
     static urlSearch = '/search';
 
-    public static getAllResearchesByUser(userId: string) {
-        return BasicApiCaller.axiosInstance.get(this.urlResearch, {
-            params: {
-                "userId": userId
-            }
-        });
+    public static getAllResearchesByUser() {
+        return BasicApiCaller.axiosInstance.get(this.urlResearch);
     }
 
-    public static createResearch(userId: string, title: string, description: string) {
+    public static createResearch(title: string, description: string) {
         return BasicApiCaller.axiosInstance.post(this.urlResearch, {
-            "userId": userId,
             "title": title,
             "description": description
         });

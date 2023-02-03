@@ -13,8 +13,8 @@ import type { Tag } from "@/model/Tag";
 import type { CachedPaper } from "@/model/CachedPaper";
 
 export class ResearchApiHandler {
-    public static async getAllResearchesByUser(user: User): Promise<Research[]> {
-        const response = await ResearchApiCaller.getAllResearchesByUser(user.userId);
+    public static async getAllResearchesByUser(): Promise<Research[]> {
+        const response = await ResearchApiCaller.getAllResearchesByUser();
         let data = BasicApiHandler.tryParseJson(response.data.researches);
         let researches: Research[] = [];
         for (let research of data) { // TODO: replace data with data.researches once the backend people have updated their api response according to the yml definition
@@ -23,8 +23,8 @@ export class ResearchApiHandler {
         return researches;
     }
 
-    public static async createResearch(user: User, title: string, description: Comment): Promise<Research> {
-        const response = await ResearchApiCaller.createResearch(user.userId, title, description.text);
+    public static async createResearch(title: string, description: Comment): Promise<Research> {
+        const response = await ResearchApiCaller.createResearch(title, description.text);
         let data = BasicApiHandler.tryParseJson(response.data);
         return BasicApiHandler.buildResearch(data);
     }

@@ -41,7 +41,7 @@ let openPaper = (): void => {
 <template>
     <v-card class="lara-card mt-4">
         <v-card-title class="font-weight-bold">{{ paper?.title }}</v-card-title>
-        <v-card-subtitle><span v-for="(author, index) in paper?.author" :key="index">{{ author.name }}</span></v-card-subtitle>
+        <v-card-subtitle><span v-for="(author, index) in paper?.authors" :key="index">{{ author.name }}</span></v-card-subtitle>
         <div class="mt-2 mx-4 mb-2">
             <span class="lara-informations">{{ paper?.year }} - {{ paper?.venue }} - {{ $t('detailSidebar.citationCount', { n: paper?.citationCount}) }} - {{ $t('detailSidebar.referenceCount', {n: paper?.referenceCount}) }}</span><br>
             <span>{{ paper?.abstract }}</span>
