@@ -9,7 +9,7 @@
                 <lara-button type="primary" id="create-user-button" class="w-100">{{ $t('admin.createUser') }}</lara-button>
             </user-dialog>
 
-            <router-link to="/admin/user-categoris">
+            <router-link :to="{ name: 'userCategories' }">
                 <lara-button type="secondary" id="create-category-button">{{ $t('admin.editCategories') }}</lara-button>
             </router-link>
         </div>
@@ -65,7 +65,7 @@ import { useCurrentUserStore } from "@/stores/currentUser";
 import { useOpenPaperStore } from "@/stores/openPaper";
 import { useOpenResearchStore } from "@/stores/openResearch";
 import { AdminApiHandler } from "@/api/Admin/AdminApiHandler";
-import type { Organizer } from "@/model/Organizer";
+import { Organizer } from "@/model/Organizer";
 
 // reset open research/paper store
 useOpenResearchStore().resetStore();

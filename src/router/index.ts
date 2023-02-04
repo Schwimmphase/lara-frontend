@@ -55,6 +55,17 @@ const router = createRouter({
     },
 
     {
+      path: '/admin/user-categories',
+      name: 'userCategories',
+      component: UserCategoryView,
+      meta: {
+        showSidebar: false,
+        showSearchInSidebar: false,
+        showRecommendationsInSidebar: false,
+      }
+    },
+
+    {
       path: '/login',
       name: 'login',
       component: LoginView,

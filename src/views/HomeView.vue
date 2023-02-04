@@ -12,7 +12,7 @@
         <h2 class="text-h4 font-weight-bold">{{ $t('home.myResearches') }}</h2>
 
         <div class="mt-4 d-flex flex-wrap flex-row gap-8">
-            <div v-for="research in researches">
+            <div v-for="(research, index) in researches" :key="index">
                 <research-card v-if="research != null"
                                :id="research.id"
                                :title="research.title"
