@@ -94,6 +94,7 @@ let state: { loading: boolean, users: User[] } = reactive({
 
 let getUsers = async (organizers: Organizer[]) => {
     let users = await AdminApiHandler.getUsers(organizers);
+    console.log(users)
     users.forEach(user => state.users.push(user));
     state.loading = false;
 }
