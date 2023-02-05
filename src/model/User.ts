@@ -2,9 +2,9 @@ import type { Research } from "./Research";
 import type { UserCategory } from "./UserCategory";
 
 export class User {
-    readonly username: string;
+    username: string;
     readonly userId: string;
-    readonly password: string;
+    password: string;
     activeResearch?: Research;
     userCategory: UserCategory;
 

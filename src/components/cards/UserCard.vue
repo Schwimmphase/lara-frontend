@@ -1,7 +1,7 @@
 <template>
     <v-card class="d-flex flex-column lara-card" id="user-card" variant="flat">
         <v-card-title class="text-h5 d-flex">
-            <span>{{ user.username }}<span class="text-grey">#{{ user.userId }}</span></span>
+            <span id="user-card-title">{{ user.username }}<span class="text-grey">#{{ user.userId }}</span></span>
             <v-spacer />
             <v-chip class="lara-chip" :color="user.userCategory.color">{{ user.userCategory.name }}</v-chip>
         </v-card-title>
@@ -55,6 +55,12 @@ function onDialogSave(username: string, userCategory: UserCategory, password?: s
 <style scoped>
 #user-card {
     width: 400px;
+}
+
+#user-card-title {
+    width: 275px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
 }
 
 #edit-button {
