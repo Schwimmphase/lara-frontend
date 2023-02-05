@@ -42,10 +42,10 @@ defineProps<{
 
 const emits = defineEmits<{
     (e: 'delete'): void
-    (e: 'update', username: String, userCategory: UserCategory, password?: String): void
+    (e: 'update', username: string, userCategory: UserCategory, password?: string): void
 }>();
 
-function onDialogSave(username: String, userCategory: UserCategory, password?: String) {
+function onDialogSave(username: string, userCategory: UserCategory, password?: string) {
     state.editDialog = false;
     emits('update', username, userCategory, password);
 }

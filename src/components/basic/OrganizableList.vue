@@ -41,8 +41,8 @@ export interface Slot {
 }
 
 export interface Organizer {
-    name: String,
-    value: String
+    name: string,
+    value: string
 }
 
 defineProps<{
@@ -55,7 +55,7 @@ defineProps<{
 defineEmits<{
     (event: "clickRightButton"): void
     (event: "organize"): void
-    (event: "removeOrganizer", name: String): void
+    (event: "removeOrganizer", name: string): void
 }>();
 </script>
 

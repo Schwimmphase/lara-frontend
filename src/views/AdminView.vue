@@ -65,7 +65,7 @@ import { useCurrentUserStore } from "@/stores/currentUser";
 import { useOpenPaperStore } from "@/stores/openPaper";
 import { useOpenResearchStore } from "@/stores/openResearch";
 import { AdminApiHandler } from "@/api/Admin/AdminApiHandler";
-import { Organizer } from "@/model/Organizer";
+import type { Organizer } from "@/model/Organizer";
 
 // reset open research/paper store
 useOpenResearchStore().resetStore();
@@ -75,10 +75,10 @@ const categories = [testUserCategory];
 
 const organizeSlots = [{ id: "organizer-tags", name: "Tags" }];
 
-const selectedOrganizers = [{ name: "Tag", value: "Cooler Type, Das ist ein sehr sehr sehr langer Tag-Name" }];
+const selectedOrganizers = [{ name: "Tag", value: "Cooler Typ, Das ist ein sehr sehr sehr langer Tag-Name" }];
 
-const userCategoriesStrings = computed<String[]>(() => {
-    let strings: String[] = [];
+const userCategoriesStrings = computed<string[]>(() => {
+    let strings: string[] = [];
     for (let userCategory of categories) {
         strings.push(userCategory.name)
     }
@@ -93,9 +93,9 @@ let state: { loading: boolean, users: User[] } = reactive({
 });
 
 let getUsers = (organizers: Organizer[]) => {
-    let resposne = AdminApiHandler.getUsers([]);
+    let response = AdminApiHandler.getUsers([]);
 
-    console.log(resposne);
+    console.log(response);
 }
 
 getUsers([]);
@@ -116,7 +116,7 @@ function onUserDelete(user: User) {
     console.debug(user);
 }
 
-function onUpdateUser(user: User, newName: String, userCategory: UserCategory, newPassword?: String) {
+function onUpdateUser(user: User, newName: string, userCategory: UserCategory, newPassword?: string) {
     console.debug("update user: newName: " + newName + " - newPassword: " + newPassword);
     console.debug(user);
 }
@@ -125,7 +125,7 @@ function onOrganize() {
     console.debug("organize");
 }
 
-function onRemoveOrganizer(name: String) {
+function onRemoveOrganizer(name: string) {
     console.debug("organizer removed: " + name);
 }
 </script>

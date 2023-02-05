@@ -51,8 +51,8 @@ const props = defineProps<{
     passwordChange: boolean
 }>();
 
-const userCategoriesString = computed<String[]>(() => {
-    let strings: String[] = [];
+const userCategoriesString = computed<string[]>(() => {
+    let strings: string[] = [];
     for (let userCategory of props.userCategories) {
         strings.push(userCategory.name)
     }
@@ -60,7 +60,7 @@ const userCategoriesString = computed<String[]>(() => {
 })
 
 const emit = defineEmits<{
-    (event: "save", username: String, userCategory: UserCategory, password?: String): void
+    (event: "save", username: string, userCategory: UserCategory, password?: string): void
 }>();
 
 let state = reactive({
