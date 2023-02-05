@@ -81,7 +81,7 @@ let changeComment = (text: string | undefined): void => {
     console.debug("Change comment " + text);
 
     PaperApiHandler.changeComment(detailState.openPaper.savedPaper, new Comment(text));
-    router.go(0); // reload the page
+    router.go(0); // reload the page // TODO: needed?
 }
 
 let deleteTag = (tag: Tag): void => {
@@ -93,7 +93,7 @@ let deleteTag = (tag: Tag): void => {
     console.debug("Close Tag" + tag.name);
     
     PaperApiHandler.removeTag(detailState.openPaper.savedPaper, tag);
-    router.go(0); // reload the page
+    router.go(0); // reload the page // TODO: needed?
 }
 
 let changeSaveState = (savedPaper: SavedPaper | undefined, state: SaveState): void => {
@@ -103,7 +103,7 @@ let changeSaveState = (savedPaper: SavedPaper | undefined, state: SaveState): vo
     }
     
     PaperApiHandler.changeSaveState(savedPaper, state);
-    router.go(0); // reload the page
+    router.go(0); // reload the page // TODO: needed?
 }
 
 let changeRelevance = (relevance: number | undefined): void => {
@@ -120,7 +120,7 @@ let changeRelevance = (relevance: number | undefined): void => {
     console.debug("Change relevance : " + relevance);
 
     PaperApiHandler.changeRelevance(detailState.openPaper.savedPaper, relevance);
-    router.go(0); // reload the page
+    router.go(0); // reload the page // TODO: needed?
 }
 
 watch(relevanceState, async (value) => {
@@ -143,7 +143,7 @@ let createSavedPaper = (paper: Paper | null | undefined, state: SaveState): void
     console.debug("Save Paper : " + paper.paperId + " = " + state);
     
     ResearchApiHandler.savePaper(researchState.research, paper, state);
-    router.go(0); // reload the page
+    router.go(0); // reload the page // TODO: needed?
 }
 
 
@@ -155,8 +155,13 @@ let recommendationsStore: { recommendations: Paper[], citations: CachedPaper[], 
 });
 
 let getRecommendations = async () => {
-    //let recommendations = await PaperApiHandler.getRecommendations(testPaper, testResearch, []);
-    let recommendations = [testPaper, testPaper]; // TODO: nur zu Testzwecken
+    let paper = detailState.openPaper?.paper;
+    let research = detailState.openPaper?.savedPaper?.research;
+    if (paper == undefined || research == undefined) {
+        return;
+    }
+    let recommendations = await PaperApiHandler.getRecommendations(paper, research, []);
+    //let recommendations = [testPaper, testPaper]; // TODO: nur zu Testzwecken
     recommendations.forEach(recommendation => recommendationsStore.recommendations.push(recommendation));
 }
 getRecommendations();
@@ -188,7 +193,7 @@ getReferences();
                     <span class="text-h5">{{ $t('detailSidebar.information') }}</span><br>
                     <div>
                         <!-- TODO Sobald AUTHORS wieder rausnehmen -->
-                        <span v-for="(author, index) in detailState.openPaper?.savedPaper?.paper.author" :key="index" class="font-weight-bold">{{ author.name }}</span>
+                        <span v-for="(author, index) in detailState.openPaper?.savedPaper?.paper.authors" :key="index" class="font-weight-bold">{{ author.name }}</span>
                     </div>
                     <span>{{ detailState.openPaper?.savedPaper?.paper.year }} - {{ detailState.openPaper?.savedPaper?.paper.venue }} - {{ detailState.openPaper.savedPaper?.paper.citationCount }} mal zitiert - {{ detailState.openPaper.savedPaper?.paper.referenceCount }} Referenzen</span>
                     <span>{{ detailState.openPaper?.paper?.year }} - {{ detailState.openPaper?.paper?.venue }} - {{ $t('detailSidebar.citationCount', { n: detailState.openPaper?.paper?.citationCount}) }} - {{ $t('detailSidebar.referenceCount', {n: detailState.openPaper?.paper?.referenceCount}) }}</span>
@@ -234,7 +239,7 @@ getReferences();
                     <span class="text-h5">{{ $t('detailSidebar.information') }}</span><br>
                     <div>
                         <!-- TODO SOBALD DAS FELD AUTHORS HEIßT WIEDER RAUSNEHMEN!! -->
-                        <span v-for="(author, index) in detailState.openPaper?.paper?.author" :key="index" class="font-weight-bold">{{ author.name }}</span>
+                        <span v-for="(author, index) in detailState.openPaper?.paper?.authors" :key="index" class="font-weight-bold">{{ author.name }}</span>
                     </div>
                     <span>{{ detailState.openPaper?.paper?.year }} - {{ detailState.openPaper?.paper?.venue }} - {{ $t('detailSidebar.citationCount', { n: detailState.openPaper?.paper?.citationCount}) }} - {{ $t('detailSidebar.referenceCount', {n: detailState.openPaper?.paper?.referenceCount}) }}</span>
                     <v-divider class="my-3"></v-divider>

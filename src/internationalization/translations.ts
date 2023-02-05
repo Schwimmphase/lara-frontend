@@ -52,6 +52,12 @@ export const messages = {
                 buttonCreate: 'Nutzer erstellen',
                 buttonEdit: 'Save'
             },
+            categories: {
+                manage: 'Manage user categories',
+                create: 'Create user category',
+                name: 'Categoryname',
+                finish: 'Create'
+            },
             organize: {
                 userCategories: 'User categories'
             }
@@ -67,6 +73,11 @@ export const messages = {
             addedAndEnqueuedPapers: '{added} added, {enqueued} enqueued papers',
             startedOn: 'started on {startedOn}',
             open: 'Open'
+        },
+
+        newResearchDialog: {
+            title: 'Title',
+            description: 'Description'
         },
 
         researchOverview: {
@@ -169,6 +180,11 @@ export const messages = {
             addedAndEnqueuedPapers: '{added} hinzugefügte, {enqueued} gemerkte Artikel',
             startedOn: 'gestartet am {startedOn}',
             open: 'Öffnen'
+        },
+
+        newResearchDialog: {
+            title: 'Titel',
+            description: 'Beschreibung'
         },
 
         researchOverview: {

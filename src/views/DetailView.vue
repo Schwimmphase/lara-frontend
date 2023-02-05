@@ -26,10 +26,10 @@ let setPaper = async () => {
     let paperId = route.query.paper as string;
 
     if (researchId == undefined) {
-        let response = await PaperApiHandler.getDetails(paperId, researchId as null) as Paper;
+        let response = await PaperApiHandler.getDetails("SemSchol$961fe188f2fe4708a7dbf70057790750252e058c", researchId as null) as Paper; // TODO: change hardcoded id to "paperId"
         var openPaperFromAPI = new OpenPaper(response, undefined, false);
     } else {
-        let response = await PaperApiHandler.getDetails(paperId, researchId) as SavedPaper;
+        let response = await PaperApiHandler.getDetails("SemSchol$961fe188f2fe4708a7dbf70057790750252e058c", researchId) as SavedPaper; // TODO: change hardcoded id to "paperId"
         var openPaperFromAPI = new OpenPaper(undefined, response, false);
     }
 
@@ -76,7 +76,7 @@ openPaperStore.$subscribe((mutation, state) => {
                     <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.information') }}</span><br>
                     <div class="mb-2 text-h4">
                         <!-- TODO Sobald AUTHORS wieder ändern -->
-                        <span v-for="(author, index) in detailState.openPaper?.paper?.author" :key="index" class="font-weight-bold text-h5">{{ author.name }}</span>
+                        <span v-for="(author, index) in detailState.openPaper?.paper?.authors" :key="index" class="font-weight-bold text-h5">{{ author.name }}</span>
                     </div>
                     <span class="text-h5">{{ $t('detailView.year_venue_timesCited_timesReferenced', {year: detailState.openPaper?.paper?.year, venue: detailState.openPaper?.paper?.venue, timesCited: detailState.openPaper?.paper?.citationCount, timesReferenced: detailState.openPaper?.paper?.referenceCount}) }}</span>
                     <v-divider class="my-3"></v-divider>
@@ -103,7 +103,7 @@ openPaperStore.$subscribe((mutation, state) => {
                     <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.information') }}</span><br>
                     <div class="mb-2 text-h4">
                         <!-- TODO Sobald AUTHORS wieder rausnehmen -->
-                        <span v-for="(author, index) in detailState.openPaper?.paper?.author" :key="index" class="font-weight-bold text-h5">{{ author.name }}</span>
+                        <span v-for="(author, index) in detailState.openPaper?.paper?.authors" :key="index" class="font-weight-bold text-h5">{{ author.name }}</span>
                     </div>
                     <span class="text-h5">{{ $t('detailView.year_venue_timesCited_timesReferenced', {year: detailState.openPaper?.paper?.year, venue: detailState.openPaper?.paper?.venue, timesCited: detailState.openPaper?.paper?.citationCount, timesReferenced: detailState.openPaper?.paper?.referenceCount}) }}</span>
                     <v-divider class="my-3"></v-divider>
