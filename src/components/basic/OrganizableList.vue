@@ -9,7 +9,7 @@
 
             <div class="d-flex gap-4">
                 <v-chip v-for="(organizer, index) of selectedOrganizers" :key="index" class="lara-chip h-100" id="organizer-chip">
-                    <span id="organizer-chip-text">{{ organizer.name }}: {{ organizer.value }}</span>
+                    <span id="organizer-chip-text">{{ organizer.name }}: {{ organizer.argument }}</span>
                     <v-btn size="small" variant="text" icon="mdi-close-circle"
                            @click="$emit('removeOrganizer', organizer.name)">
                     </v-btn>
@@ -23,7 +23,7 @@
     </div>
 
     <div v-for="slot in slots">
-        <h4 class="text-h4 font-weight-bold mt-8" v-if="slot.name">{{ slot.name }}</h4>
+        <h4 class="text-h4 font-weight-bold mt-8" v-if="slot.name">{{ slot.name}}</h4>
         <div class="d-flex flex-row flex-wrap mt-8 gap-8">
             <slot :name="slot.id"></slot>
         </div>
@@ -34,15 +34,11 @@
 <script setup lang="ts">
 import LaraButton from "@/components/basic/LaraButton.vue";
 import OrganizerDialog from "@/components/dialogs/OrganizerDialog.vue";
+import type {Organizer} from "@/model/Organizer";
 
 export interface Slot {
     id: string,
     name?: string
-}
-
-export interface Organizer {
-    name: string,
-    value: string
 }
 
 defineProps<{

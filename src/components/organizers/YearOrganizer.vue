@@ -6,7 +6,12 @@ import LaraButton from "../basic/LaraButton.vue";
 
 const emit = defineEmits(['year-change']);
 
-let extremas = reactive({ min: 1900, max: (new Date()).getFullYear()});
+const props = defineProps<{
+    min: number,
+    max: number
+}>();
+
+let extremas = reactive({ min: props.min, max: props.max });
 let state = ref([extremas.min + 20, extremas.max - 20]);
 
 const extremaInterval = 50;
