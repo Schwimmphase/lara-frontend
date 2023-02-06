@@ -22,7 +22,8 @@ let openResearchStore = useOpenResearchStore();
 
 let slots = [{ id: "search-results", name: "Suchergebnisse" }];
 
-let searchState: { results: Paper[] | undefined, research: Research | undefined, query: string | undefined } = reactive({
+let searchState: { results: Paper[] | undefined, research: Research | undefined, query: string | undefined, loading: boolean } = reactive({
+    loading: true,
     results: undefined,
     research: openResearchStore.getResearch,
     query: useRoute().query.search as string,
@@ -32,39 +33,44 @@ openResearchStore.$subscribe((mutation, state) => {
     searchState.research = state.openResearch;
 });
 
-// TODO FETCH SEARCH RESULT
-let getSearchResults = () => {
-    console.log("QUERY")
-    console.log(searchState.query);
-
+let getSearchResults = async () => {
     if (searchState.query == undefined) {
         console.error("GET_SEARCH_RESULTS : No query provided on route")
         return;
     }
 
-    let result = ResearchApiHandler.searchByKeywords(searchState.query, []);
-    console.debug("SEARCH RESULT");
-    console.debug(result);
+    // Empty query
+    if (searchState.query == "") {
+        searchState.loading = false;
+        return;
+    }
+
+    let result = await ResearchApiHandler.searchByKeywords(searchState.query, []);
+    searchState.results = result;
+    searchState.loading = false;
 }
 
-//getSearchResults();
-
-// TODO Nur zu Testzwecken!
-searchState.results = testPaperList;
+getSearchResults();
 
 </script>
 
 
 <template>
-    <div class="ma-4">
+    <div class="ma-4 h-100">
         <!-- Searchbar on top of the page -->
         <SearchbarComponent :input-string="searchState.query" />
 
-        <OrganizableList :slots="slots" :organize-slots="[]" :selected-organizers="[]">
-            <template v-slot:search-results>
-                <UnsavedPaperCard v-for="(paper, index) in searchState.results" :key="index" :research="(searchState.research != null ? searchState.research : undefined)" :paper="paper"></UnsavedPaperCard>            
-            </template>
-        </OrganizableList>
+        <div v-if="searchState.loading" class="h-50 ma-5 d-flex justify-center align-center">
+            <v-progress-circular indeterminate size="35"></v-progress-circular>
+        </div>
+
+        <div v-if="!searchState.loading">
+            <OrganizableList :slots="slots" :organize-slots="[]" :selected-organizers="[]">
+                <template v-slot:search-results>
+                    <UnsavedPaperCard v-for="(paper, index) in searchState.results" :key="index" :research="(searchState.research != null ? searchState.research : undefined)" :paper="paper"></UnsavedPaperCard>            
+                </template>
+            </OrganizableList>
+        </div>
     </div>
 
 </template>
