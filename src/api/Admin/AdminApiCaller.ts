@@ -14,7 +14,7 @@ export class AdminApiCaller {
         });
     }
 
-    public static createUser(username: string, password: string, userCategory: UserCategory) {
+    public static createUser(username: string, password: string, userCategory: string) {
         return BasicApiCaller.axiosInstance.post(this.urlUsermanagement, {
             "username": username,
             "password": password,
@@ -22,11 +22,11 @@ export class AdminApiCaller {
         });
     }
 
-    public static updateUser(userId: string, username: string, password: string, userCategory: UserCategory) {
+    public static updateUser(userId: string, username: string, password: string, userCategoryName: string) {
         return BasicApiCaller.axiosInstance.patch(this.urlUsermanagement + '/' + userId, {
             "username": username,
             "password": password,
-            "usecategory": userCategory
+            "usercategory": userCategoryName
         });
     }
 
