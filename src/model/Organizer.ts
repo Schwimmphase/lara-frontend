@@ -1,9 +1,9 @@
 export class Organizer {
     readonly name: string;
-    readonly value: string;
+    readonly argument: string;
     
-    constructor(name: string, value: string) {
+    constructor(name: string, argument: string) {
         this.name = name;
-        this.value = value;
+        this.argument = argument;
     }
 }

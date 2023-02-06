@@ -85,9 +85,13 @@ export const messages = {
 
         researchOverview: {
             overview: 'Overview',
+            globalSearch: 'Search',
             enqueued: 'Enqueued',
             hidden: 'Hidden',
-            export: 'Export'
+            export: 'Export',
+            empty: 'This section is currently empty',
+            copied: 'BibTeX export was added to the clipboard',
+            close: 'Close'
         },
 
         organizableList: {
@@ -192,9 +196,13 @@ export const messages = {
 
         researchOverview: {
             overview: 'Übersicht',
+            globalSearch: 'Suche',
             enqueued: 'Für später gemerkt',
             hidden: 'Ausgeblendet',
-            export: 'Exportieren'
+            export: 'Exportieren',
+            empty: 'Dieser Abschied ist zur Zeit leer',
+            copied: 'BibTeX-Export wurde zur Zwischenablage hinzugefügt',
+            close: 'Schließen'
         },
 
         organizableList: {
