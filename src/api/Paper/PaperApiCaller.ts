@@ -2,7 +2,7 @@ import basicApiCaller from "../BasicApiCaller";
 import type { Organizer } from "@/model/Organizer";
 
 export class PaperApiCaller {
-    static urlPath = '/paper';
+    static urlPath = '/paper/';
     static urlTag = '/tag';
     static urlComment = '/comment';
     static urlSaveState = '/save-state';

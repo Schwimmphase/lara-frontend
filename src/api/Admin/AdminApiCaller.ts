@@ -25,7 +25,7 @@ export class AdminApiCaller {
     }
 
     public static updateUser(userId: string, username: string, password: string, userCategory: UserCategory) {
-        return BasicApiCaller.axiosInstance.patch(this.urlUsermanagement + userId, {
+        return BasicApiCaller.axiosInstance.patch(this.urlUsermanagement + '/' + userId, {
             data: {
                 "username": username,
                 "password": password,
@@ -35,7 +35,7 @@ export class AdminApiCaller {
     }
 
     public static deleteUser(userId: string) {
-        return BasicApiCaller.axiosInstance.delete(this.urlUsermanagement + userId);
+        return BasicApiCaller.axiosInstance.delete(this.urlUsermanagement + '/' + userId);
     }
 
     public static getUserCategories() {
@@ -52,7 +52,7 @@ export class AdminApiCaller {
     }
 
     public static updateUserCategory(userCategoryId: string, name: string, color: string) {
-        return BasicApiCaller.axiosInstance.patch(AdminApiCaller.urlUsermanagement + AdminApiCaller.urlCategory + userCategoryId, {
+        return BasicApiCaller.axiosInstance.patch(AdminApiCaller.urlUsermanagement + AdminApiCaller.urlCategory + '/' + userCategoryId, {
             data: {
                 "categoryname": name,
                 "color": color
