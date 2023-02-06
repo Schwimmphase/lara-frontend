@@ -26,24 +26,27 @@ let setPaper = async () => {
     let paperId = route.query.paper as string;
 
     if (researchId == undefined) {
-        let response = await PaperApiHandler.getDetails("SemSchol$961fe188f2fe4708a7dbf70057790750252e058c", researchId as null) as Paper; // TODO: change hardcoded id to "paperId"
+        //let response = await PaperApiHandler.getDetails("SemSchol$961fe188f2fe4708a7dbf70057790750252e058c", researchId as null) as Paper; // TODO: change hardcoded id to "paperId"
+        let response = await PaperApiHandler.getDetails(paperId, researchId as null) as Paper; // TODO: change hardcoded id to "paperId"
+        console.log(response);
         var openPaperFromAPI = new OpenPaper(response, undefined, false);
     } else {
         let response = await PaperApiHandler.getDetails("SemSchol$961fe188f2fe4708a7dbf70057790750252e058c", researchId) as SavedPaper; // TODO: change hardcoded id to "paperId"
-        var openPaperFromAPI = new OpenPaper(undefined, response, false);
+        var openPaperFromAPI = new OpenPaper(undefined, response, true);
     }
 
-    openPaperStore.setPaper(openPaperFromAPI);
+    openPaperStore.paper = openPaperFromAPI;
+
+    console.log(openPaperStore.paper);
+    detailState.loading = false;
 }
 
 // Set the paper from the query
 setPaper();
 
-detailState.loading = false;
-
 let openPaperStore = useOpenPaperStore();
 
-detailState.openPaper = openPaperStore.getPaper;
+detailState.openPaper = openPaperStore.paper;
 
 openPaperStore.$subscribe((mutation, state) => {
     // When a change in the paper is detected, update the state
@@ -59,15 +62,12 @@ openPaperStore.$subscribe((mutation, state) => {
         <detail-sidebar-component></detail-sidebar-component>
 
         <!-- Paper is not saved and pdf is not available -->
-        <div class="w-100 h-100" v-if="!detailState.openPaper?.saved && !detailState.openPaper?.paper?.pdfUrl == null">
+        <div class="w-100 h-100" v-if="!(detailState.openPaper?.saved) && (detailState.openPaper?.paper?.pdfUrl == null)">
             <!-- Display the abstract of the paper and some additional informations -->
             <div class="ma-10">
                 <span class="text-h2 font-weight-bold">{{ detailState.openPaper?.paper?.title }}</span><br>
                 <div class="mt-5">
                     <span class="text-h4 font-weight-bold">{{ $t('detailView.abstract') }}</span><br>
-                    <span class="text-h5">
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-                    </span>
                     <span class="text-h5">{{ detailState.openPaper?.paper?.abstract }}</span>
                 </div>
                 <v-divider class="mt-5"></v-divider>
@@ -75,7 +75,6 @@ openPaperStore.$subscribe((mutation, state) => {
                 <div class="mt-5">
                     <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.information') }}</span><br>
                     <div class="mb-2 text-h4">
-                        <!-- TODO Sobald AUTHORS wieder ändern -->
                         <span v-for="(author, index) in detailState.openPaper?.paper?.authors" :key="index" class="font-weight-bold text-h5">{{ author.name }}</span>
                     </div>
                     <span class="text-h5">{{ $t('detailView.year_venue_timesCited_timesReferenced', {year: detailState.openPaper?.paper?.year, venue: detailState.openPaper?.paper?.venue, timesCited: detailState.openPaper?.paper?.citationCount, timesReferenced: detailState.openPaper?.paper?.referenceCount}) }}</span>
@@ -86,7 +85,7 @@ openPaperStore.$subscribe((mutation, state) => {
         </div>
 
         <!-- Paper is saved but pdf is not available -->
-        <div class="w-100 h-100" v-if="detailState.openPaper?.saved && !detailState.openPaper?.savedPaper?.paper.pdfUrl == null">
+        <div class="w-100 h-100" v-if="detailState.openPaper?.saved && (detailState.openPaper?.savedPaper?.paper.pdfUrl == null)">
             <!-- Display the abstract of the paper and some additional informations -->
             <div class="ma-10">
                 <span class="text-h2 font-weight-bold">{{ detailState.openPaper?.paper?.title }}</span><br>
@@ -102,7 +101,6 @@ openPaperStore.$subscribe((mutation, state) => {
                 <div class="mt-5">
                     <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.information') }}</span><br>
                     <div class="mb-2 text-h4">
-                        <!-- TODO Sobald AUTHORS wieder rausnehmen -->
                         <span v-for="(author, index) in detailState.openPaper?.paper?.authors" :key="index" class="font-weight-bold text-h5">{{ author.name }}</span>
                     </div>
                     <span class="text-h5">{{ $t('detailView.year_venue_timesCited_timesReferenced', {year: detailState.openPaper?.paper?.year, venue: detailState.openPaper?.paper?.venue, timesCited: detailState.openPaper?.paper?.citationCount, timesReferenced: detailState.openPaper?.paper?.referenceCount}) }}</span>
