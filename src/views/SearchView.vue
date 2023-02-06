@@ -56,7 +56,7 @@ getSearchResults();
 
 
 <template>
-    <div class="ma-4 h-100">
+    <div class="mt-8 mx-16 h-100">
         <!-- Searchbar on top of the page -->
         <SearchbarComponent :input-string="searchState.query" />
 
@@ -77,7 +77,5 @@ getSearchResults();
 
 
 <style scope>
-
-@import '../assets/main.css';
 
 </style>
