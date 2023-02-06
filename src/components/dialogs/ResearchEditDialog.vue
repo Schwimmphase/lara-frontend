@@ -29,8 +29,8 @@ import { reactive } from "vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
 
 const props = defineProps<{
-    title: String,
-    description: String
+    title: string,
+    description: string
 }>();
 
 let state = reactive({
@@ -42,7 +42,7 @@ let state = reactive({
 let valid = false;
 
 const emit = defineEmits<{
-    (event: 'save', title: String, description: String): void
+    (event: 'save', title: string, description: string): void
 }>()
 
 function closeDialog() {
