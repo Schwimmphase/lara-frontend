@@ -40,14 +40,14 @@ export class AdminApiCaller {
 
     public static createUserCategory(name: string, color: string) {
         return BasicApiCaller.axiosInstance.post(this.urlUsermanagement + this.urlCategory, {
-            "categoryname": name,
+            "name": name,
             "color": color
         });
     }
 
     public static updateUserCategory(userCategoryId: string, name: string, color: string) {
         return BasicApiCaller.axiosInstance.patch(AdminApiCaller.urlUsermanagement + AdminApiCaller.urlCategory + '/' + userCategoryId, {
-                "categoryname": name,
+                "name": name,
                 "color": color
         });
     }

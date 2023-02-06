@@ -3,20 +3,25 @@ import { reactive } from "@vue/reactivity";
 import { defineEmits } from 'vue';
 
 import LaraButton from "../basic/LaraButton.vue";
+import { UserCategory } from "@/model/UserCategory";
 
-let state = reactive({
+const props = defineProps({
+    category: UserCategory,
+});
+
+let state: { dialog: boolean, color: string | undefined, title: string | undefined } = reactive({
     dialog: false,
-    title: "",
-    color: "#fcba03"
+    title: props.category?.name,
+    color: props.category?.color
 });
 
 const emits = defineEmits(['edit']);
 
 let closeDialog = () => {
-    emits('edit', state.title, state.color);
+    emits('edit', props.category, state.title, state.color);
     state.dialog = false;
-    state.title = "";
-    state.color = "fcba03";
+    state.title = props.category?.name;
+    state.color = props.category?.color;
 }
 
 </script>
@@ -30,7 +35,7 @@ let closeDialog = () => {
 
     <v-dialog v-model="state.dialog">
         <v-card id="dialog">
-            <v-card-title>{{ $t('admin.categories.create') }}</v-card-title>
+            <v-card-title>{{ $t('admin.categories.edit') }}</v-card-title>
             <v-container>
                 <v-row>
                     <v-col>
@@ -46,7 +51,7 @@ let closeDialog = () => {
                         </v-card-text>
                         <v-card-actions>
                             <v-container>
-                                <lara-button type="primary" @click="closeDialog">{{ $t('admin.categories.finish') }}</lara-button>
+                                <lara-button type="primary" @click="closeDialog">{{ $t('admin.categories.save') }}</lara-button>
                             </v-container>
                         </v-card-actions>
                     </v-col>

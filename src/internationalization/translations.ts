@@ -55,8 +55,11 @@ export const messages = {
             categories: {
                 manage: 'Manage user categories',
                 create: 'Create user category',
+                save: 'Save',
+                edit: 'Edit user category',
                 name: 'Categoryname',
-                finish: 'Create'
+                finish: 'Create',
+
             },
             organize: {
                 userCategories: 'User categories'
