@@ -3,8 +3,8 @@ import BasicApiCaller from "../BasicApiCaller";
 import type { UserCategory } from "@/model/UserCategory";
 
 export class AdminApiCaller {
-    static urlUsermanagement = '/usermanagement/';
-    static urlCategory = 'category';
+    static urlUsermanagement = '/usermanagement';
+    static urlCategory = '/category';
 
     public static getUsers(organizers: Organizer[]) {
         return BasicApiCaller.axiosInstance.get(this.urlUsermanagement, {
