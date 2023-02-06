@@ -48,10 +48,10 @@ let state = reactive({
 function closeDialog() {
     console.debug("Dialog closed emitting save event");
 
+    emit("save", state.title, state.description);
     state.title = ""
     state.description = ""
     state.dialog = false
-    emit("save", state.title, state.description);
 }
 
 </script>

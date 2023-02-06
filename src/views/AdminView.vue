@@ -23,7 +23,7 @@
 
         <div class="mt-4" v-if="!state.loading">
             <organizable-list :slots="[{ id: 'users'}]" :organize-slots="organizeSlots"
-                              :selected-organizers="selectedOrganizers" @organize="onOrganize"
+                              :selected-organizers="organizerState.selectedOragnizers" @organize="onOrganize"
                               @remove-organizer="(name) => onRemoveOrganizer(name)">
                 <template v-slot:users v-if="state.users != undefined && state.categories != undefined">
                     <user-card v-for="(user,index) in state.users" :user="user" :key="index" :deletable="true" :user-categories="state.categories"
@@ -35,7 +35,7 @@
                 <template v-slot:organizer-tags>
                     <div id="tag-select" class="mt-4">
                         <v-select class="lara-field" :label="$t('admin.organize.userCategories')"
-                                  variant="outlined" :items="userCategoriesStrings" multiple clearable>
+                                  variant="outlined" :items="userCategoriesStrings" multiple clearable v-model="organizerState.tags">
                             <template v-slot:selection="{ item, index }">
                                 <v-chip class="lara-chip" :color="state.categories?.filter(category => category.name === item.title)[0].color">
                                     {{ item.title }}
@@ -57,7 +57,7 @@ import OrganizableList from "@/components/basic/OrganizableList.vue";
 import UserCard from "@/components/cards/UserCard.vue";
 
 import { testUserCategory1, testUserCategory2} from "@/model/_testResearch";
-import type {User} from "@/model/User";
+import type { User } from "@/model/User";
 import {computed, reactive} from "vue";
 import UserDialog from "@/components/dialogs/UserDialog.vue";
 import type {UserCategory} from "@/model/UserCategory";
@@ -65,13 +65,11 @@ import { useCurrentUserStore } from "@/stores/currentUser";
 import { useOpenPaperStore } from "@/stores/openPaper";
 import { useOpenResearchStore } from "@/stores/openResearch";
 import { AdminApiHandler } from "@/api/Admin/AdminApiHandler";
-import type { Organizer } from "@/model/Organizer";
+import { Organizer } from "@/model/Organizer";
 
 const userCategories = [testUserCategory1, testUserCategory2];
 
 const organizeSlots = [{ id: "organizer-tags", name: "Tags" }];
-
-const selectedOrganizers = [{ name: "Tag", value: "Cooler Typ, das ist ein sehr sehr sehr langer Tag-Name" }];
 
 const userCategoriesStrings = computed<string[]>(() => {
     let strings: string[] = [];
@@ -88,6 +86,11 @@ let state: { loading: boolean, users: User[], categories: UserCategory[], curren
     categories: [],
 });
 
+let organizerState: { tags: string[], selectedOragnizers: Organizer[] } = reactive({
+    tags: [],
+    selectedOragnizers: []
+});
+
 let getUsers = async (organizers: Organizer[]) => {
     let users = await AdminApiHandler.getUsers(organizers);
     state.users = users;
@@ -101,7 +104,7 @@ let getCategories = async () => {
 
     console.log(state.categories)
 }
-
+ 
 getCategories();
 getUsers([]);
 state.loading = false;
@@ -124,9 +127,9 @@ function onCreateUser(username: string, userCategory: UserCategory, password?: s
 }
 
 function onDeleteUser(user: User) {
-    confirm("Are you sure?"); // TODO: add "are you sure?" alert
+    confirm("Are you sure?"); // TODO: add better "are you sure?" alert
     console.debug("delete user:", user);
-    state.users.splice(state.users.indexOf(user), 1); // TODO: check if this removes the correct user
+    state.users.splice(state.users.indexOf(user), 1);
     console.debug(state.users);
     AdminApiHandler.deleteUser(user);
 }
@@ -147,12 +150,46 @@ function onUpdateUser(user: User, newName: string, newUserCategory: UserCategory
 }
 
 function onOrganize() {
+    // clear currently selected oranizers
+    organizerState.selectedOragnizers = [];
+
+    // build tags organizer
+    let tagsValue = "";
+    let separator = "";
+    organizerState.tags.forEach(element => {
+        tagsValue += separator;
+        tagsValue += element;
+        
+        separator = ",";
+    });
+
+    let tagsFilter = new Organizer("tags-filter", tagsValue); // TODO Komma mit Leerzeichen oder ohne??
+
+    organizerState.selectedOragnizers.push(tagsFilter);
+
+    console.debug(tagsFilter);
+
+
+
+    getUsers(organizerState.selectedOragnizers);
+
     console.debug("organize");
+
+    let organizers: Organizer[] = [];
+
+    for (let organizer of organizeSlots) {
+
+    }
 }
 
 function onRemoveOrganizer(name: string) {
-    console.debug("organizer removed: " + name);
+    let newOrganizers = organizerState.selectedOragnizers.filter((organizer) => {
+        return name !== organizer.name;
+    });
+
+    organizerState.selectedOragnizers = newOrganizers;
 }
+
 </script>
 
 

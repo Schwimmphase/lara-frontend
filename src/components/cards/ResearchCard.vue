@@ -13,7 +13,7 @@
             <v-spacer></v-spacer>
 
             <research-edit-dialog :title="title" :description="description"
-                                  @save="(newTitle: String, newDescription: String) => onDataChange(newTitle, newDescription)" />
+                                  @save="(newTitle: string, newDescription: string) => onDataChange(newTitle, newDescription)" />
             <v-btn size="small" color="red" variant="text" icon="mdi-delete" @click="$emit('delete')"></v-btn>
         </v-card-actions>
     </v-card>
@@ -30,13 +30,15 @@ import { useOpenResearchStore } from "@/stores/openResearch";
 
 defineProps(["id", "title", "description", "added", "enqueued", "startedAt", "research"]);
 
-function onDataChange(title: String, description: String) {
+
+function onDataChange(title: string, description: string) {
     console.debug("Edit event received emitting data change event");
     emit("data-change", title, description);
 }
 
 const emit = defineEmits<{
-    (event: 'data-change', title: String, description: String): void
+    (event: 'data-change', title: string, description: string): void
+    (event: 'delete'): void
 }>();
 
 function openResearch(research: Research) {
