@@ -17,7 +17,8 @@ let state: { categories: UserCategory[] } = reactive({
 let createCategory = async (name: string, color: string) => {
     console.debug(name, color);
     let response = await AdminApiHandler.createUserCategory(name, color);
-    console.log(response);
+    
+    getCategories();
 }
 
 let getCategories = async () => {
@@ -27,12 +28,15 @@ let getCategories = async () => {
 
 
 let updateCategory = async (category: UserCategory, name: string, color: string) => {
-    let response = await  AdminApiHandler.updateUserCategory(category, name, color);
-    console.debug(response);
+    let response = await AdminApiHandler.updateUserCategory(category, name, color);
+    
+    getCategories();
 }
 
-let deleteCategory = (category: UserCategory) => {
-    let response = AdminApiHandler.deleteUserCategory(category);
+let deleteCategory = async (category: UserCategory) => {
+    let response = await AdminApiHandler.deleteUserCategory(category);
+
+    getCategories();
 }
 
 getCategories();
@@ -49,8 +53,9 @@ getCategories();
         </div>
 
         <div class="mt-3">
-            <v-card class="lara-card mr-3 pa-3 d-flex" v-for="(category, index) in state.categories" :key="index">
+            <v-card class="lara-card mt-3 pa-3 d-flex" v-for="(category, index) in state.categories" :key="index">
                 <v-title><span class="lara-title font-weight-bold">{{ category.name }}</span><span class="lara-id">#{{ category.id }}</span></v-title>
+                <v-spacer></v-spacer>
                 <v-avatar class="ml-4" size="30" :color="category.color"></v-avatar>
                 <EditUserCategoryDialog :category="category" @edit="(category, name, color) => updateCategory(category, name, color)">
                     <v-icon class="ml-4 lara-clickable">mdi-pencil</v-icon>
