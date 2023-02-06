@@ -7,7 +7,7 @@ class BasicApiCaller {
     constructor() {
         this.axiosInstance = axios.create({
             baseURL: 'https://api.lara.gregyyy.dev',
-            timeout: 10000, // ms
+            timeout: 10_000, // ms
         });
 
         // axios interceptor for requests
@@ -26,22 +26,20 @@ class BasicApiCaller {
         this.axiosInstance.interceptors.response.use(response => {
             return response;
         }, error => {
-            console.log("error code:", error.code);
-            console.log("error message:", error.message);
-
             if (error.response) {
                 if (error.response.status == "400") {
-                    console.error("False arguments of request, recieved error message: " + error.response.message);
+                    console.error("False arguments of request, recieved error message:", error.response.data.message);
                 } else if (error.response.status == "401") {
-                    console.error("User not authentificated, recieved error message: " + error.response.message);
+                    console.error("User not authentificated, recieved error message:", error.response.data.message);
                 } else if (error.response.status == "403") {
-                    console.error("Access forbidden, recieved error message: " + error.response.message);
+                    console.error("Access forbidden, recieved error message:", error.response.data.message);
+                } else if (error.response.status == "500") {
+                    console.error("Internal Server Error,", error.response.data.message);
                 } else {
-                    console.error("Something went wrong regarding the response of an api call, responded with http status code: "
-                        + error.response.status);
+                    console.error("Something went wrong regarding the response of an api call, responded with http status code:", error.response.status);
                 }
             } else {
-                console.error("Something went wrong: " + error.code + ", " + error.message);
+                console.error("Something went wrong:", error.code, ",", error.message);
             }
         });
     }

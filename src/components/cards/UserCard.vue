@@ -1,7 +1,7 @@
 <template>
     <v-card class="d-flex flex-column lara-card" id="user-card" variant="flat">
         <v-card-title class="text-h5 d-flex">
-            <span>{{ user.username }}<span class="text-grey">#{{ user.userId }}</span></span>
+            <span id="user-card-title">{{ user.username }}<span class="text-grey">#{{ user.userId }}</span></span>
             <v-spacer />
             <v-chip class="lara-chip" :color="user.userCategory.color">{{ user.userCategory.name }}</v-chip>
         </v-card-title>
@@ -42,10 +42,10 @@ defineProps<{
 
 const emits = defineEmits<{
     (e: 'delete'): void
-    (e: 'update', username: String, userCategory: UserCategory, password?: String): void
+    (e: 'update', username: string, userCategory: UserCategory, password?: string): void
 }>();
 
-function onDialogSave(username: String, userCategory: UserCategory, password?: String) {
+function onDialogSave(username: string, userCategory: UserCategory, password?: string) {
     state.editDialog = false;
     emits('update', username, userCategory, password);
 }
@@ -55,6 +55,12 @@ function onDialogSave(username: String, userCategory: UserCategory, password?: S
 <style scoped>
 #user-card {
     width: 400px;
+}
+
+#user-card-title {
+    width: 275px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
 }
 
 #edit-button {

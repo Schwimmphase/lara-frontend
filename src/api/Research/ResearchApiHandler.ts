@@ -15,10 +15,11 @@ import type { CachedPaper } from "@/model/CachedPaper";
 export class ResearchApiHandler {
     public static async getAllResearchesByUser(): Promise<Research[]> {
         const response = await ResearchApiCaller.getAllResearchesByUser();
-        let data = BasicApiHandler.tryParseJson(response.data.researches);
+        let data = BasicApiHandler.tryParseJson(response.data);
         let researches: Research[] = [];
-        for (let research of data) { // TODO: replace data with data.researches once the backend people have updated their api response according to the yml definition
-            researches.push(BasicApiHandler.buildResearch(research));
+        for (let research of data.researches) {
+            research = BasicApiHandler.buildResearch(research);
+            researches.push(research);
         }
         return researches;
     }
@@ -61,7 +62,7 @@ export class ResearchApiHandler {
         const response = await ResearchApiCaller.getPapers(research.id, organizers);
         let data = BasicApiHandler.tryParseJson(response.data);
         let savedPapers: SavedPaper[] = [];
-        for (let savedPaper of data.papers) { // TODO: change data.papers to data.savedPapers once the backend people have updated their api response according to the yml definition
+        for (let savedPaper of data.papers) {
             savedPapers.push(BasicApiHandler.buildSavedPaper(savedPaper));
         }
         return savedPapers;

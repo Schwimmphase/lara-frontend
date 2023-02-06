@@ -3,8 +3,8 @@ import BasicApiCaller from "../BasicApiCaller";
 import type { UserCategory } from "@/model/UserCategory";
 
 export class AdminApiCaller {
-    static urlUsermanagement = '/usermanagement/';
-    static urlCategory = '/category/';
+    static urlUsermanagement = '/usermanagement';
+    static urlCategory = '/category';
 
     public static getUsers(organizers: Organizer[]) {
         return BasicApiCaller.axiosInstance.get(this.urlUsermanagement, {
@@ -16,26 +16,22 @@ export class AdminApiCaller {
 
     public static createUser(username: string, password: string, userCategory: UserCategory) {
         return BasicApiCaller.axiosInstance.post(this.urlUsermanagement, {
-            data: {
-                "username": username,
-                "password": password,
-                "userCategory": userCategory
-            }
+            "username": username,
+            "password": password,
+            "usercategory": userCategory
         });
     }
 
     public static updateUser(userId: string, username: string, password: string, userCategory: UserCategory) {
-        return BasicApiCaller.axiosInstance.patch(this.urlUsermanagement + userId, {
-            data: {
-                "username": username,
-                "password": password,
-                "useCategory": userCategory
-            }
-        })
+        return BasicApiCaller.axiosInstance.patch(this.urlUsermanagement + '/' + userId, {
+            "username": username,
+            "password": password,
+            "usecategory": userCategory
+        });
     }
 
     public static deleteUser(userId: string) {
-        return BasicApiCaller.axiosInstance.delete(this.urlUsermanagement + userId);
+        return BasicApiCaller.axiosInstance.delete(this.urlUsermanagement + '/' + userId);
     }
 
     public static getUserCategories() {
@@ -44,23 +40,19 @@ export class AdminApiCaller {
 
     public static createUserCategory(name: string, color: string) {
         return BasicApiCaller.axiosInstance.post(this.urlUsermanagement + this.urlCategory, {
-            data: {
-                "categoryname": name,
-                "color": color
-            }
-        })
+            "name": name,
+            "color": color
+        });
     }
 
     public static updateUserCategory(userCategoryId: string, name: string, color: string) {
-        return BasicApiCaller.axiosInstance.patch(AdminApiCaller.urlUsermanagement + AdminApiCaller.urlCategory + userCategoryId, {
-            data: {
-                "categoryname": name,
+        return BasicApiCaller.axiosInstance.patch(this.urlUsermanagement + this.urlCategory + '/' + userCategoryId, {
+                "name": name,
                 "color": color
-            }
         });
     }
 
     public static deleteUserCategory(userCategoryId: string) {
-        return BasicApiCaller.axiosInstance.delete(userCategoryId);
+        return BasicApiCaller.axiosInstance.delete(this.urlUsermanagement + this.urlCategory + '/' + userCategoryId);
     }
 }

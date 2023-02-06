@@ -55,6 +55,17 @@ const router = createRouter({
     },
 
     {
+      path: '/admin/user-categories',
+      name: 'userCategories',
+      component: UserCategoryView,
+      meta: {
+        showSidebar: false,
+        showSearchInSidebar: false,
+        showRecommendationsInSidebar: false,
+      }
+    },
+
+    {
       path: '/login',
       name: 'login',
       component: LoginView,
@@ -145,6 +156,8 @@ function getCookies(): Map<string, string> {
 router.beforeEach(async (to, from) => {
   let cookies = getCookies();
   if (to.name !== 'login' && !cookies.get("lara-token")) {
+    console.error("ERROR")
+    console.log(cookies.get("lara-token"))
     return { name: 'login' };
   }
   if (to.name === 'login' && cookies.get("lara-token")) {

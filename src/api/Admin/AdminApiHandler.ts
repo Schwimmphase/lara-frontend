@@ -10,7 +10,7 @@ export class AdminApiHandler {
         const response = await AdminApiCaller.getUsers(organizers);
         let data = BasicApiHandler.tryParseJson(response.data);
         let users: User[] = []
-        for (let user of data) {
+        for (let user of data.users) {
             users.push(BasicApiHandler.buildUser(user));
         }
         return users;
@@ -36,7 +36,7 @@ export class AdminApiHandler {
         const response = await AdminApiCaller.getUserCategories();
         let data = BasicApiHandler.tryParseJson(response.data);
         let userCategories: UserCategory[] = [];
-        for (let userCategory of data.userCategories) {
+        for (let userCategory of data.categories) {
             userCategories.push(BasicApiHandler.buildUserCategory(userCategory));
         }
         return userCategories;
