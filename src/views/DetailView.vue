@@ -43,7 +43,7 @@ setPaper();
 
 let openPaperStore = useOpenPaperStore();
 
-detailState.openPaper = openPaperStore.getPaper;
+detailState.openPaper = openPaperStore.paper;
 
 openPaperStore.$subscribe((mutation, state) => {
     // When a change in the paper is detected, update the state
