@@ -17,13 +17,13 @@ export class AdminApiHandler {
     }
 
     public static async createUser(username: string, password: string, userCategory: UserCategory): Promise<User> {
-        const response = await AdminApiCaller.createUser(username, password, userCategory);
+        const response = await AdminApiCaller.createUser(username, password, userCategory.name);
         let data = BasicApiHandler.tryParseJson(response.data);
         return BasicApiHandler.buildUser(data);
     }
 
     public static async updateUser(user: User, username: string, password: string, userCategory: UserCategory): Promise<User> {
-        const response = await AdminApiCaller.updateUser(user.userId, username, password, userCategory);
+        const response = await AdminApiCaller.updateUser(user.userId, username, password, userCategory.name);
         let data = BasicApiHandler.tryParseJson(response.data);
         return BasicApiHandler.buildUser(data);
     }

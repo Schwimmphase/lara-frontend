@@ -7,7 +7,7 @@
         </v-card-title>
 
         <v-card-actions class="my-2 mx-4 pa-0">
-            <user-edit-dialog :user="user" @save="(username, password) => onDialogSave(username, password)"
+            <user-edit-dialog :user="user" @save="(username, category, password) => onDialogSave(username, category, password)"
                               :user-categories="userCategories" :button-text="$t('admin.userDialog.buttonEdit')"
                               :password-change="true">
                 <lara-button type="primary" id="edit-button">{{ $t('admin.editUser') }}</lara-button>
@@ -28,7 +28,7 @@ import type {User} from "@/model/User";
 import LaraButton from "@/components/basic/LaraButton.vue";
 import UserEditDialog from "@/components/dialogs/UserDialog.vue";
 import type {UserCategory} from "@/model/UserCategory";
-import {reactive} from "vue";
+import { reactive } from "vue";
 
 const state = reactive({
     editDialog: false
@@ -46,6 +46,8 @@ const emits = defineEmits<{
 }>();
 
 function onDialogSave(username: string, userCategory: UserCategory, password?: string) {
+    console.log("UPDTAE USER HIER IM DIALOG")
+    console.log(password)
     state.editDialog = false;
     emits('update', username, userCategory, password);
 }

@@ -46,7 +46,7 @@ let valid = false;
 
 const props = defineProps<{
     user?: User,
-    userCategories: Array<UserCategory>,
+    userCategories: UserCategory[],
     buttonText: string,
     passwordChange: boolean
 }>();
@@ -69,12 +69,13 @@ let state = reactive({
     password: '',
     userCategory: props.user == undefined ? null : props.user.userCategory.name,
     test: [''],
-    userCategories: props.userCategories
 });
 function closeDialog() {
     state.dialog = false
     console.debug("Dialog closed emitting save event");
-    let userCategory = state.userCategories.filter(category => category.name == state.userCategory)[0];
+    let userCategory = props.userCategories.filter(category => category.name == state.userCategory)[0];
+    console.log(props.userCategories)
+    console.log(userCategory);
 
     if (state.password != '') {
         emit("save", state.username, userCategory, state.password);

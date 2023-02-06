@@ -1,10 +1,10 @@
 <template>
     <v-container id="container" class="w-75">
-        <h1 class="text-h3 font-weight-bold">{{ $t('admin.greeting', { name: currentUser!.username }) }}</h1>
+        <h1 class="text-h3 font-weight-bold">{{ $t('admin.greeting', { name: state.currentUser?.username }) }}</h1>
 
-        <div class="d-flex flex-row gap-8 mt-8">
+        <div v-if="!state.loading && state.categories != undefined" class="d-flex flex-row gap-8 mt-8">
             <user-dialog :button-text="$t('admin.userDialog.buttonCreate')" :password-change="false"
-                         :user-categories="userCategories"
+                         :user-categories="state.categories"
                          @save="(username, category, password) => onCreateUser(username, category, password)">
                 <lara-button type="primary" id="create-user-button" class="w-100">{{ $t('admin.createUser') }}</lara-button>
             </user-dialog>
@@ -25,8 +25,8 @@
             <organizable-list :slots="[{ id: 'users'}]" :organize-slots="organizeSlots"
                               :selected-organizers="selectedOrganizers" @organize="onOrganize"
                               @remove-organizer="(name) => onRemoveOrganizer(name)">
-                <template v-slot:users>
-                    <user-card v-for="(user,index) in state.users" :user="user" :key="index" :deletable="true" :user-categories="userCategories"
+                <template v-slot:users v-if="state.users != undefined && state.categories != undefined">
+                    <user-card v-for="(user,index) in state.users" :user="user" :key="index" :deletable="true" :user-categories="state.categories"
                                @delete="onDeleteUser(user)"
                                @update="(username, category, password) => onUpdateUser(user, username, category, password)">
                     </user-card>
@@ -37,7 +37,7 @@
                         <v-select class="lara-field" :label="$t('admin.organize.userCategories')"
                                   variant="outlined" :items="userCategoriesStrings" multiple clearable>
                             <template v-slot:selection="{ item, index }">
-                                <v-chip class="lara-chip" :color="userCategories.filter(category => category.name === item.title)[0].color">
+                                <v-chip class="lara-chip" :color="state.categories?.filter(category => category.name === item.title)[0].color">
                                     {{ item.title }}
                                 </v-chip>
                             </template>
@@ -67,10 +67,6 @@ import { useOpenResearchStore } from "@/stores/openResearch";
 import { AdminApiHandler } from "@/api/Admin/AdminApiHandler";
 import type { Organizer } from "@/model/Organizer";
 
-// reset open research/paper store
-useOpenResearchStore().resetStore();
-useOpenPaperStore().resetStore();
-
 const userCategories = [testUserCategory1, testUserCategory2];
 
 const organizeSlots = [{ id: "organizer-tags", name: "Tags" }];
@@ -79,26 +75,36 @@ const selectedOrganizers = [{ name: "Tag", value: "Cooler Typ, das ist ein sehr 
 
 const userCategoriesStrings = computed<string[]>(() => {
     let strings: string[] = [];
-    for (let userCategory of userCategories) {
+    for (let userCategory of state.categories) {
         strings.push(userCategory.name)
     }
     return strings;
 })
 
-let currentUser = useCurrentUserStore().getCurrentUser;
-
-let state: { loading: boolean, users: User[] } = reactive({
+let state: { loading: boolean, users: User[], categories: UserCategory[], currentUser: User | null } = reactive({
     loading: true,
-    users: []
+    currentUser: useCurrentUserStore().currentUser,
+    users: [],
+    categories: [],
 });
 
 let getUsers = async (organizers: Organizer[]) => {
     let users = await AdminApiHandler.getUsers(organizers);
-    console.log(users)
-    users.forEach(user => state.users.push(user));
-    state.loading = false;
+    state.users = users;
+
+    console.log(users);
 }
+
+let getCategories = async () => {
+    let response = await AdminApiHandler.getUserCategories();
+    state.categories = response;
+
+    console.log(state.categories)
+}
+
+getCategories();
 getUsers([]);
+state.loading = false;
 
 function onCreateUser(username: string, userCategory: UserCategory, password?: string) {
     if (!username || !password || !userCategory) {
@@ -107,10 +113,14 @@ function onCreateUser(username: string, userCategory: UserCategory, password?: s
         if (!userCategory) console.error("User Category was not defined");
         return;
     }
-    
-    console.debug("new user: username:", username, "- password:", password, "- userCategory:", userCategory.name);
+
+    console.log("pass")
+    console.log(password);
     
     AdminApiHandler.createUser(username, password, userCategory);
+
+    // TODO Organizers einfügen
+    getUsers([]);
 }
 
 function onDeleteUser(user: User) {
