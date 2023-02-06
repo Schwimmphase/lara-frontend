@@ -139,7 +139,8 @@ setRecommendations();
 
                 <template v-slot:filter-year>
                     <div class="w-100 mt-6 mx-5">
-                        <YearOrganizer @year-change="(from, to) => yearChange(from, to)" />
+                        <!-- TODO: safe min max -->
+                        <YearOrganizer @year-change="(from, to) => yearChange(from, to)" :min="1900" :max="(new Date()).getFullYear()"/>
                     </div>
                 </template>
 

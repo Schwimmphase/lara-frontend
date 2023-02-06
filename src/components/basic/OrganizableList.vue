@@ -23,8 +23,7 @@
     </div>
 
     <div v-for="slot in slots">
-        <!-- TODO: find type safe way -->
-        <h4 class="text-h4 font-weight-bold mt-8" v-if="slot.name">{{ slot.name.value != null ? slot.name.value : slot.name }}</h4>
+        <h4 class="text-h4 font-weight-bold mt-8" v-if="slot.name">{{ slot.name}}</h4>
         <div class="d-flex flex-row flex-wrap mt-8 gap-8">
             <slot :name="slot.id"></slot>
         </div>

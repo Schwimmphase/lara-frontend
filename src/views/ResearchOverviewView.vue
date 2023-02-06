@@ -131,8 +131,8 @@ let hidden = computed(() => {
 
 let slots: Slot[] = [
     { id: "added" },
-    { id: "enqueued", name: enqueued },
-    { id: "hidden", name: hidden }
+    { id: "enqueued", name: enqueued.value }, // TODO: currently does not auto update
+    { id: "hidden", name: hidden.value } // TODO: currently does not auto update
 ];
 
 function openPaper(savedPaper: SavedPaper) {
