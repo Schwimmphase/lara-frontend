@@ -30,6 +30,7 @@ import { useOpenResearchStore } from "@/stores/openResearch";
 
 defineProps(["id", "title", "description", "added", "enqueued", "startedAt", "research"]);
 
+
 function onDataChange(title: String, description: String) {
     console.debug("Edit event received emitting data change event");
     emit("data-change", title, description);
@@ -37,6 +38,7 @@ function onDataChange(title: String, description: String) {
 
 const emit = defineEmits<{
     (event: 'data-change', title: String, description: String): void
+    (event: 'delete'): void
 }>();
 
 function openResearch(research: Research) {

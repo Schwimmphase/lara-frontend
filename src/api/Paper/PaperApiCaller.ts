@@ -11,7 +11,7 @@ export class PaperApiCaller {
 
     public static getDetails(paperId: string, researchId?: string) {
         if (researchId == null) {
-            return basicApiCaller.axiosInstance.get(this.urlPath + paperId); // TODO: use optional researchId the way the backend people want
+            return basicApiCaller.axiosInstance.get(this.urlPath + paperId);
         } else {
             return basicApiCaller.axiosInstance.get(this.urlPath + paperId, {
                 params: {

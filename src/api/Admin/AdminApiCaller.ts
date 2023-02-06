@@ -46,13 +46,13 @@ export class AdminApiCaller {
     }
 
     public static updateUserCategory(userCategoryId: string, name: string, color: string) {
-        return BasicApiCaller.axiosInstance.patch(AdminApiCaller.urlUsermanagement + AdminApiCaller.urlCategory + '/' + userCategoryId, {
+        return BasicApiCaller.axiosInstance.patch(this.urlUsermanagement + this.urlCategory + '/' + userCategoryId, {
                 "name": name,
                 "color": color
         });
     }
 
     public static deleteUserCategory(userCategoryId: string) {
-        return BasicApiCaller.axiosInstance.delete(userCategoryId);
+        return BasicApiCaller.axiosInstance.delete(this.urlUsermanagement + this.urlCategory + '/' + userCategoryId);
     }
 }

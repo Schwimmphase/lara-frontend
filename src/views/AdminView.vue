@@ -114,9 +114,9 @@ function onCreateUser(username: string, userCategory: UserCategory, password?: s
 }
 
 function onDeleteUser(user: User) {
-    confirm("Are you sure?"); // TODO: add "are you sure?" alert
+    confirm("Are you sure?"); // TODO: add better "are you sure?" alert
     console.debug("delete user:", user);
-    state.users.splice(state.users.indexOf(user), 1); // TODO: check if this removes the correct user
+    state.users.splice(state.users.indexOf(user), 1);
     console.debug(state.users);
     AdminApiHandler.deleteUser(user);
 }
@@ -138,6 +138,12 @@ function onUpdateUser(user: User, newName: string, newUserCategory: UserCategory
 
 function onOrganize() {
     console.debug("organize");
+
+    let organizers: Organizer[] = [];
+
+    for (let organizer of organizeSlots) {
+
+    }
 }
 
 function onRemoveOrganizer(name: string) {
