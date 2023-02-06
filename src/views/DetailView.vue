@@ -10,36 +10,36 @@ import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
 
 import { useRoute } from 'vue-router';
 import { reactive } from '@vue/reactivity';
+import type { Author } from '@/model/Author';
 
-// State for the page, the openPaper and a indicator to know, if the page is loading
+// State for the page, the openPaper and a indicator to know if the page is loading
 let detailState: {loading: boolean, openPaper: OpenPaper | undefined } = reactive({
     loading: true,
     openPaper: undefined
 });
 
-// Access the route to get the the ids for the paper from the query
-let route = useRoute();
+const MAX_NUMBER_OF_AUTHORS = 3;
 
-// Method to fetch the correct paper from the API and safe it to the store
+// Method to fetch the correct paper from the API and save it in the open paper store
 let setPaper = async () => {
+    // Access the route to get the the ids for the paper from the query
+    let route = useRoute();
     let researchId = route.query.research as string;
     let paperId = route.query.paper as string;
 
     if (researchId == undefined) {
-        let response = await PaperApiHandler.getDetails("SemSchol$961fe188f2fe4708a7dbf70057790750252e058c", researchId as null) as Paper; // TODO: change hardcoded id to "paperId"
-        var openPaperFromAPI = new OpenPaper(response, undefined, false);
+        let paper = await PaperApiHandler.getDetails(paperId, researchId as null) as Paper;
+        var openPaperFromAPI = new OpenPaper(paper, undefined, false);
     } else {
-        let response = await PaperApiHandler.getDetails("SemSchol$961fe188f2fe4708a7dbf70057790750252e058c", researchId) as SavedPaper; // TODO: change hardcoded id to "paperId"
-        var openPaperFromAPI = new OpenPaper(undefined, response, false);
+        let savedPaper = await PaperApiHandler.getDetails(paperId, researchId) as SavedPaper;
+        var openPaperFromAPI = new OpenPaper(undefined, savedPaper, true);
     }
 
     openPaperStore.setPaper(openPaperFromAPI);
+    detailState.loading = false;
 }
-
-// Set the paper from the query
 setPaper();
 
-detailState.loading = false;
 
 let openPaperStore = useOpenPaperStore();
 
@@ -50,6 +50,17 @@ openPaperStore.$subscribe((mutation, state) => {
     detailState.openPaper = state.paper;
 })
 
+// Method to format the authors of the open paper
+function getAuthorsString(authors: Author[] | undefined) {
+    if (authors == undefined) {
+        return "";
+    } else if (authors.length > MAX_NUMBER_OF_AUTHORS) {
+        return authors.slice(0, MAX_NUMBER_OF_AUTHORS).map(author => author.name).join(', ') + ' et al.';
+    } else {
+        return authors.map(author => author.name).join(', ');
+    }
+}
+
 </script>
 
 
@@ -58,74 +69,66 @@ openPaperStore.$subscribe((mutation, state) => {
     <div v-if="!detailState.loading" class="w-100 h-100">
         <detail-sidebar-component></detail-sidebar-component>
 
-        <!-- Paper is not saved and pdf is not available -->
-        <div class="w-100 h-100" v-if="!detailState.openPaper?.saved && !detailState.openPaper?.paper?.pdfUrl == null">
-            <!-- Display the abstract of the paper and some additional informations -->
-            <div class="ma-10">
-                <span class="text-h2 font-weight-bold">{{ detailState.openPaper?.paper?.title }}</span><br>
-                <div class="mt-5">
-                    <span class="text-h4 font-weight-bold">{{ $t('detailView.abstract') }}</span><br>
-                    <span class="text-h5">
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-                    </span>
-                    <span class="text-h5">{{ detailState.openPaper?.paper?.abstract }}</span>
-                </div>
-                <v-divider class="mt-5"></v-divider>
-
-                <div class="mt-5">
-                    <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.information') }}</span><br>
-                    <div class="mb-2 text-h4">
-                        <!-- TODO Sobald AUTHORS wieder ändern -->
-                        <span v-for="(author, index) in detailState.openPaper?.paper?.authors" :key="index" class="font-weight-bold text-h5">{{ author.name }}</span>
-                    </div>
-                    <span class="text-h5">{{ $t('detailView.year_venue_timesCited_timesReferenced', {year: detailState.openPaper?.paper?.year, venue: detailState.openPaper?.paper?.venue, timesCited: detailState.openPaper?.paper?.citationCount, timesReferenced: detailState.openPaper?.paper?.referenceCount}) }}</span>
-                    <v-divider class="my-3"></v-divider>
-                </div>
-                
-            </div>
-        </div>
-
-        <!-- Paper is saved but pdf is not available -->
-        <div class="w-100 h-100" v-if="detailState.openPaper?.saved && !detailState.openPaper?.savedPaper?.paper.pdfUrl == null">
-            <!-- Display the abstract of the paper and some additional informations -->
-            <div class="ma-10">
-                <span class="text-h2 font-weight-bold">{{ detailState.openPaper?.paper?.title }}</span><br>
-                <div class="mt-5">
-                    <span class="text-h4 font-weight-bold">{{ $t('detailView.abstract') }}</span><br>
-                    <span class="text-h5">
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-                    </span>
-                    <span class="text-h5">{{ detailState.openPaper?.paper?.abstract }}</span>
-                </div>
-                <v-divider class="mt-5"></v-divider>
-
-                <div class="mt-5">
-                    <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.information') }}</span><br>
-                    <div class="mb-2 text-h4">
-                        <!-- TODO Sobald AUTHORS wieder rausnehmen -->
-                        <span v-for="(author, index) in detailState.openPaper?.paper?.authors" :key="index" class="font-weight-bold text-h5">{{ author.name }}</span>
-                    </div>
-                    <span class="text-h5">{{ $t('detailView.year_venue_timesCited_timesReferenced', {year: detailState.openPaper?.paper?.year, venue: detailState.openPaper?.paper?.venue, timesCited: detailState.openPaper?.paper?.citationCount, timesReferenced: detailState.openPaper?.paper?.referenceCount}) }}</span>
-                    <v-divider class="my-3"></v-divider>
-                </div>
-                
-            </div>
-        </div>
-        
         <!-- Paper is saved and pdf is available -->
-        <div class="w-100 h-100" v-if="detailState.openPaper?.saved && detailState.openPaper?.paper?.pdfUrl != null">
-            <iframe :src="detailState.openPaper.savedPaper?.paper.pdfUrl" class="w-100 h-100" frameborder="0"></iframe>
+        <div v-if="(detailState.openPaper?.saved) && (detailState.openPaper?.savedPaper?.paper.pdfUrl != null)" class="w-100 h-100">
+            <iframe :src="detailState.openPaper.savedPaper?.paper.pdfUrl + '#zoom=page-width&sidebar=bookmarks'" class="w-100 h-100" frameborder="0"></iframe>
         </div>
 
         <!-- Paper is not saved but pdf is available -->
-        <div class="w-100 h-100" v-if="!detailState.openPaper?.saved && detailState.openPaper?.paper?.pdfUrl != null">
-            <iframe :src="detailState.openPaper.paper?.pdfUrl" class="w-100 h-100" frameborder="0"></iframe>
+        <div v-else-if="!(detailState.openPaper?.saved) && (detailState.openPaper?.paper?.pdfUrl != null)" class="w-100 h-100">
+            <iframe :src="detailState.openPaper.paper?.pdfUrl + '#zoom=page-width&sidebar=bookmarks'" class="w-100 h-100" frameborder="0"></iframe>
         </div>
 
+        <!-- Paper is saved but pdf is not available -->
+        <div v-else-if="(detailState.openPaper?.saved) && (detailState.openPaper?.savedPaper?.paper.pdfUrl == null)" class="w-100 h-100">
+            <div class="ma-10">
+                <!-- Display the abstract of the paper -->
+                <span class="text-h2 font-weight-bold">{{ detailState.openPaper?.savedPaper?.paper.title }}</span><br>
+                <div class="mt-5">
+                    <span class="text-h4 font-weight-bold">{{ $t('detailView.abstract') }}</span><br>
+                    <span class="text-h5">{{ detailState.openPaper?.savedPaper?.paper.abstract }}</span>
+                </div>
+                <v-divider class="mt-5"></v-divider>
+                <!-- Display additional information on the paper -->
+                <div class="mt-5">
+                    <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.information') }}</span><br>
+                    <div class="mb-2 text-h4">
+                        <span class="font-weight-bold text-h5">{{ getAuthorsString(detailState.openPaper?.savedPaper?.paper.authors) }}</span>
+                    </div>
+                    <span class="text-h5">{{ $t('detailView.year_venue_timesCited_timesReferenced', {year: detailState.openPaper?.savedPaper?.paper.year,
+                        venue: detailState.openPaper?.savedPaper?.paper.venue, timesCited: detailState.openPaper?.savedPaper?.paper.citationCount,
+                        timesReferenced: detailState.openPaper?.savedPaper?.paper.referenceCount}) }}</span>
+                </div>
+                <v-divider class="my-3"></v-divider>
+            </div>
+        </div>
+
+        <!-- Paper is not saved and pdf is not available -->
+        <div v-else-if="!(detailState.openPaper?.saved) && (detailState.openPaper?.paper?.pdfUrl == null)" class="w-100 h-100">
+            <div class="ma-10">
+                <!-- Display the abstract of the paper -->
+                <span class="text-h2 font-weight-bold">{{ detailState.openPaper?.paper?.title }}</span><br>
+                <div class="mt-5">
+                    <span class="text-h4 font-weight-bold">{{ $t('detailView.abstract') }}</span><br>
+                    <span class="text-h5">{{ detailState.openPaper?.paper?.abstract }}</span>
+                </div>
+                <v-divider class="mt-5"></v-divider>
+                <!-- Display additional information on the paper -->
+                <div class="mt-5">
+                    <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.information') }}</span><br>
+                    <div class="mb-2 text-h4">
+                        <span class="font-weight-bold text-h5">{{ getAuthorsString(detailState.openPaper?.paper?.authors) }}</span>
+                    </div>
+                    <span class="text-h5">{{ $t('detailView.year_venue_timesCited_timesReferenced', {year: detailState.openPaper?.paper?.year, venue: detailState.openPaper?.paper?.venue, timesCited: detailState.openPaper?.paper?.citationCount, timesReferenced: detailState.openPaper?.paper?.referenceCount}) }}</span>
+                </div>
+                <v-divider class="my-3"></v-divider>
+            </div>
+        </div>
+        
         <div v-else>{{ $t('detailView.errorGettingPdf') }}</div>
     </div>
     
-    <!-- API Call still loading -->
+    <!-- API-Call still loading -->
     <div v-else class="d-flex justify-center h-100 align-center">
         <v-progress-circular indeterminate></v-progress-circular>
     </div>

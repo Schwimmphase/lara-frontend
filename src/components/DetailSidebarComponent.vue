@@ -17,11 +17,11 @@ import { OpenPaper } from '../stores/model/OpenPaper';
 import { SaveState } from '../model/SaveState';
 import type { Research } from '../model/Research';
 import { useOpenResearchStore } from '@/stores/openResearch';
-import { CachedPaper } from '@/model/CachedPaper';
-import { testOpenPaper, testPaper, testResearch } from '@/model/_testResearch';
+import type { CachedPaper } from '@/model/CachedPaper';
 import router from '@/router';
-import { CachedPaperType } from '@/model/CachedPaperType';
+import type { Author } from '@/model/Author';
 
+const MAX_NUMBER_OF_AUTHORS = 2;
 
 // Store for the openResearch
 let openResearchStore = useOpenResearchStore();
@@ -161,24 +161,32 @@ let getRecommendations = async () => {
         return;
     }
     let recommendations = await PaperApiHandler.getRecommendations(paper, research, []);
-    //let recommendations = [testPaper, testPaper]; // TODO: nur zu Testzwecken
-    recommendations.forEach(recommendation => recommendationsStore.recommendations.push(recommendation));
+    recommendationsStore.recommendations = recommendations;
 }
 getRecommendations();
 
 let getCitations = async () => {
-    //let citations = await PaperApiHandler.getCitations(testPaper, testResearch, []);
-    let citations = [new CachedPaper(testPaper, testPaper, testResearch, CachedPaperType.reference), new CachedPaper(testPaper, testPaper, testResearch, CachedPaperType.reference)]; // TODO: nur zu Testzwecken
-    citations.forEach(citation => recommendationsStore.citations.push(citation));
+    let citations = await PaperApiHandler.getCitations(detailState.openPaper?.paper!, useOpenResearchStore().getResearch!, []); // TODO: add organizer?
+    recommendationsStore.citations = citations;
 }
 getCitations();
 
 let getReferences = async () => {
-    // let references = await PaperApiHandler.getReferences(testPaper, testResearch, []);
-    let references = [new CachedPaper(testPaper, testPaper, testResearch, CachedPaperType.reference), new CachedPaper(testPaper, testPaper, testResearch, CachedPaperType.reference)]; // TODO: nur zu Testzwecken
-    references.forEach(reference => recommendationsStore.references.push(reference));
+    let references = await PaperApiHandler.getReferences(detailState.openPaper?.paper!, useOpenResearchStore().getResearch!, []); // TODO: add organizer?
+    recommendationsStore.references = references;
 }
 getReferences();
+
+// Method to format the authors of the open paper
+let getAuthorsString = (authors: Author[] | undefined) => {
+    if (authors == undefined) {
+        return "";
+    } else if (authors.length > MAX_NUMBER_OF_AUTHORS) {
+        return authors.slice(0, MAX_NUMBER_OF_AUTHORS).map(author => author.name) + ' et al.';
+    } else {
+        return authors.map(author => author.name);
+    }
+}
 
 </script>
 
@@ -187,13 +195,12 @@ getReferences();
     <v-navigation-drawer location="right" width="400" permanent>
         <div class="mx-8 my-3">
 
-            <!-- Section for a saved paper -->
+            <!-- Information if the open paper is saved -->
             <div v-if="detailState.openPaper?.saved">
                 <div>
                     <span class="text-h5">{{ $t('detailSidebar.information') }}</span><br>
                     <div>
-                        <!-- TODO Sobald AUTHORS wieder rausnehmen -->
-                        <span v-for="(author, index) in detailState.openPaper?.savedPaper?.paper.authors" :key="index" class="font-weight-bold">{{ author.name }}</span>
+                        <span class="font-weight-bold">{{ getAuthorsString(detailState.openPaper?.savedPaper?.paper.authors) }}</span>
                     </div>
                     <span>{{ detailState.openPaper?.savedPaper?.paper.year }} - {{ detailState.openPaper?.savedPaper?.paper.venue }} - {{ detailState.openPaper.savedPaper?.paper.citationCount }} mal zitiert - {{ detailState.openPaper.savedPaper?.paper.referenceCount }} Referenzen</span>
                     <span>{{ detailState.openPaper?.paper?.year }} - {{ detailState.openPaper?.paper?.venue }} - {{ $t('detailSidebar.citationCount', { n: detailState.openPaper?.paper?.citationCount}) }} - {{ $t('detailSidebar.referenceCount', {n: detailState.openPaper?.paper?.referenceCount}) }}</span>
@@ -233,13 +240,12 @@ getReferences();
                 </div>
             </div>
             
-            <!-- Section for a paper thats not saved -->
-            <div v-if="!detailState.openPaper?.saved">
+            <!-- Information if the open paper is not saved -->
+            <div v-else>
                 <div>
                     <span class="text-h5">{{ $t('detailSidebar.information') }}</span><br>
                     <div>
-                        <!-- TODO SOBALD DAS FELD AUTHORS HEIßT WIEDER RAUSNEHMEN!! -->
-                        <span v-for="(author, index) in detailState.openPaper?.paper?.authors" :key="index" class="font-weight-bold">{{ author.name }}</span>
+                        <span class="font-weight-bold">{{ getAuthorsString(detailState.openPaper?.paper?.authors) }}</span>
                     </div>
                     <span>{{ detailState.openPaper?.paper?.year }} - {{ detailState.openPaper?.paper?.venue }} - {{ $t('detailSidebar.citationCount', { n: detailState.openPaper?.paper?.citationCount}) }} - {{ $t('detailSidebar.referenceCount', {n: detailState.openPaper?.paper?.referenceCount}) }}</span>
                     <v-divider class="my-3"></v-divider>
@@ -256,8 +262,7 @@ getReferences();
             </div>
 
 
-
-            <!-- Section for the recommendations, citations and references of the paper currently viewed -->
+            <!-- Section for the recommendations, citations and references of the open paper -->
             <div class="mt-3">
                 <div>
                     <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.recommendations') }}</span><br>
