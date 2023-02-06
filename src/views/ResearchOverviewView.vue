@@ -4,7 +4,7 @@
         <organizable-list :slots="slots" :organize-slots="organizeSlots" :right-button="$t('researchOverview.export')"
                           :selected-organizers="selectedOrganizers">
             <template v-slot:added>
-                <research-overview-card v-for="(savedPaper, index) in testSavedPaperList"
+                <research-overview-card v-for="(savedPaper, index) in addedPapers"
                                         :key="index"
                                         :paper="savedPaper"
                                         @open-card="(paper) => openPaper(paper)"
@@ -12,7 +12,7 @@
                 </research-overview-card>
             </template>
             <template v-slot:enqueued>
-                <research-overview-card v-for="(savedPaper, index) in testSavedPaperList"
+                <research-overview-card v-for="(savedPaper, index) in enqueuedPapers"
                                         :key="index"
                                         :paper="savedPaper"
                                         :add-button="true"
@@ -21,7 +21,7 @@
                 </research-overview-card>
             </template>
             <template v-slot:hidden>
-                <research-overview-card v-for="(savedPaper, index) in testSavedPaperList"
+                <research-overview-card v-for="(savedPaper, index) in hiddenPapers"
                                         :key="index"
                                         :paper="savedPaper"
                                         @open-card="(paper) => openPaper(paper)"
@@ -35,16 +35,17 @@
 
 <script setup lang="ts">
 
+import type {Organizer, Slot} from "@/components/basic/OrganizableList.vue";
 import OrganizableList from "@/components/basic/OrganizableList.vue";
-import type {Organizer} from "@/components/basic/OrganizableList.vue";
-import {testSavedPaperList} from "@/model/_testResearch";
-import type { SavedPaper } from "@/model/SavedPaper";
-import { useOpenResearchStore } from "@/stores/openResearch.js";
+import type {SavedPaper} from "@/model/SavedPaper";
+import {useOpenResearchStore} from "@/stores/openResearch.js";
 import ResearchOverviewCard from "@/components/cards/ResearchOverviewCard.vue";
-import type { Slot } from "@/components/basic/OrganizableList.vue";
 import router from "../router";
-import { useOpenPaperStore } from "@/stores/openPaper";
-import { OpenPaper } from "@/stores/model/OpenPaper";
+import {useOpenPaperStore} from "@/stores/openPaper";
+import {OpenPaper} from "@/stores/model/OpenPaper";
+import {ResearchApiHandler} from "@/api/Research/ResearchApiHandler";
+import {computed, reactive} from "vue";
+import {SaveState} from "@/model/SaveState";
 
 // reset open paper
 useOpenPaperStore().resetStore();
@@ -52,11 +53,31 @@ useOpenPaperStore().resetStore();
 // Pinia store for the research
 const store = useOpenResearchStore();
 
-// TODO Nur zu Testzwecken drin... sobald die Research Papers gesetzt werden, kann das wieder weg
-store.setResearchPapers(testSavedPaperList);
+async function getSavedPapers(organizers: Organizer[]) {
+    let savedPapers = await ResearchApiHandler.getSavedPapers(store.getResearch!, []);
+    console.log(savedPapers)
+    savedPapers.forEach(savedPaper => state.savedPapers.push(savedPaper));
+    store.setResearchPapers(savedPapers);
+}
 
-// Get the research from the store
-let research = store.getResearch;
+getSavedPapers([]);
+
+
+let state: { savedPapers: SavedPaper[] } = reactive({
+    savedPapers: []
+});
+
+let addedPapers = computed<SavedPaper[]>(() => {
+    return state.savedPapers.filter(value => value.saveState == SaveState.added);
+});
+
+let enqueuedPapers = computed<SavedPaper[]>(() => {
+    return state.savedPapers.filter(value => value.saveState == SaveState.enqueued);
+});
+
+let hiddenPapers = computed<SavedPaper[]>(() => {
+    return state.savedPapers.filter(value => value.saveState == SaveState.enqueued);
+});
 
 const organizeSlots: Slot[] = [];
 
