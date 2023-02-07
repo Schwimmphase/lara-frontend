@@ -24,7 +24,7 @@ export const testUser = new User("Johannes", "id12345", "cool", testUserCategory
 
 export const testResearch = new Research("id12345", "Sehr tolle Recherche", new Date(), testResearchComment, testUser);
 
-export const testAuthor = new Author("id12345", "Carsten Sinz");
+export const testAuthor = new Author( "Carsten Sinz");
 
 export const testTag1 = new Tag("id12345", "Super wichtig", "#fcba03");
 export const testTag2 = new Tag("id12346", "Mega wichtig", "#2980b9");
