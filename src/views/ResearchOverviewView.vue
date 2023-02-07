@@ -114,7 +114,6 @@ const organizeSlots: Slot[] = [{ id: "year-filter", name: "Year Filter" }];
 
 async function getSavedPapers(organizers: Organizer[]) {
     let savedPapers = await ResearchApiHandler.getSavedPapers(research!, organizers);
-    console.log(savedPapers)
     state.savedPapers = [];
     savedPapers.forEach(savedPaper => state.savedPapers.push(savedPaper));
     store.setResearchPapers(savedPapers);

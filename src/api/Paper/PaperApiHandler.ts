@@ -57,22 +57,22 @@ export class PaperApiHandler {
         return recommendations;
     }
 
-    public static async getReferences(paper: Paper, research: Research, organizers: Organizer[]): Promise<CachedPaper[]> {
+    public static async getReferences(paper: Paper, research: Research, organizers: Organizer[]): Promise<Paper[]> {
         const response = await PaperApiCaller.getRecommendationsOrReferencesOrCitations(paper.paperId, research.id, RecommendationMethod.references, organizers)
         let data = basicApiHandler.tryParseJson(response.data);
-        let references: CachedPaper[] = [];
+        let references: Paper[] = [];
         for (let reference of data.recommendations) {
-            references.push(BasicApiHandler.buildCachedPaper(reference));
+            references.push(BasicApiHandler.buildPaper(reference));
         }
         return references;
     }
 
-    public static async getCitations(paper: Paper, research: Research, organizers: Organizer[]): Promise<CachedPaper[]> {
+    public static async getCitations(paper: Paper, research: Research, organizers: Organizer[]): Promise<Paper[]> {
         const response = await PaperApiCaller.getRecommendationsOrReferencesOrCitations(paper.paperId, research.id, RecommendationMethod.citations, organizers)
         let data = basicApiHandler.tryParseJson(response.data);
-        let citations: CachedPaper[] = [];
+        let citations: Paper[] = [];
         for (let citation of data.recommendations) {
-            citations.push(BasicApiHandler.buildCachedPaper(citation));
+            citations.push(BasicApiHandler.buildPaper(citation));
         }
         return citations;
     }
