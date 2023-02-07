@@ -78,6 +78,12 @@ export const messages = {
             open: 'Open'
         },
 
+        confirmDialog: {
+            message: 'Are you sure?',
+            confirm: 'Confirm',
+            cancel: 'Cancel'
+        },
+
         newResearchDialog: {
             title: 'Title',
             description: 'Description'

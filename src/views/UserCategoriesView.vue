@@ -5,7 +5,8 @@ import { Organizer } from '@/model/Organizer';
 
 import LaraButton from '@/components/basic/LaraButton.vue';
 import NewUserCategoryDialog from '@/components/dialogs/NewUserCategoryDialog.vue';
-import EditUserCategoryDialog from '@/components/dialogs/EditUserCategoryDialog.vue'
+import EditUserCategoryDialog from '@/components/dialogs/EditUserCategoryDialog.vue';
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog.vue';
 
 import type { UserCategory } from '@/model/UserCategory';
 import { reactive } from '@vue/reactivity';
@@ -33,7 +34,8 @@ let updateCategory = async (category: UserCategory, name: string, color: string)
     getCategories();
 }
 
-let deleteCategory = async (category: UserCategory) => {
+let deleteCategory = async (category: UserCategory, decision: boolean) => {
+    if (!decision) return;
     let response = await AdminApiHandler.deleteUserCategory(category);
 
     getCategories();
@@ -60,7 +62,10 @@ getCategories();
                 <EditUserCategoryDialog :category="category" @edit="(category, name, color) => updateCategory(category, name, color)">
                     <v-icon class="ml-4 lara-clickable">mdi-pencil</v-icon>
                 </EditUserCategoryDialog>
-                <v-icon color="red" @click="deleteCategory(category)" class="ml-4 lara-clickable">mdi-trash-can</v-icon>
+                
+                <ConfirmDialog @close="(decision) => deleteCategory(category, decision)">
+                    <v-icon color="red" class="ml-4 lara-clickable">mdi-trash-can</v-icon>
+                </ConfirmDialog>
             </v-card>
             
             
