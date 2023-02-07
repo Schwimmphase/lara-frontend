@@ -1,6 +1,6 @@
 <template>
     <v-card class="d-flex flex-column lara-card w-100" height="230" variant="flat">
-        <v-card-title @click="$emit('openCard', paper)" class="font-weight-bold text-wrap lara-clickable">{{ paper.paper.title }}</v-card-title>
+        <v-card-title @click="$emit('open', paper)" class="font-weight-bold text-wrap lara-clickable">{{ paper.paper.title }}</v-card-title>
         <v-card-text>{{ paper.comment.text === undefined ? '' : paper.comment.text }}</v-card-text>
 
         <div v-if="addButton">
@@ -23,7 +23,7 @@
                     <v-chip v-for="(tag, index) in paper.tags" :key="index" :color="tag.color" class="lara-chip">{{ tag.name }}</v-chip>
                 </div>
                 <v-spacer></v-spacer>
-                <v-btn size="small" color="surface-variant" variant="text" icon="mdi-open-in-new" @click="$emit('open')"></v-btn>
+                <v-btn size="small" color="surface-variant" variant="text" icon="mdi-open-in-new" @click="$emit('export')"></v-btn>
                 <v-btn size="small" color="red" variant="text" icon="mdi-delete" @click="$emit('delete')"></v-btn>
             </v-card-actions>
         </div>
@@ -43,6 +43,7 @@ defineProps<{
 defineEmits<{
     (event: 'delete'): void
     (event: 'open'): void
+    (event: 'export'): void
     (event: 'add'): void
 }>();
 </script>

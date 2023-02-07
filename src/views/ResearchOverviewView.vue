@@ -13,7 +13,8 @@
                 <research-overview-card v-for="(savedPaper, index) in addedPapers"
                                         :key="index" :paper="savedPaper"
                                         @open="openPaper(savedPaper)"
-                                        @delete="deletePaper(savedPaper)">
+                                        @delete="deletePaper(savedPaper)"
+                                        @export="exportPaper(savedPaper)">
                 </research-overview-card>
                 <p v-if="addedPapers.length === 0">{{ $t("researchOverview.empty") }}</p>
             </template>
@@ -22,7 +23,8 @@
                                         :key="index"  :paper="savedPaper" :add-button="true"
                                         @open="openPaper(savedPaper)"
                                         @delete="deletePaper(savedPaper)"
-                                        @add="addPaper(savedPaper, SaveState.added)">
+                                        @add="addPaper(savedPaper, SaveState.added)"
+                                        @export="exportPaper(savedPaper)">
                 </research-overview-card>
                 <p v-if="enqueuedPapers.length === 0">{{ $t("researchOverview.empty") }}</p>
             </template>
@@ -30,7 +32,8 @@
                 <research-overview-card v-for="(savedPaper, index) in hiddenPapers"
                                         :key="index" :paper="savedPaper"
                                         @open="openPaper(savedPaper)"
-                                        @delete="deletePaper(savedPaper)">
+                                        @delete="deletePaper(savedPaper)"
+                                        @export="exportPaper(savedPaper)">
                 </research-overview-card>
                 <p v-if="hiddenPapers.length === 0">{{ $t("researchOverview.empty") }}</p>
             </template>
@@ -147,6 +150,12 @@ async function deletePaper(savedPaper: SavedPaper): Promise<void> {
 async function addPaper(savedPaper: SavedPaper, saveState: SaveState): Promise<void> {
     await PaperApiHandler.changeSaveState(savedPaper, saveState);
     savedPaper.saveState = saveState;
+}
+
+async function exportPaper(savedPaper: SavedPaper) {
+    let bibTex = await ExportApiHandler.exportPaper(savedPaper.paper);
+    await navigator.clipboard.writeText(bibTex);
+    state.copied = true;
 }
 
 async function exportResearch() {
