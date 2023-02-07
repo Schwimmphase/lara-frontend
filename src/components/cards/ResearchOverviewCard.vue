@@ -14,7 +14,9 @@
                 </lara-button>
                 <v-spacer></v-spacer>
                 <v-btn size="small" color="surface-variant" variant="text" icon="mdi-open-in-new" @click="$emit('open')"></v-btn>
-                <v-btn size="small" color="red" variant="text" icon="mdi-delete" @click="$emit('delete')"></v-btn>
+                <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
+                    <v-btn size="small" color="red" variant="text" icon="mdi-delete"></v-btn>
+                </confirm-dialog>
             </v-card-actions>
         </div>
         <div v-else>
@@ -24,7 +26,9 @@
                 </div>
                 <v-spacer></v-spacer>
                 <v-btn size="small" color="surface-variant" variant="text" icon="mdi-open-in-new" @click="$emit('export')"></v-btn>
-                <v-btn size="small" color="red" variant="text" icon="mdi-delete" @click="$emit('delete')"></v-btn>
+                <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
+                    <v-btn size="small" color="red" variant="text" icon="mdi-delete"></v-btn>
+                </confirm-dialog>
             </v-card-actions>
         </div>
     </v-card>
@@ -34,6 +38,7 @@
 <script setup lang="ts">
 import LaraButton from "@/components/basic/LaraButton.vue";
 import type {SavedPaper} from "@/model/SavedPaper";
+import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
 
 defineProps<{
     addButton?: Boolean,
