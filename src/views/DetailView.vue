@@ -55,9 +55,9 @@ function getAuthorsString(authors: Author[] | undefined) {
     if (authors == undefined) {
         return "";
     } else if (authors.length > MAX_NUMBER_OF_AUTHORS) {
-        return authors.slice(0, MAX_NUMBER_OF_AUTHORS).map(author => author.name).join(', ') + ' et al.';
+        return authors.slice(0, MAX_NUMBER_OF_AUTHORS).map(author => author.name).join(", ") + " et al.";
     } else {
-        return authors.map(author => author.name).join(', ');
+        return authors.map(author => author.name).join(", ");
     }
 }
 
