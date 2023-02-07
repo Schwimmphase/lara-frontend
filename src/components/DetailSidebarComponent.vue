@@ -20,6 +20,7 @@ import { useOpenResearchStore } from '@/stores/openResearch';
 import type { CachedPaper } from '@/model/CachedPaper';
 import router from '@/router';
 import type { Author } from '@/model/Author';
+import { testTag1 } from '@/model/_testResearch';
 
 const MAX_NUMBER_OF_AUTHORS = 2;
 
@@ -58,16 +59,15 @@ openPaperStore.$subscribe((mutation, state) => {
 });
 
 // State for the comment/relevance of the openPaper
-let commentState: { data: string | undefined } = reactive({
-    data: detailState.openPaper?.saved ? detailState.openPaper.savedPaper?.comment.text : ""
-});
-let relevanceState: { data: number | undefined } = reactive({
-    data: detailState.openPaper?.saved ? detailState.openPaper.savedPaper?.relevance : 0
+let detailSidebarState: { comment: string | undefined, tags: Tag[], relevance: number | undefined } = reactive({
+    comment: detailState.openPaper?.saved ? detailState.openPaper.savedPaper?.comment.text : "",
+    tags: [],
+    relevance: detailState.openPaper?.saved ? detailState.openPaper.savedPaper?.relevance : 0
 });
 
 
 // Methods to change comment/tag/saveState/relevance of the paper currently viewed
-let changeComment = (text: string | undefined): void => {
+let changeComment = async (text: string | undefined): Promise<void> => {
     if (text == undefined || detailState.openPaper == null) {
         console.error("CHANGE_COMMENT : Argument null / undefined");
         return;
@@ -78,13 +78,23 @@ let changeComment = (text: string | undefined): void => {
         return;
     }
     
-    console.debug("Change comment " + text);
+    console.debug("Change comment", text);
 
-    PaperApiHandler.changeComment(detailState.openPaper.savedPaper, new Comment(text));
-    router.go(0); // reload the page // TODO: needed?
+    await PaperApiHandler.changeComment(detailState.openPaper.savedPaper, new Comment(text));
 }
 
-let deleteTag = (tag: Tag): void => {
+let addTag = async (tag: Tag): Promise<void> => {
+    if (detailState.openPaper == null || detailState.openPaper.savedPaper == null) {
+        console.error("ADD_TAG : No saved paper");
+        return;
+    }
+    
+    console.debug("Open Tag" + tag.name);
+    
+    await PaperApiHandler.addTag(detailState.openPaper.savedPaper, tag);
+}
+
+let deleteTag = async (tag: Tag): Promise<void> => {
     if (detailState.openPaper == null || detailState.openPaper.savedPaper == null) {
         console.error("DELETE_TAG : No saved paper");
         return;
@@ -92,21 +102,10 @@ let deleteTag = (tag: Tag): void => {
     
     console.debug("Close Tag" + tag.name);
     
-    PaperApiHandler.removeTag(detailState.openPaper.savedPaper, tag);
-    router.go(0); // reload the page // TODO: needed?
+    await PaperApiHandler.removeTag(detailState.openPaper.savedPaper, tag);
 }
 
-let changeSaveState = (savedPaper: SavedPaper | undefined, state: SaveState): void => {
-    if (savedPaper === undefined) {
-        console.error("CHANGE_SAVE_STATE : No valid savedPaper provided");
-        return;
-    }
-    
-    PaperApiHandler.changeSaveState(savedPaper, state);
-    router.go(0); // reload the page // TODO: needed?
-}
-
-let changeRelevance = (relevance: number | undefined): void => {
+let changeRelevance = async (relevance: number | undefined): Promise<void> => {
     if (relevance == undefined || detailState.openPaper == null) {
         console.error("CHANGE_RELEVANCE : Argument null / undefined");
         return;
@@ -117,24 +116,40 @@ let changeRelevance = (relevance: number | undefined): void => {
         return;
     }
 
-    console.debug("Change relevance : " + relevance);
+    console.debug("Change relevance:", relevance);
 
-    PaperApiHandler.changeRelevance(detailState.openPaper.savedPaper, relevance);
-    router.go(0); // reload the page // TODO: needed?
+    await PaperApiHandler.changeRelevance(detailState.openPaper.savedPaper, relevance);
 }
 
-watch(relevanceState, async (value) => {
+let changeSaveState = async (savedPaper: SavedPaper | undefined, state: SaveState): Promise<void> => {
+    if (savedPaper === undefined) {
+        console.error("CHANGE_SAVE_STATE : No valid savedPaper provided");
+        return;
+    }
+    
+    await PaperApiHandler.changeSaveState(savedPaper, state);
+}
+
+watch(detailSidebarState, async (value) => {
     if (value == undefined) {
         return;
     }
 
-    changeRelevance(value.data);
+    changeComment(value.comment);
+    changeRelevance(value.relevance);
+});
+
+watch(detailSidebarState.tags, async (oldValue, newValue) => {
+    if (oldValue == undefined || newValue == undefined) {
+        return;
+    } 
+
+    // TODO: vergleiche oldValue & newValue => addTag bzw. deleteTag
 });
 
 
 // Method to create a saved Paper from a paper with a given saveState
-let createSavedPaper = (paper: Paper | null | undefined, state: SaveState): void => {
-    console.log(researchState)
+let createSavedPaper = async (paper: Paper | null | undefined, state: SaveState): Promise<void> => {
     if (paper == null || paper == undefined || researchState.research == null) {
         console.error("CREATE_SAVE_PAPER : Argument null / undefined");
         return;
@@ -142,7 +157,7 @@ let createSavedPaper = (paper: Paper | null | undefined, state: SaveState): void
     
     console.debug("Save Paper : " + paper.paperId + " = " + state);
     
-    ResearchApiHandler.savePaper(researchState.research, paper, state);
+    await ResearchApiHandler.savePaper(researchState.research, paper, state);
     router.go(0); // reload the page // TODO: needed?
 }
 
@@ -188,6 +203,10 @@ let getAuthorsString = (authors: Author[] | undefined) => {
     }
 }
 
+let tags: string[] = [];
+detailState.openPaper?.savedPaper?.tags.forEach(tag => tags.push(tag.name));
+tags?.push(testTag1.name);
+
 </script>
 
 
@@ -209,8 +228,8 @@ let getAuthorsString = (authors: Author[] | undefined) => {
 
                 <div class="mt-4">
                     <span class="text-h5">{{ $t('detailSidebar.comments') }}</span>
-                    <v-textarea hide-details variant="outlined" class="mt-2 lara-field" v-model="commentState.data"></v-textarea>
-                    <lara-button class="mt-2" type="primary" @click="changeComment(commentState.data)">{{ $t('detailSidebar.save') }}</lara-button>
+                    <v-textarea hide-details variant="outlined" class="mt-2 lara-field" v-model="detailSidebarState.comment"></v-textarea>
+                    <lara-button class="mt-2" type="primary" @click="changeComment(detailSidebarState.comment)">{{ $t('detailSidebar.save') }}</lara-button>
                     <v-divider class="my-3"></v-divider>
                 </div>
 
@@ -218,6 +237,42 @@ let getAuthorsString = (authors: Author[] | undefined) => {
                     <span class="text-h5">{{ $t('detailSidebar.tags') }}</span>
                     <div class="mt-2">
                         <v-chip v-for="(tag, index) in detailState.openPaper?.savedPaper?.tags" :key="index" @click:close="deleteTag(tag)" closable :color="tag.color" class="lara-chip mr-2 mb-1">{{ tag.name }}</v-chip>
+
+                        <v-combobox label="Tags" :items="tags" multiple chips variant="solo">
+                            <!--<template v-slot:item="{ index, item}">
+                                <v-text-field v-if="true == true" autofocus flat bg-color="transparent" variant="solo" @keyup.enter="edit(index, item)"></v-text-field>
+                                <v-spacer></v-spacer>
+                            </template>-->
+                        </v-combobox>
+
+                        <!-- TODO: finish tag input
+                        <v-container fluid>
+                            <v-combobox v-model="model" v-model:search-input="search" :custom-filter="filter" :hide-no-data="!search" :items="items" hide-selected label="Search for an option" multiple small-chips variant="solo">
+                                <template v-slot:no-data>
+                                    <v-list-item>
+                                        <span class="subheading">Create</span>
+                                        <v-chip :color="`${colors[nonce - 1]} lighten-3`" label small>{{ search }}</v-chip>
+                                    </v-list-item>
+                                </template>
+                                <template v-slot:selection="{ attrs, item, parent, selected }">
+                                    <v-chip v-if="item === Object(item)" v-bind="attrs" :color="`${item.color} lighten-3`" :model-value="selected" label small>
+                                        <span class="pe-2">{{ item.text }}</span>
+                                        <v-icon size="small" @click="parent.selectItem(item)">$delete</v-icon>
+                                    </v-chip>
+                                </template>
+                                <template v-slot:item="{ index, item }">
+                                    <v-text-field v-if="editing === item" v-model="editing.text" autofocus flat bg-color="transparent" hide-details variant="solo" @keyup.enter="edit(index, item)"></v-text-field>
+                                    <v-chip v-else :color="`${item.color} lighten-3`" dark label small>{{ item.text }}</v-chip>
+                                    <v-spacer></v-spacer>
+                                    <v-list-item-action @click.stop>
+                                    <v-btn icon @click.stop.prevent="edit(index, item)">
+                                        <v-icon>{{ editing !== item ? 'mdi-pencil' : 'mdi-check' }}</v-icon>
+                                    </v-btn>
+                                    </v-list-item-action>
+                                </template>
+                            </v-combobox>
+                        </v-container>
+                        -->
                     </div>
                     <v-divider class="my-3"></v-divider>
                 </div>
@@ -226,7 +281,7 @@ let getAuthorsString = (authors: Author[] | undefined) => {
                     <span class="text-h5">{{ $t('detailSidebar.relevance') }}</span>
                     <div>
                         <v-rating
-                            v-model="relevanceState.data"
+                            v-model="detailSidebarState.relevance"
                             length="3"
                             size="65"
                             full-icon="mdi-star"

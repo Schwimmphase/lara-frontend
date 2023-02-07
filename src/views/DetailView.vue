@@ -71,12 +71,12 @@ function getAuthorsString(authors: Author[] | undefined) {
 
         <!-- Paper is saved and pdf is available -->
         <div v-if="(detailState.openPaper?.saved) && (detailState.openPaper?.savedPaper?.paper.pdfUrl != null)" class="w-100 h-100">
-            <iframe :src="detailState.openPaper.savedPaper?.paper.pdfUrl + '#zoom=page-width&sidebar=bookmarks'" class="w-100 h-100" frameborder="0"></iframe>
+            <iframe :src="detailState.openPaper.savedPaper?.paper.pdfUrl + '#zoom=page-width'" class="w-100 h-100" frameborder="0"></iframe>
         </div>
 
         <!-- Paper is not saved but pdf is available -->
         <div v-else-if="!(detailState.openPaper?.saved) && (detailState.openPaper?.paper?.pdfUrl != null)" class="w-100 h-100">
-            <iframe :src="detailState.openPaper.paper?.pdfUrl + '#zoom=page-width&sidebar=bookmarks'" class="w-100 h-100" frameborder="0"></iframe>
+            <iframe :src="detailState.openPaper.paper?.pdfUrl + '#zoom=page-width'" class="w-100 h-100" frameborder="0"></iframe>
         </div>
 
         <!-- Paper is saved but pdf is not available -->
