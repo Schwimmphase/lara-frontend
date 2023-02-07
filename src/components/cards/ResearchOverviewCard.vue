@@ -9,7 +9,9 @@
             </v-container>
 
             <v-card-actions class="ml-4 mr-4 mb-2 mt-2 pa-0">
-                <lara-button type="primary" style="max-width: 200px">{{ $t('researchOverviewCard.add') }}</lara-button>
+                <lara-button type="primary" style="max-width: 200px" @click="$emit('add')">
+                    {{ $t('researchOverviewCard.add') }}
+                </lara-button>
                 <v-spacer></v-spacer>
                 <v-btn size="small" color="surface-variant" variant="text" icon="mdi-open-in-new" @click="$emit('open')"></v-btn>
                 <v-btn size="small" color="red" variant="text" icon="mdi-delete" @click="$emit('delete')"></v-btn>
@@ -37,6 +39,12 @@ defineProps<{
     addButton?: Boolean,
     paper: SavedPaper
 }>()
+
+defineEmits<{
+    (event: 'delete'): void
+    (event: 'open'): void
+    (event: 'add'): void
+}>();
 </script>
 
 

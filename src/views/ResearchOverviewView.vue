@@ -11,29 +11,26 @@
                           @remove-organizer="name => removeOrganizer(name)">
             <template v-slot:added>
                 <research-overview-card v-for="(savedPaper, index) in addedPapers"
-                                        :key="index"
-                                        :paper="savedPaper"
-                                        @open-card="(paper) => openPaper(paper)"
-                                        >
+                                        :key="index" :paper="savedPaper"
+                                        @open="openPaper(savedPaper)"
+                                        @delete="deletePaper(savedPaper)">
                 </research-overview-card>
                 <p v-if="addedPapers.length === 0">{{ $t("researchOverview.empty") }}</p>
             </template>
             <template v-slot:enqueued>
                 <research-overview-card v-for="(savedPaper, index) in enqueuedPapers"
-                                        :key="index"
-                                        :paper="savedPaper"
-                                        :add-button="true"
-                                        @open-card="(paper) => openPaper(paper)"
-                                        >
+                                        :key="index"  :paper="savedPaper" :add-button="true"
+                                        @open="openPaper(savedPaper)"
+                                        @delete="deletePaper(savedPaper)"
+                                        @add="addPaper(savedPaper, SaveState.added)">
                 </research-overview-card>
                 <p v-if="enqueuedPapers.length === 0">{{ $t("researchOverview.empty") }}</p>
             </template>
             <template v-slot:hidden>
                 <research-overview-card v-for="(savedPaper, index) in hiddenPapers"
-                                        :key="index"
-                                        :paper="savedPaper"
-                                        @open-card="(paper) => openPaper(paper)"
-                                        >
+                                        :key="index" :paper="savedPaper"
+                                        @open="openPaper(savedPaper)"
+                                        @delete="deletePaper(savedPaper)">
                 </research-overview-card>
                 <p v-if="hiddenPapers.length === 0">{{ $t("researchOverview.empty") }}</p>
             </template>
@@ -76,6 +73,7 @@ import {ExportApiHandler} from "@/api/Export/ExportApiHandler";
 import type {Research} from "@/model/Research";
 import YearOrganizer from "@/components/organizers/YearOrganizer.vue";
 import {Organizer} from "@/model/Organizer";
+import {PaperApiHandler} from "@/api/Paper/PaperApiHandler";
 
 let state: { savedPapers: SavedPaper[], copied: boolean, timeout: number, selectedOrganizers: Organizer[] } = reactive({
     savedPapers: [],
@@ -106,7 +104,7 @@ let enqueuedPapers = computed<SavedPaper[]>(() => {
 });
 
 let hiddenPapers = computed<SavedPaper[]>(() => {
-    return state.savedPapers.filter(value => value.saveState == SaveState.enqueued);
+    return state.savedPapers.filter(value => value.saveState == SaveState.hidden);
 });
 
 const organizeSlots: Slot[] = [{ id: "year-filter", name: "Year Filter" }];
@@ -114,6 +112,7 @@ const organizeSlots: Slot[] = [{ id: "year-filter", name: "Year Filter" }];
 async function getSavedPapers(organizers: Organizer[]) {
     let savedPapers = await ResearchApiHandler.getSavedPapers(research!, organizers);
     console.log(savedPapers)
+    state.savedPapers = [];
     savedPapers.forEach(savedPaper => state.savedPapers.push(savedPaper));
     store.setResearchPapers(savedPapers);
 }
@@ -135,9 +134,19 @@ let slots: Slot[] = [
     { id: "hidden", name: hidden.value } // TODO: currently does not auto update
 ];
 
-function openPaper(savedPaper: SavedPaper) {
+function openPaper(savedPaper: SavedPaper): void {
     useOpenPaperStore().setPaper(new OpenPaper(undefined, savedPaper, true));
     router.push({ name: 'paperDetails', query: { research: savedPaper.research.id, paper: savedPaper.paper.paperId } });
+}
+
+async function deletePaper(savedPaper: SavedPaper): Promise<void> {
+    await ResearchApiHandler.removePaper(savedPaper.research, savedPaper.paper);
+    state.savedPapers.splice(state.savedPapers.indexOf(savedPaper), 1);
+}
+
+async function addPaper(savedPaper: SavedPaper, saveState: SaveState): Promise<void> {
+    await PaperApiHandler.changeSaveState(savedPaper, saveState);
+    savedPaper.saveState = saveState;
 }
 
 async function exportResearch() {
@@ -157,6 +166,7 @@ function removeOrganizer(name: string) {
     if (state.selectedOrganizers.findIndex(value => value.name === name) !== -1) {
         state.selectedOrganizers.splice(state.selectedOrganizers.findIndex(value => value.name === name), 1);
     }
+    getSavedPapers(state.selectedOrganizers);
 }
 </script>
 

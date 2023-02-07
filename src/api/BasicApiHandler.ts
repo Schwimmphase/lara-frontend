@@ -9,6 +9,7 @@ import { User } from "@/model/User";
 import { UserCategory } from "@/model/UserCategory";
 import type { AxiosResponse } from "axios";
 import { plainToInstance } from "class-transformer";
+import type {SaveState} from "@/model/SaveState";
 
 // defines basic functionality used by every specific api handler
 class BasicApiHandler {
@@ -59,14 +60,15 @@ class BasicApiHandler {
 
     public buildSavedPaper(data: string): SavedPaper {
         let savedPaper = plainToInstance(SavedPaper, data);
-        console.log(savedPaper)
-        savedPaper.paper = this.buildPaper(savedPaper.paper.toString());
-        savedPaper.research = this.buildResearch(savedPaper.research.toString());
+        savedPaper.paper = this.buildPaper(JSON.parse(JSON.stringify(savedPaper.paper)));
+        savedPaper.research = this.buildResearch(JSON.parse(JSON.stringify(savedPaper.research)));
         savedPaper.comment = new Comment(savedPaper.comment.toString());
+        savedPaper.saveState = savedPaper.saveState.toString().toLowerCase() as SaveState;
         let tags: Tag[] = [];
         for (let tag of savedPaper.tags) {
             tags.push(this.buildTag(tag.toString()));
         }
+        savedPaper.tags = tags;
         return savedPaper;
     }
 
