@@ -1,26 +1,24 @@
 <script setup lang="ts">
+import LaraButton from '../basic/LaraButton.vue';
+import TagComponent from './TagComponent.vue';
 
-import LaraButton from './basic/LaraButton.vue';
-
-import { useOpenPaperStore } from '../stores/openPaper'
+import { useOpenPaperStore } from '../../stores/openPaper'
 import { reactive } from '@vue/reactivity';
 import { watch } from 'vue';
 
 import { ResearchApiHandler } from '@/api/Research/ResearchApiHandler';
 import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
 
-import type { SavedPaper } from '../model/SavedPaper';
-import type { Paper } from '../model/Paper';
-import { Comment } from '../model/Comment'
-import { Tag } from '../model/Tag'
-import { OpenPaper } from '../stores/model/OpenPaper';
-import { SaveState } from '../model/SaveState';
-import type { Research } from '../model/Research';
+import type { SavedPaper } from '../../model/SavedPaper';
+import type { Paper } from '../../model/Paper';
+import { Comment } from '../../model/Comment'
+import type { Tag } from '../../model/Tag'
+import { OpenPaper } from '../../stores/model/OpenPaper';
+import { SaveState } from '../../model/SaveState';
+import type { Research } from '../../model/Research';
 import { useOpenResearchStore } from '@/stores/openResearch';
-import type { CachedPaper } from '@/model/CachedPaper';
 import router from '@/router';
 import type { Author } from '@/model/Author';
-import { testTag1, testTag2 } from '@/model/_testResearch';
 
 const MAX_NUMBER_OF_AUTHORS = 2;
 
@@ -93,7 +91,7 @@ let addTag = async (tag: Tag): Promise<void> => {
     
     await PaperApiHandler.addTag(detailState.openPaper.savedPaper, tag);
 }
-
+/*
 let deleteTag = async (tag: Tag): Promise<void> => {
     if (detailState.openPaper == null || detailState.openPaper.savedPaper == null) {
         console.error("DELETE_TAG : No saved paper");
@@ -103,7 +101,7 @@ let deleteTag = async (tag: Tag): Promise<void> => {
     console.debug("Close Tag" + tag.name);
     
     await PaperApiHandler.removeTag(detailState.openPaper.savedPaper, tag);
-}
+}*/
 
 let changeRelevance = async (relevance: number | undefined): Promise<void> => {
     if (relevance == undefined || detailState.openPaper == null) {
@@ -204,59 +202,6 @@ let getAuthorsString = (authors: Author[] | undefined) => {
     }
 }
 
-let tags: string[] = [];
-detailState.openPaper?.savedPaper?.tags.forEach(tag => tags.push(tag.name));
-tags?.push(testTag1.name);
-tags?.push(testTag2.name);
-
-
-// test
-let colors = ['green', 'purple', 'indigo', 'cyan', 'teal', 'orange']
-let items = [
-    { header: 'Select an option or create one' },
-    new Tag('123', 'cool', 'blue'),
-    new Tag('456', 'cooler', 'red')
-]
-
-let editingItem: Tag | undefined = undefined
-let nonce = 1
-let model = [
-    new Tag('1', 'foo', 'black')
-]
-let searchText: string = ""
-
-watch(model, (val ,prev) => {
-    if (val.length === prev.length) return
-
-    model = val.map(v => {
-        v = new Tag(v.id , v.name, colors[nonce - 1]);
-        items.push(v)
-        nonce++
-        return v
-    });
-});
-
-function edit (index: number, item: Tag) {
-    if (!editingItem) {
-    editingItem = item
-    index = index
-    } else {
-    editingItem = undefined
-    index = -1
-    }
-}
-function filter (item: Tag, queryText: string, itemText: string) {
-
-    const hasValue = (val: string | null) => val != null ? val : ''
-
-    const text = hasValue(itemText)
-    const query = hasValue(queryText)
-
-    return text.toString()
-    .toLowerCase()
-    .indexOf(query.toString().toLowerCase()) > -1
-}
-
 </script>
 
 
@@ -285,133 +230,7 @@ function filter (item: Tag, queryText: string, itemText: string) {
                 <div class="mt-4">
                     <span class="text-h5">{{ $t('detailSidebar.tags') }}</span>
                     <div class="mt-2">
-                        <v-chip v-for="(tag, index) in detailState.openPaper?.savedPaper?.tags" :key="index" @click:close="deleteTag(tag)" closable :color="tag.color" class="lara-chip mr-2 mb-1">{{ tag.name }}</v-chip>
-
-                        <v-combobox label="Select Tags" :items="tags" multiple chips variant="solo" :search-input.sync="searchText">
-                            <!-- Create new tag -->
-                            <template v-slot:append-item>
-                                <v-list-tile @click="items.push(new Tag('000', searchText, 'black')), searchText=''"></v-list-tile>
-                            </template>
-                        </v-combobox>
-
-                        <v-combobox
-                            v-model="model"
-                            :filter="filter"
-                            :hide-no-data="!searchText"
-                            :items="items"
-                            :search-input.sync="searchText"
-                            hide-selected
-                            label="Search for an option"
-                            multiple
-                            small-chips
-                            solo
-                            >
-                            <!-- Add new Tag -->
-                            <template v-slot:append-item>
-                                <v-list-tile v-if="searchText" @click="model.push(new Tag('00', searchText, 'green')), searchText=''">
-                                <span class="subheading">+ Add</span>
-                                <v-chip
-                                    :color="`${colors[nonce - 1]} lighten-3`"
-                                    label
-                                    small
-                                >
-                                    {{ searchText }}
-                                </v-chip>
-                                </v-list-tile>
-                            </template>
-                            <!-- If no Tag -->
-                            <template v-slot:no-data>
-                            <v-list-tile>
-                                <span class="subheading">+ Add</span>
-                                <v-chip
-                                :color="`${colors[nonce - 1]} lighten-3`"
-                                label
-                                small
-                                >
-                                {{ searchText }}
-                                </v-chip>
-                            </v-list-tile>
-                            </template>
-                            <!-- Display current Tags -->
-                            <template v-slot:selection="{ item, parent, selected }">
-                                <v-chip
-                                v-if="item === Object(item)"
-                                :color="`${item.color} lighten-3`"
-                                :selected="selected"
-                                label
-                                small
-                                >
-                                <span class="pr-2">
-                                    {{ item.name }}
-                                </span>
-                                <v-icon
-                                    small
-                                    @click="parent.selectItem(item)"
-                                >close</v-icon>
-                                </v-chip>
-                            </template>
-                            <template v-slot:item="{ index, item }">
-                                <v-list-tile-content>
-                                <v-text-field
-                                    v-if="editingItem === item"
-                                    v-model="editingItem!.name"
-                                    autofocus
-                                    flat
-                                    background-color="transparent"
-                                    hide-details
-                                    solo
-                                    @keyup.enter="edit(index, item)"
-                                ></v-text-field>
-                                <v-chip
-                                    v-else
-                                    :color="`${item.color} lighten-3`"
-                                    dark
-                                    label
-                                    small
-                                >
-                                    {{ item.text }}
-                                </v-chip>
-                                </v-list-tile-content>
-                                <v-spacer></v-spacer>
-                                <v-list-tile-action @click.stop>
-                                <v-btn
-                                    icon
-                                    @click.stop.prevent="edit(index, item)"
-                                >
-                                    <v-icon>{{ editingItem !== item ? 'edit' : 'check' }}</v-icon>
-                                </v-btn>
-                                </v-list-tile-action>
-                            </template>
-                        </v-combobox>
-
-                        <!-- TODO: finish tag input
-                        <v-container fluid>
-                            <v-combobox v-model="model" v-model:search-input="search" :custom-filter="filter" :hide-no-data="!search" :items="items" hide-selected label="Search for an option" multiple small-chips variant="solo">
-                                <template v-slot:no-data>
-                                    <v-list-item>
-                                        <span class="subheading">Create</span>
-                                        <v-chip :color="`${colors[nonce - 1]} lighten-3`" label small>{{ search }}</v-chip>
-                                    </v-list-item>
-                                </template>
-                                <template v-slot:selection="{ attrs, item, parent, selected }">
-                                    <v-chip v-if="item === Object(item)" v-bind="attrs" :color="`${item.color} lighten-3`" :model-value="selected" label small>
-                                        <span class="pe-2">{{ item.text }}</span>
-                                        <v-icon size="small" @click="parent.selectItem(item)">$delete</v-icon>
-                                    </v-chip>
-                                </template>
-                                <template v-slot:item="{ index, item }">
-                                    <v-text-field v-if="editing === item" v-model="editing.text" autofocus flat bg-color="transparent" hide-details variant="solo" @keyup.enter="edit(index, item)"></v-text-field>
-                                    <v-chip v-else :color="`${item.color} lighten-3`" dark label small>{{ item.text }}</v-chip>
-                                    <v-spacer></v-spacer>
-                                    <v-list-item-action @click.stop>
-                                    <v-btn icon @click.stop.prevent="edit(index, item)">
-                                        <v-icon>{{ editing !== item ? 'mdi-pencil' : 'mdi-check' }}</v-icon>
-                                    </v-btn>
-                                    </v-list-item-action>
-                                </template>
-                            </v-combobox>
-                        </v-container>
-                        -->
+                        <tag-component></tag-component>
                     </div>
                     <v-divider class="my-3"></v-divider>
                 </div>

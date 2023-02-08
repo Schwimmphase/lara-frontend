@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import DetailSidebarComponent from '@/components/DetailSidebarComponent.vue';
+import DetailSidebarComponent from '@/components/detailSidebar/DetailSidebarComponent.vue';
 import { OpenPaper } from '../stores/model/OpenPaper';
 import { useOpenPaperStore } from '../stores/openPaper';
 
@@ -83,19 +83,19 @@ function getAuthorsString(authors: Author[] | undefined) {
         <div v-else-if="(detailState.openPaper?.saved) && (detailState.openPaper?.savedPaper?.paper.pdfUrl == null)" class="w-100 h-100">
             <div class="ma-10">
                 <!-- Display the abstract of the paper -->
-                <span class="text-h2 font-weight-bold">{{ detailState.openPaper?.savedPaper?.paper.title }}</span><br>
+                <span class="text-h4 font-weight-bold">{{ detailState.openPaper?.savedPaper?.paper.title }}</span><br>
                 <div class="mt-5">
-                    <span class="text-h4 font-weight-bold">{{ $t('detailView.abstract') }}</span><br>
-                    <span class="text-h5">{{ detailState.openPaper?.savedPaper?.paper.abstract }}</span>
+                    <span class="font-weight-bold text-h5">{{ $t('detailView.abstract') }}</span><br>
+                    <span>{{ detailState.openPaper?.savedPaper?.paper.abstract }}</span>
                 </div>
                 <v-divider class="mt-5"></v-divider>
                 <!-- Display additional information on the paper -->
                 <div class="mt-5">
                     <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.information') }}</span><br>
-                    <div class="mb-2 text-h4">
-                        <span class="font-weight-bold text-h5">{{ getAuthorsString(detailState.openPaper?.savedPaper?.paper.authors) }}</span>
+                    <div class="mb-2 text-h6">
+                        <span class="font-weight-bold text-h6">{{ getAuthorsString(detailState.openPaper?.savedPaper?.paper.authors) }}</span>
                     </div>
-                    <span class="text-h5">{{ $t('detailView.year_venue_timesCited_timesReferenced', {year: detailState.openPaper?.savedPaper?.paper.year,
+                    <span>{{ $t('detailView.year_venue_timesCited_timesReferenced', {year: detailState.openPaper?.savedPaper?.paper.year,
                         venue: detailState.openPaper?.savedPaper?.paper.venue, timesCited: detailState.openPaper?.savedPaper?.paper.citationCount,
                         timesReferenced: detailState.openPaper?.savedPaper?.paper.referenceCount}) }}</span>
                 </div>
@@ -107,19 +107,19 @@ function getAuthorsString(authors: Author[] | undefined) {
         <div v-else-if="!(detailState.openPaper?.saved) && (detailState.openPaper?.paper?.pdfUrl == null)" class="w-100 h-100">
             <div class="ma-10">
                 <!-- Display the abstract of the paper -->
-                <span class="text-h2 font-weight-bold">{{ detailState.openPaper?.paper?.title }}</span><br>
+                <span class="text-h4 font-weight-bold">{{ detailState.openPaper?.paper?.title }}</span><br>
                 <div class="mt-5">
-                    <span class="text-h4 font-weight-bold">{{ $t('detailView.abstract') }}</span><br>
-                    <span class="text-h5">{{ detailState.openPaper?.paper?.abstract }}</span>
+                    <span class="text-h5 font-weight-bold">{{ $t('detailView.abstract') }}</span><br>
+                    <span>{{ detailState.openPaper?.paper?.abstract }}</span>
                 </div>
                 <v-divider class="mt-5"></v-divider>
                 <!-- Display additional information on the paper -->
                 <div class="mt-5">
                     <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.information') }}</span><br>
-                    <div class="mb-2 text-h4">
-                        <span class="font-weight-bold text-h5">{{ getAuthorsString(detailState.openPaper?.paper?.authors) }}</span>
+                    <div class="mb-2 text-h6">
+                        <span class="font-weight-bold text-h6">{{ getAuthorsString(detailState.openPaper?.paper?.authors) }}</span>
                     </div>
-                    <span class="text-h5">{{ $t('detailView.year_venue_timesCited_timesReferenced', {year: detailState.openPaper?.paper?.year, venue: detailState.openPaper?.paper?.venue, timesCited: detailState.openPaper?.paper?.citationCount, timesReferenced: detailState.openPaper?.paper?.referenceCount}) }}</span>
+                    <span>{{ $t('detailView.year_venue_timesCited_timesReferenced', {year: detailState.openPaper?.paper?.year, venue: detailState.openPaper?.paper?.venue, timesCited: detailState.openPaper?.paper?.citationCount, timesReferenced: detailState.openPaper?.paper?.referenceCount}) }}</span>
                 </div>
                 <v-divider class="my-3"></v-divider>
             </div>

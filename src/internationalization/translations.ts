@@ -21,6 +21,9 @@ export const messages = {
             information: 'Information',
             comments: 'Comments',
             tags: 'Tags',
+            editTag: {
+                name: 'Tag name',
+            },
             relevance: 'Relevance',
             save: 'Save',
             enqueue: 'Enqueue',
@@ -147,6 +150,9 @@ export const messages = {
             information: 'Informationen',
             comments: 'Kommentare',
             tags: 'Tags',
+            editTag: {
+                name: 'Tagname'
+            },
             relevance: 'Relevanz',
             save: 'Speichern',
             enqueue: 'Merken',

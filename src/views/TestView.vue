@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import DetailSidebarComponent from '@/components/DetailSidebarComponent.vue';
+    import DetailSidebarComponent from '@/components/detailSidebar/DetailSidebarComponent.vue';
     import ConfirmDialog from '@/components/dialogs/ConfirmDialog.vue';
     import LaraButton from '@/components/basic/LaraButton.vue';
 </script>

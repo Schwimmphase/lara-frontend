@@ -118,9 +118,7 @@ async function getSavedPapers(organizers: Organizer[]) {
     savedPapers.forEach(savedPaper => state.savedPapers.push(savedPaper));
     store.setResearchPapers(savedPapers);
 }
-
 getSavedPapers(state.selectedOrganizers);
-
 
 let enqueued = computed(() => {
     return i18n.global.t("researchOverview.enqueued");
