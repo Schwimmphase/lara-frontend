@@ -39,9 +39,11 @@
             </template>
 
             <template v-slot:year-filter>
-                <year-organizer :min="yearFilterSate.min" :max="yearFilterSate.max"
+                <div class="w-100 mt-6 mx-5">
+                    <year-organizer :min="yearFilterSate.min" :max="yearFilterSate.max"
                     @year-change="(min, max) => { setOrganizer('year-filter', min + '-' + max); yearFilterSate.min = min; yearFilterSate.max = max; }">
-                </year-organizer>
+                    </year-organizer>
+                </div>
             </template>
         </organizable-list>
     </v-container>
