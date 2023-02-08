@@ -11,8 +11,7 @@ import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
 
 import type { SavedPaper } from '../../model/SavedPaper';
 import type { Paper } from '../../model/Paper';
-import { Comment } from '../../model/Comment'
-import type { Tag } from '../../model/Tag'
+import type { Comment } from '../../model/Comment'
 import { OpenPaper } from '../../stores/model/OpenPaper';
 import { SaveState } from '../../model/SaveState';
 import type { Research } from '../../model/Research';
@@ -56,17 +55,16 @@ openPaperStore.$subscribe((mutation, state) => {
     detailState.openPaper = state.paper;
 });
 
-// State for the comment/relevance of the openPaper
-let detailSidebarState: { comment: string | undefined, tags: Tag[], relevance: number | undefined } = reactive({
-    comment: detailState.openPaper?.saved ? detailState.openPaper.savedPaper?.comment.text : "",
-    tags: [],
-    relevance: detailState.openPaper?.saved ? detailState.openPaper.savedPaper?.relevance : 0
+// State for the comment/relevance of the open paper
+let detailSidebarState: { comment: Comment | undefined, relevance: number | undefined } = reactive({
+    comment: detailState.openPaper?.saved ? detailState.openPaper.savedPaper!.comment : undefined,
+    relevance: detailState.openPaper?.saved ? detailState.openPaper.savedPaper!.relevance : 0
 });
 
 
 // Methods to change comment/tag/saveState/relevance of the paper currently viewed
-let changeComment = async (text: string | undefined): Promise<void> => {
-    if (text == undefined || detailState.openPaper == null) {
+let changeComment = async (comment: Comment | undefined): Promise<void> => {
+    if (comment == undefined || detailState.openPaper == null) {
         console.error("CHANGE_COMMENT : Argument null / undefined");
         return;
     }
@@ -76,32 +74,10 @@ let changeComment = async (text: string | undefined): Promise<void> => {
         return;
     }
     
-    console.debug("Change comment", text);
+    console.debug("Change comment", comment);
 
-    await PaperApiHandler.changeComment(detailState.openPaper.savedPaper, new Comment(text));
+    await PaperApiHandler.changeComment(detailState.openPaper.savedPaper, comment);
 }
-
-let addTag = async (tag: Tag): Promise<void> => {
-    if (detailState.openPaper == null || detailState.openPaper.savedPaper == null) {
-        console.error("ADD_TAG : No saved paper");
-        return;
-    }
-    
-    console.debug("Open Tag" + tag.name);
-    
-    await PaperApiHandler.addTag(detailState.openPaper.savedPaper, tag);
-}
-/*
-let deleteTag = async (tag: Tag): Promise<void> => {
-    if (detailState.openPaper == null || detailState.openPaper.savedPaper == null) {
-        console.error("DELETE_TAG : No saved paper");
-        return;
-    }
-    
-    console.debug("Close Tag" + tag.name);
-    
-    await PaperApiHandler.removeTag(detailState.openPaper.savedPaper, tag);
-}*/
 
 let changeRelevance = async (relevance: number | undefined): Promise<void> => {
     if (relevance == undefined || detailState.openPaper == null) {
@@ -135,15 +111,6 @@ watch(detailSidebarState, async (value) => {
 
     changeComment(value.comment);
     changeRelevance(value.relevance);
-});
-
-watch(detailSidebarState.tags, async (newValue, oldValue) => {
-    if (oldValue == undefined || newValue == undefined || newValue.length === oldValue.length) {
-        return;
-    }
-
-    // TODO: vergleiche oldValue & newValue => addTag bzw. deleteTag
-    console.debug(oldValue, newValue);
 });
 
 
@@ -222,7 +189,7 @@ let getAuthorsString = (authors: Author[] | undefined) => {
 
                 <div class="mt-4">
                     <span class="text-h5">{{ $t('detailSidebar.comments') }}</span>
-                    <v-textarea hide-details variant="outlined" class="mt-2 lara-field" v-model="detailSidebarState.comment"></v-textarea>
+                    <v-textarea hide-details variant="outlined" class="mt-2 lara-field" v-model="detailSidebarState.comment?.text"></v-textarea>
                     <lara-button class="mt-2" type="primary" @click="changeComment(detailSidebarState.comment)">{{ $t('detailSidebar.save') }}</lara-button>
                     <v-divider class="my-3"></v-divider>
                 </div>
