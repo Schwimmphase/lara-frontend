@@ -189,7 +189,7 @@ let getAuthorsString = (authors: Author[] | undefined) => {
 
                 <div class="mt-4">
                     <span class="text-h5">{{ $t('detailSidebar.comments') }}</span>
-                    <v-textarea hide-details variant="outlined" class="mt-2 lara-field" v-model="detailSidebarState.comment?.text"></v-textarea>
+                    <v-textarea hide-details variant="outlined" class="mt-2 lara-field" v-model="detailSidebarState.comment!.text"></v-textarea>
                     <lara-button class="mt-2" type="primary" @click="changeComment(detailSidebarState.comment)">{{ $t('detailSidebar.save') }}</lara-button>
                     <v-divider class="my-3"></v-divider>
                 </div>
