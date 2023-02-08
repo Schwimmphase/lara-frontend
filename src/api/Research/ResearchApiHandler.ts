@@ -1,7 +1,6 @@
 import BasicApiHandler from "../BasicApiHandler";
 import { ResearchApiCaller } from "./ResearchApiCaller";
 
-import type { User } from "@/model/User";
 import type { Comment } from "@/model/Comment";
 import type { Research } from "@/model/Research";
 import type { Paper } from "@/model/Paper";
@@ -10,7 +9,7 @@ import type { Organizer } from "@/model/Organizer";
 import { RecommendationMethod } from "@/model/RecommendationMethod";
 import type { SavedPaper } from "@/model/SavedPaper";
 import type { Tag } from "@/model/Tag";
-import type { CachedPaper } from "@/model/CachedPaper";
+import basicApiHandler from "@/api/BasicApiHandler";
 
 export class ResearchApiHandler {
     public static async getAllResearchesByUser(): Promise<Research[]> {
@@ -78,22 +77,22 @@ export class ResearchApiHandler {
         return recommendations;
     }
 
-    public static async getReferences(research: Research, organizers: Organizer[]): Promise<CachedPaper[]> {
+    public static async getReferences(research: Research, organizers: Organizer[]): Promise<Paper[]> {
         const response = await ResearchApiCaller.getRecommendationsOrReferencesOrCitations(research.id, organizers, RecommendationMethod.references);
-        let data = BasicApiHandler.tryParseJson(response.data);
-        let references: CachedPaper[] = [];
+        let data = basicApiHandler.tryParseJson(response.data);
+        let references: Paper[] = [];
         for (let reference of data.recommendations) {
-            references.push(BasicApiHandler.buildCachedPaper(reference));
+            references.push(BasicApiHandler.buildPaper(reference));
         }
         return references;
     }
 
-    public static async getCitations(research: Research, organizers: Organizer[]): Promise<CachedPaper[]> {
+    public static async getCitations(research: Research, organizers: Organizer[]): Promise<Paper[]> {
         const response = await ResearchApiCaller.getRecommendationsOrReferencesOrCitations(research.id, organizers, RecommendationMethod.citations);
-        let data = BasicApiHandler.tryParseJson(response.data);
-        let citations: CachedPaper[] = [];
+        let data = basicApiHandler.tryParseJson(response.data);
+        let citations: Paper[] = [];
         for (let citation of data.recommendations) {
-            citations.push(BasicApiHandler.buildCachedPaper(citation));
+            citations.push(BasicApiHandler.buildPaper(citation));
         }
         return citations;
     }

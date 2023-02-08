@@ -4,9 +4,6 @@ import OrganizableList from "@/components/basic/OrganizableList.vue";
 import UnsavedPaperCard from "@/components/cards/UnsavedPaperCard.vue";
 import YearOrganizer from "@/components/organizers/YearOrganizer.vue"
 import YearSorter from "@/components/organizers/YearSorter.vue";
-
-// TODO  Nur wegen Test
-import { testPaperList } from "@/model/_testResearch";
 import { Organizer } from "@/model/Organizer";
 
 import type { Paper } from "@/model/Paper";
@@ -17,6 +14,7 @@ import { useOpenResearchStore } from "@/stores/openResearch";
 import { reactive } from "@vue/reactivity";
 
 import { useOpenPaperStore } from '@/stores/openPaper';
+import {ResearchApiHandler} from "@/api/Research/ResearchApiHandler";
 
 useOpenPaperStore().resetStore();
 
@@ -34,12 +32,14 @@ const organizerSlots = [
     {id: "sort-year", name: "Jahr sortieren"},
 ];
 
-let state: { showCitations: boolean, citations: Paper[] | undefined, references: Paper[] | undefined, recommendations: Paper[] | undefined, research: Research | undefined } = reactive({
+let state: { showCitations: boolean, citations: Paper[] | undefined, references: Paper[] | undefined,
+        recommendations: Paper[] | undefined, research: Research | undefined , loading: boolean} = reactive({
     showCitations: false,
     citations: undefined,
     references: undefined,
     recommendations: undefined,
     research: undefined,
+    loading: true
 });
 
 let organizerState: { yearValue: number[], sortByYear: boolean, descending: boolean | string } = reactive({
@@ -81,15 +81,19 @@ let onOrganize = () => {
 let researchStore = useOpenResearchStore();
 
 // Method to get the Recommendations from the API
-let setRecommendations = () => {
+async function setRecommendations(): Promise<void> {
+    state.loading = true;
+
     state.research = researchStore.openResearch;
 
-    // TODO Nur wegen Test dies das
-    state.recommendations = testPaperList;
-    state.references = testPaperList;
-    state.citations = testPaperList;
-
     // Get Paper Lists from API
+    let research = state.research as Research;
+
+    state.recommendations = await ResearchApiHandler.getRecommendations(research, []);
+    state.references = await ResearchApiHandler.getReferences(research, []);
+    state.citations = await ResearchApiHandler.getCitations(research, []);
+
+    state.loading = false;
 }
 
 
@@ -130,8 +134,12 @@ setRecommendations();
                 class="text-h4 ml-3"
                 >Zitate/Referenzen</span><br>
         </div>
+
+        <div v-if="state.loading" class="h-50 ma-5 d-flex justify-center align-center">
+            <v-progress-circular indeterminate size="35"></v-progress-circular>
+        </div>
         
-        <div class="mt-3">
+        <div class="mt-3" v-if="!state.loading">
             <OrganizableList v-if="!state.showCitations" :slots="slotsRecommended" :organize-slots="organizerSlots" :selected-organizers="[]" @organize="onOrganize">
                 <template v-slot:recommendations>
                     <UnsavedPaperCard v-for="(paper, index) in state.recommendations" :key="index" :paper="paper" :research="(state.research ? state.research : undefined)" />
