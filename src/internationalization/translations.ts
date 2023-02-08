@@ -6,7 +6,8 @@ export const messages = {
             close: 'Close',
             recommendations: 'Recommendations',
             citations: 'Citations',
-            references: 'References'
+            references: 'References',
+            export: 'Export'
         },
 
         navbar: {

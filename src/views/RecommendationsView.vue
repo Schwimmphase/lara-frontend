@@ -44,7 +44,9 @@ let state: { showCitations: boolean, citations: Paper[] | undefined, references:
     loading: true
 });
 
-let organizerState: { yearValue: number[], sortByYear: boolean, descending: boolean | string } = reactive({
+let organizerState: { selectedOrganizers: Organizer[],
+    yearValue: number[], sortByYear: boolean, descending: boolean | string } = reactive({
+    selectedOrganizers: [],
     yearValue: [],
     sortByYear: false,
     descending: true,
@@ -156,7 +158,11 @@ let snackbarState = reactive({
         </div>
         
         <div class="mt-3" v-if="!state.loading">
-            <OrganizableList v-if="!state.showCitations" :slots="slotsRecommended" :organize-slots="organizerSlots" :selected-organizers="[]" @organize="onOrganize">
+            <OrganizableList v-if="!state.showCitations"
+                             :slots="slotsRecommended"
+                             :organize-slots="organizerSlots"
+                             :selected-organizers="state.selectedOrganizers"
+                             @organize="onOrganize">
                 <template v-slot:recommendations>
                     <paper-card v-for="(paper, index) in state.recommendations" :key="index" :paper="paper"
                                 :research="state.research" :saved="isSaved(paper)" @enqueued="snackbarState.enqueued = true"/>
