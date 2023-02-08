@@ -2,18 +2,17 @@
 
 import { reactive } from "@vue/reactivity";
 
-import UnsavedPaperCard from "@/components/cards/UnsavedPaperCard.vue";
+import PaperCard from "@/components/cards/PaperCard.vue";
 import OrganizableList from "@/components/basic/OrganizableList.vue";
 
 import SearchbarComponent from "@/components/sidebar/SearchbarComponent.vue";
 
-import type { Paper } from "../model/Paper";
-import type { Research } from "../model/Research";
+import type { Paper } from "@/model/Paper";
+import type { Research } from "@/model/Research";
 import { useOpenResearchStore } from "@/stores/openResearch";
 import { useRoute } from "vue-router";
 import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
 
-import { testPaperList } from "@/model/_testResearch";
 import { useOpenPaperStore } from '@/stores/openPaper';
 
 useOpenPaperStore().resetStore();
@@ -67,7 +66,7 @@ getSearchResults();
         <div v-if="!searchState.loading">
             <OrganizableList :slots="slots" :organize-slots="[]" :selected-organizers="[]">
                 <template v-slot:search-results>
-                    <UnsavedPaperCard v-for="(paper, index) in searchState.results" :key="index" :research="(searchState.research != null ? searchState.research : undefined)" :paper="paper"></UnsavedPaperCard>            
+                    <paper-card v-for="(paper, index) in searchState.results" :key="index" :research="(searchState.research != null ? searchState.research : undefined)" :paper="paper"></paper-card>
                 </template>
             </OrganizableList>
         </div>

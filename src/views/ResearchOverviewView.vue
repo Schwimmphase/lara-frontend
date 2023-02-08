@@ -116,10 +116,16 @@ async function getSavedPapers(organizers: Organizer[]) {
     let savedPapers = await ResearchApiHandler.getSavedPapers(research!, organizers);
     state.savedPapers = [];
     savedPapers.forEach(savedPaper => state.savedPapers.push(savedPaper));
+}
+
+async function updateResearchPaperStore() {
+    let savedPapers = await ResearchApiHandler.getSavedPapers(research!, []);
     store.setResearchPapers(savedPapers);
 }
 
 getSavedPapers(state.selectedOrganizers);
+
+updateResearchPaperStore();
 
 
 let enqueued = computed(() => {
@@ -144,6 +150,7 @@ function openPaper(savedPaper: SavedPaper): void {
 async function deletePaper(savedPaper: SavedPaper): Promise<void> {
     await ResearchApiHandler.removePaper(savedPaper.research, savedPaper.paper);
     state.savedPapers.splice(state.savedPapers.indexOf(savedPaper), 1);
+    store.removeResearchPaper(savedPaper);
 }
 
 async function addPaper(savedPaper: SavedPaper, saveState: SaveState): Promise<void> {

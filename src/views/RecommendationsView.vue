@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import OrganizableList from "@/components/basic/OrganizableList.vue";
-import UnsavedPaperCard from "@/components/cards/UnsavedPaperCard.vue";
+import PaperCard from "@/components/cards/PaperCard.vue";
 import YearOrganizer from "@/components/organizers/YearOrganizer.vue"
 import YearSorter from "@/components/organizers/YearSorter.vue";
 import { Organizer } from "@/model/Organizer";
@@ -15,16 +15,18 @@ import { reactive } from "@vue/reactivity";
 
 import { useOpenPaperStore } from '@/stores/openPaper';
 import {ResearchApiHandler} from "@/api/Research/ResearchApiHandler";
+import {SavedPaper} from "@/model/SavedPaper";
+import {i18n} from "@/internationalization/i18n";
 
 useOpenPaperStore().resetStore();
 
 const slotsRecommended = [
-    {id: "recommendations", name: "Empfehlungen"}
+    {id: "recommendations", name: i18n.global.t("words.recommendations")}
 ];
 
 const slotsReferences = [
-    {id: "citations", name: "Zitate"},
-    {id: "references", name: "Referenzen"},
+    {id: "citations", name: i18n.global.t("words.citations")},
+    {id: "references", name: i18n.global.t("words.references")},
 ];
 
 const organizerSlots = [
@@ -96,6 +98,11 @@ async function setRecommendations(): Promise<void> {
     state.loading = false;
 }
 
+function isSaved(paper: Paper): boolean {
+    let researchPaper: SavedPaper[] = researchStore.getResearchPapers;
+    return researchPaper.filter(savedPaper => savedPaper.paper.paperId == paper.paperId).length > 0;
+}
+
 
 // Method to set the state for the year organizer
 let yearChange = (from: number, to: number) => {
@@ -117,22 +124,31 @@ let updateYearSorter = (sortByYear: boolean, descending: boolean | string) => {
 
 setRecommendations();
 
+// snackbars
+
+let snackbarState = reactive({
+    enqueued: false,
+    hidden: false,
+    timeout: 3000
+})
+
 </script>
 
 
 <template>
     <div class="ma-4">
         <div class="d-flex">
-            <span
-                @click="state.showCitations = false"
-                :class="{ 'font-weight-bold': !state.showCitations, 'lara-clickable': state.showCitations }"
-                class="text-h4"
-            >Empfohlen</span>
+            <span @click="state.showCitations = false"
+                  :class="{ 'font-weight-bold': !state.showCitations, 'lara-clickable': state.showCitations }"
+                  class="text-h4">
+                {{ $t('recommendationsView.recommended') }}
+            </span>
             <span
                 @click="state.showCitations = true"
                 :class="{ 'font-weight-bold': state.showCitations, 'lara-clickable': !state.showCitations }"
-                class="text-h4 ml-3"
-                >Zitate/Referenzen</span><br>
+                class="text-h4 ml-3">
+                {{ $t('recommendationsView.citationsReferences') }}
+            </span><br>
         </div>
 
         <div v-if="state.loading" class="h-50 ma-5 d-flex justify-center align-center">
@@ -142,7 +158,8 @@ setRecommendations();
         <div class="mt-3" v-if="!state.loading">
             <OrganizableList v-if="!state.showCitations" :slots="slotsRecommended" :organize-slots="organizerSlots" :selected-organizers="[]" @organize="onOrganize">
                 <template v-slot:recommendations>
-                    <UnsavedPaperCard v-for="(paper, index) in state.recommendations" :key="index" :paper="paper" :research="(state.research ? state.research : undefined)" />
+                    <paper-card v-for="(paper, index) in state.recommendations" :key="index" :paper="paper"
+                                :research="state.research" :saved="isSaved(paper)" @enqueued="snackbarState.enqueued = true"/>
                 </template>
 
                 <template v-slot:filter-year>
@@ -160,14 +177,34 @@ setRecommendations();
             </OrganizableList>
             <OrganizableList v-if="state.showCitations" :slots="slotsReferences" :organize-slots="organizerSlots" :selected-organizers="[]">
                 <template v-slot:citations>
-                    <UnsavedPaperCard v-for="(paper, index) in state.citations" :key="index" :paper="paper" :research="(state.research ? state.research : undefined)" />
+                    <paper-card v-for="(paper, index) in state.citations" :key="index" :paper="paper"
+                                :research="state.research" :saved="isSaved(paper)" @enqueued="snackbarState.enqueued = true" />
                 </template>
                 <template v-slot:references>
-                    <UnsavedPaperCard v-for="(paper, index) in state.references" :key="index" :paper="paper" :research="(state.research ? state.research : undefined)" />
+                    <paper-card v-for="(paper, index) in state.references" :key="index" :paper="paper"
+                                :research="state.research" :saved="isSaved(paper)" @enqueued="snackbarState.enqueued = true" />
                 </template>
             </OrganizableList>
         </div>
     </div>
+
+    <v-snackbar v-model="snackbarState.enqueued" :timeout="snackbarState.timeout">
+        {{ $t('recommendationsView.snackbar.enqueued') }}
+        <template v-slot:actions>
+            <v-btn color="pink" variant="text" @click="snackbarState.enqueued = false">
+                {{ $t('words.close') }}
+            </v-btn>
+        </template>
+    </v-snackbar>
+
+    <v-snackbar v-model="snackbarState.hidden" :timeout="snackbarState.timeout">
+        {{ $t('recommendationsView.snackbar.hidden') }}
+        <template v-slot:actions>
+            <v-btn color="pink" variant="text" @click="snackbarState.hiddne = false">
+                {{ $t('words.close') }}
+            </v-btn>
+        </template>
+    </v-snackbar>
 </template>
 
 
