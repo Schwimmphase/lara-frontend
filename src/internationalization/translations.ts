@@ -149,6 +149,13 @@ export const messages = {
                 enqueued: 'Paper has been added to the list of queued papers',
                 hidden: 'Paper was hidden from the research'
             }
+        },
+
+        pageTitles: {
+            home: 'Home',
+            login: 'Login',
+            admin: 'Admin',
+            recommendations: 'Recommendations',
         }
     },
     

@@ -42,9 +42,12 @@ async function getSearchResults(selectedOrganizers: Organizer[]): Promise<void> 
         return;
     }
 
+    document.title = searchState.query + " ‐ lara";
+
     // Empty query
     if (searchState.query == "") {
         searchState.loading = false;
+        document.title = "lara";
         return;
     }
 
