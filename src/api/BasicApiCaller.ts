@@ -30,7 +30,7 @@ class BasicApiCaller {
                 if (error.response.status == "400") {
                     console.error("False arguments of request, recieved error message:", error.response.data.message);
                 } else if (error.response.status == "401") {
-                    console.error("User not authentificated, recieved error message:", error.response.data.message);
+                    console.warn("User not authentificated");
                 } else if (error.response.status == "403") {
                     console.error("Access forbidden, recieved error message:", error.response.data.message);
                 } else if (error.response.status == "500") {
@@ -41,6 +41,7 @@ class BasicApiCaller {
             } else {
                 console.error("Something went wrong:", error.code, ",", error.message);
             }
+            return Promise.reject(error);
         });
     }
 }

@@ -1,4 +1,5 @@
 import BasicApiCaller from "../BasicApiCaller";
+import basicApiHandler from "../BasicApiHandler";
 
 export class AuthApiCaller {
     static urlLogin = '/login';
@@ -7,6 +8,6 @@ export class AuthApiCaller {
         return BasicApiCaller.axiosInstance.post(this.urlLogin, {
             "userId": userId,
             "password": password
-        });
+        }).catch(reason => basicApiHandler.handleError(reason));
     }
 }
