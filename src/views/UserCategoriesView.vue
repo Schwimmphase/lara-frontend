@@ -46,32 +46,33 @@ getCategories();
 </script>
 
 <template>
-    <div class="mt-5 mx-5">
-        <span class="text-h4 font-weight-bold">{{ $t('admin.categories.manage') }}</span>
-        <div class="mt-3">
-            <NewUserCategoryDialog @create="(name, color) => createCategory(name, color)">
-                <LaraButton type="primary">{{ $t('admin.categories.create') }}</LaraButton>
-            </NewUserCategoryDialog>
-        </div>
+    <div class="d-flex justify-center">
+        <div class="mt-5 mx-5 w-75">
+            <span class="text-h4 font-weight-bold">{{ $t('admin.categories.manage') }}</span>
+            <div class="mt-3">
+                <NewUserCategoryDialog @create="(name, color) => createCategory(name, color)">
+                    <LaraButton type="primary">{{ $t('admin.categories.create') }}</LaraButton>
+                </NewUserCategoryDialog>
+            </div>
 
-        <div class="mt-3">
-            <v-card class="lara-card mt-3 pa-3 d-flex" v-for="(category, index) in state.categories" :key="index">
-                <v-title><span class="lara-title font-weight-bold">{{ category.name }}</span><span class="lara-id">#{{ category.id }}</span></v-title>
-                <v-spacer></v-spacer>
-                <v-avatar class="ml-4" size="30" :color="category.color"></v-avatar>
-                <EditUserCategoryDialog :category="category" @edit="(category, name, color) => updateCategory(category, name, color)">
-                    <v-icon class="ml-4 lara-clickable">mdi-pencil</v-icon>
-                </EditUserCategoryDialog>
+            <div class="mt-3">
+                <v-card class="lara-card mt-3 pa-3 d-flex" v-for="(category, index) in state.categories" :key="index">
+                    <v-title><span class="lara-title font-weight-bold">{{ category.name }}</span><span class="lara-id">#{{ category.id }}</span></v-title>
+                    <v-spacer></v-spacer>
+                    <v-avatar class="ml-4" size="30" :color="category.color"></v-avatar>
+                    <EditUserCategoryDialog :category="category" @edit="(category, name, color) => updateCategory(category, name, color)">
+                        <v-icon class="ml-4 lara-clickable">mdi-pencil</v-icon>
+                    </EditUserCategoryDialog>
+                    
+                    <ConfirmDialog @close="(decision) => deleteCategory(category, decision)">
+                        <v-icon color="red" class="ml-4 lara-clickable">mdi-trash-can</v-icon>
+                    </ConfirmDialog>
+                </v-card>
                 
-                <ConfirmDialog @close="(decision) => deleteCategory(category, decision)">
-                    <v-icon color="red" class="ml-4 lara-clickable">mdi-trash-can</v-icon>
-                </ConfirmDialog>
-            </v-card>
-            
-            
+                
+            </div>
         </div>
     </div>
-
 </template>
 
 <style scoped>
