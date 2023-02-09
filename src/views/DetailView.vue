@@ -64,6 +64,8 @@ async function setPaper(): Promise<void> {
         openPaperFromAPI = new OpenPaper(paper, undefined, false);
     }
 
+    document.title = openPaperFromAPI.getPaper()!.title + " - lara";
+
     openPaperStore.setPaper(openPaperFromAPI);
     detailState.loading = false;
 }

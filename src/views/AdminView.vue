@@ -63,6 +63,9 @@ import type {UserCategory} from "@/model/UserCategory";
 import { useCurrentUserStore } from "@/stores/currentUser";
 import { AdminApiHandler } from "@/api/Admin/AdminApiHandler";
 import { Organizer } from "@/model/Organizer";
+import {i18n} from "@/internationalization/i18n";
+
+document.title = i18n.global.t("pageTitles.admin") + " - lara";
 
 const organizeSlots = [{ id: "organizer-tags", name: "Tags" }];
 

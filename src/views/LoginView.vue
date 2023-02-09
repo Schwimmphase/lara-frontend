@@ -26,6 +26,9 @@ import LaraButton from '@/components/basic/LaraButton.vue';
 import { AuthApiHandler } from '@/api/Auth/AuthApiHandler';
 import router from '@/router';
 import { useCurrentUserStore } from '@/stores/currentUser';
+import {i18n} from "@/internationalization/i18n";
+
+document.title = i18n.global.t("pageTitles.login") + " - lara";
 
 let loginData = reactive({
     userId: "",

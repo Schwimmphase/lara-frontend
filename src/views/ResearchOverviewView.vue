@@ -84,6 +84,8 @@ const store = useOpenResearchStore();
 
 let research = store.getResearch;
 
+document.title = research!.title + " - lara";
+
 let addedPapers = computed<SavedPaper[]>(() => {
     return state.savedPapers.filter(value => value.saveState == SaveState.added);
 });

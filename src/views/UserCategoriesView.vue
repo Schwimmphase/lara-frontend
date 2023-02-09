@@ -10,6 +10,9 @@ import ConfirmDialog from '@/components/dialogs/ConfirmDialog.vue';
 
 import type { UserCategory } from '@/model/UserCategory';
 import { reactive } from '@vue/reactivity';
+import {i18n} from "@/internationalization/i18n";
+
+document.title = i18n.global.t("pageTitles.admin") + " - lara";
 
 let state: { categories: UserCategory[], initialLoading: boolean, categoryLoading: boolean } = reactive({
     categories: [],

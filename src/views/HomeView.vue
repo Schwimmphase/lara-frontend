@@ -43,6 +43,9 @@ import { useOpenPaperStore } from "@/stores/openPaper";
 import NewResearchDialog from "@/components/dialogs/NewResearchDialog.vue";
 import { Comment } from "@/model/Comment";
 import { reactive } from "vue";
+import {i18n} from "@/internationalization/i18n";
+
+document.title = i18n.global.t("pageTitles.home") + " - lara";
 
 // reset open research/paper
 useOpenResearchStore().resetStore();

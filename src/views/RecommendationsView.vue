@@ -16,6 +16,8 @@ import type {SavedPaper} from "@/model/SavedPaper";
 import {i18n} from "@/internationalization/i18n";
 import PaperOrganizableList from "@/components/basic/PaperOrganizableList.vue";
 
+document.title = i18n.global.t("pageTitles.recommendations") + " - lara";
+
 useOpenPaperStore().resetStore();
 
 const slotsRecommended = [
