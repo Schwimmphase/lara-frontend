@@ -23,6 +23,12 @@
                     @update="(sortByYear, descending) => onYearSorter(sortByYear, descending)" />
             </div>
         </template>
+
+        <template v-slot:venue-filter>
+            <div class="w-100 mt-6 mx-5">
+                <venue-filter @update="(venues) => onVenueFilter(venues)" :selected-venues="venueFilterState.selectedVenues" />
+            </div>
+        </template>
     </organizable-list>
 </template>
 
@@ -32,12 +38,13 @@ import type {Slot} from "@/components/basic/OrganizableList.vue";
 import OrganizableList from "@/components/basic/OrganizableList.vue";
 import {reactive} from "vue";
 import YearOrganizer from "@/components/organizers/YearOrganizer.vue";
+import VenueFilter from "../organizers/VenueFilter.vue";
 import {Organizer} from "@/model/Organizer";
 import YearSorter from "@/components/organizers/YearSorter.vue";
 
 defineProps<{
     slots: Slot[],
-    exportEnabled: boolean
+    exportEnabled: boolean,
 }>();
 
 const emit = defineEmits<{
@@ -59,9 +66,14 @@ let yearSorterState: { active: boolean, descending: boolean} = reactive({
     descending: false
 })
 
+let venueFilterState: { selectedVenues: string[] } = reactive({
+    selectedVenues: [],
+});
+
 const organizeSlots: Slot[] = [
     { id: "year-filter", name: "Year Filter" },
-    { id: "year-sorter", name: "Year Sorter"}
+    { id: "year-sorter", name: "Year Sorter"},
+    { id: "venue-filter", name: "Venue Filter"},
 ];
 
 function setOrganizer(name: string, value: string): void {
@@ -85,11 +97,24 @@ function hasOrganizer(name: String): boolean {
     return state.selectedOrganizers.findIndex(value => value.name === name) !== -1;
 }
 
-// functions for specific organizers
+// methods for specific organizers
 function onYearFilter(min: number, max: number): void {
     setOrganizer('year-filter', min + '-' + max);
     yearFilterState.min = min;
     yearFilterState.max = max;
+}
+
+function onVenueFilter(venues: string[]) {
+    venueFilterState.selectedVenues = venues;
+    let value = "";
+    let separator = ""
+    venueFilterState.selectedVenues.forEach((venue) => {
+        value += separator;
+        value += venue;
+        separator = ",";
+    });
+
+    setOrganizer('venue-filter', value);
 }
 
 function onYearSorter(active: boolean, descending: boolean): void {
