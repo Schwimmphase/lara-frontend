@@ -1,23 +1,47 @@
 <script setup lang="ts">
 
-import {reactive } from 'vue';
+import {reactive, watch, ref } from 'vue';
 
 import LaraButton from '../basic/LaraButton.vue';
 
 const emit = defineEmits(['update']);
 
-let state: { selectedVenues: string[], currentVenue: string } = reactive({
+const props = defineProps<{
+    selectedVenues: string[]
+}>();
+
+let selectedState:{ value: string[] } = ref([]);
+
+let currentState: { currentVenue: string } = reactive({
     currentVenue: "",
-    selectedVenues: [],
 });
 
+selectedState.value = props.selectedVenues;
+
+// Method to watch if the selectedVenues have changed
+watch(selectedState, (newState, oldState) => {
+    emit('update', selectedState.value);
+});
+
+// Method to add a venue
 let addVenue = () => {
-    if (state.currentVenue == "" || state.selectedVenues.includes(state.currentVenue)) {
+    if (currentState.currentVenue == "" || selectedState.value.includes(currentState.currentVenue)) {
         return;
     }
 
-    state.selectedVenues.push(state.currentVenue);
-    state.currentVenue = "";
+    selectedState.value.push(currentState.currentVenue);
+    // Clear the textfield on success
+    currentState.currentVenue = "";
+
+    emit('update', selectedState.value);
+}
+
+// Method to remove a venue from the list of selected venues
+let remove = (venue: string[] | string) => {
+    // Filter the venues, so that the venue to remove gets filtered out
+    selectedState.value = selectedState.value.filter((remove) => {
+        return (remove != venue);
+    });
 }
 
 </script>
@@ -25,10 +49,10 @@ let addVenue = () => {
 <template>
     <div class="d-flex flex-column">
         <div class="lara-venues">
-            <v-chip class="lara-chip ml-2 mt-2" closable v-for="(venue, index) in state.selectedVenues" :key="index">{{ venue }}</v-chip>
+            <v-chip class="lara-chip ml-2 mt-2" v-for="(venue, index) in selectedState" :key="venue + index" closable @click:close="remove(venue)">{{ venue }}</v-chip>
         </div>
         <div class="mt-5">
-            <v-text-field @click:append-inner="addVenue" v-model="state.currentVenue" append-inner-icon="mdi-plus" hide-details variant="outlined" :placeholder="$t('organizers.venue')"></v-text-field>
+            <v-text-field @click:append-inner="addVenue" v-model="currentState.currentVenue" append-inner-icon="mdi-plus" hide-details variant="outlined" :placeholder="$t('organizers.venue')"></v-text-field>
         </div>
     </div>
 </template>
