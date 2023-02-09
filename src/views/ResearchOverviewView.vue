@@ -64,7 +64,7 @@ import {i18n} from "@/internationalization/i18n";
 import SearchbarComponent from "@/components/sidebar/SearchbarComponent.vue";
 import {ExportApiHandler} from "@/api/Export/ExportApiHandler";
 import type {Research} from "@/model/Research";
-import {Organizer} from "@/model/Organizer";
+import type {Organizer} from "@/model/Organizer";
 import {PaperApiHandler} from "@/api/Paper/PaperApiHandler";
 import PaperOrganizableList from "@/components/basic/PaperOrganizableList.vue";
 

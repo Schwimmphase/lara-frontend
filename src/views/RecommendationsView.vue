@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import PaperCard from "@/components/cards/PaperCard.vue";
-import { Organizer } from "@/model/Organizer";
+import type { Organizer } from "@/model/Organizer";
 
 import type { Paper } from "@/model/Paper";
 import type { Research } from "@/model/Research";
@@ -12,7 +12,7 @@ import { reactive } from "@vue/reactivity";
 
 import { useOpenPaperStore } from '@/stores/openPaper';
 import {ResearchApiHandler} from "@/api/Research/ResearchApiHandler";
-import {SavedPaper} from "@/model/SavedPaper";
+import type {SavedPaper} from "@/model/SavedPaper";
 import {i18n} from "@/internationalization/i18n";
 import PaperOrganizableList from "@/components/basic/PaperOrganizableList.vue";
 
@@ -162,7 +162,7 @@ let snackbarState = reactive({
     <v-snackbar v-model="snackbarState.hidden" :timeout="snackbarState.timeout">
         {{ $t('recommendationsView.snackbar.hidden') }}
         <template v-slot:actions>
-            <v-btn color="pink" variant="text" @click="snackbarState.hiddne = false">
+            <v-btn color="pink" variant="text" @click="snackbarState.hidden = false">
                 {{ $t('words.close') }}
             </v-btn>
         </template>

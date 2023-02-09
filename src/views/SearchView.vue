@@ -21,9 +21,9 @@ let openResearchStore = useOpenResearchStore();
 
 let slots = [{ id: "search-results", name: "Suchergebnisse" }];
 
-let searchState: { results: Paper[] | undefined, research: Research | undefined, query: string | undefined, loading: boolean } = reactive({
+let searchState: { results: Paper[], research: Research | undefined, query: string | undefined, loading: boolean } = reactive({
     loading: true,
-    results: undefined,
+    results: [],
     research: openResearchStore.getResearch,
     query: useRoute().query.search as string,
 });

@@ -9,7 +9,7 @@ import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
 import router from "@/router";
 import {useOpenResearchStore} from "@/stores/openResearch";
 import {PaperApiHandler} from "@/api/Paper/PaperApiHandler";
-import {SavedPaper} from "@/model/SavedPaper";
+import type {SavedPaper} from "@/model/SavedPaper";
 
 
 let props = defineProps({
@@ -55,19 +55,19 @@ let openPaper = (): void => {
     <v-card class="lara-card mt-4 w-100" id="unsaved-paper-card">
         <div class="d-flex flex-column justify-space-between h-100">
             <div>
-                <v-card-title class="font-weight-bold">{{ props.paper.title }}</v-card-title>
+                <v-card-title class="font-weight-bold">{{ paper!.title }}</v-card-title>
                 <v-card-subtitle>
-                    <span v-for="(author, index) in props.paper.authors" :key="index">{{ author.name }}, </span>
+                    <span v-for="(author, index) in paper!.authors" :key="index">{{ author!.name }}, </span>
                 </v-card-subtitle>
                 <div class="mt-2 mx-4 mb-2">
                     <span class="lara-informations">
-                        {{ props.paper.year }} - {{ props.paper.venue }} -
-                        {{ $t('detailSidebar.citationCount', { n: props.paper.citationCount}) }} -
-                        {{ $t('detailSidebar.referenceCount', {n: props.paper.referenceCount}) }}
+                        {{ paper!.year }} - {{ paper!.venue }} -
+                        {{ $t('detailSidebar.citationCount', { n: paper!.citationCount}) }} -
+                        {{ $t('detailSidebar.referenceCount', {n: paper!.referenceCount}) }}
                     </span>
                     <br>
                     <div id="abstract-container">
-                        <p id="abstract">{{ props.paper.abstract }}</p>
+                        <p id="abstract">{{ paper!.abstract }}</p>
                     </div>
                 </div>
             </div>

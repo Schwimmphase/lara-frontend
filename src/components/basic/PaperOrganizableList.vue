@@ -1,6 +1,6 @@
 <template>
     <organizable-list :slots="slots" :organize-slots="organizeSlots"
-                      :right-button="exportEnabled ? $t('words.export') : null"
+                      :right-button="exportEnabled ? $t('words.export') : undefined"
                       :selected-organizers="state.selectedOrganizers"
                       @click-right-button="emit('export', state.selectedOrganizers);"
                       @organize="emit('organize', state.selectedOrganizers);"
