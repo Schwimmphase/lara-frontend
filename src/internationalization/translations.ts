@@ -2,6 +2,14 @@ export const messages = {
     en: {
         test: 'This is a small test',
 
+        words: {
+            close: 'Close',
+            recommendations: 'Recommendations',
+            citations: 'Citations',
+            references: 'References',
+            export: 'Export'
+        },
+
         navbar: {
             logout: 'Logout',
             home: 'Home',
@@ -63,11 +71,14 @@ export const messages = {
                 edit: 'Edit user category',
                 name: 'Categoryname',
                 finish: 'Create',
-
             },
             organize: {
                 userCategories: 'User categories'
             }
+        },
+
+        organizers: {
+            venue: 'Venue',
         },
 
         home: {
@@ -126,6 +137,15 @@ export const messages = {
             title: 'Title',
             description: 'Description',
             save: 'Save changes'
+        },
+
+        recommendationsView: {
+            recommended: 'Recommended',
+            citationsReferences: 'Citations/References',
+            snackbar: {
+                enqueued: 'Paper has been added to the list of queued papers',
+                hidden: 'Paper was hidden from the research'
+            }
         }
     },
     
@@ -174,7 +194,7 @@ export const messages = {
 
         admin: {
             createUser: 'Nutzer anlegen',
-            editCategories: 'Nutzerkategorie verwalten',
+            editCategories: 'Nutzerkategorien verwalten',
             greeting: 'Hallo Admin {name}!',
             userOverview: 'Nutzerübersicht',
             editUser: 'Nutzer bearbeiten',
@@ -185,6 +205,14 @@ export const messages = {
                 userCategory: 'Nutzerkategorie',
                 buttonCreate: 'Nutzer erstellen',
                 buttonEdit: 'Speichern'
+            },
+            categories: {
+                manage: 'Nutzerkategorien verwalten',
+                create: 'Nutzerkategorie erstellen',
+                save: 'Speichern',
+                edit: 'Nutzerkategorie bearbeiten',
+                name: 'Name der Kategorie',
+                finish: 'Erstellen',
             },
             organize: {
                 userCategories: 'Nutzerkategorien'

@@ -8,4 +8,8 @@ export class UserCategory {
         this.color = color;
         this.name = name;
     }
+
+    toString() {
+        return "{" + this.id + "," + this.color + "," + this.name + "}";
+    }
 }

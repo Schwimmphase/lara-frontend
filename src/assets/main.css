@@ -37,3 +37,7 @@
 .lara-clickable {
     cursor: pointer;
 }
+
+.lara-no-decoration {
+    text-decoration: none;
+}

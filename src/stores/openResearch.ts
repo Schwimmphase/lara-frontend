@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 
-import type { SavedPaper } from "../model/SavedPaper";
-import type { Research } from "../model/Research";
+import type { SavedPaper } from "@/model/SavedPaper";
+import type { Research } from "@/model/Research";
 
 export const useOpenResearchStore = defineStore('openResearch', {
     state: (): { openResearch: Research | undefined, researchPapers: SavedPaper[] } => ({

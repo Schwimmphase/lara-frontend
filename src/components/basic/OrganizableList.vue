@@ -9,7 +9,9 @@
 
             <div class="d-flex gap-4">
                 <v-chip v-for="(organizer, index) of selectedOrganizers" :key="index" class="lara-chip h-100" id="organizer-chip">
-                    <span id="organizer-chip-text">{{ organizer.name }}: {{ organizer.argument }}</span>
+                    <span id="organizer-chip-text">
+                        {{ getOrganizerHumanName(organizer.name) }}: {{ organizer.argument }}
+                    </span>
                     <v-btn size="small" variant="text" icon="mdi-close-circle"
                            @click="$emit('removeOrganizer', organizer.name)">
                     </v-btn>
@@ -41,7 +43,7 @@ export interface Slot {
     name?: string
 }
 
-defineProps<{
+const props = defineProps<{
     slots: Slot[],
     organizeSlots: Slot[],
     rightButton?: string,
@@ -53,6 +55,15 @@ defineEmits<{
     (event: "organize"): void
     (event: "removeOrganizer", name: string): void
 }>();
+
+function getOrganizerHumanName(internalName: string): string {
+    if (props.organizeSlots.filter(organizer => organizer.id === internalName).length > 0) {
+        return props.organizeSlots.filter(organizer => organizer.id === internalName)[0].name as string;
+    } else {
+        console.warn("No human name for organizer '" + internalName + "'");
+        return internalName;
+    }
+}
 </script>
 
 
