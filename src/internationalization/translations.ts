@@ -201,6 +201,12 @@ export const messages = {
             open: 'Öffnen'
         },
 
+        confirmDialog: {
+            message: 'Sind Sie sicher?',
+            confirm: 'Bestätigen',
+            cancel: 'Abbrechen'
+        },
+
         newResearchDialog: {
             title: 'Titel',
             description: 'Beschreibung'
@@ -212,7 +218,7 @@ export const messages = {
             enqueued: 'Für später gemerkt',
             hidden: 'Ausgeblendet',
             export: 'Exportieren',
-            empty: 'Dieser Abschied ist zur Zeit leer',
+            empty: 'Dieser Abschnitt ist zur Zeit leer',
             copied: 'BibTeX-Export wurde zur Zwischenablage hinzugefügt',
             close: 'Schließen'
         },

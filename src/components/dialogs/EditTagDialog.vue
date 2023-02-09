@@ -42,14 +42,14 @@ let closeDialog = () => {
                                 <div class="d-flex flex-column gap-4">
                                     <v-text-field class="lara-field" variant="outlined"
                                       v-model="state.name" :counter="32"
-                                      :label="$t('detailView.editTag.name')">
+                                      :label="$t('detailSidebar.editTag.name')">
                                     </v-text-field>  
                                 </div>
                             </v-form>
                         </v-card-text>
                         <v-card-actions>
                             <v-container>
-                                <lara-button type="primary" @click="closeDialog">{{ $t('detailView.save') }}</lara-button>
+                                <lara-button type="primary" @click="closeDialog">{{ $t('detailSidebar.save') }}</lara-button>
                             </v-container>
                         </v-card-actions>
                     </v-col>

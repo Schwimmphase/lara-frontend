@@ -17,46 +17,74 @@ import '../../model/_testResearch';
 import { testResearch, testSavedPaperList } from '@/model/_testResearch';
 import ExpandableList from "@/components/basic/ExpandableList.vue";
 import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
+import { reactive } from '@vue/reactivity';
+import { ResearchApiHandler } from '@/api/Research/ResearchApiHandler';
 
 let props = defineProps({
     showSearch: Boolean,
     showRecommendations: Boolean
 });
 
+// Method to filter saved papers based on their SaveState
 let matchesSaveState = (paper: SavedPaper, state: SaveState): boolean => {
     return paper.saveState == state;
 }
 
+// Method to open a saved paper
 let openSavedPaper = (savedPaper: SavedPaper): void => {
     // Navigate to paperDetail-route
     router.push({name: 'paperDetails', query: {research: savedPaper.research.id, paper: savedPaper.paper.paperId}});
 }
 
-let changeSaveState = (savedPaper: SavedPaper, saveState: SaveState) => {
-    console.log("Change state of paper! " + savedPaper.paper.title);
-    // TODO Call API to change save state of paper
-    PaperApiHandler.changeSaveState(savedPaper, saveState);
+// Method to change the saved State of a paper
+let changeSaveState = async (savedPaper: SavedPaper, saveState: SaveState) => {
+    await PaperApiHandler.changeSaveState(savedPaper, saveState);
     
-    // TODO Force a new fetch of the researchPapers
+    await getPapers();
 }
 
+// Method to navigate to the research overview
 let navigateToResearchOverview = (research: Research) => {
     let id: string = research.id;
 
     router.push({name: 'researchOverview', query: {id: id}});
 }
 
+// Method to get the research papers
+let getPapers = async () => {
+    if (state.research == undefined) {
+        console.error("GET_PAPERS : Research in store is not defined");
+        return;
+    }
+
+    console.log("Get papers")
+
+    let response = await ResearchApiHandler.getSavedPapers(state.research, [])
+
+    state.researchPapers = response;
+
+    state.addedPapers = state.researchPapers.filter((paper) => matchesSaveState(paper, SaveState.added));
+    state.enqueuedPapers = state.researchPapers.filter((paper) => matchesSaveState(paper, SaveState.enqueued));
+    state.hiddenPapers = state.researchPapers.filter((paper) => matchesSaveState(paper, SaveState.hidden));
+}
 
 // Pinia store for the research
 const store = useOpenResearchStore();
 
+let state: { research: Research | undefined, researchPapers: SavedPaper[], addedPapers: SavedPaper[], enqueuedPapers: SavedPaper[], hiddenPapers: SavedPaper[], } = reactive({
+    loading: true,
+    research: store.getResearch,
+    researchPapers: [],
+    addedPapers: [],
+    enqueuedPapers: [],
+    hiddenPapers: [],
+});
+
 // Get the research from the store
 let research: Research | undefined = store.getResearch;
-let researchPapers: SavedPaper[] = store.getResearchPapers;
 
-let addedPapers: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveState(savedPaper, SaveState.added));
-let enqueued: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveState(savedPaper, SaveState.enqueued));
-let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveState(savedPaper, SaveState.hidden));
+getPapers();
+
 </script>
 
 
@@ -78,19 +106,16 @@ let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveStat
 
             <!-- Section for the enqueued papers -->
             <expandable-list :title="$t('sidebar.enqueued')" :expanded="true">
-                <v-list-item v-bind:key=index
-                             v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState === SaveState.enqueued})">
+                <v-list-item v-for="(savedPaper, index) in state.enqueuedPapers" :key="index">
                     <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
-                    <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon
-                        icon="mdi-plus"/></span>
+                    <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon>mdi-plus</v-icon></span>
                 </v-list-item>
             </expandable-list>
 
             <!-- Section for the added papers -->
             <expandable-list :title="$t('sidebar.added')" :expanded="true">
                 <!-- List of the added papers -->
-                <v-list-item v-bind:key="index"
-                             v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState === SaveState.added})">
+                <v-list-item v-for="(savedPaper, index) in state.addedPapers" :key="index">
                     <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
                 </v-list-item>
             </expandable-list>
@@ -98,11 +123,9 @@ let hidden: SavedPaper[] = researchPapers.filter((savedPaper) => matchesSaveStat
 
             <!-- Section for the hidden papers -->
             <expandable-list :title="$t('sidebar.hidden')" icon="mdi-eye-off" :hidden="true">
-                <v-list-item v-bind:key="index"
-                             v-for="(savedPaper, index) in researchPapers.filter((savedPaper) => {return savedPaper.saveState === SaveState.hidden})">
+                <v-list-item v-for="(savedPaper, index) in state.hiddenPapers" v-bind:key="index">
                     <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
-                    <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon
-                        icon="mdi-plus"/></span>
+                    <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon>"mdi-plus"</v-icon></span>
                 </v-list-item>
             </expandable-list>
         </div>

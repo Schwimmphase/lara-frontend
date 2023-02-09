@@ -4,11 +4,12 @@ export class TagApiCaller {
     static urlTag = '/tag';
 
     public static createTag(researchId: string, name: string, color: string) {
-        return BasicApiCaller.axiosInstance.post(this.urlTag, {},
-        {
+        return BasicApiCaller.axiosInstance.post(this.urlTag, {
+            "name": name,
+            "color": color
+        }, {
             params: {
-                "researchId": researchId,
-                "name": name
+                "researchId": researchId
             }
         });
     }

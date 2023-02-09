@@ -31,8 +31,8 @@ let close = (decision: boolean) => {
         <v-card class="dialog lara-card">
             <div class="ma-5">
                 <span class="text-h5 font-weight-bold">{{ $t('confirmDialog.message') }}</span>
-                <LaraButton class="mt-4" type="secondary" @click="close(false)">Abbrechen</LaraButton>    
-                <LaraButton class="mt-2" type="primary" @click="close(true)">Bestätigen</LaraButton>
+                <LaraButton class="mt-4" type="secondary" @click="close(false)">{{ $t('confirmDialog.cancel') }}</LaraButton>    
+                <LaraButton class="mt-2" type="primary" @click="close(true)">{{ $t('confirmDialog.confirm') }}</LaraButton>
             </div>
             
         </v-card>
