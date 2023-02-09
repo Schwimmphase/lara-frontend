@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import DetailSidebarComponent from '@/components/DetailSidebarComponent.vue';
+import DetailSidebarComponent from '@/components/detailSidebar/DetailSidebarComponent.vue';
 import LaraButton from '@/components/basic/LaraButton.vue';
 
 import OrganizableList from '@/components/basic/OrganizableList.vue';

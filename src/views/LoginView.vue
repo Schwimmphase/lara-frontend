@@ -36,8 +36,11 @@ let loginData = reactive({
 
 async function login() {
     const [token, user] = await AuthApiHandler.login(loginData.userId, loginData.password);
-    if (token === undefined && user === undefined) loginData.loginFailed = true;
-    
+    if (token === undefined && user === undefined) {
+        loginData.loginFailed = true;
+        return;
+    }
+
     // parse token
     let tokenPayload = JSON.parse(atob(token.split('.')[1]));
     let expiryDate = new Date();
