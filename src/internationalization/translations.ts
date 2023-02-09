@@ -37,6 +37,9 @@ export const messages = {
             recommendations: 'Recommendations',
             citations: 'Citations',
             references: 'References',
+            bigger: 'Toggle bigger list',
+            biggerListEmpty: 'There are no papers to display here',
+            more: 'No more papers | One more paper | {n} more papers'
         },
 
         login: {
@@ -65,7 +68,7 @@ export const messages = {
                 create: 'Create user category',
                 save: 'Save',
                 edit: 'Edit user category',
-                name: 'Categoryname',
+                name: 'Category name',
                 finish: 'Create',
             },
             organize: {
@@ -138,6 +141,10 @@ export const messages = {
         recommendationsView: {
             recommended: 'Recommended',
             citationsReferences: 'Citations/References',
+            empty: 'This list is empty. Maybe try adding papers to your research.'
+        },
+
+        paperCard: {
             snackbar: {
                 enqueued: 'Paper has been added to the list of queued papers',
                 hidden: 'Paper was hidden from the research'

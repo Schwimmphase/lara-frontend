@@ -75,14 +75,6 @@ setRecommendations([]);
 
 setCitationReferences([]);
 
-// snackbars
-
-let snackbarState = reactive({
-    enqueued: false,
-    hidden: false,
-    timeout: 3000
-})
-
 </script>
 
 
@@ -112,8 +104,7 @@ let snackbarState = reactive({
                         </div>
 
                         <paper-card v-for="(paper, index) in state.recommendations" :key="index" :paper="paper" v-else
-                                    :research="state.research" :saved="isSaved(paper)"
-                                    @enqueued="snackbarState.enqueued = true"/>
+                                    :research="state.research" :saved="isSaved(paper)" />
                         <span v-if="state.recommendations.length === 0 && !state.loadingRecommendations">
                             {{ $t('recommendationsView.empty') }}
                         </span>
@@ -129,7 +120,7 @@ let snackbarState = reactive({
                         </div>
 
                         <paper-card v-for="(paper, index) in state.citations" :key="index" :paper="paper" v-else
-                                    :research="state.research" :saved="isSaved(paper)" @enqueued="snackbarState.enqueued = true" />
+                                    :research="state.research" :saved="isSaved(paper)" />
                         <span v-if="state.citations.length === 0 && !state.loadingCitationsReferences">
                             {{ $t('recommendationsView.empty') }}
                         </span>
@@ -140,7 +131,7 @@ let snackbarState = reactive({
                         </div>
 
                         <paper-card v-for="(paper, index) in state.references" :key="index" :paper="paper" v-else
-                                    :research="state.research" :saved="isSaved(paper)" @enqueued="snackbarState.enqueued = true" />
+                                    :research="state.research" :saved="isSaved(paper)" />
                         <span v-if="state.references.length === 0 && !state.loadingCitationsReferences">
                             {{ $t('recommendationsView.empty') }}
                         </span>
@@ -149,24 +140,6 @@ let snackbarState = reactive({
             </div>
         </div>
     </div>
-
-    <v-snackbar v-model="snackbarState.enqueued" :timeout="snackbarState.timeout">
-        {{ $t('recommendationsView.snackbar.enqueued') }}
-        <template v-slot:actions>
-            <v-btn color="pink" variant="text" @click="snackbarState.enqueued = false">
-                {{ $t('words.close') }}
-            </v-btn>
-        </template>
-    </v-snackbar>
-
-    <v-snackbar v-model="snackbarState.hidden" :timeout="snackbarState.timeout">
-        {{ $t('recommendationsView.snackbar.hidden') }}
-        <template v-slot:actions>
-            <v-btn color="pink" variant="text" @click="snackbarState.hidden = false">
-                {{ $t('words.close') }}
-            </v-btn>
-        </template>
-    </v-snackbar>
 </template>
 
 

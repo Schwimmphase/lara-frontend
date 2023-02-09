@@ -2,27 +2,31 @@
 
 import LaraButton from './basic/LaraButton.vue';
 
-import { useOpenPaperStore } from '../stores/openPaper'
-import { reactive } from '@vue/reactivity';
-import { watch } from 'vue';
+import {useOpenPaperStore} from '@/stores/openPaper'
+import {reactive} from '@vue/reactivity';
+import {watch} from 'vue';
 
-import { ResearchApiHandler } from '@/api/Research/ResearchApiHandler';
-import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
+import {ResearchApiHandler} from '@/api/Research/ResearchApiHandler';
+import {PaperApiHandler} from '@/api/Paper/PaperApiHandler';
 
-import type { SavedPaper } from '../model/SavedPaper';
-import type { Paper } from '../model/Paper';
-import { Comment } from '../model/Comment'
-import { Tag } from '../model/Tag'
-import { OpenPaper } from '../stores/model/OpenPaper';
-import { SaveState } from '../model/SaveState';
-import type { Research } from '../model/Research';
-import { useOpenResearchStore } from '@/stores/openResearch';
-import type { CachedPaper } from '@/model/CachedPaper';
-import router from '@/router';
-import type { Author } from '@/model/Author';
-import { testTag1, testTag2 } from '@/model/_testResearch';
+import type {SavedPaper} from '@/model/SavedPaper';
+import type {Paper} from '@/model/Paper';
+import {Comment} from '@/model/Comment'
+import {Tag} from '@/model/Tag'
+import {OpenPaper} from '@/stores/model/OpenPaper';
+import {SaveState} from '@/model/SaveState';
+import type {Research} from '@/model/Research';
+import {useOpenResearchStore} from '@/stores/openResearch';
+import type {Author} from '@/model/Author';
+import {testTag1, testTag2} from '@/model/_testResearch';
 
 const MAX_NUMBER_OF_AUTHORS = 2;
+
+const MAX_NUMBER_DISPLAYED = 3;
+
+defineEmits<{
+    (event: 'bigger'): void
+}>();
 
 // Store for the openResearch
 let openResearchStore = useOpenResearchStore();
@@ -159,7 +163,8 @@ let createSavedPaper = async (paper: Paper | null | undefined, state: SaveState)
     console.debug("Save Paper : " + paper.paperId + " = " + state);
     
     await ResearchApiHandler.savePaper(researchState.research, paper, state);
-    router.go(0); // reload the page // TODO: needed?
+    let savedPaper: SavedPaper = await PaperApiHandler.getDetails(paper.paperId, researchState.research.id) as SavedPaper;
+    openResearchStore.addResearchPaper(savedPaper);
 }
 
 
@@ -171,24 +176,25 @@ let recommendationsStore: { recommendations: Paper[], citations: Paper[], refere
 });
 
 let getRecommendations = async () => {
-    let paper = detailState.openPaper?.paper;
-    let research = detailState.openPaper?.savedPaper?.research;
-    if (paper == undefined || research == undefined) {
+    let paper = detailState.openPaper?.getPaper()
+    if (paper == undefined || researchState.research  == undefined) {
+        console.debug("paper or research undefined")
         return;
     }
-    let recommendations = await PaperApiHandler.getRecommendations(paper, research, []);
-    recommendationsStore.recommendations = recommendations;
+    recommendationsStore.recommendations = await PaperApiHandler.getRecommendations(paper, researchState.research as Research, []);
 }
 getRecommendations();
 
 let getCitations = async () => {
-    let citations = await PaperApiHandler.getCitations(detailState.openPaper!.savedPaper!.paper, useOpenResearchStore().getResearch!, []); // TODO: add organizers?
+    let citations = await PaperApiHandler.getCitations(detailState.openPaper!.getPaper() as Paper,
+        useOpenResearchStore().getResearch!, []);
     recommendationsStore.citations = citations;
 }
 getCitations();
 
 let getReferences = async () => {
-    let references = await PaperApiHandler.getReferences(detailState.openPaper!.savedPaper!.paper, useOpenResearchStore().getResearch!, []); // TODO: add organizers?
+    let references = await PaperApiHandler.getReferences(detailState.openPaper!.getPaper() as Paper,
+        useOpenResearchStore().getResearch!, []);
     recommendationsStore.references = references;
 }
 getReferences();
@@ -458,26 +464,51 @@ function filter (item: Tag, queryText: string, itemText: string) {
 
             <!-- Section for the recommendations, citations and references of the open paper -->
             <div class="mt-3">
+                <lara-button class="mt-2 mb-4" type="outline" @click="$emit('bigger')">
+                    {{ $t('detailSidebar.bigger') }}
+                </lara-button>
+
                 <div>
                     <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.recommendations') }}</span><br>
 
-                    <div v-for="(recommendation, index) in recommendationsStore.recommendations" :key="index">
-                        <router-link class="text-h6 lara-recommendation-link" :to="{ name: 'paperDetails', query: {paper: recommendation.paperId}}" @click="openPaperStore.setPaper(new OpenPaper(recommendation, undefined, false))">{{ recommendation.title }}</router-link><br>
+                    <div class="mb-4" v-for="(recommendation, index) in recommendationsStore.recommendations" :key="index">
+                        <router-link class="lara-recommendation-link" v-if="index < 3"
+                                     :to="{ name: 'paperDetails', query: {paper: recommendation.paperId}}"
+                                     @click="openPaperStore.setPaper(new OpenPaper(recommendation, undefined, false))">
+                            {{ recommendation.title }}
+                        </router-link>
                     </div>
+                    <p v-if="recommendationsStore.recommendations.length > MAX_NUMBER_DISPLAYED">
+                        {{ $t('detailSidebar.more', { n: recommendationsStore.recommendations.length - MAX_NUMBER_DISPLAYED }) }}
+                    </p>
                 </div>
                 <div class="mt-2">
                     <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.citations') }}</span><br>
 
-                    <div v-for="(citation, index) in recommendationsStore.citations" :key="index">
-                        <router-link class="text-h6 lara-recommendation-link" :to="{ name: 'paperDetails', query: {paper: citation.paperId}}" @click="openPaperStore.setPaper(new OpenPaper(citation, undefined, false))">{{ citation.title }}</router-link><br>
+                    <div class="mb-4" v-for="(citation, index) in recommendationsStore.citations" :key="index">
+                        <router-link class="lara-recommendation-link" v-if="index < 3"
+                                     :to="{ name: 'paperDetails', query: {paper: citation.paperId}}"
+                                     @click="openPaperStore.setPaper(new OpenPaper(citation, undefined, false))">
+                            {{ citation.title }}
+                        </router-link>
                     </div>
+                    <p v-if="recommendationsStore.citations.length > MAX_NUMBER_DISPLAYED">
+                        {{ $t('detailSidebar.more', { n: recommendationsStore.citations.length - MAX_NUMBER_DISPLAYED }) }}
+                    </p>
                 </div>
                 <div class="mt-2">
                     <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.references') }}</span><br>
 
-                    <div v-for="(reference, index) in recommendationsStore.references" :key="index">
-                        <router-link class="text-h6 lara-recommendation-link" :to="{ name: 'paperDetails', query: {paper: reference.paperId}}" @click="openPaperStore.setPaper(new OpenPaper(reference, undefined, false))">{{ reference.title }}</router-link><br>
+                    <div class="mb-4" v-for="(reference, index) in recommendationsStore.references" :key="index">
+                        <router-link class="lara-recommendation-link" v-if="index < 3"
+                                     :to="{ name: 'paperDetails', query: {paper: reference.paperId}}"
+                                     @click="openPaperStore.setPaper(new OpenPaper(reference, undefined, false))">
+                            {{ reference.title }}
+                        </router-link>
                     </div>
+                    <p v-if="recommendationsStore.references.length > MAX_NUMBER_DISPLAYED">
+                        {{ $t('detailSidebar.more', { n: recommendationsStore.references.length - MAX_NUMBER_DISPLAYED }) }}
+                    </p>
                 </div>
             </div>
         </div>

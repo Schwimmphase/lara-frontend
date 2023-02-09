@@ -11,4 +11,9 @@ export class OpenPaper {
         this.savedPaper = savedPaper;
         this.saved = saved;
     }
+
+    getPaper(): Paper | undefined {
+        return this.saved ? this.savedPaper?.paper : this.paper;
+    }
+
 }

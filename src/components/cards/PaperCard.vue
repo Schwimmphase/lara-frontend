@@ -10,6 +10,7 @@ import router from "@/router";
 import {useOpenResearchStore} from "@/stores/openResearch";
 import {PaperApiHandler} from "@/api/Paper/PaperApiHandler";
 import type {SavedPaper} from "@/model/SavedPaper";
+import {reactive} from "@vue/reactivity";
 
 
 let props = defineProps({
@@ -20,7 +21,14 @@ let props = defineProps({
 
 let emits = defineEmits<{
     (event: 'enqueued'): void
+    (event: 'hidden'): void
 }>();
+
+let snackbarState = reactive({
+    enqueued: false,
+    hidden: false,
+    timeout: 3000
+})
 
 const store = useOpenResearchStore();
 
@@ -33,10 +41,11 @@ async function createSavedPaper(state: SaveState): Promise<void> {
 
     await ResearchApiHandler.savePaper(props.research, props.paper, state);
 
-    emits('enqueued');
-
     let savedPaper: SavedPaper = await PaperApiHandler.getDetails(props.paper.paperId, props.research.id) as SavedPaper;
     store.addResearchPaper(savedPaper);
+
+    emits('enqueued');
+    snackbarState.enqueued = true;
 }
 
 let openPaper = (): void => {
@@ -85,6 +94,24 @@ let openPaper = (): void => {
             </div>
         </div>
     </v-card>
+
+    <v-snackbar v-model="snackbarState.enqueued" :timeout="snackbarState.timeout">
+        {{ $t('paperCard.snackbar.enqueued') }}
+        <template v-slot:actions>
+            <v-btn color="pink" variant="text" @click="snackbarState.enqueued = false">
+                {{ $t('words.close') }}
+            </v-btn>
+        </template>
+    </v-snackbar>
+
+    <v-snackbar v-model="snackbarState.hidden" :timeout="snackbarState.timeout">
+        {{ $t('paperCard.snackbar.hidden') }}
+        <template v-slot:actions>
+            <v-btn color="pink" variant="text" @click="snackbarState.hidden = false">
+                {{ $t('words.close') }}
+            </v-btn>
+        </template>
+    </v-snackbar>
 </template>
 
 
