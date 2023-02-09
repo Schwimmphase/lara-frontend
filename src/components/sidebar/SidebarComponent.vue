@@ -13,8 +13,6 @@ import { SaveState } from '@/model/SaveState';
 import { useOpenResearchStore } from '@/stores/openResearch';
 
 // TODO nur testzwecke
-import '../../model/_testResearch';
-import { testResearch, testSavedPaperList } from '@/model/_testResearch';
 import ExpandableList from "@/components/basic/ExpandableList.vue";
 import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
 import { reactive } from '@vue/reactivity';

@@ -56,18 +56,13 @@ import LaraButton from "@/components/basic/LaraButton.vue";
 import OrganizableList from "@/components/basic/OrganizableList.vue";
 import UserCard from "@/components/cards/UserCard.vue";
 
-import { testUserCategory1, testUserCategory2} from "@/model/_testResearch";
 import type { User } from "@/model/User";
 import {computed, reactive} from "vue";
 import UserDialog from "@/components/dialogs/UserDialog.vue";
 import type {UserCategory} from "@/model/UserCategory";
 import { useCurrentUserStore } from "@/stores/currentUser";
-import { useOpenPaperStore } from "@/stores/openPaper";
-import { useOpenResearchStore } from "@/stores/openResearch";
 import { AdminApiHandler } from "@/api/Admin/AdminApiHandler";
 import { Organizer } from "@/model/Organizer";
-
-const userCategories = [testUserCategory1, testUserCategory2];
 
 const organizeSlots = [{ id: "organizer-tags", name: "Tags" }];
 

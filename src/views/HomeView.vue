@@ -36,7 +36,6 @@
 import ResearchCard from "@/components/cards/ResearchCard.vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
 import type {Research} from "@/model/Research";
-import {  } from "@/model/_testResearch";
 import { useCurrentUserStore } from "@/stores/currentUser";
 import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
 import { useOpenResearchStore } from "@/stores/openResearch";
