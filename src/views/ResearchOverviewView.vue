@@ -4,11 +4,8 @@
             <h1 class="text-h3 font-weight-bold">{{ research != null ? research.title : "" }}</h1>
             <searchbar-component id="search-bar"></searchbar-component>
         </div>
-        <organizable-list :slots="slots" :organize-slots="organizeSlots" :right-button="$t('researchOverview.export')"
-                          :selected-organizers="state.selectedOrganizers"
-                          @click-right-button="exportResearch"
-                          @organize="getSavedPapers(state.selectedOrganizers)"
-                          @remove-organizer="name => removeOrganizer(name)">
+        <paper-organizable-list :slots="slots" @organize="selected => { getSavedPapers(selected); updateResearchPaperStore(); }"
+                                :export-enabled="true">
             <template v-slot:added>
                 <research-overview-card v-for="(savedPaper, index) in addedPapers"
                                         :key="index" :paper="savedPaper"
@@ -37,15 +34,7 @@
                 </research-overview-card>
                 <p v-if="hiddenPapers.length === 0">{{ $t("researchOverview.empty") }}</p>
             </template>
-
-            <template v-slot:year-filter>
-                <div class="w-100 mt-6 mx-5">
-                    <year-organizer :min="yearFilterSate.min" :max="yearFilterSate.max"
-                    @year-change="(min, max) => { setOrganizer('year-filter', min + '-' + max); yearFilterSate.min = min; yearFilterSate.max = max; }">
-                    </year-organizer>
-                </div>
-            </template>
-        </organizable-list>
+        </paper-organizable-list>
     </v-container>
 
     <v-snackbar v-model="state.copied" :timeout="state.timeout">
@@ -62,7 +51,6 @@
 <script setup lang="ts">
 
 import type {Slot} from "@/components/basic/OrganizableList.vue";
-import OrganizableList from "@/components/basic/OrganizableList.vue";
 import type {SavedPaper} from "@/model/SavedPaper";
 import {useOpenResearchStore} from "@/stores/openResearch.js";
 import ResearchOverviewCard from "@/components/cards/ResearchOverviewCard.vue";
@@ -76,20 +64,15 @@ import {i18n} from "@/internationalization/i18n";
 import SearchbarComponent from "@/components/sidebar/SearchbarComponent.vue";
 import {ExportApiHandler} from "@/api/Export/ExportApiHandler";
 import type {Research} from "@/model/Research";
-import YearOrganizer from "@/components/organizers/YearOrganizer.vue";
-import {Organizer} from "@/model/Organizer";
+import type {Organizer} from "@/model/Organizer";
 import {PaperApiHandler} from "@/api/Paper/PaperApiHandler";
+import PaperOrganizableList from "@/components/basic/PaperOrganizableList.vue";
 
-let state: { savedPapers: SavedPaper[], copied: boolean, timeout: number, selectedOrganizers: Organizer[] } = reactive({
+let state: { savedPapers: SavedPaper[], copied: boolean, timeout: number, loading: boolean } = reactive({
     savedPapers: [],
     copied: false,
     timeout: 3000,
-    selectedOrganizers: []
-});
-
-let yearFilterSate: { min: number, max: number } = reactive({
-    min: 1900,
-    max: (new Date()).getFullYear()
+    loading: true
 });
 
 // reset open paper
@@ -115,13 +98,23 @@ let hiddenPapers = computed<SavedPaper[]>(() => {
 const organizeSlots: Slot[] = [{ id: "year-filter", name: "Year Filter" }];
 
 async function getSavedPapers(organizers: Organizer[]) {
+    state.loading = true;
+
     let savedPapers = await ResearchApiHandler.getSavedPapers(research!, organizers);
     state.savedPapers = [];
     savedPapers.forEach(savedPaper => state.savedPapers.push(savedPaper));
+
+    state.loading = false;
+}
+
+async function updateResearchPaperStore() {
+    let savedPapers = await ResearchApiHandler.getSavedPapers(research!, []);
     store.setResearchPapers(savedPapers);
 }
 
-getSavedPapers(state.selectedOrganizers);
+getSavedPapers([]);
+
+updateResearchPaperStore();
 
 
 let enqueued = computed(() => {
@@ -146,6 +139,7 @@ function openPaper(savedPaper: SavedPaper): void {
 async function deletePaper(savedPaper: SavedPaper): Promise<void> {
     await ResearchApiHandler.removePaper(savedPaper.research, savedPaper.paper);
     state.savedPapers.splice(state.savedPapers.indexOf(savedPaper), 1);
+    store.removeResearchPaper(savedPaper);
 }
 
 async function addPaper(savedPaper: SavedPaper, saveState: SaveState): Promise<void> {
@@ -159,24 +153,10 @@ async function exportPaper(savedPaper: SavedPaper) {
     state.copied = true;
 }
 
-async function exportResearch() {
-    let bibTex = await ExportApiHandler.exportResearch(research as Research, state.selectedOrganizers);
+async function exportResearch(selectedOrganizers: Organizer[]) {
+    let bibTex = await ExportApiHandler.exportResearch(research as Research, selectedOrganizers);
     await navigator.clipboard.writeText(bibTex);
     state.copied = true;
-}
-
-function setOrganizer(name: string, value: string) {
-    if (state.selectedOrganizers.findIndex(value => value.name === name) !== -1) {
-        state.selectedOrganizers.splice(state.selectedOrganizers.findIndex(value => value.name === name), 1);
-    }
-    state.selectedOrganizers.push(new Organizer(name, value));
-}
-
-function removeOrganizer(name: string) {
-    if (state.selectedOrganizers.findIndex(value => value.name === name) !== -1) {
-        state.selectedOrganizers.splice(state.selectedOrganizers.findIndex(value => value.name === name), 1);
-    }
-    getSavedPapers(state.selectedOrganizers);
 }
 </script>
 

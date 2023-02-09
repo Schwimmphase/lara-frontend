@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 
-import type { SavedPaper } from "../model/SavedPaper";
-import type { Research } from "../model/Research";
+import type { SavedPaper } from "@/model/SavedPaper";
+import type { Research } from "@/model/Research";
 
 export const useOpenResearchStore = defineStore('openResearch', {
     state: (): { openResearch: Research | undefined, researchPapers: SavedPaper[] } => ({
@@ -22,6 +22,12 @@ export const useOpenResearchStore = defineStore('openResearch', {
         },
         setResearchPapers(researchPapers: SavedPaper[]) {
             this.researchPapers = researchPapers;
+        },
+        addResearchPaper(researchPaper: SavedPaper) {
+            this.researchPapers.push(researchPaper);
+        },
+        removeResearchPaper(researchPaper: SavedPaper) {
+            this.researchPapers.splice(this.researchPapers.indexOf(researchPaper), 1);
         },
         resetStore() {
             this.$reset();

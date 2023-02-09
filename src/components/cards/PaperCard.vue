@@ -7,24 +7,36 @@ import { SaveState } from "@/model/SaveState";
 import { Research } from "@/model/Research";
 import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
 import router from "@/router";
+import {useOpenResearchStore} from "@/stores/openResearch";
+import {PaperApiHandler} from "@/api/Paper/PaperApiHandler";
+import type {SavedPaper} from "@/model/SavedPaper";
 
 
 let props = defineProps({
     paper: Paper,
-    research: Research
+    research: Research,
+    saved: Boolean
 });
 
-let createSavedPaper = (state: SaveState): void => {
+let emits = defineEmits<{
+    (event: 'enqueued'): void
+}>();
+
+const store = useOpenResearchStore();
+
+async function createSavedPaper(state: SaveState): Promise<void> {
     console.debug(props.research, props.paper)
     if (props.research == undefined || props.paper == undefined) {
         console.error("CREATE_SAVED_PAPER : Invalid Arguments provided");
         return;
     }
 
-    console.debug("Create save paper");
-    console.debug(props.paper.title);
-    console.debug(props.research.title);
-    ResearchApiHandler.savePaper(props.research, props.paper, state);
+    await ResearchApiHandler.savePaper(props.research, props.paper, state);
+
+    emits('enqueued');
+
+    let savedPaper: SavedPaper = await PaperApiHandler.getDetails(props.paper.paperId, props.research.id) as SavedPaper;
+    store.addResearchPaper(savedPaper);
 }
 
 let openPaper = (): void => {
@@ -43,19 +55,25 @@ let openPaper = (): void => {
     <v-card class="lara-card mt-4 w-100" id="unsaved-paper-card">
         <div class="d-flex flex-column justify-space-between h-100">
             <div>
-                <v-card-title class="font-weight-bold">{{ paper?.title }}</v-card-title>
+                <v-card-title class="font-weight-bold">{{ paper!.title }}</v-card-title>
                 <v-card-subtitle>
-                    <span v-for="(author, index) in paper?.authors" :key="index">{{ author.name }}, </span>
+                    <span v-for="(author, index) in paper!.authors" :key="index">{{ author!.name }}, </span>
                 </v-card-subtitle>
                 <div class="mt-2 mx-4 mb-2">
-                    <span class="lara-informations">{{ paper?.year }} - {{ paper?.venue }} - {{ $t('detailSidebar.citationCount', { n: paper?.citationCount}) }} - {{ $t('detailSidebar.referenceCount', {n: paper?.referenceCount}) }}</span><br>
+                    <span class="lara-informations">
+                        {{ paper!.year }} - {{ paper!.venue }} -
+                        {{ $t('detailSidebar.citationCount', { n: paper!.citationCount}) }} -
+                        {{ $t('detailSidebar.referenceCount', {n: paper!.referenceCount}) }}
+                    </span>
+                    <br>
                     <div id="abstract-container">
-                        <p id="abstract">{{ paper?.abstract }}</p>
+                        <p id="abstract">{{ paper!.abstract }}</p>
                     </div>
                 </div>
             </div>
             <div class="mx-4 mb-4 d-flex flex-row">
-                <lara-button @click="createSavedPaper(SaveState.enqueued)" class="mt-2 mr-2 search-button" type="primary">
+                <lara-button @click="createSavedPaper(SaveState.enqueued)" class="mt-2 mr-2 search-button"
+                             type="primary" v-if="!saved">
                     {{ $t('detailSidebar.enqueue') }}
                 </lara-button>
                 <lara-button @click="openPaper" class="mt-2 mr-2 search-button" type="secondary">

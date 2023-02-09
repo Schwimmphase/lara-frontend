@@ -2,15 +2,22 @@
 import { reactive } from "@vue/reactivity";
 import { defineEmits } from "vue";
 
+const props = defineProps<{
+    activated: boolean
+    descending: boolean
+}>();
+
 let state = reactive({
-    sortByYear: false,
-    descending: 'true',
+    sortByYear: props.activated,
+    descending: props.descending ? 'true' : 'false',
 });
 
-let emit = defineEmits(['update']);
+let emit = defineEmits<{
+    (event: 'update', sortByYear: boolean, descending: boolean): void
+}>();
 
 let change = () => {
-    emit('update', state.sortByYear, state.descending);
+    emit('update', state.sortByYear, state.descending === 'true');
 }
 
 </script>

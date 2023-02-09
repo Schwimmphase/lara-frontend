@@ -2,6 +2,14 @@ export const messages = {
     en: {
         test: 'This is a small test',
 
+        words: {
+            close: 'Close',
+            recommendations: 'Recommendations',
+            citations: 'Citations',
+            references: 'References',
+            export: 'Export'
+        },
+
         navbar: {
             logout: 'Logout',
             home: 'Home',
@@ -125,6 +133,15 @@ export const messages = {
             title: 'Title',
             description: 'Description',
             save: 'Save changes'
+        },
+
+        recommendationsView: {
+            recommended: 'Recommended',
+            citationsReferences: 'Citations/References',
+            snackbar: {
+                enqueued: 'Paper has been added to the list of queued papers',
+                hidden: 'Paper was hidden from the research'
+            }
         }
     },
     
