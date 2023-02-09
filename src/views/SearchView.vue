@@ -1,19 +1,20 @@
 <script setup lang="ts">
 
-import { reactive } from "@vue/reactivity";
+import {reactive} from "@vue/reactivity";
 
 import PaperCard from "@/components/cards/PaperCard.vue";
 import OrganizableList from "@/components/basic/OrganizableList.vue";
 
 import SearchbarComponent from "@/components/sidebar/SearchbarComponent.vue";
 
-import type { Paper } from "@/model/Paper";
-import type { Research } from "@/model/Research";
-import { useOpenResearchStore } from "@/stores/openResearch";
-import { useRoute } from "vue-router";
-import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
+import type {Paper} from "@/model/Paper";
+import type {Research} from "@/model/Research";
+import {useOpenResearchStore} from "@/stores/openResearch";
+import {useRoute} from "vue-router";
+import {ResearchApiHandler} from "@/api/Research/ResearchApiHandler";
 
-import { useOpenPaperStore } from '@/stores/openPaper';
+import {useOpenPaperStore} from '@/stores/openPaper';
+import type {SavedPaper} from "@/model/SavedPaper";
 
 useOpenPaperStore().resetStore();
 
@@ -44,12 +45,16 @@ let getSearchResults = async () => {
         return;
     }
 
-    let result = await ResearchApiHandler.searchByKeywords(searchState.query, []);
-    searchState.results = result;
+    searchState.results = await ResearchApiHandler.searchByKeywords(searchState.query, []);
     searchState.loading = false;
 }
 
 getSearchResults();
+
+function isSaved(paper: Paper): boolean {
+    let savedPapers: SavedPaper[] = openResearchStore.getResearchPapers;
+    return savedPapers.filter(savedPaper => savedPaper.paper.paperId === paper.paperId).length > 0;
+}
 
 </script>
 
@@ -66,7 +71,10 @@ getSearchResults();
         <div v-if="!searchState.loading">
             <OrganizableList :slots="slots" :organize-slots="[]" :selected-organizers="[]">
                 <template v-slot:search-results>
-                    <paper-card v-for="(paper, index) in searchState.results" :key="index" :research="(searchState.research != null ? searchState.research : undefined)" :paper="paper"></paper-card>
+                    <paper-card v-for="(paper, index) in searchState.results" :key="index"
+                                :research="(searchState.research != null ? searchState.research : undefined)"
+                                :paper="paper" :saved="isSaved(paper)">
+                    </paper-card>
                 </template>
             </OrganizableList>
         </div>
@@ -75,6 +83,6 @@ getSearchResults();
 </template>
 
 
-<style scope>
+<style>
 
 </style>

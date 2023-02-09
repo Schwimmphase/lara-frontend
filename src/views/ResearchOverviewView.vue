@@ -133,7 +133,7 @@ let slots: Slot[] = [
 
 function openPaper(savedPaper: SavedPaper): void {
     useOpenPaperStore().setPaper(new OpenPaper(undefined, savedPaper, true));
-    router.push({ name: 'paperDetails', query: { research: savedPaper.research.id, paper: savedPaper.paper.paperId } });
+    router.push({ name: 'paperDetails', query: { paper: savedPaper.paper.paperId } });
 }
 
 async function deletePaper(savedPaper: SavedPaper): Promise<void> {
