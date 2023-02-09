@@ -1,9 +1,6 @@
 <script setup lang="ts">
 
-import OrganizableList from "@/components/basic/OrganizableList.vue";
 import PaperCard from "@/components/cards/PaperCard.vue";
-import YearOrganizer from "@/components/organizers/YearOrganizer.vue"
-import YearSorter from "@/components/organizers/YearSorter.vue";
 import { Organizer } from "@/model/Organizer";
 
 import type { Paper } from "@/model/Paper";
@@ -17,6 +14,7 @@ import { useOpenPaperStore } from '@/stores/openPaper';
 import {ResearchApiHandler} from "@/api/Research/ResearchApiHandler";
 import {SavedPaper} from "@/model/SavedPaper";
 import {i18n} from "@/internationalization/i18n";
+import PaperOrganizableList from "@/components/basic/PaperOrganizableList.vue";
 
 useOpenPaperStore().resetStore();
 
@@ -29,75 +27,43 @@ const slotsReferences = [
     {id: "references", name: i18n.global.t("words.references")},
 ];
 
-const organizerSlots = [
-    {id: "filter-year", name: "Jahr filtern"},
-    {id: "sort-year", name: "Jahr sortieren"},
-];
-
-let state: { showCitations: boolean, citations: Paper[] | undefined, references: Paper[] | undefined,
-        recommendations: Paper[] | undefined, research: Research | undefined , loading: boolean} = reactive({
+let state: { showCitations: boolean, citations: Paper[], references: Paper[], recommendations: Paper[],
+        research: Research | undefined, loadingRecommendations: boolean,
+        loadingCitationsReferences: boolean} = reactive({
     showCitations: false,
-    citations: undefined,
-    references: undefined,
-    recommendations: undefined,
+    citations: [],
+    references: [],
+    recommendations: [],
     research: undefined,
-    loading: true
+    loadingRecommendations: true,
+    loadingCitationsReferences: true
 });
-
-let organizerState: { selectedOrganizers: Organizer[],
-    yearValue: number[], sortByYear: boolean, descending: boolean | string } = reactive({
-    selectedOrganizers: [],
-    yearValue: [],
-    sortByYear: false,
-    descending: true,
-});
-
-// Method to call to build the Organizers
-let onOrganize = () => {
-    // List for the chosen organizers
-    let organizers: Organizer[] = [];
-
-    // Build the year organizer
-    const yearOrganizer = new Organizer("year-filter", JSON.stringify(organizerState.yearValue));
-    organizers.push(yearOrganizer);
-    console.log(yearOrganizer);
-
-    // TODO Check if only one sorter is selected
-
-    if (organizerState.sortByYear) {
-        console.log(organizerState.descending)
-        let argument: string;
-        if (organizerState.descending as boolean) {
-            console.log("MACHE DESCENDING")
-            argument = "descending";
-        } else {
-            console.log("MACHE ASCENDING")
-            argument = "ascending";
-        }
-        const yearSorter = new Organizer("year-sorter", argument);
-        organizers.push(yearSorter);
-        console.log(yearSorter);
-    }
-
-}
 
 // Get the persistent saved OpenResearch
 let researchStore = useOpenResearchStore();
 
+state.research = researchStore.openResearch;
+
+// Get Paper Lists from API
+let research = state.research as Research;
+
 // Method to get the Recommendations from the API
-async function setRecommendations(): Promise<void> {
-    state.loading = true;
+async function setRecommendations(selectedOrganizers: Organizer[]): Promise<void> {
+    state.loadingRecommendations = true;
 
-    state.research = researchStore.openResearch;
+    state.recommendations = await ResearchApiHandler.getRecommendations(research, selectedOrganizers);
 
-    // Get Paper Lists from API
-    let research = state.research as Research;
+    state.loadingRecommendations = false;
+}
 
-    state.recommendations = await ResearchApiHandler.getRecommendations(research, []);
-    state.references = await ResearchApiHandler.getReferences(research, []);
-    state.citations = await ResearchApiHandler.getCitations(research, []);
+// Method to get the Recommendations from the API
+async function setCitationReferences(selectedOrganizers: Organizer[]): Promise<void> {
+    state.loadingCitationsReferences = true;
 
-    state.loading = false;
+    state.citations = await ResearchApiHandler.getCitations(research, selectedOrganizers);
+    state.references = await ResearchApiHandler.getReferences(research, selectedOrganizers);
+
+    state.loadingCitationsReferences = false;
 }
 
 function isSaved(paper: Paper): boolean {
@@ -105,26 +71,9 @@ function isSaved(paper: Paper): boolean {
     return researchPaper.filter(savedPaper => savedPaper.paper.paperId == paper.paperId).length > 0;
 }
 
+setRecommendations([]);
 
-// Method to set the state for the year organizer
-let yearChange = (from: number, to: number) => {
-    organizerState.yearValue = [from, to];
-}
-
-let updateYearSorter = (sortByYear: boolean, descending: boolean | string) => {
-    if (descending == "false") {
-        descending = false;
-    }
-
-    if (descending == "true") {
-        descending = true;
-    }
-
-    organizerState.sortByYear = sortByYear;
-    organizerState.descending = descending;
-}
-
-setRecommendations();
+setCitationReferences([]);
 
 // snackbars
 
@@ -138,7 +87,7 @@ let snackbarState = reactive({
 
 
 <template>
-    <div class="ma-4">
+    <div class="mt-8 mx-16 h-100">
         <div class="d-flex">
             <span @click="state.showCitations = false"
                   :class="{ 'font-weight-bold': !state.showCitations, 'lara-clickable': state.showCitations }"
@@ -152,45 +101,52 @@ let snackbarState = reactive({
                 {{ $t('recommendationsView.citationsReferences') }}
             </span><br>
         </div>
-
-        <div v-if="state.loading" class="h-50 ma-5 d-flex justify-center align-center">
-            <v-progress-circular indeterminate size="35"></v-progress-circular>
-        </div>
         
-        <div class="mt-3" v-if="!state.loading">
-            <OrganizableList v-if="!state.showCitations"
-                             :slots="slotsRecommended"
-                             :organize-slots="organizerSlots"
-                             :selected-organizers="state.selectedOrganizers"
-                             @organize="onOrganize">
-                <template v-slot:recommendations>
-                    <paper-card v-for="(paper, index) in state.recommendations" :key="index" :paper="paper"
-                                :research="state.research" :saved="isSaved(paper)" @enqueued="snackbarState.enqueued = true"/>
-                </template>
+        <div class="mt-3">
+            <div v-show="!state.showCitations">
+                <paper-organizable-list :slots="slotsRecommended" :export-enabled="false"
+                                        @organize="organizers => setRecommendations(organizers)">
+                    <template v-slot:recommendations>
+                        <div v-if="state.loadingRecommendations" class="h-50 w-100 ma-5 d-flex justify-center align-center">
+                            <v-progress-circular indeterminate size="35"></v-progress-circular>
+                        </div>
 
-                <template v-slot:filter-year>
-                    <div class="w-100 mt-6 mx-5">
-                        <!-- TODO: safe min max -->
-                        <YearOrganizer @year-change="(from, to) => yearChange(from, to)" :min="1900" :max="(new Date()).getFullYear()"/>
-                    </div>
-                </template>
+                        <paper-card v-for="(paper, index) in state.recommendations" :key="index" :paper="paper" v-else
+                                    :research="state.research" :saved="isSaved(paper)"
+                                    @enqueued="snackbarState.enqueued = true"/>
+                        <span v-if="state.recommendations.length === 0 && !state.loadingRecommendations">
+                            {{ $t('recommendationsView.empty') }}
+                        </span>
+                    </template>
+                </paper-organizable-list>
+            </div>
+            <div v-show="state.showCitations">
+                <paper-organizable-list :slots="slotsReferences" :export-enabled="false"
+                                        @organize="organizers => setCitationReferences(organizers)">
+                    <template v-slot:citations>
+                        <div v-if="state.loadingCitationsReferences" class="h-50 w-100 ma-5 d-flex justify-center align-center">
+                            <v-progress-circular indeterminate size="35"></v-progress-circular>
+                        </div>
 
-                <template v-slot:sort-year>
-                    <div class="w-100 mt-6 mx-5">
-                        <YearSorter @update="(sortByYear, descending) => updateYearSorter(sortByYear, descending)" />
-                    </div>
-                </template>
-            </OrganizableList>
-            <OrganizableList v-if="state.showCitations" :slots="slotsReferences" :organize-slots="organizerSlots" :selected-organizers="[]">
-                <template v-slot:citations>
-                    <paper-card v-for="(paper, index) in state.citations" :key="index" :paper="paper"
-                                :research="state.research" :saved="isSaved(paper)" @enqueued="snackbarState.enqueued = true" />
-                </template>
-                <template v-slot:references>
-                    <paper-card v-for="(paper, index) in state.references" :key="index" :paper="paper"
-                                :research="state.research" :saved="isSaved(paper)" @enqueued="snackbarState.enqueued = true" />
-                </template>
-            </OrganizableList>
+                        <paper-card v-for="(paper, index) in state.citations" :key="index" :paper="paper" v-else
+                                    :research="state.research" :saved="isSaved(paper)" @enqueued="snackbarState.enqueued = true" />
+                        <span v-if="state.citations.length === 0 && !state.loadingCitationsReferences">
+                            {{ $t('recommendationsView.empty') }}
+                        </span>
+                    </template>
+                    <template v-slot:references>
+                        <div v-if="state.loadingCitationsReferences" class="h-50 w-100 ma-5 d-flex justify-center align-center">
+                            <v-progress-circular indeterminate size="35"></v-progress-circular>
+                        </div>
+
+                        <paper-card v-for="(paper, index) in state.references" :key="index" :paper="paper" v-else
+                                    :research="state.research" :saved="isSaved(paper)" @enqueued="snackbarState.enqueued = true" />
+                        <span v-if="state.references.length === 0 && !state.loadingCitationsReferences">
+                            {{ $t('recommendationsView.empty') }}
+                        </span>
+                    </template>
+                </paper-organizable-list>
+            </div>
         </div>
     </div>
 

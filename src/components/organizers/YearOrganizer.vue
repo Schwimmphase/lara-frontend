@@ -12,7 +12,7 @@ const props = defineProps<{
 }>();
 
 let extremas = reactive({ min: props.min, max: props.max });
-let state = ref([extremas.min + 20, extremas.max - 20]);
+let state = ref([extremas.min, extremas.max]);
 
 const extremaInterval = 50;
 const maxYear = 3000;
@@ -24,7 +24,6 @@ let updateParent = () => {
 updateParent();
 
 watch(state, (newState, oldState) => {
-    console.log("moniasd")
     updateParent();
 });
 
@@ -53,7 +52,8 @@ let decreaseMin = () => {
 
 <template>
     <div class="d-flex">
-        <v-range-slider @change:modelValue="updateParent" v-model:model-value="state" :step="1" strict :min="extremas.min" :max="extremas.max" thumb-label="always">
+        <v-range-slider @change:modelValue="updateParent" v-model:model-value="state" :step="1" strict
+                        :min="extremas.min - 20" :max="extremas.max + 20" thumb-label="always">
             <template v-slot:prepend>
                 <lara-button icon="mdi-calendar" @click="decreaseMin" type="outline">früher</lara-button>
             </template>

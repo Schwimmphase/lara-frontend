@@ -4,7 +4,8 @@
             <h1 class="text-h3 font-weight-bold">{{ research != null ? research.title : "" }}</h1>
             <searchbar-component id="search-bar"></searchbar-component>
         </div>
-        <paper-organizable-list :slots="slots" @organize="selected => { getSavedPapers(selected); updateResearchPaperStore(); }">
+        <paper-organizable-list :slots="slots" @organize="selected => { getSavedPapers(selected); updateResearchPaperStore(); }"
+                                :export-enabled="true">
             <template v-slot:added>
                 <research-overview-card v-for="(savedPaper, index) in addedPapers"
                                         :key="index" :paper="savedPaper"

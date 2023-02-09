@@ -1,6 +1,6 @@
 <template>
     <organizable-list :slots="slots" :organize-slots="organizeSlots"
-                      :right-button="$t('words.export')"
+                      :right-button="exportEnabled ? $t('words.export') : null"
                       :selected-organizers="state.selectedOrganizers"
                       @click-right-button="emit('export', state.selectedOrganizers);"
                       @organize="emit('organize', state.selectedOrganizers);"
@@ -19,7 +19,8 @@
 
         <template v-slot:year-sorter>
             <div class="w-100 mt-6 mx-5">
-                <year-sorter @update="(sortByYear, descending) => onYearSorter(sortByYear, descending)" />
+                <year-sorter :activated="yearSorterState.active" :descending="yearSorterState.descending"
+                    @update="(sortByYear, descending) => onYearSorter(sortByYear, descending)" />
             </div>
         </template>
     </organizable-list>
@@ -36,6 +37,7 @@ import YearSorter from "@/components/organizers/YearSorter.vue";
 
 defineProps<{
     slots: Slot[],
+    exportEnabled: boolean
 }>();
 
 const emit = defineEmits<{
@@ -51,6 +53,11 @@ let yearFilterState: { min: number, max: number } = reactive({
     min: 1900,
     max: (new Date()).getFullYear()
 });
+
+let yearSorterState: { active: boolean, descending: boolean} = reactive({
+    active: false,
+    descending: false
+})
 
 const organizeSlots: Slot[] = [
     { id: "year-filter", name: "Year Filter" },
@@ -85,9 +92,12 @@ function onYearFilter(min: number, max: number): void {
     yearFilterState.max = max;
 }
 
-function onYearSorter(active: boolean, deciding: boolean): void {
+function onYearSorter(active: boolean, descending: boolean): void {
+    console.debug("year sorter", active, descending);
+    yearSorterState.active = active;
+    yearSorterState.descending = descending;
     if (active) {
-        setOrganizer("year-sorter", deciding ? "descending" : "ascending");
+        setOrganizer("year-sorter", descending ? "descending" : "ascending");
     } else {
         removeOrganizer("year-sorter", false);
     }
