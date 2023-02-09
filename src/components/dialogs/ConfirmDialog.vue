@@ -4,14 +4,16 @@ import { reactive } from 'vue';
 
 import LaraButton from '../basic/LaraButton.vue';
 
+const props = defineProps<{ openOnDefault?: boolean }>();
+
 let state: { showDialog: boolean } = reactive({
-    showDialog: false,
+    showDialog: !props.openOnDefault ? false : props.openOnDefault,
 });
 
 const emits = defineEmits(['close']);
 
 // Method to pass the decision of the user to the parent
-let close = (decision: boolean) => {
+let close = (decision: boolean) => {
     state.showDialog = false;
     emits('close', decision);
 }

@@ -135,7 +135,6 @@ let slots: Slot[] = [
 ];
 
 function openPaper(savedPaper: SavedPaper): void {
-    useOpenPaperStore().setPaper(new OpenPaper(undefined, savedPaper, true));
     router.push({ name: 'paperDetails', query: { research: savedPaper.research.id, paper: savedPaper.paper.paperId } });
 }
 

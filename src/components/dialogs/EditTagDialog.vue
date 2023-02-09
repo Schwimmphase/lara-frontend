@@ -9,17 +9,17 @@ const props = defineProps({
     tag: Tag,
 });
 
-let state: { dialog: boolean, color: string | undefined, name: string | undefined } = reactive({
-    dialog: false,
+let state: { color: string | undefined, name: string | undefined } = reactive({
     name: props.tag?.name,
     color: props.tag?.color
 });
 
+let model = true;
+
 const emits = defineEmits(['edit']);
 
 let closeDialog = () => {
-    emits('edit', props.tag, state.name, state.color);
-    state.dialog = false;
+    emits('edit', state.name, state.color);
     state.name = props.tag?.name;
     state.color = props.tag?.color;
 }
@@ -28,11 +28,7 @@ let closeDialog = () => {
 
 
 <template>
-    <div @click="state.dialog = true">
-        <slot></slot>
-    </div>
-
-    <v-dialog v-model="state.dialog">
+    <v-dialog v-model="model">
         <v-card id="dialog">
             <v-container>
                 <v-row>
@@ -56,7 +52,7 @@ let closeDialog = () => {
                     <v-col>
                         <v-color-picker
                             hide-inputs
-                            mode="hexa"
+                            mode="hex"
                             dot-size="25"
                             v-model="state.color"
                         ></v-color-picker>

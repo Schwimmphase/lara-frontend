@@ -32,23 +32,14 @@ let setPaper = async () => {
         var openPaperFromAPI = new OpenPaper(paper, undefined, false);
     } else {
         let savedPaper = await PaperApiHandler.getDetails(paperId, researchId) as SavedPaper;
+        console.debug("open paper", savedPaper);
         var openPaperFromAPI = new OpenPaper(undefined, savedPaper, true);
     }
 
-    openPaperStore.setPaper(openPaperFromAPI);
+    detailState.openPaper = openPaperFromAPI;
     detailState.loading = false;
 }
 setPaper();
-
-
-let openPaperStore = useOpenPaperStore();
-
-detailState.openPaper = openPaperStore.paper;
-
-openPaperStore.$subscribe((mutation, state) => {
-    // When a change in the paper is detected, update the state
-    detailState.openPaper = state.paper;
-})
 
 // Method to format the authors of the open paper
 function getAuthorsString(authors: Author[] | undefined) {
@@ -67,7 +58,7 @@ function getAuthorsString(authors: Author[] | undefined) {
 <template>
     <!-- Render if the API Call is complete -->
     <div v-if="!detailState.loading" class="w-100 h-100">
-        <detail-sidebar-component></detail-sidebar-component>
+        <detail-sidebar-component :open-paper="detailState.openPaper!"></detail-sidebar-component>
 
         <!-- Paper is saved and pdf is available -->
         <div v-if="(detailState.openPaper?.saved) && (detailState.openPaper?.savedPaper?.paper.pdfUrl != null)" class="w-100 h-100">

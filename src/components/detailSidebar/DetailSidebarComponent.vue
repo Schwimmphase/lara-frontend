@@ -169,6 +169,8 @@ let getAuthorsString = (authors: Author[] | undefined) => {
     }
 }
 
+const props = defineProps<{ openPaper: OpenPaper }>();
+
 </script>
 
 
@@ -197,7 +199,7 @@ let getAuthorsString = (authors: Author[] | undefined) => {
                 <div class="mt-4">
                     <span class="text-h5">{{ $t('detailSidebar.tags') }}</span>
                     <div class="mt-2">
-                        <tag-component></tag-component>
+                        <tag-component :open-paper="props.openPaper.savedPaper!"></tag-component>
                     </div>
                     <v-divider class="my-3"></v-divider>
                 </div>
