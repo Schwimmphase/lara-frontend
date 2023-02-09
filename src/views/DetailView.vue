@@ -1,16 +1,18 @@
 <script setup lang="ts">
 
 import DetailSidebarComponent from '@/components/DetailSidebarComponent.vue';
-import { OpenPaper } from '../stores/model/OpenPaper';
-import { useOpenPaperStore } from '../stores/openPaper';
+import { OpenPaper } from '@/stores/model/OpenPaper';
+import { useOpenPaperStore } from '@/stores/openPaper';
 
-import type { Paper } from '../model/Paper';
-import type { SavedPaper } from '../model/SavedPaper';
+import type { Paper } from '@/model/Paper';
+import type { SavedPaper } from '@/model/SavedPaper';
 import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
 
 import { useRoute } from 'vue-router';
 import { reactive } from '@vue/reactivity';
 import type { Author } from '@/model/Author';
+import {useOpenResearchStore} from "@/stores/openResearch";
+import type {Research} from "@/model/Research";
 
 // State for the page, the openPaper and a indicator to know if the page is loading
 let detailState: {loading: boolean, openPaper: OpenPaper | undefined } = reactive({
@@ -20,24 +22,33 @@ let detailState: {loading: boolean, openPaper: OpenPaper | undefined } = reactiv
 
 const MAX_NUMBER_OF_AUTHORS = 3;
 
+// Get the persistent saved OpenResearch
+let researchStore = useOpenResearchStore();
+
 // Method to fetch the correct paper from the API and save it in the open paper store
-let setPaper = async () => {
-    // Access the route to get the the ids for the paper from the query
+async function setPaper(): Promise<void> {
+    // Access the route to get the ids for the paper from the query
     let route = useRoute();
-    let researchId = route.query.research as string;
     let paperId = route.query.paper as string;
 
-    if (researchId == undefined) {
-        let paper = await PaperApiHandler.getDetails(paperId, researchId as null) as Paper;
-        var openPaperFromAPI = new OpenPaper(paper, undefined, false);
+    let isSavedPaper = researchStore.getResearchPapers
+        .filter(savedPaper => savedPaper.paper.paperId === paperId).length > 0;
+
+    let openPaperFromAPI;
+    if (isSavedPaper) {
+        let research = researchStore.getResearch as Research;
+
+        let savedPaper = await PaperApiHandler.getDetails(paperId, research.id) as SavedPaper;
+        openPaperFromAPI = new OpenPaper(undefined, savedPaper, true);
     } else {
-        let savedPaper = await PaperApiHandler.getDetails(paperId, researchId) as SavedPaper;
-        var openPaperFromAPI = new OpenPaper(undefined, savedPaper, true);
+        let paper = await PaperApiHandler.getDetails(paperId, null) as Paper;
+        openPaperFromAPI = new OpenPaper(paper, undefined, false);
     }
 
     openPaperStore.setPaper(openPaperFromAPI);
     detailState.loading = false;
 }
+
 setPaper();
 
 
