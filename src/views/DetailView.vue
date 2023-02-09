@@ -16,7 +16,7 @@ import PaperCard from "@/components/cards/PaperCard.vue";
 import PaperOrganizableList from "@/components/basic/PaperOrganizableList.vue";
 import {useOpenResearchStore} from "@/stores/openResearch";
 import type {Research} from "@/model/Research";
-import {Organizer} from "@/model/Organizer";
+import type {Organizer} from "@/model/Organizer";
 
 // State for the page, the openPaper and a indicator to know if the page is loading
 let detailState: {loading: boolean, openPaper: OpenPaper | undefined, research: Research | undefined, showBigger: boolean } = reactive({
@@ -71,8 +71,6 @@ async function setPaper(): Promise<void> {
 setPaper();
 
 async function getCitationReferences(selectedOrganizers: Organizer[]): Promise<void> {
-    console.debug("get cit ref");
-
     biggerStore.loading = true;
 
     biggerStore.citations = await PaperApiHandler.getCitations(detailState.openPaper!.getPaper() as Paper,
@@ -83,13 +81,11 @@ async function getCitationReferences(selectedOrganizers: Organizer[]): Promise<v
     biggerStore.loading = false;
 }
 
-async function bigger(selectedOrganizers: Organizer[]): Promise<void> {
-    console.debug("bigger");
+async function bigger(): Promise<void> {
     detailState.showBigger = !detailState.showBigger;
 
     if (detailState.showBigger && biggerStore.citations.length === 0 && biggerStore.references.length == 0) {
-        console.debug("bigger get cit ref");
-        await getCitationReferences(selectedOrganizers);
+        await getCitationReferences([]);
     }
 }
 
