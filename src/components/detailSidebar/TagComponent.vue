@@ -1,7 +1,7 @@
 <template>
 
     <v-combobox :label="$t('detailSidebar.addTags')" v-model="tagState.selectedTags" :items="tagState.selectableTags" v-model:search.sync="tagState.searchQuery"
-            @keydown.enter="onEdit(tagState.searchQuery)" :hide-no-data=false multiple>
+            @keyup.enter="onKeyboardEdit(tagState.searchQuery)" :hide-no-data=false multiple> <!-- TODO: update local storage on backspace or remove backspace functionality -->
         <!-- Selected Tags -->
         <template v-slot:selection="{ attrs, item, parent, selected }">
             <v-chip class="lara-chip" :color="getColor(item.title)" v-bind="attrs" :input-value="selected" :closable="true" @click:close="removeTagFromOpenPaper(item.title)">{{ item.title }}</v-chip>
@@ -23,11 +23,9 @@
         </template>
     </v-combobox>
 
-    <edit-tag-dialog v-if="editTagState.open" :tag="editTagState.tag" @edit="(name, color) => { editTagState.open = false; updateTag(editTagState.tag!, name, color) }">
-    </edit-tag-dialog>
+    <edit-tag-dialog v-if="editTagState.open" :tag="editTagState.tag" @edit="(name, color) => { editTagState.open = false; updateTag(editTagState.tag!, name, color) }"></edit-tag-dialog>
 
-    <confirm-dialog v-if="deleteTagState.open" :open-on-default="true" @close="(decision) => deleteTag(decision, deleteTagState.tag!.name)">
-    </confirm-dialog>
+    <confirm-dialog v-if="deleteTagState.open" :open-on-default="true" @close="(decision) => deleteTag(decision, deleteTagState.tag!.name)"></confirm-dialog> <!-- TODO: only works once per reload -->
 
 </template>
 
@@ -60,11 +58,13 @@ let tagState: { selectedTags: string[], selectableTags: Tag[], searchQuery: stri
     searchQuery: ""
 });
 
+// state for edit tag dialog
 let editTagState: { open: boolean, tag: Tag | undefined } = reactive({
     open: false,
     tag: undefined
 });
 
+// state for delete tag dialog
 let deleteTagState: { open: boolean, tag: Tag | undefined } = reactive({
     open: false,
     tag: undefined
@@ -73,7 +73,7 @@ let deleteTagState: { open: boolean, tag: Tag | undefined } = reactive({
 // method to get tags
 async function getTags() {
     // get selectable tags
-    let tags = await ResearchApiHandler.getTags(openResearch);
+    const tags = await ResearchApiHandler.getTags(openResearch);
     tagState.selectableTags = tags;
     
     // get selected tags
@@ -81,15 +81,17 @@ async function getTags() {
 }
 getTags();
 
-//console.debug("tag", await PaperApiHandler.getDetails(props.openPaper.paper.paperId, openResearch.id))
-
 // method to globally add tag
 async function addTag(name: string): Promise<void> {
-    let newTag = await TagApiHandler.createTag(openResearch, name, "#000000");
+    const newTag = await TagApiHandler.createTag(openResearch, name, "#000000");
+
+    // update open paper of locally saved open research
     props.openPaper.tags.push(newTag);
+
+    // update selectable & selected tags
     getTags();
 
-    console.debug("Added Tag", name, "to open research");
+    console.debug("Created Tag '" + name + "' in open research");
 }
 
 // method to globally update tag
@@ -106,15 +108,14 @@ async function updateTag(tag: Tag, name: string, color: string): Promise<void> {
     // update selectable & selected tags
     getTags();
 
-    console.debug("Updated Tag", name, '(' + color + ')', "to open research");
+    console.debug("Updated Tag '" + name + " (" + color + ") ' of open research");
 }
 
 // method to globally delete tag
 async function deleteTag(decision: boolean, name: string): Promise<void> {
     if (!decision) return;
 
-    // get tag object of given name
-    let tag = tagState.selectableTags.find(tag => tag.name === name);
+    const tag = tagState.selectableTags.find(tag => tag.name === name); // get tag of given name
     if (!tag) return;
 
     await TagApiHandler.deleteTag(tag);
@@ -128,11 +129,11 @@ async function deleteTag(decision: boolean, name: string): Promise<void> {
     // update selectable & selected tags
     getTags();
 
-    console.debug("Deleted Tag", tag.name, "from open research");
+    console.debug("Deleted Tag '" + name + "' from open research");
 }
 
 async function addTagToOpenPaper(name: string): Promise<void> {
-    let tag = tagState.selectableTags.find(tag => tag.name === name); // get tag object of given name
+    const tag = tagState.selectableTags.find(tag => tag.name === name); // get tag of given name
     let tagSelected = tagState.selectedTags.find(tag => tag === name); // get if tag of given name has been selected 
     if (!tag || tagSelected) return;
 
@@ -144,13 +145,12 @@ async function addTagToOpenPaper(name: string): Promise<void> {
     // update selectable & selected tags
     getTags();
 
-    console.debug("Added Tag", tag, "to open paper");
+    console.debug("Added Tag '" + name + "' to open paper");
 }
 
 // method to remove tag from open paper
 async function removeTagFromOpenPaper(name: string): Promise<void> {
-    // get tag object of given name
-    let tag = tagState.selectableTags.find(tag => tag.name === name);
+    const tag = tagState.selectableTags.find(tag => tag.name === name); // get tag of given name
     if (!tag) return;
 
     await PaperApiHandler.removeTag(props.openPaper, tag);
@@ -161,23 +161,33 @@ async function removeTagFromOpenPaper(name: string): Promise<void> {
     // update selectable & selected tags
     getTags();
 
-    console.debug("Removed Tag", name, "from open paper");
+    console.debug("Removed Tag '" + name + "' from open paper");
 }
 
-// watch if new Tags have been added
-function onEdit(name: string) {
-    const tag = tagState.selectableTags.find(tag => tag.name === name);
-
-    if (tag) {
-        console.debug("added not new tag", tag.name);
-        props.openPaper.tags.push(tag);
-    } else if (name !== "") {
-        addTag(name);
+// watch if tags have been added/removed via keyboard inputs
+function onKeyboardEdit(name: string) {
+    const selectedTag = tagState.selectedTags.find(tag => tag === name); // get if tag of given name was selected
+    if (!selectedTag && name !== "") {
+        // if tag was selected: remove tag from open paper
+        props.openPaper.tags.splice(props.openPaper.tags.map(tag => tag.name).indexOf(name), 1);
+        console.debug("Removed existing tag '" + name + "' from open paper");
+    } else {
+        // if tag was not selected: add new/existing tag to open paper 
+        const selectableTag = tagState.selectableTags.find(tag => tag.name === name); // get tag of given name
+        if (selectableTag) {
+            // if tag does exist: add tag to open paper
+            props.openPaper.tags.push(selectableTag);
+            console.debug("Added existing tag '" + name + "' to open paper");
+        } else if (name !== "") {
+            // if tag does not exist: create tag & add to open paper
+            addTag(name);
+        }
     }
 }
 
 function getColor(name: string) {
-    const tag = tagState.selectableTags.find(tag => tag.name === name);
+    const tag = tagState.selectableTags.find(tag => tag.name === name); // get tag of given name
+
     return tag?.color;
 }
 

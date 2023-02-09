@@ -124,7 +124,7 @@ let createSavedPaper = async (paper: Paper | null | undefined, state: SaveState)
     console.debug("Save Paper : " + paper.paperId + " = " + state);
     
     await ResearchApiHandler.savePaper(researchState.research, paper, state);
-    router.go(0); // reload the page // TODO: needed?
+    router.go(0); // reload the page
 }
 
 
@@ -147,13 +147,13 @@ let getRecommendations = async () => {
 getRecommendations();
 
 let getCitations = async () => {
-    let citations = await PaperApiHandler.getCitations(detailState.openPaper!.savedPaper!.paper, useOpenResearchStore().getResearch!, []); // TODO: add organizers?
+    let citations = await PaperApiHandler.getCitations(detailState.openPaper!.savedPaper!.paper, useOpenResearchStore().getResearch!, []);
     recommendationsStore.citations = citations;
 }
 getCitations();
 
 let getReferences = async () => {
-    let references = await PaperApiHandler.getReferences(detailState.openPaper!.savedPaper!.paper, useOpenResearchStore().getResearch!, []); // TODO: add organizers?
+    let references = await PaperApiHandler.getReferences(detailState.openPaper!.savedPaper!.paper, useOpenResearchStore().getResearch!, []);
     recommendationsStore.references = references;
 }
 getReferences();

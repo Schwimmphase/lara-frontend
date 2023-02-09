@@ -2,7 +2,6 @@
 
 import DetailSidebarComponent from '@/components/detailSidebar/DetailSidebarComponent.vue';
 import { OpenPaper } from '@/stores/model/OpenPaper';
-import { useOpenPaperStore } from '@/stores/openPaper';
 
 import type { Paper } from '@/model/Paper';
 import type { SavedPaper } from '@/model/SavedPaper';
