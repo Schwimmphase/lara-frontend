@@ -56,7 +56,7 @@ getCategories();
             </div>
 
             <div class="mt-3">
-                <v-card class="lara-card mt-3 pa-3 d-flex" v-for="(category, index) in state.categories" :key="index">
+                <v-card class="lara-card mt-3 pa-3 d-flex" v-for="(category) in state.categories" :key="category.toString()">
                     <v-title><span class="lara-title font-weight-bold">{{ category.name }}</span><span class="lara-id">#{{ category.id }}</span></v-title>
                     <v-spacer></v-spacer>
                     <v-avatar class="ml-4" size="30" :color="category.color"></v-avatar>

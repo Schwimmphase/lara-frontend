@@ -59,7 +59,6 @@ export const messages = {
                 edit: 'Edit user category',
                 name: 'Categoryname',
                 finish: 'Create',
-
             },
             organize: {
                 userCategories: 'User categories'
@@ -166,7 +165,7 @@ export const messages = {
 
         admin: {
             createUser: 'Nutzer anlegen',
-            editCategories: 'Nutzerkategorie verwalten',
+            editCategories: 'Nutzerkategorien verwalten',
             greeting: 'Hallo Admin {name}!',
             userOverview: 'Nutzerübersicht',
             editUser: 'Nutzer bearbeiten',
@@ -177,6 +176,14 @@ export const messages = {
                 userCategory: 'Nutzerkategorie',
                 buttonCreate: 'Nutzer erstellen',
                 buttonEdit: 'Speichern'
+            },
+            categories: {
+                manage: 'Nutzerkategorien verwalten',
+                create: 'Nutzerkategorie erstellen',
+                save: 'Speichern',
+                edit: 'Nutzerkategorie bearbeiten',
+                name: 'Name der Kategorie',
+                finish: 'Erstellen',
             },
             organize: {
                 userCategories: 'Nutzerkategorien'
