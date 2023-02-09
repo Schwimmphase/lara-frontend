@@ -138,6 +138,9 @@ export const messages = {
         recommendationsView: {
             recommended: 'Recommended',
             citationsReferences: 'Citations/References',
+        },
+
+        paperCard: {
             snackbar: {
                 enqueued: 'Paper has been added to the list of queued papers',
                 hidden: 'Paper was hidden from the research'
