@@ -13,7 +13,7 @@
                     {{ $t('researchOverviewCard.add') }}
                 </lara-button>
                 <v-spacer></v-spacer>
-                <v-btn size="small" color="surface-variant" variant="text" icon="mdi-open-in-new" @click="$emit('open')"></v-btn>
+                <v-btn size="small" color="surface-variant" variant="text" icon="mdi-open-in-new" @click="$emit('export')"></v-btn>
                 <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
                     <v-btn size="small" color="red" variant="text" icon="mdi-delete"></v-btn>
                 </confirm-dialog>

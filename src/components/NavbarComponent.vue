@@ -5,9 +5,9 @@
 
 <script setup lang="ts">
 
-import { LanguageService } from '../internationalization/LanguageService';
+import { LanguageService } from '@/internationalization/LanguageService';
 
-import { i18n } from '../internationalization/i18n'
+import { i18n } from '@/internationalization/i18n'
 import { useCurrentUserStore } from '@/stores/currentUser';
 import { useOpenResearchStore } from '@/stores/openResearch';
 import { useOpenPaperStore } from '@/stores/openPaper';
@@ -68,7 +68,7 @@ let changeLanguage = (lang: string) => {
                 <v-list>
                     <v-list-item
                     v-for="(language, index) in languages" :key="index" :value="language.abbreviation"
-                    @click="changeLanguage(language.abbreviation)" class="" :class="{ 'lara-selected': (language.abbreviation == (i18n.global.locale).value), 'lara-language-option': (language.abbreviation != (i18n.global.locale).value) }">
+                    @click="changeLanguage(language.abbreviation)" class="" :class="{ 'lara-selected': (language.abbreviation === (i18n.global.locale).value), 'lara-language-option': (language.abbreviation !== (i18n.global.locale).value) }">
                         <span>{{ language.name }}</span>
                     </v-list-item>
                 </v-list>
@@ -93,11 +93,11 @@ let changeLanguage = (lang: string) => {
 }
 
 .lara-selected {
-    color: #000;
+    color: rgb(114, 114, 114);
 }
 
 .lara-language-option {
-    color: rgb(114, 114, 114);
+    color: #000;
 }
 
 .lara-navbar-link:hover {

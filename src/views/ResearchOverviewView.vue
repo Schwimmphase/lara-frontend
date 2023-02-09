@@ -27,9 +27,10 @@
             </template>
             <template v-slot:hidden>
                 <research-overview-card v-for="(savedPaper, index) in hiddenPapers"
-                                        :key="index" :paper="savedPaper"
+                                        :key="index" :paper="savedPaper" :add-button="true"
                                         @open="openPaper(savedPaper)"
                                         @delete="deletePaper(savedPaper)"
+                                        @add="addPaper(savedPaper, SaveState.added)"
                                         @export="exportPaper(savedPaper)">
                 </research-overview-card>
                 <p v-if="hiddenPapers.length === 0">{{ $t("researchOverview.empty") }}</p>
