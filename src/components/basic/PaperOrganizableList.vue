@@ -88,6 +88,21 @@ function removeOrganizer(name: string, shouldUpdate: boolean): void {
         state.selectedOrganizers.splice(state.selectedOrganizers.findIndex(value => value.name === name), 1);
     }
 
+    // clear organizer
+    switch (name) {
+        case "year-filter":
+            yearFilterState.min = 1900;
+            yearFilterState.max = (new Date()).getFullYear()
+            break;
+        case "year-sorter":
+            yearSorterState.active = false;
+            yearSorterState.descending = false;
+            break;
+        case "venue-filter":
+            venueFilterState.selectedVenues = [];
+            break;
+    }
+
     if (shouldUpdate) {
         emit('organize', state.selectedOrganizers);
     }
@@ -118,7 +133,6 @@ function onVenueFilter(venues: string[]) {
 }
 
 function onYearSorter(active: boolean, descending: boolean): void {
-    console.debug("year sorter", active, descending);
     yearSorterState.active = active;
     yearSorterState.descending = descending;
     if (active) {
