@@ -9,8 +9,8 @@
                 <lara-button type="primary" id="create-user-button" class="w-100">{{ $t('admin.createUser') }}</lara-button>
             </user-dialog>
 
-            <router-link :to="{ name: 'userCategories' }">
-                <lara-button type="secondary" id="create-category-button">{{ $t('admin.editCategories') }}</lara-button>
+            <router-link :to="{ name: 'userCategories' }" class="lara-no-decoration">
+                <lara-button type="secondary" id="create-category-button" class="w-100">{{ $t('admin.editCategories') }}</lara-button>
             </router-link>
         </div>
 
@@ -56,18 +56,13 @@ import LaraButton from "@/components/basic/LaraButton.vue";
 import OrganizableList from "@/components/basic/OrganizableList.vue";
 import UserCard from "@/components/cards/UserCard.vue";
 
-import { testUserCategory1, testUserCategory2} from "@/model/_testResearch";
 import type { User } from "@/model/User";
 import {computed, reactive} from "vue";
 import UserDialog from "@/components/dialogs/UserDialog.vue";
 import type {UserCategory} from "@/model/UserCategory";
 import { useCurrentUserStore } from "@/stores/currentUser";
-import { useOpenPaperStore } from "@/stores/openPaper";
-import { useOpenResearchStore } from "@/stores/openResearch";
 import { AdminApiHandler } from "@/api/Admin/AdminApiHandler";
 import { Organizer } from "@/model/Organizer";
-
-const userCategories = [testUserCategory1, testUserCategory2];
 
 const organizeSlots = [{ id: "organizer-tags", name: "Tags" }];
 
@@ -202,7 +197,6 @@ function onRemoveOrganizer(name: string) {
 
 #create-category-button {
     min-width: 250px;
-    max-width: 300px;
 }
 
 #tag-select {

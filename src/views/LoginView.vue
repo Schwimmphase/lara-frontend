@@ -13,8 +13,8 @@
         </div>
 
         <div class="mt-4">
-            <v-alert type="error" prominent variant="tonal">Es ist etwas schiefgelaufen</v-alert>
-            <v-alert type="error" prominent variant="elevated">Falscher Nutzername oder falsches Passwort</v-alert>
+            <!--<v-alert type="error" prominent variant="tonal">Es ist etwas schiefgelaufen</v-alert>-->
+            <v-alert v-if="loginData.loginFailed" type="error" prominent variant="elevated">Falscher Nutzername oder falsches Passwort</v-alert>
         </div>
     </v-container>
 </template>
@@ -30,10 +30,13 @@ import { useCurrentUserStore } from '@/stores/currentUser';
 let loginData = reactive({
     userId: "",
     password: "",
+    loginFailed: false
 });
+
 
 async function login() {
     const [token, user] = await AuthApiHandler.login(loginData.userId, loginData.password);
+    if (token === undefined && user === undefined) loginData.loginFailed = true;
     
     // parse token
     let tokenPayload = JSON.parse(atob(token.split('.')[1]));
