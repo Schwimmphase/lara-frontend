@@ -9,8 +9,8 @@
                 <lara-button type="primary" id="create-user-button" class="w-100">{{ $t('admin.createUser') }}</lara-button>
             </user-dialog>
 
-            <router-link :to="{ name: 'userCategories' }">
-                <lara-button type="secondary" id="create-category-button">{{ $t('admin.editCategories') }}</lara-button>
+            <router-link :to="{ name: 'userCategories' }" class="lara-no-decoration">
+                <lara-button type="secondary" id="create-category-button" class="w-100">{{ $t('admin.editCategories') }}</lara-button>
             </router-link>
         </div>
 
@@ -202,7 +202,6 @@ function onRemoveOrganizer(name: string) {
 
 #create-category-button {
     min-width: 250px;
-    max-width: 300px;
 }
 
 #tag-select {

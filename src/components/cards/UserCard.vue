@@ -46,11 +46,10 @@ const emits = defineEmits<{
 }>();
 
 function onDialogSave(username: string, userCategory: UserCategory, password?: string) {
-    console.log("UPDTAE USER HIER IM DIALOG")
-    console.log(password)
     state.editDialog = false;
     emits('update', username, userCategory, password);
 }
+
 </script>
 
 

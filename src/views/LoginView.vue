@@ -6,7 +6,7 @@
             <v-form class="mt-8">
                 <v-text-field class="lara-field" variant="outlined" :label=" $t('login.userId') "
                                 v-model="loginData.userId" @keyup.enter="login" autofocus></v-text-field>
-                <v-text-field class="lara-field" variant="outlined" :label=" $t('login.password') "
+                <v-text-field class="lara-field" variant="outlined" :label=" $t('login.password') " type="password"
                                 v-model="loginData.password" @keyup.enter="login"></v-text-field>
                 <lara-button type="primary" @click="login">{{ $t('login.button') }}</lara-button>
             </v-form>
