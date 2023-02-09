@@ -214,6 +214,7 @@ const props = defineProps<{ openPaper: OpenPaper }>();
                             full-icon="mdi-star"
                             empty-icon="mdi-star-outline"
                             color="orange"
+                            hover
                         ></v-rating>
                         <v-icon v-if="detailState.openPaper.savedPaper?.saveState != SaveState.hidden" class="lara-hide-button" @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.hidden) : null">mdi-eye-off</v-icon>
                         <v-icon v-if="detailState.openPaper.savedPaper?.saveState == SaveState.hidden" class="lara-hide-button" @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.hidden) : null">mdi-eye</v-icon>

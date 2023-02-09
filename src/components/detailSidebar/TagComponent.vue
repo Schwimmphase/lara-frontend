@@ -4,14 +4,11 @@
             @keydown.enter="onEdit(tagState.searchQuery)" :hide-no-data=false multiple>
         <!-- Selected Tags -->
         <template v-slot:selection="{ attrs, item, parent, selected }">
-            <v-chip class="lara-chip" :color="getColor(item.title)" v-bind="attrs" :input-value="selected" :closable="true" @click:close="removeTagFromOpenPaper(item.title)">
-                {{ item.title }}
-                <!--<v-btn size="small" icon="mdi-close-circle" @click="removeTagFromOpenPaper(item)"></v-btn>-->
-            </v-chip>
+            <v-chip class="lara-chip" :color="getColor(item.title)" v-bind="attrs" :input-value="selected" :closable="true" @click:close="removeTagFromOpenPaper(item.title)">{{ item.title }}</v-chip>
         </template>
         <!-- Selectable Tags -->
         <template v-slot:item="{ index, item, props }">
-            <div class="d-flex mx-3">
+            <div class="d-flex mx-4">
                 <v-chip class="lara-chip h-100" big :color="toRaw(props.title).color" @click="addTagToOpenPaper(toRaw(props.title).name)">{{ toRaw(props.title).name }}</v-chip>
                 <v-spacer></v-spacer>
                 <v-icon class="ml-4 lara-clickable" @click="{ editTagState.open = true; editTagState.tag = toRaw(props.title) }">mdi-pencil</v-icon>
