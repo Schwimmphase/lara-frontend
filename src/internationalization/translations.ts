@@ -65,6 +65,10 @@ export const messages = {
             }
         },
 
+        organizers: {
+            venue: 'Venue',
+        },
+
         home: {
             greetings: 'Hello {username}!',
             startNewResearch: 'Start new research',
