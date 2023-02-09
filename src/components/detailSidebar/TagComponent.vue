@@ -1,18 +1,18 @@
 <template>
 
     <v-combobox :label="$t('detailSidebar.addTags')" v-model="tagState.selectedTags" :items="tagState.selectableTags" v-model:search.sync="tagState.searchQuery"
-            @keyup.enter="onKeyboardEdit(tagState.searchQuery)" :hide-no-data=false multiple> <!-- TODO: update local storage on backspace or remove backspace functionality -->
+            @keydown.enter="onKeyboardEdit(tagState.searchQuery)" :hide-no-data=false multiple> <!-- TODO: update local storage on backspace or remove backspace functionality -->
         <!-- Selected Tags -->
         <template v-slot:selection="{ attrs, item, parent, selected }">
-            <v-chip class="lara-chip" :color="getColor(item.title)" v-bind="attrs" :input-value="selected" :closable="true" @click:close="removeTagFromOpenPaper(item.title)">{{ item.title }}</v-chip>
+            <v-chip class="lara-chip" :color="getColor(item.title)" v-bind="attrs" :input-value="selected" closable @click:close="removeTagFromOpenPaper(item.title)">{{ item.title }}</v-chip>
         </template>
         <!-- Selectable Tags -->
         <template v-slot:item="{ index, item, props }">
             <div class="d-flex mx-4">
-                <v-chip class="lara-chip h-100" big :color="toRaw(props.title).color" @click="addTagToOpenPaper(toRaw(props.title).name)">{{ toRaw(props.title).name }}</v-chip>
+                <v-chip class="lara-chip" :color="toRaw(props.title).color" @click="addTagToOpenPaper(toRaw(props.title).name)">{{ toRaw(props.title).name }}</v-chip>
                 <v-spacer></v-spacer>
-                <v-icon class="ml-4 lara-clickable" @click="{ editTagState.open = true; editTagState.tag = toRaw(props.title) }">mdi-pencil</v-icon>
-                <v-icon class="ml-4 lara-clickable" @click="{ deleteTagState.open = true; deleteTagState.tag = toRaw(props.title) }" color="red">mdi-trash-can</v-icon>
+                <v-icon class="lara-clickable" @click="{ editTagState.open = true; editTagState.tag = toRaw(props.title) }">mdi-pencil</v-icon>
+                <v-icon class="ml-3 lara-clickable" @click="{ deleteTagState.open = true; deleteTagState.tag = toRaw(props.title) }" color="red">mdi-trash-can</v-icon>
             </div>
         </template>
         <!-- Create & add new Tag -->
@@ -44,13 +44,12 @@ import { useOpenResearchStore } from '@/stores/openResearch';
 import type { SavedPaper } from '@/model/SavedPaper';
 
 
-let openResearch = useOpenResearchStore().getResearch!;
-
 const props = defineProps<{ openPaper: SavedPaper }>();
 
 watch(props.openPaper, (val, prev) => {
     useOpenResearchStore().setReserachPaper(val);
 });
+
 
 let tagState: { selectedTags: string[], selectableTags: Tag[], searchQuery: string} = reactive({
     selectedTags: [],
@@ -70,20 +69,20 @@ let deleteTagState: { open: boolean, tag: Tag | undefined } = reactive({
     tag: undefined
 });
 
-// method to get tags
+
 async function getTags() {
     // get selectable tags
-    const tags = await ResearchApiHandler.getTags(openResearch);
+    const tags = await ResearchApiHandler.getTags(useOpenResearchStore().getResearch!);
     tagState.selectableTags = tags;
     
     // get selected tags
-    tagState.selectedTags = props.openPaper.tags.map(tag => tag.name);
+    tagState.selectedTags = props.openPaper.tags.map(tag => tag.name); // TODO: no tags even if tags in local storage (bc prop didn't get updated on change of local storage in detailSidebarComponent?)
 }
 getTags();
 
-// method to globally add tag
+// method to globally create tag & add to open paper
 async function addTag(name: string): Promise<void> {
-    const newTag = await TagApiHandler.createTag(openResearch, name, "#000000");
+    const newTag = await TagApiHandler.createTag(useOpenResearchStore().getResearch!, name, "#000000");
 
     // update open paper of locally saved open research
     props.openPaper.tags.push(newTag);
@@ -132,6 +131,7 @@ async function deleteTag(decision: boolean, name: string): Promise<void> {
     console.debug("Deleted Tag '" + name + "' from open research");
 }
 
+// method to add tag to open paper
 async function addTagToOpenPaper(name: string): Promise<void> {
     const tag = tagState.selectableTags.find(tag => tag.name === name); // get tag of given name
     let tagSelected = tagState.selectedTags.find(tag => tag === name); // get if tag of given name has been selected 
@@ -163,6 +163,7 @@ async function removeTagFromOpenPaper(name: string): Promise<void> {
 
     console.debug("Removed Tag '" + name + "' from open paper");
 }
+
 
 // watch if tags have been added/removed via keyboard inputs
 function onKeyboardEdit(name: string) {

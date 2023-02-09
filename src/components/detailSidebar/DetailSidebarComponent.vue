@@ -29,12 +29,6 @@ let researchState: { research: Research | undefined } = reactive({
     research: undefined,
 });
 
-openResearchStore.$subscribe((mutation, state) => {
-    // If the research is changed, set the state for the openResearch to that new research
-    console.log("RECHERCHE GEÄNDERT")
-    researchState.research = state.openResearch;
-});
-
 // Use the store for the openPaper
 let openPaperStore = useOpenPaperStore();
 
