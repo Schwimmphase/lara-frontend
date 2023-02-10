@@ -69,13 +69,14 @@ let getPapers = async () => {
 // Pinia store for the research
 const store = useOpenResearchStore();
 
-let state: { research: Research | undefined, researchPapers: SavedPaper[], addedPapers: SavedPaper[], enqueuedPapers: SavedPaper[], hiddenPapers: SavedPaper[], } = reactive({
+let state: { research: Research | undefined, researchPapers: SavedPaper[], addedPapers: SavedPaper[], enqueuedPapers: SavedPaper[], hiddenPapers: SavedPaper[], show: boolean } = reactive({
     loading: true,
     research: store.getResearch,
     researchPapers: [],
     addedPapers: [],
     enqueuedPapers: [],
     hiddenPapers: [],
+    show: true
 });
 
 // Get the research from the store
@@ -88,9 +89,10 @@ getPapers();
 
 <template>
     <!-- Navigations-drawer for the sidebar to manage the paper of a research -->
-    <v-navigation-drawer width="300" permanent>
+    <v-navigation-drawer width="300" permanent v-model="state.show">
         <div class="mx-2 my-3">
-            <div class="w-75">
+
+            <div>
                 <SearchbarComponent v-if="props.showSearch" />
                 <RecommendationsButtonComponent v-if="props.showRecommendations" class="mt-2"/>
                 <ReturnButtonComponent class="mt-2"/>
