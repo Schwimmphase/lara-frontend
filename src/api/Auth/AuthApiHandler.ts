@@ -5,7 +5,6 @@ export class AuthApiHandler {
     public static async login(userId: string, password: string): Promise<any[]> {
         const response = await AuthApiCaller.login(userId, password);
         if (!response) {
-            console.debug(response);
             return [];
         }
 

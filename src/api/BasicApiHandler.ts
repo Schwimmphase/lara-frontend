@@ -81,7 +81,7 @@ class BasicApiHandler {
     }
 
     public handleError(reason: any) {
-        console.debug(reason.name + ',', reason.message);
+        console.error(reason.name + ',', reason.message);
     }
 }
 
