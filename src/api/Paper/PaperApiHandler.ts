@@ -47,8 +47,8 @@ export class PaperApiHandler {
         await PaperApiCaller.changeRelevance(savedPaper.paper.paperId, savedPaper.research.id, relevance);
     }
 
-    public static async getRecommendations(paper: Paper, research: Research, organizers: Organizer[]): Promise<Paper[]> {
-        const response = await PaperApiCaller.getRecommendationsOrReferencesOrCitations(paper.paperId, research.id, RecommendationMethod.algorithm, organizers)
+    public static async getRecommendations(paper: Paper, organizers: Organizer[]): Promise<Paper[]> {
+        const response = await PaperApiCaller.getRecommendationsOrReferencesOrCitations(paper.paperId, RecommendationMethod.algorithm, organizers)
         let data = basicApiHandler.tryParseJson(response.data);
         let recommendations: Paper[] = [];
         for (let recommendation of data.recommendations) {
@@ -57,8 +57,8 @@ export class PaperApiHandler {
         return recommendations;
     }
 
-    public static async getReferences(paper: Paper, research: Research, organizers: Organizer[]): Promise<Paper[]> {
-        const response = await PaperApiCaller.getRecommendationsOrReferencesOrCitations(paper.paperId, research.id, RecommendationMethod.references, organizers)
+    public static async getReferences(paper: Paper, organizers: Organizer[]): Promise<Paper[]> {
+        const response = await PaperApiCaller.getRecommendationsOrReferencesOrCitations(paper.paperId, RecommendationMethod.references, organizers)
         let data = basicApiHandler.tryParseJson(response.data);
         let references: Paper[] = [];
         for (let reference of data.recommendations) {
@@ -67,8 +67,8 @@ export class PaperApiHandler {
         return references;
     }
 
-    public static async getCitations(paper: Paper, research: Research, organizers: Organizer[]): Promise<Paper[]> {
-        const response = await PaperApiCaller.getRecommendationsOrReferencesOrCitations(paper.paperId, research.id, RecommendationMethod.citations, organizers)
+    public static async getCitations(paper: Paper, organizers: Organizer[]): Promise<Paper[]> {
+        const response = await PaperApiCaller.getRecommendationsOrReferencesOrCitations(paper.paperId, RecommendationMethod.citations, organizers)
         let data = basicApiHandler.tryParseJson(response.data);
         let citations: Paper[] = [];
         for (let citation of data.recommendations) {

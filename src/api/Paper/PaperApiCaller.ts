@@ -68,12 +68,11 @@ export class PaperApiCaller {
         });
     }
     
-    public static getRecommendationsOrReferencesOrCitations(paperId: string, researchId: string, method: string, organizers: Organizer[]) {
+    public static getRecommendationsOrReferencesOrCitations(paperId: string, method: string, organizers: Organizer[]) {
         return basicApiCaller.axiosInstance.post(this.urlPath + paperId + this.urlRecommendations, {
                 "organizers": organizers
             }, {
                 params: {
-                    "researchId": researchId,
                     "method": method
                 }
             }

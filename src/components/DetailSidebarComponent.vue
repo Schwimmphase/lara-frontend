@@ -181,20 +181,18 @@ let getRecommendations = async () => {
         console.debug("paper or research undefined")
         return;
     }
-    recommendationsStore.recommendations = await PaperApiHandler.getRecommendations(paper, researchState.research as Research, []);
+    recommendationsStore.recommendations = await PaperApiHandler.getRecommendations(paper, []);
 }
 getRecommendations();
 
 let getCitations = async () => {
-    let citations = await PaperApiHandler.getCitations(detailState.openPaper!.getPaper() as Paper,
-        useOpenResearchStore().getResearch!, []);
+    let citations = await PaperApiHandler.getCitations(detailState.openPaper!.getPaper() as Paper, []);
     recommendationsStore.citations = citations;
 }
 getCitations();
 
 let getReferences = async () => {
-    let references = await PaperApiHandler.getReferences(detailState.openPaper!.getPaper() as Paper,
-        useOpenResearchStore().getResearch!, []);
+    let references = await PaperApiHandler.getReferences(detailState.openPaper!.getPaper() as Paper, []);
     recommendationsStore.references = references;
 }
 getReferences();

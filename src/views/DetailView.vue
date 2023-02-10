@@ -75,10 +75,8 @@ setPaper();
 async function getCitationReferences(selectedOrganizers: Organizer[]): Promise<void> {
     biggerStore.loading = true;
 
-    biggerStore.citations = await PaperApiHandler.getCitations(detailState.openPaper!.getPaper() as Paper,
-        useOpenResearchStore().getResearch!, selectedOrganizers);
-    biggerStore.references = await PaperApiHandler.getReferences(detailState.openPaper!.getPaper() as Paper,
-        useOpenResearchStore().getResearch!, selectedOrganizers);
+    biggerStore.citations = await PaperApiHandler.getCitations(detailState.openPaper!.getPaper() as Paper, selectedOrganizers);
+    biggerStore.references = await PaperApiHandler.getReferences(detailState.openPaper!.getPaper() as Paper, selectedOrganizers);
 
     biggerStore.loading = false;
 }
