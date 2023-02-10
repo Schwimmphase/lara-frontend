@@ -78,6 +78,11 @@ export const messages = {
 
         organizers: {
             venue: 'Venue',
+            earlier: 'Earlier',
+            later: 'Later',
+            ascending: 'Ascending',
+            descending: 'Descending',
+            sortByYear: 'Sort by year',
         },
 
         home: {
@@ -160,7 +165,14 @@ export const messages = {
     },
     
     de: {
-        test: 'Das ist ein kleiner Test!',
+        
+        words: {
+            close: 'Schließen',
+            recommendations: 'Empfehlungen',
+            citations: 'Zitate',
+            references: 'Referenzen',
+            export: 'Exportieren'
+        },
         
         detailView: {
             abstract: 'Abstract',
@@ -223,6 +235,15 @@ export const messages = {
             organize: {
                 userCategories: 'Nutzerkategorien'
             }
+        },
+
+        organizers: {
+            venue: 'Venue',
+            earlier: 'Früher',
+            later: 'Später',
+            ascending: 'Aufsteigend',
+            descending: 'Absteigend',
+            sortByYear: 'Nach Jahr sortieren',
         },
 
         home: {
