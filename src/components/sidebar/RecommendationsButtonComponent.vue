@@ -4,7 +4,7 @@ import router from '../../router';
 import LaraButton from "@/components/basic/LaraButton.vue";
 
 // Method to navigate to the recommendations
-let navigateToRecommendations = ():void => {
+let navigateToRecommendations = (): void => {
     router.push({ name: 'recommendations' });
 }
 

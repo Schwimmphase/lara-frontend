@@ -1,8 +1,3 @@
-<!--
-    Komponente der Navbar, <UIC1&2>
-    Bietet seitenunabhängige Navigation und Funktionen
--->
-
 <script setup lang="ts">
 
 import { LanguageService } from '@/internationalization/LanguageService';
