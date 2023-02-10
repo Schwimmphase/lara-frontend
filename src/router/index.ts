@@ -1,8 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-// TODO Only for Test reasons
-import TestView from '../views/TestView.vue'
-
 // Import all views
 import AdminView from '../views/AdminView.vue'
 import LoginView from '../views/LoginView.vue'
