@@ -15,6 +15,7 @@ import { SaveState } from '@/model/SaveState';
 import type { Research } from '@/model/Research';
 import { useOpenResearchStore } from '@/stores/openResearch';
 import type { Author } from '@/model/Author';
+import {ResearchApiHandler} from "@/api/Research/ResearchApiHandler";
 
 const MAX_NUMBER_OF_AUTHORS = 2;
 const MAX_NUMBER_DISPLAYED = 3;
@@ -125,7 +126,9 @@ let createSavedPaper = async (paper: Paper | null | undefined, state: SaveState)
     }
     
     console.debug("Save Paper : " + paper.paperId + " = " + state);
-    
+
+    await ResearchApiHandler.savePaper(researchState.research, paper as Paper, state);
+
     let savedPaper: SavedPaper = await PaperApiHandler.getDetails(paper.paperId, researchState.research.id) as SavedPaper;
     openResearchStore.addResearchPaper(savedPaper);
 }
