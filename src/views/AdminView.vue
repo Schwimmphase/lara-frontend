@@ -52,19 +52,22 @@
 
 <script setup lang="ts">
 
+import { computed, reactive } from "vue";
+import { i18n } from "@/internationalization/i18n";
+
 import LaraButton from "@/components/basic/LaraButton.vue";
 import OrganizableList from "@/components/basic/OrganizableList.vue";
 import UserCard from "@/components/cards/UserCard.vue";
+import UserDialog from "@/components/dialogs/UserDialog.vue";
 
 import type { User } from "@/model/User";
-import {computed, reactive} from "vue";
-import UserDialog from "@/components/dialogs/UserDialog.vue";
 import type {UserCategory} from "@/model/UserCategory";
+import { Organizer } from "@/model/Organizer";
+
 import { useCurrentUserStore } from "@/stores/currentUser";
 import { AdminApiHandler } from "@/api/Admin/AdminApiHandler";
-import { Organizer } from "@/model/Organizer";
-import {i18n} from "@/internationalization/i18n";
 
+// Set the document title
 document.title = i18n.global.t("pageTitles.admin") + " - lara";
 
 const organizeSlots = [{ id: "organizer-tags", name: "Tags" }];
@@ -106,9 +109,7 @@ let getCategories = async () => {
     console.log(state.categories)
 }
  
-getCategories();
-getUsers([]);
-state.loading = false;
+
 
 function onCreateUser(username: string, userCategory: UserCategory, password?: string) {
     if (!username || !password || !userCategory) {
@@ -151,6 +152,7 @@ async function onUpdateUser(user: User, newName: string, newUserCategory: UserCa
     getUsers(organizerState.selectedOragnizers);
 }
 
+// Helper methods for organizers
 function onOrganize() {
     // clear currently selected oranizers
     organizerState.selectedOragnizers = [];
@@ -183,6 +185,11 @@ function onRemoveOrganizer(name: string) {
 
     organizerState.selectedOragnizers = newOrganizers;
 }
+
+// Fetch the categories and the users on pageload
+getCategories();
+getUsers([]);
+state.loading = false;
 
 </script>
 
