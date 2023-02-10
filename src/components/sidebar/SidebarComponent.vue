@@ -22,30 +22,19 @@ let props = defineProps({
     showRecommendations: Boolean
 });
 
-// Method to filter saved papers based on their SaveState
-let matchesSaveState = (paper: SavedPaper, state: SaveState): boolean => {
-    return paper.saveState == state;
-}
+// Pinia store for the research
+const store = useOpenResearchStore();
 
-// Method to open a saved paper
-let openSavedPaper = (savedPaper: SavedPaper): void => {
-    // Navigate to paperDetail-route
-    router.push({name: 'paperDetails', query: {research: savedPaper.research.id, paper: savedPaper.paper.paperId}});
-}
-
-// Method to change the saved State of a paper
-let changeSaveState = async (savedPaper: SavedPaper, saveState: SaveState) => {
-    await PaperApiHandler.changeSaveState(savedPaper, saveState);
-    
-    await getPapers();
-}
-
-// Method to navigate to the research overview
-let navigateToResearchOverview = (research: Research) => {
-    let id: string = research.id;
-
-    router.push({name: 'researchOverview', query: {id: id}});
-}
+let state: { research: Research | undefined, researchPapers: SavedPaper[], addedPapers: SavedPaper[], enqueuedPapers: SavedPaper[], hiddenPapers: SavedPaper[], show: boolean, notShow: boolean } = reactive({
+    loading: true,
+    research: store.getResearch,
+    researchPapers: [],
+    addedPapers: [],
+    enqueuedPapers: [],
+    hiddenPapers: [],
+    show: true,
+    notShow: false
+});
 
 // Method to get the research papers
 let getPapers = async () => {
@@ -65,6 +54,33 @@ let getPapers = async () => {
     state.hiddenPapers = state.researchPapers.filter((paper) => matchesSaveState(paper, SaveState.hidden));
 }
 
+// Method to navigate to the research overview
+let navigateToResearchOverview = (research: Research) => {
+    let id: string = research.id;
+
+    router.push({name: 'researchOverview', query: {id: id}});
+}
+
+// Method to open a saved paper
+let openSavedPaper = (savedPaper: SavedPaper): void => {
+    // Navigate to paperDetail-route
+    router.push({name: 'paperDetails', query: {research: savedPaper.research.id, paper: savedPaper.paper.paperId}});
+}
+
+// Helper methods
+// Method to change the saved State of a paper
+let changeSaveState = async (savedPaper: SavedPaper, saveState: SaveState) => {
+    await PaperApiHandler.changeSaveState(savedPaper, saveState);
+    
+    await getPapers();
+}
+
+// Method to filter saved papers based on their SaveState
+let matchesSaveState = (paper: SavedPaper, state: SaveState): boolean => {
+    return paper.saveState == state;
+}
+
+// Methods for the mini sidebar
 let navigateToSearch = () => {
     router.push({ name: 'search' });
 }
@@ -73,32 +89,16 @@ let navigateToRecommendations = () => {
     router.push({ name: 'recommendations' });
 }
 
- let returnPage = () => {
+let returnPage = () => {
     router.back();
- }
-
-// Pinia store for the research
-const store = useOpenResearchStore();
-
-let state: { research: Research | undefined, researchPapers: SavedPaper[], addedPapers: SavedPaper[], enqueuedPapers: SavedPaper[], hiddenPapers: SavedPaper[], show: boolean, notShow: boolean } = reactive({
-    loading: true,
-    research: store.getResearch,
-    researchPapers: [],
-    addedPapers: [],
-    enqueuedPapers: [],
-    hiddenPapers: [],
-    show: true,
-    notShow: false
-});
+}
 
 let toggleSidebar = (show: boolean) => {
     state.show = show;
     state.notShow = !show;
 }
 
-// Get the research from the store
-let research: Research | undefined = store.getResearch;
-
+// Get the papers of the api
 getPapers();
 
 </script>
@@ -116,8 +116,8 @@ getPapers();
             </div>
 
             <div class="mt-4">
-                <span class="text-h6 font-weight-bold">{{ research != null ? research.title : null }}</span>
-                <span @click="research != null ? navigateToResearchOverview(research) : null" class="ml-2 lara-sidebar-link text-h6"><v-icon
+                <span class="text-h6 font-weight-bold">{{ state.research != null ? state.research.title : null }}</span>
+                <span @click="state.research != null ? navigateToResearchOverview(state.research) : null" class="ml-2 lara-sidebar-link text-h6"><v-icon
                     icon="mdi-view-grid"/></span>
             </div>
 
@@ -157,7 +157,7 @@ getPapers();
             <v-icon class="mt-4" v-if="props.showSearch" @click="navigateToSearch" size="32">mdi-magnify</v-icon>
             <v-icon class="mt-4" v-if="props.showRecommendations" @click="navigateToRecommendations" size="32">mdi-book</v-icon>
             <v-icon class="mt-4" @click="returnPage" size="30">mdi-arrow-left</v-icon>
-            <v-icon class="mt-4" @click="research != null ? navigateToResearchOverview(research) : null" size="30">mdi-view-grid</v-icon>
+            <v-icon class="mt-4" @click="state.research != null ? navigateToResearchOverview(state.research) : null" size="30">mdi-view-grid</v-icon>
         </div>
     </v-navigation-drawer>
 </template>
