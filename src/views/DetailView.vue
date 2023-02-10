@@ -18,6 +18,14 @@ import {useOpenResearchStore} from "@/stores/openResearch";
 import type {Research} from "@/model/Research";
 import type {Organizer} from "@/model/Organizer";
 
+const slotsReferences = [
+    {id: "citations", name: i18n.global.t("words.citations")},
+    {id: "references", name: i18n.global.t("words.references")},
+];
+
+// Number of the maximum of displayed authors
+const MAX_NUMBER_OF_AUTHORS = 3;
+
 // State for the page, the openPaper and a indicator to know if the page is loading
 let detailState: {loading: boolean, openPaper: OpenPaper | undefined, research: Research | undefined, showBigger: boolean } = reactive({
     loading: true,
@@ -31,18 +39,6 @@ let biggerStore: {citations: Paper[], references: Paper[], loading: boolean} = r
     references: [],
     loading: true
 });
-
-const slotsReferences = [
-    {id: "citations", name: i18n.global.t("words.citations")},
-    {id: "references", name: i18n.global.t("words.references")},
-];
-
-const MAX_NUMBER_OF_AUTHORS = 3;
-
-// Get the persistent saved OpenResearch
-let researchStore = useOpenResearchStore();
-
-detailState.research = researchStore.getResearch;
 
 // Method to fetch the correct paper from the API and save it in the open paper store
 async function setPaper(): Promise<void> {
@@ -70,7 +66,13 @@ async function setPaper(): Promise<void> {
     detailState.loading = false;
 }
 
-setPaper();
+async function bigger(): Promise<void> {
+    detailState.showBigger = !detailState.showBigger;
+
+    if (detailState.showBigger && biggerStore.citations.length === 0 && biggerStore.references.length == 0) {
+        await getCitationReferences([]);
+    }
+}
 
 async function getCitationReferences(selectedOrganizers: Organizer[]): Promise<void> {
     biggerStore.loading = true;
@@ -81,29 +83,7 @@ async function getCitationReferences(selectedOrganizers: Organizer[]): Promise<v
     biggerStore.loading = false;
 }
 
-async function bigger(): Promise<void> {
-    detailState.showBigger = !detailState.showBigger;
-
-    if (detailState.showBigger && biggerStore.citations.length === 0 && biggerStore.references.length == 0) {
-        await getCitationReferences([]);
-    }
-}
-
-function isSaved(paper: Paper): boolean {
-    let savedPapers: SavedPaper[] = researchStore.researchPapers;
-    return savedPapers.filter(savedPaper => savedPaper.paper.paperId === paper.paperId).length > 0;
-}
-
-
-let openPaperStore = useOpenPaperStore();
-
-detailState.openPaper = openPaperStore.paper;
-
-openPaperStore.$subscribe((mutation, state) => {
-    // When a change in the paper is detected, update the state
-    detailState.openPaper = state.paper;
-})
-
+// Helper Methods
 // Method to format the authors of the open paper
 function getAuthorsString(authors: Author[] | undefined) {
     if (authors == undefined) {
@@ -114,6 +94,27 @@ function getAuthorsString(authors: Author[] | undefined) {
         return authors.map(author => author.name).join(", ");
     }
 }
+
+function isSaved(paper: Paper): boolean {
+    let savedPapers: SavedPaper[] = researchStore.researchPapers;
+    return savedPapers.filter(savedPaper => savedPaper.paper.paperId === paper.paperId).length > 0;
+}
+
+let openPaperStore = useOpenPaperStore();
+
+detailState.openPaper = openPaperStore.paper;
+
+openPaperStore.$subscribe((mutation, state) => {
+    // When a change in the paper is detected, update the state
+    detailState.openPaper = state.paper;
+})
+
+// Get the persistent saved OpenResearch
+let researchStore = useOpenResearchStore();
+// Set the research
+detailState.research = researchStore.getResearch;
+
+setPaper();
 
 </script>
 
