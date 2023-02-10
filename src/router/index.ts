@@ -20,18 +20,6 @@ import { PiniaVuePlugin } from 'pinia';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    // TODO Test route
-    {
-      path: '/test',
-      name: 'test',
-      component: TestView,
-      meta: {
-        showSidebar: true,
-        showSearchInSidebar: true,
-        showRecommendationsInSidebar: true,
-      }
-    },
-
     {
       path: '/',
       name: 'home',
