@@ -59,7 +59,7 @@ async function setCitationReferences(selectedOrganizers: Organizer[]): Promise<v
     state.loadingCitationsReferences = true;
 
     state.citations = await ResearchApiHandler.getCitations(state.research, selectedOrganizers);
-    state.references = await ResearchApiHandler.getReferences(research, selectedOrganizers);
+    state.references = await ResearchApiHandler.getReferences(state.research, selectedOrganizers);
 
     state.loadingCitationsReferences = false;
 }

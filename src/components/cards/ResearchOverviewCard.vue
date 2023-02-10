@@ -5,11 +5,14 @@
         <v-card-text>{{ paper.comment }}</v-card-text>
 
         <div v-if="addButton">
-            <v-container class="d-flex gap-4">
-                <v-chip v-for="(tag, index) in paper.tags" :key="index" :color="tag.color" class="lara-chip">{{ tag.name }}</v-chip>
+            <v-container class="mx-4 pa-0">
+                <div class="my-0 mt-1 tags">
+                    <v-chip v-for="(tag, index) in paper.tags" :key="index" :color="tag.color" class="lara-chip">{{ tag.name }}</v-chip>
+                </div>
+                <v-rating class="ml-2" v-if="paper.relevance !== 0" disabled :model-value="paper.relevance" length="3" size="40" full-icon="mdi-star" empty-icon="mdi-star-outline" color="orange"></v-rating>
             </v-container>
 
-            <v-card-actions class="ml-4 mr-4 mb-2 mt-2 pa-0">
+            <v-card-actions class="mx-4 mb-5 pa-0">
                 <lara-button type="primary" style="max-width: 200px" @click="$emit('add')">
                     {{ $t('researchOverviewCard.add') }}
                 </lara-button>
@@ -22,10 +25,16 @@
         </div>
         <div v-else>
             <v-card-actions class="ml-4 mr-4 mb-2 mt-2 pa-0">
-                <div class="d-flex gap-4">
+                <!-- Tags -->
+                <div class="d-flex gap-3 tags">
                     <v-chip v-for="(tag, index) in paper.tags" :key="index" :color="tag.color" class="lara-chip">{{ tag.name }}</v-chip>
                 </div>
+                <div class="d-flex gap-3 ml-2">
+                    <v-rating v-if="paper.relevance !== 0" disabled :model-value="paper.relevance" length="3" size="40" full-icon="mdi-star" empty-icon="mdi-star-outline" color="orange"></v-rating>
+                </div>
+                <!-- Relevance -->
                 <v-spacer></v-spacer>
+                <!-- Export & Delete Buttons -->
                 <v-btn size="small" color="surface-variant" variant="text" icon="mdi-open-in-new" @click="$emit('export')"></v-btn>
                 <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
                     <v-btn size="small" color="red" variant="text" icon="mdi-delete"></v-btn>
@@ -61,6 +70,12 @@ defineEmits<{
 
 <style scoped>
 
-    @import '../../assets/main.css';
+@import '../../assets/main.css';
+
+.tags {
+    max-width: 300px;
+    overflow-x: scroll;
+    float: left;
+}
 
 </style>
