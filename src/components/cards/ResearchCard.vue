@@ -12,19 +12,22 @@
 
             <research-edit-dialog :title="title" :description="description"
                                   @save="(newTitle: string, newDescription: string) => onDataChange(newTitle, newDescription)" />
-            <v-btn size="small" color="red" variant="text" icon="mdi-delete" @click="$emit('delete')"></v-btn>
+
+            <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
+                <v-btn size="small" color="red" variant="text" icon="mdi-delete"></v-btn>
+            </confirm-dialog>
         </v-card-actions>
     </v-card>
 </template>
 
 
 <script setup lang="ts">
-
 import LaraButton from "@/components/basic/LaraButton.vue";
 import ResearchEditDialog from "@/components/dialogs/ResearchEditDialog.vue";
 import type { Research } from "@/model/Research";
 import router from "@/router";
 import { useOpenResearchStore } from "@/stores/openResearch";
+import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
 
 defineProps(["id", "title", "description", "added", "enqueued", "startedAt", "research"]);
 

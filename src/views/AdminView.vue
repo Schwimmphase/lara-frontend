@@ -126,8 +126,6 @@ function onCreateUser(username: string, userCategory: UserCategory, password?: s
 }
 
 async function onDeleteUser(user: User) {
-    confirm("Are you sure?"); // TODO: add better "are you sure?" alert
-
     state.users.splice(state.users.indexOf(user), 1);
     await AdminApiHandler.deleteUser(user);
 

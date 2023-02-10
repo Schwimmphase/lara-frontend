@@ -15,9 +15,10 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn size="small" color="red" variant="text" icon="mdi-delete"
-                   v-if="deletable" @click="$emit('delete')">
-            </v-btn>
+            <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
+                <v-btn size="small" color="red" variant="text" icon="mdi-delete" v-if="deletable">
+                </v-btn>
+            </confirm-dialog>
         </v-card-actions>
     </v-card>
 </template>
@@ -29,6 +30,7 @@ import LaraButton from "@/components/basic/LaraButton.vue";
 import UserEditDialog from "@/components/dialogs/UserDialog.vue";
 import type {UserCategory} from "@/model/UserCategory";
 import { reactive } from "vue";
+import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
 
 const state = reactive({
     editDialog: false
