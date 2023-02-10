@@ -27,6 +27,7 @@ export const messages = {
         detailView: {
             abstract: 'Abstract',
             year_venue_timesCited_timesReferenced: '{year} - {venue} - cited {timesCited} times - referenced {timesReferenced} times',
+            biggerListEmpty: 'There are no papers to display here',
             errorGettingPdf: 'Unfortunately there has been an error!'
         },
 
@@ -49,7 +50,6 @@ export const messages = {
             citations: 'Citations',
             references: 'References',
             bigger: 'Toggle bigger list',
-            biggerListEmpty: 'There are no papers to display here',
             more: 'No more papers | One more paper | {n} more papers'
         },
 
@@ -93,7 +93,6 @@ export const messages = {
             later: 'Later',
             ascending: 'Ascending',
             descending: 'Descending',
-            sortByYear: 'Sort by year',
         },
 
         home: {
@@ -116,7 +115,8 @@ export const messages = {
 
         newResearchDialog: {
             title: 'Title',
-            description: 'Description'
+            description: 'Description',
+            cancel: 'Cancel'
         },
 
         researchOverview: {
@@ -182,17 +182,14 @@ export const messages = {
             recommendations: 'Empfehlungen',
             citations: 'Zitate',
             references: 'Referenzen',
-            export: 'Exportieren'
+            export: 'Exportieren',
+            activate: 'Aktivieren',
+            descending: 'absteigend',
+            ascending: 'aufsteigend'
         },
 
         errorMsg: {
             falseLoginData: 'Falscher Nutzername oder falsches Passwort'
-        },
-        
-        detailView: {
-            abstract: 'Abstract',
-            year_venue_timesCited_timesReferenced: '{year} - {venue} - {timesCited} mal zitiert - {timesReferenced} mal referenziert',
-            errorGettingPdf: 'Leider ist ein Fehler aufgetreten!'
         },
 
         navbar: {
@@ -200,6 +197,13 @@ export const messages = {
             home: 'Start',
             manageUsers: 'Nutzer verwalten',
             changeLanguage: 'Sprache ändern'
+        },
+        
+        detailView: {
+            abstract: 'Zusammenfassung',
+            year_venue_timesCited_timesReferenced: '{year} - {venue} - {timesCited} mal zitiert - {timesReferenced} mal referenziert',
+            biggerListEmpty: 'Hier sind keine Artikel, die angezeigt werden können',
+            errorGettingPdf: 'Leider ist ein Fehler aufgetreten!'
         },
 
         detailSidebar: {
@@ -220,6 +224,8 @@ export const messages = {
             recommendations: 'Empfehlungen',
             citations: 'Zitationen',
             references: 'Referenzen',
+            bigger: 'Schalte größere Liste um',
+            more: 'Keine weiteren Artikel | Ein weiterer Artikel | {n} weitere Artikel'
         },
 
         login: {
@@ -262,7 +268,6 @@ export const messages = {
             later: 'Später',
             ascending: 'Aufsteigend',
             descending: 'Absteigend',
-            sortByYear: 'Nach Jahr sortieren',
         },
 
         home: {
@@ -299,12 +304,6 @@ export const messages = {
             close: 'Schließen'
         },
 
-        recommendationsView: {
-            recommended: 'Empfohlen',
-            citationsReferences: 'Zitate/Referenzen',
-            empty: 'Diese List ist leer. Versuche erst Artikel zu deiner Recherche hionzuzufügen.'
-        },
-
         organizableList: {
             organizeButton: 'Organisieren',
             filterSettings: 'Filtereinstellungen'
@@ -327,6 +326,26 @@ export const messages = {
             title: 'Titel',
             description: 'Beschreibung',
             save: 'Änderungen speichern'
+        },
+
+        recommendationsView: {
+            recommended: 'Empfohlen',
+            citationsReferences: 'Zitate/Referenzen',
+            empty: 'Diese List ist leer. Versuche erst Artikel zu deiner Recherche hionzuzufügen.'
+        },
+
+        paperCard: {
+            snackbar: {
+                enqueued: 'Paper has been added to the list of queued papers',
+                hidden: 'Paper was hidden from the research'
+            }
+        },
+
+        pageTitles: {
+            home: 'Startseite',
+            login: 'Login',
+            admin: 'Admin',
+            recommendations: 'Empfehlungen',
         }
     }
 }
