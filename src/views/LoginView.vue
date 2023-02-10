@@ -14,7 +14,7 @@
 
         <div class="mt-4">
             <!--<v-alert type="error" prominent variant="tonal">Es ist etwas schiefgelaufen</v-alert>-->
-            <v-alert v-if="loginData.loginFailed" type="error" prominent variant="elevated">Falscher Nutzername oder falsches Passwort</v-alert>
+            <v-alert v-if="loginData.loginFailed" type="error" prominent variant="elevated">{{ $t('errorMsg.falseLoginData') }}</v-alert>
         </div>
     </v-container>
 </template>

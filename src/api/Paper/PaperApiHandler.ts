@@ -30,9 +30,7 @@ export class PaperApiHandler {
     }
 
     public static async removeTag(savedPaper: SavedPaper, tag: Tag): Promise<void> {
-        console.log("before api:", await ResearchApiHandler.getTags(savedPaper.research));
         await PaperApiCaller.removeTag(savedPaper.paper.paperId, savedPaper.research.id, tag.id);
-        console.log("after api:", await ResearchApiHandler.getTags(savedPaper.research));
     }
 
     public static async changeComment(savedPaper: SavedPaper, comment: string): Promise<void> {

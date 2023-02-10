@@ -12,6 +12,10 @@ export const messages = {
             descending: 'descending',
             ascending: 'ascending'
         },
+        
+        errorMsg: {
+            falseLoginData: 'Wrong username oder wrong password'
+        },
 
         navbar: {
             logout: 'Logout',
@@ -182,6 +186,10 @@ export const messages = {
             activate: 'Aktivieren',
             descending: 'absteigend',
             ascending: 'aufsteigend'
+        },
+
+        errorMsg: {
+            falseLoginData: 'Falscher Nutzername oder falsches Passwort'
         },
 
         navbar: {
