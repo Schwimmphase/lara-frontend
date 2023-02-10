@@ -77,14 +77,13 @@ let state: { savedPapers: SavedPaper[], copied: boolean, timeout: number, loadin
     loading: true
 });
 
-// reset open paper
+// reset open paper, because on the ResearchOverview there is no open paper
 useOpenPaperStore().resetStore();
 
 // Pinia store for the research
 const store = useOpenResearchStore();
 
 let research = store.getResearch;
-
 document.title = research!.title + " - lara";
 
 let addedPapers = computed<SavedPaper[]>(() => {
@@ -98,28 +97,6 @@ let enqueuedPapers = computed<SavedPaper[]>(() => {
 let hiddenPapers = computed<SavedPaper[]>(() => {
     return state.savedPapers.filter(value => value.saveState == SaveState.hidden);
 });
-
-const organizeSlots: Slot[] = [{ id: "year-filter", name: "Year Filter" }];
-
-async function getSavedPapers(organizers: Organizer[]) {
-    state.loading = true;
-
-    let savedPapers = await ResearchApiHandler.getSavedPapers(research!, organizers);
-    state.savedPapers = [];
-    savedPapers.forEach(savedPaper => state.savedPapers.push(savedPaper));
-
-    state.loading = false;
-}
-
-async function updateResearchPaperStore() {
-    let savedPapers = await ResearchApiHandler.getSavedPapers(research!, []);
-    store.setResearchPapers(savedPapers);
-}
-
-getSavedPapers([]);
-
-updateResearchPaperStore();
-
 
 let enqueued = computed(() => {
     return i18n.global.t("researchOverview.enqueued");
@@ -135,20 +112,22 @@ let slots: Slot[] = [
     { id: "hidden", name: hidden.value } // TODO: currently does not auto update
 ];
 
-function openPaper(savedPaper: SavedPaper): void {
-    useOpenPaperStore().setPaper(new OpenPaper(undefined, savedPaper, true));
-    router.push({ name: 'paperDetails', query: { paper: savedPaper.paper.paperId } });
+const organizeSlots: Slot[] = [{ id: "year-filter", name: "Year Filter" }];
+
+async function getSavedPapers(organizers: Organizer[]) {
+    state.loading = true;
+
+    let savedPapers = await ResearchApiHandler.getSavedPapers(research!, organizers);
+    state.savedPapers = [];
+    savedPapers.forEach(savedPaper => state.savedPapers.push(savedPaper));
+
+    state.loading = false;
 }
 
-async function deletePaper(savedPaper: SavedPaper): Promise<void> {
-    await ResearchApiHandler.removePaper(savedPaper.research, savedPaper.paper);
-    state.savedPapers.splice(state.savedPapers.indexOf(savedPaper), 1);
-    store.removeResearchPaper(savedPaper);
-}
-
-async function addPaper(savedPaper: SavedPaper, saveState: SaveState): Promise<void> {
-    await PaperApiHandler.changeSaveState(savedPaper, saveState);
-    savedPaper.saveState = saveState;
+async function exportResearch(selectedOrganizers: Organizer[]) {
+    let bibTex = await ExportApiHandler.exportResearch(research as Research, selectedOrganizers);
+    await navigator.clipboard.writeText(bibTex);
+    state.copied = true;
 }
 
 async function exportPaper(savedPaper: SavedPaper) {
@@ -157,16 +136,40 @@ async function exportPaper(savedPaper: SavedPaper) {
     state.copied = true;
 }
 
-async function exportResearch(selectedOrganizers: Organizer[]) {
-    let bibTex = await ExportApiHandler.exportResearch(research as Research, selectedOrganizers);
-    await navigator.clipboard.writeText(bibTex);
-    state.copied = true;
+function openPaper(savedPaper: SavedPaper): void {
+    useOpenPaperStore().setPaper(new OpenPaper(undefined, savedPaper, true));
+    router.push({ name: 'paperDetails', query: { paper: savedPaper.paper.paperId } });
 }
+
+async function addPaper(savedPaper: SavedPaper, saveState: SaveState): Promise<void> {
+    await PaperApiHandler.changeSaveState(savedPaper, saveState);
+    savedPaper.saveState = saveState;
+}
+
+async function deletePaper(savedPaper: SavedPaper): Promise<void> {
+    await ResearchApiHandler.removePaper(savedPaper.research, savedPaper.paper);
+    state.savedPapers.splice(state.savedPapers.indexOf(savedPaper), 1);
+    store.removeResearchPaper(savedPaper);
+}
+
+// Helper method to update research store
+async function updateResearchPaperStore() {
+    let savedPapers = await ResearchApiHandler.getSavedPapers(research!, []);
+    store.setResearchPapers(savedPapers);
+}
+
+getSavedPapers([]);
+
+updateResearchPaperStore();
+
 </script>
 
+
 <style>
+
 #search-bar {
     width: 100%;
     max-width: 300px;
 }
+
 </style>
