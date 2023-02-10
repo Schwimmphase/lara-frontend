@@ -274,6 +274,12 @@ export const messages = {
             close: 'Schließen'
         },
 
+        recommendationsView: {
+            recommended: 'Empfohlen',
+            citationsReferences: 'Zitate/Referenzen',
+            empty: 'Diese List ist leer. Versuche erst Artikel zu deiner Recherche hionzuzufügen.'
+        },
+
         organizableList: {
             organizeButton: 'Organisieren',
             filterSettings: 'Filtereinstellungen'
