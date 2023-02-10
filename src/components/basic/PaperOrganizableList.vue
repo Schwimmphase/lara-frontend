@@ -17,16 +17,30 @@
             </div>
         </template>
 
-        <template v-slot:year-sorter>
-            <div class="w-100 mt-6 mx-5">
-                <year-sorter :activated="yearSorterState.active" :descending="yearSorterState.descending"
-                    @update="(sortByYear, descending) => onYearSorter(sortByYear, descending)" />
-            </div>
-        </template>
-
         <template v-slot:venue-filter>
             <div class="w-100 mt-6 mx-5">
                 <venue-filter @update="(venues) => onVenueFilter(venues)" :selected-venues="venueFilterState.selectedVenues" />
+            </div>
+        </template>
+
+        <template v-slot:year-sorter>
+            <div class="w-100 mt-6 mx-5">
+                <sorter :activated="yearSorterState.active" :descending="yearSorterState.descending"
+                    @update="(sortByYear, descending) => onSorter(yearSorterState, 'year-sorter', sortByYear, descending)" />
+            </div>
+        </template>
+
+        <template v-slot:citation-count-sorter>
+            <div class="w-100 mt-6 mx-5">
+                <sorter :activated="citationsSorterState.active" :descending="citationsSorterState.descending"
+                                  @update="(active, descending) => onSorter(citationsSorterState, 'citation-count-sorter', active, descending)" />
+            </div>
+        </template>
+
+        <template v-slot:reference-count-sorter>
+            <div class="w-100 mt-6 mx-5">
+                <sorter :activated="referencesSorterState.active" :descending="referencesSorterState.descending"
+                        @update="(active, descending) => onSorter(referencesSorterState, 'reference-count-sorter', active, descending)" />
             </div>
         </template>
     </organizable-list>
@@ -40,7 +54,7 @@ import {reactive} from "vue";
 import YearOrganizer from "@/components/organizers/YearOrganizer.vue";
 import VenueFilter from "../organizers/VenueFilter.vue";
 import {Organizer} from "@/model/Organizer";
-import YearSorter from "@/components/organizers/YearSorter.vue";
+import Sorter from "@/components/organizers/Sorter.vue";
 
 defineProps<{
     slots: Slot[],
@@ -70,10 +84,22 @@ let venueFilterState: { selectedVenues: string[] } = reactive({
     selectedVenues: [],
 });
 
+let citationsSorterState: { active: boolean, descending: boolean} = reactive({
+    active: false,
+    descending: false
+});
+
+let referencesSorterState: { active: boolean, descending: boolean} = reactive({
+    active: false,
+    descending: false
+});
+
 const organizeSlots: Slot[] = [
     { id: "year-filter", name: "Year Filter" },
-    { id: "year-sorter", name: "Year Sorter"},
     { id: "venue-filter", name: "Venue Filter"},
+    { id: "year-sorter", name: "Year Sorter"},
+    { id: "citation-count-sorter", name: "Citations Sorter"},
+    { id: "reference-count-sorter", name: "References Sorter"},
 ];
 
 function setOrganizer(name: string, value: string): void {
@@ -100,6 +126,14 @@ function removeOrganizer(name: string, shouldUpdate: boolean): void {
             break;
         case "venue-filter":
             venueFilterState.selectedVenues = [];
+            break;
+        case "citation-count-sorter":
+            citationsSorterState.active = false;
+            citationsSorterState.descending = false;
+            break;
+        case "reference-count-sorter":
+            referencesSorterState.active = false;
+            referencesSorterState.descending = false;
             break;
     }
 
@@ -132,15 +166,16 @@ function onVenueFilter(venues: string[]) {
     setOrganizer('venue-filter', value);
 }
 
-function onYearSorter(active: boolean, descending: boolean): void {
-    yearSorterState.active = active;
-    yearSorterState.descending = descending;
+function onSorter(state: any, name: string, active: boolean, descending: boolean): void {
+    state.active = active;
+    state.descending = descending;
     if (active) {
-        setOrganizer("year-sorter", descending ? "descending" : "ascending");
+        setOrganizer(name, descending ? "descending" : "ascending");
     } else {
-        removeOrganizer("year-sorter", false);
+        removeOrganizer(name, false);
     }
 }
+
 </script>
 
 <style>

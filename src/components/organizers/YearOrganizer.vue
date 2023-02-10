@@ -21,8 +21,6 @@ let updateParent = () => {
     emit('year-change', state.value[0], state.value[1]);
 }
 
-updateParent();
-
 watch(state, (newState, oldState) => {
     updateParent();
 });
