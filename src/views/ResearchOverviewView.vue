@@ -1,4 +1,5 @@
 <template>
+
     <v-container class="pt-8 px-16 w-75">
         <div class="d-flex d-row justify-space-between">
             <div class="w-100">
@@ -53,6 +54,7 @@
             </v-btn>
         </template>
     </v-snackbar>
+
 </template>
 
 
@@ -62,7 +64,6 @@ import type {Slot} from "@/components/basic/OrganizableList.vue";
 import type {SavedPaper} from "@/model/SavedPaper";
 import {useOpenResearchStore} from "@/stores/openResearch.js";
 import ResearchOverviewCard from "@/components/cards/ResearchOverviewCard.vue";
-import RecommendationsButtonComponent from "@/components/sidebar/RecommendationsButtonComponent.vue";
 import router from "../router";
 import {useOpenPaperStore} from "@/stores/openPaper";
 import {OpenPaper} from "@/stores/model/OpenPaper";

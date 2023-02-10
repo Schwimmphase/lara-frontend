@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
-import DetailSidebarComponent from '@/components/DetailSidebarComponent.vue';
-import {OpenPaper} from '@/stores/model/OpenPaper';
-import {useOpenPaperStore} from '@/stores/openPaper';
+import DetailSidebarComponent from '@/components/detailSidebar/DetailSidebarComponent.vue';
+import { OpenPaper } from '@/stores/model/OpenPaper';
+import { useOpenPaperStore } from '@/stores/openPaper';
 
 import type {Paper} from '@/model/Paper';
 import type {SavedPaper} from '@/model/SavedPaper';
@@ -121,7 +121,7 @@ function getAuthorsString(authors: Author[] | undefined) {
 <template>
     <!-- Render if the API Call is complete -->
     <div v-if="!detailState.loading" class="w-100 h-100">
-        <detail-sidebar-component @bigger="bigger"></detail-sidebar-component>
+        <detail-sidebar-component @bigger="bigger" :open-paper="detailState.openPaper!"></detail-sidebar-component>
 
         <div v-show="!detailState.showBigger" class="h-100">
             <!-- Paper is saved and pdf is available -->

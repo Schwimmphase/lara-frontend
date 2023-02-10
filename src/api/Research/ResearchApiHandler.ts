@@ -1,7 +1,6 @@
 import BasicApiHandler from "../BasicApiHandler";
 import { ResearchApiCaller } from "./ResearchApiCaller";
 
-import type { Comment } from "@/model/Comment";
 import type { Research } from "@/model/Research";
 import type { Paper } from "@/model/Paper";
 import { SaveState } from "@/model/SaveState";
@@ -23,14 +22,14 @@ export class ResearchApiHandler {
         return researches;
     }
 
-    public static async createResearch(title: string, description: Comment): Promise<Research> {
-        const response = await ResearchApiCaller.createResearch(title, description.text);
+    public static async createResearch(title: string, description: string): Promise<Research> {
+        const response = await ResearchApiCaller.createResearch(title, description);
         let data = BasicApiHandler.tryParseJson(response.data);
         return BasicApiHandler.buildResearch(data);
     }
 
-    public static async updateResearch(research: Research, title: string, description: Comment): Promise<Research> {
-        const response = await ResearchApiCaller.updateResearch(research.id, title, description.text);
+    public static async updateResearch(research: Research, title: string, description: string): Promise<Research> {
+        const response = await ResearchApiCaller.updateResearch(research.id, title, description);
         let data = BasicApiHandler.tryParseJson(response.data);
         return BasicApiHandler.buildResearch(data);
     }
@@ -52,7 +51,7 @@ export class ResearchApiHandler {
         let data = BasicApiHandler.tryParseJson(response.data);
         let tags: Tag[] = [];
         for (let tag of data.tags) {
-            tags.push(BasicApiHandler.buildTag(tag));
+            tags.push(tag as Tag);
         }
         return tags;
     }

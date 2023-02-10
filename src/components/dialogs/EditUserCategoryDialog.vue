@@ -54,7 +54,7 @@ let closeDialog = () => {
                             <div class="d-flex justify-center">
                                 <v-color-picker
                                 hide-inputs
-                                mode="hexa"
+                                mode="hex"
                                 dot-size="25"
                                 v-model="state.color"
                                 ></v-color-picker>

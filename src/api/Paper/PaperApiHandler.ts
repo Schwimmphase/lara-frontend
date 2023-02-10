@@ -3,14 +3,13 @@ import { PaperApiCaller } from "./PaperApiCaller"
 
 import type { Paper } from "@/model/Paper"
 import type { SavedPaper } from "@/model/SavedPaper"
-import type { Comment } from "@/model/Comment"
 import type { Tag } from "@/model/Tag"
 import { SaveState } from "@/model/SaveState"
 import type { Organizer } from "@/model/Organizer"
 import { RecommendationMethod } from "@/model/RecommendationMethod"
 import type { Research } from "@/model/Research"
-import type { CachedPaper } from "@/model/CachedPaper"
 import BasicApiHandler from "../BasicApiHandler"
+import { ResearchApiHandler } from "../Research/ResearchApiHandler"
 
 export class PaperApiHandler {
     public static async getDetails(paperId: string, researchId: string | null): Promise<unknown> {
@@ -32,11 +31,13 @@ export class PaperApiHandler {
     }
 
     public static async removeTag(savedPaper: SavedPaper, tag: Tag): Promise<void> {
+        console.log("before api:", await ResearchApiHandler.getTags(savedPaper.research));
         await PaperApiCaller.removeTag(savedPaper.paper.paperId, savedPaper.research.id, tag.id);
+        console.log("after api:", await ResearchApiHandler.getTags(savedPaper.research));
     }
 
-    public static async changeComment(savedPaper: SavedPaper, comment: Comment): Promise<void> {
-        await PaperApiCaller.changeComment(savedPaper.paper.paperId, savedPaper.research.id, comment.text);
+    public static async changeComment(savedPaper: SavedPaper, comment: string): Promise<void> {
+        await PaperApiCaller.changeComment(savedPaper.paper.paperId, savedPaper.research.id, comment);
     }
 
     public static async changeSaveState(savedPaper: SavedPaper, saveState: SaveState): Promise<void> {

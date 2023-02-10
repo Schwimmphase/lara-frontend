@@ -15,7 +15,7 @@
                 <research-card v-if="research != null"
                                :id="research.id"
                                :title="research.title"
-                               :description="research.comment.text"
+                               :description="research.comment"
                                :added="69"
                                :enqueued="420"
                                :started-at="research.startDate.toLocaleDateString()"
@@ -32,7 +32,6 @@
 <script setup lang="ts">
 
 import type {Research} from "@/model/Research";
-import { Comment } from "@/model/Comment";
 
 import ResearchCard from "@/components/cards/ResearchCard.vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
@@ -42,7 +41,6 @@ import { useCurrentUserStore } from "@/stores/currentUser";
 import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
 import { useOpenResearchStore } from "@/stores/openResearch";
 import { useOpenPaperStore } from "@/stores/openPaper";
-
 import { reactive } from "vue";
 import {i18n} from "@/internationalization/i18n";
 
@@ -66,12 +64,12 @@ async function getResearches() {
 }
 
 async function onCreateResearch(title: string, description: string) {
-    const research = await ResearchApiHandler.createResearch(title, new Comment(description));
+    const research = await ResearchApiHandler.createResearch(title, description);
     state.researches.push(research);
 }
 
 async function onUpdateResearch(research: Research, title: string, description: string) {
-    const newResearch = await ResearchApiHandler.updateResearch(research, title, new Comment(description));
+    const newResearch = await ResearchApiHandler.updateResearch(research, title, description);
     state.researches[state.researches.indexOf(research)] = newResearch;
 }
 

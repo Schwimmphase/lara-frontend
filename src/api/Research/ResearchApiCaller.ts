@@ -49,7 +49,7 @@ export class ResearchApiCaller {
     }
 
     public static getTags(researchId: string) {
-        return BasicApiCaller.axiosInstance.delete(this.urlResearch + '/' + researchId + this.urlTags);
+        return BasicApiCaller.axiosInstance.get(this.urlResearch + '/' + researchId + this.urlTags);
     }
 
     public static getPapers(researchId: string, organizers: Organizer[]) {

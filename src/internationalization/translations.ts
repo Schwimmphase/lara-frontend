@@ -29,6 +29,10 @@ export const messages = {
             information: 'Information',
             comments: 'Comments',
             tags: 'Tags',
+            addTags: 'Add Tags',
+            editTag: {
+                name: 'Tag name',
+            },
             relevance: 'Relevance',
             save: 'Save',
             enqueue: 'Enqueue',
@@ -193,6 +197,10 @@ export const messages = {
             information: 'Informationen',
             comments: 'Kommentare',
             tags: 'Tags',
+            addTags: 'Tags hinzufügen',
+            editTag: {
+                name: 'Tagname'
+            },
             relevance: 'Relevanz',
             save: 'Speichern',
             enqueue: 'Merken',
@@ -258,6 +266,12 @@ export const messages = {
             open: 'Öffnen'
         },
 
+        confirmDialog: {
+            message: 'Sind Sie sicher?',
+            confirm: 'Bestätigen',
+            cancel: 'Abbrechen'
+        },
+
         newResearchDialog: {
             title: 'Titel',
             description: 'Beschreibung'
@@ -269,7 +283,7 @@ export const messages = {
             enqueued: 'Für später gemerkt',
             hidden: 'Ausgeblendet',
             export: 'Exportieren',
-            empty: 'Dieser Abschied ist zur Zeit leer',
+            empty: 'Dieser Abschnitt ist zur Zeit leer',
             copied: 'BibTeX-Export wurde zur Zwischenablage hinzugefügt',
             close: 'Schließen'
         },

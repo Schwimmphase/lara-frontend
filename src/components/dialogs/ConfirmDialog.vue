@@ -4,14 +4,16 @@ import { reactive } from 'vue';
 
 import LaraButton from '../basic/LaraButton.vue';
 
+const props = defineProps<{ openOnDefault?: boolean }>();
+
 let state: { showDialog: boolean } = reactive({
-    showDialog: false,
+    showDialog: !props.openOnDefault ? false : props.openOnDefault,
 });
 
 const emits = defineEmits(['close']);
 
 // Method to pass the decision of the user to the parent
-let close = (decision: boolean) => {
+let close = (decision: boolean) => {
     state.showDialog = false;
     emits('close', decision);
 }
@@ -31,8 +33,8 @@ let close = (decision: boolean) => {
         <v-card class="dialog lara-card">
             <div class="ma-5">
                 <span class="text-h5 font-weight-bold">{{ $t('confirmDialog.message') }}</span>
-                <LaraButton class="mt-4" type="primary" @click="close(true)">Bestätigen</LaraButton>
-                <LaraButton class="mt-2" type="secondary" @click="close(false)">Abbrechen</LaraButton>
+                <LaraButton class="mt-2" type="primary" @click="close(true)">{{ $t('confirmDialog.confirm') }}</LaraButton>
+                <LaraButton class="mt-4" type="secondary" @click="close(false)">{{ $t('confirmDialog.cancel') }}</LaraButton>    
             </div>
             
         </v-card>

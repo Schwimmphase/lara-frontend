@@ -1,13 +1,12 @@
-import type { Comment } from "./Comment";
 import type { User } from "./User";
 
 export class Research {
     readonly id: string;
     readonly title: string;
     startDate: Date;
-    comment: Comment;
+    comment: string;
 
-    constructor(id: string, title: string, startDate: Date, comment: Comment, user: User) {
+    constructor(id: string, title: string, startDate: Date, comment: string, user: User) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;
