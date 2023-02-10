@@ -1,6 +1,6 @@
 // Model-Klasse für einen Kommentar
 export class Comment {
-    readonly text: string;
+    text: string;
 
     constructor(text: string) {
         this.text = text;

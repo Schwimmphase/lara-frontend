@@ -4,7 +4,7 @@ import TagComponent from './TagComponent.vue';
 
 import { useOpenPaperStore } from '../../stores/openPaper'
 import { reactive } from '@vue/reactivity';
-import { watch } from 'vue';
+import { toRaw } from 'vue';
 
 import { ResearchApiHandler } from '@/api/Research/ResearchApiHandler';
 import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
@@ -68,12 +68,15 @@ let changeComment = async (comment: Comment | undefined): Promise<void> => {
         return;
     }
     
-    console.debug("Change comment", comment);
+    console.debug("Changed comment to '" + comment.text + "'");
 
     await PaperApiHandler.changeComment(detailState.openPaper.savedPaper, comment);
+
+    detailState.openPaper.savedPaper.comment.text = comment.text;
+    useOpenResearchStore().setResearchPaper(toRaw(detailState.openPaper.savedPaper));
 }
 
-let changeRelevance = async (relevance: number | undefined): Promise<void> => {
+let changeRelevance = async (relevance: number | string | undefined): Promise<void> => {
     if (relevance == undefined || detailState.openPaper == null) {
         console.error("CHANGE_RELEVANCE : Argument null / undefined");
         return;
@@ -86,7 +89,11 @@ let changeRelevance = async (relevance: number | undefined): Promise<void> => {
 
     console.debug("Change relevance:", relevance);
 
-    await PaperApiHandler.changeRelevance(detailState.openPaper.savedPaper, relevance);
+    await PaperApiHandler.changeRelevance(detailState.openPaper.savedPaper, relevance as number);
+
+    // update open paper of open research
+    detailState.openPaper.savedPaper.relevance = relevance as number;
+    useOpenResearchStore().setResearchPaper(toRaw(detailState.openPaper.savedPaper));
 }
 
 let changeSaveState = async (savedPaper: SavedPaper | undefined, state: SaveState): Promise<void> => {
@@ -96,16 +103,10 @@ let changeSaveState = async (savedPaper: SavedPaper | undefined, state: SaveStat
     }
     
     await PaperApiHandler.changeSaveState(savedPaper, state);
+
+    savedPaper.saveState = state;
+    useOpenResearchStore().setResearchPaper(savedPaper);
 }
-
-watch(detailSidebarState, async (value) => {
-    if (value == undefined) {
-        return;
-    }
-
-    changeComment(value.comment);
-    changeRelevance(value.relevance);
-});
 
 
 // Method to create a saved Paper from a paper with a given saveState
@@ -163,6 +164,7 @@ let getAuthorsString = (authors: Author[] | undefined) => {
     }
 }
 
+// prop to be passed down to TagComponent
 const props = defineProps<{ openPaper: OpenPaper }>();
 
 </script>
@@ -186,7 +188,7 @@ const props = defineProps<{ openPaper: OpenPaper }>();
                 <div class="mt-4">
                     <span class="text-h5">{{ $t('detailSidebar.comments') }}</span>
                     <v-textarea hide-details variant="outlined" class="mt-2 lara-field" v-model="detailSidebarState.comment!.text"></v-textarea>
-                    <lara-button class="mt-2" type="primary" @click="changeComment(detailSidebarState.comment)">{{ $t('detailSidebar.save') }}</lara-button>
+                    <lara-button class="mt-2" type="primary" @click="changeComment(toRaw(detailSidebarState.comment))">{{ $t('detailSidebar.save') }}</lara-button>
                     <v-divider class="my-3"></v-divider>
                 </div>
 
@@ -200,18 +202,20 @@ const props = defineProps<{ openPaper: OpenPaper }>();
 
                 <div class="mt-4">
                     <span class="text-h5">{{ $t('detailSidebar.relevance') }}</span>
-                    <div>
+                    <div class="d-flex">
                         <v-rating
                             v-model="detailSidebarState.relevance"
+                            @update:modelValue="changeRelevance"
                             length="3"
-                            size="65"
+                            size="75"
                             full-icon="mdi-star"
                             empty-icon="mdi-star-outline"
                             color="orange"
                             hover
                         ></v-rating>
-                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState != SaveState.hidden" class="lara-hide-button" @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.hidden) : null">mdi-eye-off</v-icon>
-                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState == SaveState.hidden" class="lara-hide-button" @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.hidden) : null">mdi-eye</v-icon>
+                        <v-spacer></v-spacer>
+                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState != SaveState.hidden" class="mr-10 mt-6 lara-hide-button" @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.hidden) : null">mdi-eye-off</v-icon>
+                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState == SaveState.hidden" class="mr-10 mt-6 lara-hide-button" @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.added) : null">mdi-eye</v-icon>
                     </div>
                     <v-divider class="my-3"></v-divider>
                 </div>

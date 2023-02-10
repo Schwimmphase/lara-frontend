@@ -62,7 +62,7 @@ class BasicApiHandler {
         let savedPaper = plainToInstance(SavedPaper, data);
         savedPaper.paper = this.buildPaper(JSON.parse(JSON.stringify(savedPaper.paper)));
         savedPaper.research = this.buildResearch(JSON.parse(JSON.stringify(savedPaper.research)));
-        savedPaper.comment = new Comment(savedPaper.comment.toString());
+        savedPaper.comment = new Comment(JSON.parse(JSON.stringify(data)).comment.text);
         savedPaper.saveState = savedPaper.saveState.toString().toLowerCase() as SaveState;
         let tags: Tag[] = [];
         for (let tag of savedPaper.tags) {

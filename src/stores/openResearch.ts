@@ -23,7 +23,7 @@ export const useOpenResearchStore = defineStore('openResearch', {
         setResearchPapers(researchPapers: SavedPaper[]) {
             this.researchPapers = researchPapers;
         },
-        setReserachPaper(researchPaper: SavedPaper) {
+        setResearchPaper(researchPaper: SavedPaper) {
             let savedPaper = this.researchPapers.find(paper => paper.paper.paperId === researchPaper.paper.paperId);
             let index = this.researchPapers.indexOf(savedPaper!);
             this.researchPapers[index] = researchPaper;

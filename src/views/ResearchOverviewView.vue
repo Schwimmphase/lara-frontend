@@ -1,4 +1,5 @@
 <template>
+
     <v-container class="pt-8 px-16 w-75">
         <div class="d-flex d-row justify-space-between">
             <h1 class="text-h3 font-weight-bold">{{ research != null ? research.title : "" }}</h1>
@@ -45,6 +46,7 @@
             </v-btn>
         </template>
     </v-snackbar>
+
 </template>
 
 
@@ -158,11 +160,15 @@ async function exportResearch(selectedOrganizers: Organizer[]) {
     await navigator.clipboard.writeText(bibTex);
     state.copied = true;
 }
+
 </script>
 
+
 <style>
+
 #search-bar {
     width: 100%;
     max-width: 300px;
 }
+
 </style>

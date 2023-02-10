@@ -9,7 +9,6 @@ import { SaveState } from "@/model/SaveState"
 import type { Organizer } from "@/model/Organizer"
 import { RecommendationMethod } from "@/model/RecommendationMethod"
 import type { Research } from "@/model/Research"
-import type { CachedPaper } from "@/model/CachedPaper"
 import BasicApiHandler from "../BasicApiHandler"
 
 export class PaperApiHandler {
@@ -22,6 +21,7 @@ export class PaperApiHandler {
         } else {
             // Get the details of a SavedPaper if the research id is not null
             const response = await PaperApiCaller.getDetails(paperId, researchId);
+            console.debug("data", response.data); // TODO: backend doesn't handle comment correctly?
             let data = basicApiHandler.tryParseJson(response.data);
             return BasicApiHandler.buildSavedPaper(data);
         }

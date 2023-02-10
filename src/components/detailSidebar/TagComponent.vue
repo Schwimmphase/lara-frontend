@@ -47,7 +47,7 @@ import type { SavedPaper } from '@/model/SavedPaper';
 const props = defineProps<{ openPaper: SavedPaper }>();
 
 watch(props.openPaper, (val, prev) => {
-    useOpenResearchStore().setReserachPaper(val);
+    useOpenResearchStore().setResearchPaper(val);
 });
 
 

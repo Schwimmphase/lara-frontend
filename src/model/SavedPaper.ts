@@ -10,7 +10,7 @@ export class SavedPaper {
     research: Research;
     comment: Comment;
     tags: Tag[];
-    readonly relevance: number;
+    relevance: number;
     saveState: SaveState;
 
     constructor(paper: Paper, research: Research, comment: Comment, tags: Tag[], relevance: number, saveState: SaveState) {
