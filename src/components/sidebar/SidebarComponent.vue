@@ -47,6 +47,10 @@ let navigateToResearchOverview = (research: Research) => {
     router.push({name: 'researchOverview', query: {id: id}});
 }
 
+useOpenResearchStore().$subscribe((mutation, state) => {
+    getPapers();
+});
+
 // Method to get the research papers
 let getPapers = async () => {
     if (state.research == undefined) {
