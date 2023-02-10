@@ -35,12 +35,12 @@ openResearchStore.$subscribe((mutation, state) => {
 });
 
 async function getSearchResults(selectedOrganizers: Organizer[]): Promise<void> {
-    searchState.loading = true;
-
     if (searchState.query == undefined) {
-        console.error("GET_SEARCH_RESULTS : No query provided on route")
+        searchState.loading = false;    
         return;
     }
+
+    searchState.loading = true;
 
     document.title = searchState.query + " ‐ lara";
 

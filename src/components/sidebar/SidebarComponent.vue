@@ -12,7 +12,6 @@ import { SaveState } from '@/model/SaveState';
 
 import { useOpenResearchStore } from '@/stores/openResearch';
 
-// TODO nur testzwecke
 import ExpandableList from "@/components/basic/ExpandableList.vue";
 import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
 import { reactive } from '@vue/reactivity';
@@ -66,17 +65,36 @@ let getPapers = async () => {
     state.hiddenPapers = state.researchPapers.filter((paper) => matchesSaveState(paper, SaveState.hidden));
 }
 
+let navigateToSearch = () => {
+    router.push({ name: 'search' });
+}
+
+let navigateToRecommendations = () => {
+    router.push({ name: 'recommendations' });
+}
+
+ let returnPage = () => {
+    router.back();
+ }
+
 // Pinia store for the research
 const store = useOpenResearchStore();
 
-let state: { research: Research | undefined, researchPapers: SavedPaper[], addedPapers: SavedPaper[], enqueuedPapers: SavedPaper[], hiddenPapers: SavedPaper[], } = reactive({
+let state: { research: Research | undefined, researchPapers: SavedPaper[], addedPapers: SavedPaper[], enqueuedPapers: SavedPaper[], hiddenPapers: SavedPaper[], show: boolean, notShow: boolean } = reactive({
     loading: true,
     research: store.getResearch,
     researchPapers: [],
     addedPapers: [],
     enqueuedPapers: [],
     hiddenPapers: [],
+    show: true,
+    notShow: false
 });
+
+let toggleSidebar = (show: boolean) => {
+    state.show = show;
+    state.notShow = !show;
+}
 
 // Get the research from the store
 let research: Research | undefined = store.getResearch;
@@ -88,10 +106,11 @@ getPapers();
 
 <template>
     <!-- Navigations-drawer for the sidebar to manage the paper of a research -->
-    <v-navigation-drawer width="300" permanent>
-        <div class="mx-2 my-3">
-            <div class="w-75">
-                <SearchbarComponent v-if="props.showSearch" />
+    <v-navigation-drawer width="300" permanent v-model="state.show">
+        <v-icon class="lara-fixed-icon lara-fixed-icon-right" @click="toggleSidebar(false)" size="32">mdi-chevron-left</v-icon>
+        <div class="mx-2 mr-7 my-3">
+            <div>
+                <SearchbarComponent v-if="props.showSearch"/>
                 <RecommendationsButtonComponent v-if="props.showRecommendations" class="mt-2"/>
                 <ReturnButtonComponent class="mt-2"/>
             </div>
@@ -128,6 +147,19 @@ getPapers();
             </expandable-list>
         </div>
     </v-navigation-drawer>
+
+    <v-navigation-drawer width="56" permanent v-model="state.notShow">
+        <div class="d-flex flex-column align-center">
+            <v-icon class="lara-fixed-icon" @click="toggleSidebar(true)" size="32">mdi-chevron-right</v-icon>
+        </div>
+        
+        <div class="d-flex flex-column mx-2 my-3 justify-center align-center">
+            <v-icon class="mt-4" v-if="props.showSearch" @click="navigateToSearch" size="32">mdi-magnify</v-icon>
+            <v-icon class="mt-4" v-if="props.showRecommendations" @click="navigateToRecommendations" size="32">mdi-book</v-icon>
+            <v-icon class="mt-4" @click="returnPage" size="30">mdi-arrow-left</v-icon>
+            <v-icon class="mt-4" @click="research != null ? navigateToResearchOverview(research) : null" size="30">mdi-view-grid</v-icon>
+        </div>
+    </v-navigation-drawer>
 </template>
 
 
@@ -148,4 +180,14 @@ getPapers();
     cursor: pointer;
     color: #000;
 }
+
+.lara-fixed-icon {
+    position: absolute;
+    top: 45vh;
+}
+
+.lara-fixed-icon-right {
+    left: 265px;
+}
+
 </style>
