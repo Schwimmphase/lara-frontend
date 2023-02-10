@@ -17,6 +17,12 @@
             </div>
         </template>
 
+        <template v-slot:venue-filter>
+            <div class="w-100 mt-6 mx-5">
+                <venue-filter @update="(venues) => onVenueFilter(venues)" :selected-venues="venueFilterState.selectedVenues" />
+            </div>
+        </template>
+
         <template v-slot:year-sorter>
             <div class="w-100 mt-6 mx-5">
                 <sorter :activated="yearSorterState.active" :descending="yearSorterState.descending"
@@ -24,23 +30,17 @@
             </div>
         </template>
 
-        <template v-slot:venue-filter>
+        <template v-slot:citation-count-sorter>
             <div class="w-100 mt-6 mx-5">
-                <venue-filter @update="(venues) => onVenueFilter(venues)" :selected-venues="venueFilterState.selectedVenues" />
+                <sorter :activated="citationsSorterState.active" :descending="citationsSorterState.descending"
+                                  @update="(active, descending) => onSorter(citationsSorterState, 'citation-count-sorter', active, descending)" />
             </div>
         </template>
 
-        <template v-slot:citations-sorter>
+        <template v-slot:reference-count-sorter>
             <div class="w-100 mt-6 mx-5">
-                <sorter :activated="citationsSorterState.active" :descending="citationsSorterState.descending"
-                                  @update="(active, descending) => onSorter(citationsSorterState, 'citations-sorter', active, descending)" />
-            </div>
-        </template>
-
-        <template v-slot:references-sorter>
-            <div class="w-100 mt-6 mx-5">
-                <sorter :activated="citationsSorterState.active" :descending="citationsSorterState.descending"
-                        @update="(active, descending) => onSorter(citationsSorterState, 'citations-sorter', active, descending)" />
+                <sorter :activated="referencesSorterState.active" :descending="referencesSorterState.descending"
+                        @update="(active, descending) => onSorter(referencesSorterState, 'reference-count-sorter', active, descending)" />
             </div>
         </template>
     </organizable-list>
@@ -87,14 +87,19 @@ let venueFilterState: { selectedVenues: string[] } = reactive({
 let citationsSorterState: { active: boolean, descending: boolean} = reactive({
     active: false,
     descending: false
-})
+});
+
+let referencesSorterState: { active: boolean, descending: boolean} = reactive({
+    active: false,
+    descending: false
+});
 
 const organizeSlots: Slot[] = [
     { id: "year-filter", name: "Year Filter" },
-    { id: "year-sorter", name: "Year Sorter"},
     { id: "venue-filter", name: "Venue Filter"},
-    { id: "citations-sorter", name: "Venue Filter"},
-    { id: "references-sorter", name: "References Sorter"},
+    { id: "year-sorter", name: "Year Sorter"},
+    { id: "citation-count-sorter", name: "Citations Sorter"},
+    { id: "reference-count-sorter", name: "References Sorter"},
 ];
 
 function setOrganizer(name: string, value: string): void {
@@ -121,6 +126,14 @@ function removeOrganizer(name: string, shouldUpdate: boolean): void {
             break;
         case "venue-filter":
             venueFilterState.selectedVenues = [];
+            break;
+        case "citation-count-sorter":
+            citationsSorterState.active = false;
+            citationsSorterState.descending = false;
+            break;
+        case "reference-count-sorter":
+            referencesSorterState.active = false;
+            referencesSorterState.descending = false;
             break;
     }
 
