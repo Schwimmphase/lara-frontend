@@ -78,6 +78,11 @@ export const messages = {
 
         organizers: {
             venue: 'Venue',
+            earlier: 'Earlier',
+            later: 'Later',
+            ascending: 'Ascending',
+            descending: 'Descending',
+            sortByYear: 'Sort by year',
         },
 
         home: {
@@ -160,7 +165,14 @@ export const messages = {
     },
     
     de: {
-        test: 'Das ist ein kleiner Test!',
+        
+        words: {
+            close: 'Schließen',
+            recommendations: 'Empfehlungen',
+            citations: 'Zitate',
+            references: 'Referenzen',
+            export: 'Exportieren'
+        },
         
         detailView: {
             abstract: 'Abstract',
@@ -225,6 +237,15 @@ export const messages = {
             }
         },
 
+        organizers: {
+            venue: 'Venue',
+            earlier: 'Früher',
+            later: 'Später',
+            ascending: 'Aufsteigend',
+            descending: 'Absteigend',
+            sortByYear: 'Nach Jahr sortieren',
+        },
+
         home: {
             greetings: 'Hallo {username}!',
             startNewResearch: 'Neue Recherche starten',
@@ -251,6 +272,12 @@ export const messages = {
             empty: 'Dieser Abschied ist zur Zeit leer',
             copied: 'BibTeX-Export wurde zur Zwischenablage hinzugefügt',
             close: 'Schließen'
+        },
+
+        recommendationsView: {
+            recommended: 'Empfohlen',
+            citationsReferences: 'Zitate/Referenzen',
+            empty: 'Diese List ist leer. Versuche erst Artikel zu deiner Recherche hionzuzufügen.'
         },
 
         organizableList: {

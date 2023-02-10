@@ -15,6 +15,7 @@ import {ResearchApiHandler} from "@/api/Research/ResearchApiHandler";
 import {useOpenPaperStore} from '@/stores/openPaper';
 import type {SavedPaper} from "@/model/SavedPaper";
 import PaperOrganizableList from "@/components/basic/PaperOrganizableList.vue";
+import LaraButton from "@/components/basic/LaraButton.vue";
 import type {Organizer} from "@/model/Organizer";
 
 useOpenPaperStore().resetStore();

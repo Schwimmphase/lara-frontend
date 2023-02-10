@@ -105,8 +105,6 @@ let getUsers = async (organizers: Organizer[]) => {
 let getCategories = async () => {
     let response = await AdminApiHandler.getUserCategories();
     state.categories = response;
-
-    console.log(state.categories)
 }
  
 

@@ -25,10 +25,10 @@ let change = () => {
 
 <template>
     <div class="d-flex align-center">
-        <v-checkbox label="Nach Jahr sortieren" v-model="state.sortByYear" @input="change"></v-checkbox>
+        <v-checkbox :label="$t('organizers.sortByYear')" v-model="state.sortByYear" @input="change"></v-checkbox>
         <v-radio-group v-model="state.descending" inline v-show="state.sortByYear" @input="change">
-            <v-radio label="Absteigend" value="true"></v-radio>
-            <v-radio label="Aufsteigend" value="false" class="ml-3"></v-radio>
+            <v-radio :label="$t('organizers.descending')" value="true"></v-radio>
+            <v-radio :label="$t('organizers.ascending')" value="false" class="ml-3"></v-radio>
         </v-radio-group>
     </div>
 </template>

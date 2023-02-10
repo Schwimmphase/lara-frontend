@@ -3,8 +3,6 @@
         <v-card-title class="font-weight-bold">{{ title }}</v-card-title>
 
         <v-card-text>{{ description }}</v-card-text>
-
-        <v-card-subtitle>{{ $t('researchCard.addedAndEnqueuedPapers', {added: added, enqueued: enqueued}) }}</v-card-subtitle>
         <v-card-subtitle>{{  $t('researchCard.startedOn', {startedOn: startedAt})  }}</v-card-subtitle>
 
         <v-card-actions class="ml-4 mr-4 mb-2 mt-2 pa-0">

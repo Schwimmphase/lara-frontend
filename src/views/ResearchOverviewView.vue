@@ -1,8 +1,14 @@
 <template>
     <v-container class="pt-8 px-16 w-75">
         <div class="d-flex d-row justify-space-between">
-            <h1 class="text-h3 font-weight-bold">{{ research != null ? research.title : "" }}</h1>
-            <searchbar-component id="search-bar"></searchbar-component>
+            <div class="w-100">
+                <h1 class="text-h3 font-weight-bold">{{ research != null ? research.title : "" }}</h1>
+            </div>
+            <div class="d-flex align-center justify-end w-100">
+                <v-icon @click="router.push({ name: 'recommendations' })" class="mr-5" size="40">mdi-book</v-icon>
+                <searchbar-component id="search-bar"></searchbar-component>
+            </div>
+            
         </div>
         <paper-organizable-list :slots="slots" @organize="selected => { getSavedPapers(selected); updateResearchPaperStore(); }"
                                 @export="selected => exportResearch(selected)"
@@ -56,6 +62,7 @@ import type {Slot} from "@/components/basic/OrganizableList.vue";
 import type {SavedPaper} from "@/model/SavedPaper";
 import {useOpenResearchStore} from "@/stores/openResearch.js";
 import ResearchOverviewCard from "@/components/cards/ResearchOverviewCard.vue";
+import RecommendationsButtonComponent from "@/components/sidebar/RecommendationsButtonComponent.vue";
 import router from "../router";
 import {useOpenPaperStore} from "@/stores/openPaper";
 import {OpenPaper} from "@/stores/model/OpenPaper";

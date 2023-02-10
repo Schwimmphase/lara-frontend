@@ -36,14 +36,16 @@ let state: { research: Research | undefined, researchPapers: SavedPaper[], added
     notShow: false
 });
 
+useOpenResearchStore().$subscribe((mutation, state) => {
+    getPapers();
+});
+
 // Method to get the research papers
 let getPapers = async () => {
     if (state.research == undefined) {
         console.error("GET_PAPERS : Research in store is not defined");
         return;
     }
-
-    console.log("Get papers")
 
     let response = await ResearchApiHandler.getSavedPapers(state.research, [])
 
@@ -187,7 +189,7 @@ getPapers();
 }
 
 .lara-fixed-icon-right {
-    left: 265px;
+    left: 260px;
 }
 
 </style>
