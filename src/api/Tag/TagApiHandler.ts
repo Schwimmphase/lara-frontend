@@ -8,13 +8,13 @@ export class TagApiHandler {
     public static async createTag(research: Research, name: string, color: string): Promise<Tag> {
         const response = await TagApiCaller.createTag(research.id, name, color);
         let data = BasicApiHandler.tryParseJson(response.data);
-        return BasicApiHandler.buildTag(data);
+        return data as Tag;
     }
 
     public static async updateTag(tag: Tag, name: string, color: string): Promise<Tag> {
         const response = await TagApiCaller.updateTag(tag.id, name, color)
         let data = BasicApiHandler.tryParseJson(response.data);
-        return BasicApiHandler.buildTag(data);
+        return data as Tag;
     }
 
     public static async deleteTag(tag: Tag): Promise<void> {

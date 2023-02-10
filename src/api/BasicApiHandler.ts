@@ -3,7 +3,7 @@ import { CachedPaper } from "@/model/CachedPaper";
 import { Paper } from "@/model/Paper";
 import { Research } from "@/model/Research";
 import { SavedPaper } from "@/model/SavedPaper";
-import { Tag } from "@/model/Tag";
+import type { Tag } from "@/model/Tag";
 import { User } from "@/model/User";
 import { UserCategory } from "@/model/UserCategory";
 import type { AxiosResponse } from "axios";
@@ -34,10 +34,6 @@ class BasicApiHandler {
     
     public buildUserCategory(data: string): UserCategory {
         return plainToInstance(UserCategory, data);
-    }
-
-    public buildTag(data: string): Tag {
-        return plainToInstance(Tag, data);
     }
 
     public buildResearch(data: string): Research {

@@ -29,7 +29,7 @@ export const messages = {
             information: 'Information',
             comments: 'Comments',
             tags: 'Tags',
-            addTags: 'Add Tags...',
+            addTags: 'Add Tags',
             editTag: {
                 name: 'Tag name',
             },
@@ -171,7 +171,7 @@ export const messages = {
             information: 'Informationen',
             comments: 'Kommentare',
             tags: 'Tags',
-            addTags: 'Tags hinzufügen...',
+            addTags: 'Tags hinzufügen',
             editTag: {
                 name: 'Tagname'
             },

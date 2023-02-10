@@ -51,7 +51,7 @@ export class ResearchApiHandler {
         let data = BasicApiHandler.tryParseJson(response.data);
         let tags: Tag[] = [];
         for (let tag of data.tags) {
-            tags.push(BasicApiHandler.buildTag(tag));
+            tags.push(tag as Tag);
         }
         return tags;
     }

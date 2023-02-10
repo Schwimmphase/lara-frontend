@@ -23,9 +23,9 @@
         </template>
     </v-combobox>
 
-    <edit-tag-dialog v-if="editTagState.open" :tag="editTagState.tag" @edit="(name, color) => { editTagState.open = false; updateTag(editTagState.tag!, name, color) }"></edit-tag-dialog>
+    <edit-tag-dialog v-if="editTagState.open" :tag="editTagState.tag" @edit="(name, color) => { editTagState.open = false; updateTagOfResearch(editTagState.tag!, name, color) }"></edit-tag-dialog>
 
-    <confirm-dialog v-if="deleteTagState.open" :open-on-default="true" @close="(decision) => deleteTag(decision, deleteTagState.tag!.name)"></confirm-dialog> <!-- TODO: only works once per reload -->
+    <confirm-dialog v-if="deleteTagState.open" :open-on-default="true" @close="(decision) => deleteTagFromResearch(decision, deleteTagState.tag!.name)"></confirm-dialog> <!-- TODO: only works once per reload -->
 
 </template>
 
@@ -36,7 +36,7 @@ import EditTagDialog from '../dialogs/EditTagDialog.vue';
 import ConfirmDialog from '../dialogs/ConfirmDialog.vue';
 
 import { reactive, toRaw, watch } from 'vue';
-import { Tag } from '@/model/Tag';
+import type { Tag } from '@/model/Tag';
 import { TagApiHandler } from '@/api/Tag/TagApiHandler';
 import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
 import { ResearchApiHandler } from '@/api/Research/ResearchApiHandler';
@@ -46,8 +46,13 @@ import type { SavedPaper } from '@/model/SavedPaper';
 
 const props = defineProps<{ openPaper: SavedPaper }>();
 
-watch(props.openPaper, (val, prev) => {
-    useOpenResearchStore().setResearchPaper(val);
+let openPaperState: { openPaper: SavedPaper } = reactive({
+    openPaper: props.openPaper
+});
+
+// watcher to synchronize changes with local storage
+watch(openPaperState, (val, prev) => {
+    useOpenResearchStore().setResearchPaper(val.openPaper);
 });
 
 
@@ -70,48 +75,44 @@ let deleteTagState: { open: boolean, tag: Tag | undefined } = reactive({
 });
 
 
-async function getTags() {
+async function getTagsOfResearch() {
     // get selectable tags
     const tags = await ResearchApiHandler.getTags(useOpenResearchStore().getResearch!);
     tagState.selectableTags = tags;
     
     // get selected tags
-    tagState.selectedTags = props.openPaper.tags.map(tag => tag.name); // TODO: no tags even if tags in local storage (bc prop didn't get updated on change of local storage in detailSidebarComponent?)
+    tagState.selectedTags = openPaperState.openPaper.tags.map(tag => tag.name); // TODO: no tags even if tags in local storage (bc prop didn't get updated on change of local storage in detailSidebarComponent?)
 }
-getTags();
+getTagsOfResearch();
 
 // method to globally create tag & add to open paper
-async function addTag(name: string): Promise<void> {
+async function addTagToResearch(name: string): Promise<void> {
     const newTag = await TagApiHandler.createTag(useOpenResearchStore().getResearch!, name, "#000000");
 
     // update open paper of locally saved open research
-    props.openPaper.tags.push(newTag);
+    openPaperState.openPaper = await PaperApiHandler.getDetails(openPaperState.openPaper.paper.paperId, useOpenResearchStore().getResearch!.id) as SavedPaper;
 
     // update selectable & selected tags
-    getTags();
+    getTagsOfResearch();
 
     console.debug("Created Tag '" + name + "' in open research");
 }
 
 // method to globally update tag
-async function updateTag(tag: Tag, name: string, color: string): Promise<void> {
+async function updateTagOfResearch(tag: Tag, name: string, color: string): Promise<void> {
     await TagApiHandler.updateTag(tag, name, color);
 
     // update open paper of locally saved open research
-    let index = props.openPaper.tags.indexOf(tag);
-    if (index !== -1) {
-        let newTag = new Tag(tag.id, name, color);
-        props.openPaper.tags[index] = newTag;
-    }
+    openPaperState.openPaper = await PaperApiHandler.getDetails(openPaperState.openPaper.paper.paperId, useOpenResearchStore().getResearch!.id) as SavedPaper;
 
     // update selectable & selected tags
-    getTags();
+    getTagsOfResearch();
 
     console.debug("Updated Tag '" + name + " (" + color + ") ' of open research");
 }
 
 // method to globally delete tag
-async function deleteTag(decision: boolean, name: string): Promise<void> {
+async function deleteTagFromResearch(decision: boolean, name: string): Promise<void> {
     if (!decision) return;
 
     const tag = tagState.selectableTags.find(tag => tag.name === name); // get tag of given name
@@ -120,13 +121,10 @@ async function deleteTag(decision: boolean, name: string): Promise<void> {
     await TagApiHandler.deleteTag(tag);
 
     // update open paper of locally saved open research
-    let index = props.openPaper.tags.indexOf(tag);
-    if (index !== -1) {
-        props.openPaper.tags.splice(index, 1);
-    }
+    openPaperState.openPaper = await PaperApiHandler.getDetails(openPaperState.openPaper.paper.paperId, useOpenResearchStore().getResearch!.id) as SavedPaper;
 
     // update selectable & selected tags
-    getTags();
+    getTagsOfResearch();
 
     console.debug("Deleted Tag '" + name + "' from open research");
 }
@@ -138,19 +136,13 @@ async function addTagToOpenPaper(name: string): Promise<void> {
     if (!tag || tagSelected) return;
     console.debug("found tag:", tag);
 
-    await PaperApiHandler.addTag(props.openPaper, tag);
-
-    // fetch paperdata from api again
-    let paper = await PaperApiHandler.getDetails(props.openPaper.paper.paperId, useOpenResearchStore().getResearch!.id);
-
-    console.debug("addTag");
-    console.debug(paper);
+    await PaperApiHandler.addTag(openPaperState.openPaper, tag);
 
     // update open paper of locally saved open research
-    //props.openPaper.tags.push(tag);
+    openPaperState.openPaper = await PaperApiHandler.getDetails(openPaperState.openPaper.paper.paperId, useOpenResearchStore().getResearch!.id) as SavedPaper;
 
     // update selectable & selected tags
-    getTags();
+    getTagsOfResearch();
 
     console.debug("Added Tag '" + name + "' to open paper");
 }
@@ -161,34 +153,34 @@ async function removeTagFromOpenPaper(name: string): Promise<void> {
     if (!tag) return;
 
     await PaperApiHandler.removeTag(props.openPaper, tag);
-
+    
     // update open paper of locally saved open research
-    props.openPaper.tags.splice(props.openPaper.tags.indexOf(tag), 1);
+    openPaperState.openPaper = await PaperApiHandler.getDetails(openPaperState.openPaper.paper.paperId, useOpenResearchStore().getResearch!.id) as SavedPaper;
 
     // update selectable & selected tags
-    getTags();
+    getTagsOfResearch();
 
     console.debug("Removed Tag '" + name + "' from open paper");
 }
 
 
 // watch if tags have been added/removed via keyboard inputs
-function onKeyboardEdit(name: string) {
+async function onKeyboardEdit(name: string) {
     const selectedTag = tagState.selectedTags.find(tag => tag === name); // get if tag of given name was selected
     if (!selectedTag && name !== "") {
         // if tag was selected: remove tag from open paper
-        props.openPaper.tags.splice(props.openPaper.tags.map(tag => tag.name).indexOf(name), 1);
+        removeTagFromOpenPaper(name);
         console.debug("Removed existing tag '" + name + "' from open paper");
     } else {
-        // if tag was not selected: add new/existing tag to open paper 
+        // if tag was not selected: add new/existing tag to open paper
         const selectableTag = tagState.selectableTags.find(tag => tag.name === name); // get tag of given name
         if (selectableTag) {
             // if tag does exist: add tag to open paper
-            props.openPaper.tags.push(selectableTag);
+            addTagToOpenPaper(name);
             console.debug("Added existing tag '" + name + "' to open paper");
         } else if (name !== "") {
             // if tag does not exist: create tag & add to open paper
-            addTag(name);
+            addTagToResearch(name);
         }
     }
 }

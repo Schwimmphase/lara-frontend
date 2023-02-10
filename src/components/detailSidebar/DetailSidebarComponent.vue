@@ -70,9 +70,6 @@ let changeComment = async (comment: string): Promise<void> => {
     console.debug("Changed comment to '" + comment + "'");
 
     await PaperApiHandler.changeComment(detailState.openPaper.savedPaper, comment);
-
-    console.debug(await PaperApiHandler.getDetails(detailState.openPaper.savedPaper.paper.paperId, researchState.research!.id))
-
     detailState.openPaper.savedPaper.comment = comment;
     useOpenResearchStore().setResearchPaper(toRaw(detailState.openPaper.savedPaper));
 }

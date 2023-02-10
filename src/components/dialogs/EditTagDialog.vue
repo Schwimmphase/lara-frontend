@@ -69,7 +69,7 @@ let closeDialog = () => {
 
 <style scoped>
 
-.dialog {
+#dialog {
     min-width: 300px;
     max-width: 750px;
     margin-left: auto;

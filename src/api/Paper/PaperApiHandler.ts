@@ -9,6 +9,7 @@ import type { Organizer } from "@/model/Organizer"
 import { RecommendationMethod } from "@/model/RecommendationMethod"
 import type { Research } from "@/model/Research"
 import BasicApiHandler from "../BasicApiHandler"
+import { ResearchApiHandler } from "../Research/ResearchApiHandler"
 
 export class PaperApiHandler {
     public static async getDetails(paperId: string, researchId: string | null): Promise<unknown> {
@@ -30,7 +31,9 @@ export class PaperApiHandler {
     }
 
     public static async removeTag(savedPaper: SavedPaper, tag: Tag): Promise<void> {
+        console.log("before api:", await ResearchApiHandler.getTags(savedPaper.research));
         await PaperApiCaller.removeTag(savedPaper.paper.paperId, savedPaper.research.id, tag.id);
+        console.log("after api:", await ResearchApiHandler.getTags(savedPaper.research));
     }
 
     public static async changeComment(savedPaper: SavedPaper, comment: string): Promise<void> {
