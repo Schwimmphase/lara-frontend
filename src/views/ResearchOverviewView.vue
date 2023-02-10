@@ -5,6 +5,7 @@
             <searchbar-component id="search-bar"></searchbar-component>
         </div>
         <paper-organizable-list :slots="slots" @organize="selected => { getSavedPapers(selected); updateResearchPaperStore(); }"
+                                @export="selected => exportResearch(selected)"
                                 :export-enabled="true">
             <template v-slot:added>
                 <research-overview-card v-for="(savedPaper, index) in addedPapers"
