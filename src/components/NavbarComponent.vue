@@ -11,9 +11,26 @@ import { i18n } from '@/internationalization/i18n'
 import { useCurrentUserStore } from '@/stores/currentUser';
 import { useOpenResearchStore } from '@/stores/openResearch';
 import { useOpenPaperStore } from '@/stores/openPaper';
+import router from '@/router';
 
-// function to logout the user
-function logout(): void {
+// Method to navigate to homeview
+let navigateToHome = (): void => {
+    router.push({name: 'home'});
+}
+
+// Method to navigate to adminview
+let navigateToAdmin = (): void => {
+    router.push({name: 'admin'});
+}
+
+// TODO If there are more languages, then add here possible options
+let changeLanguage = (lang: string) => {
+    i18n.global.locale.value = lang as "en" | "de";
+    localStorage.setItem('lang', lang);
+}
+
+// Method for the user to logout
+let logout = (): void => {
     useOpenResearchStore().resetStore();
     useOpenPaperStore().resetStore();
     useCurrentUserStore().resetStore();
@@ -24,6 +41,8 @@ function logout(): void {
     document.cookie = "lara-token=; expires " + inOneSecond.toUTCString() + "; path=/;";
 }
 
+// Helper Methods
+
 function isUserLoggedIn(): boolean {
     return useCurrentUserStore().getCurrentUser !== null;
 }
@@ -32,18 +51,14 @@ function isUserAdmin(): boolean {
     return useCurrentUserStore().getIsAdmin;
 }
 
-
 let languages = LanguageService.getLanguages();
 
+
+// Set the language to store
 if (!localStorage.getItem('lang')) {
     localStorage.setItem('lang', i18n.global.locale.value);
 } else {
     i18n.global.locale.value = localStorage.getItem('lang')! as "en" | "de";
-}
-
-let changeLanguage = (lang: string) => {
-    i18n.global.locale.value = lang as "en" | "de";
-    localStorage.setItem('lang', lang);
 }
 
 </script>
@@ -54,9 +69,9 @@ let changeLanguage = (lang: string) => {
     <v-app-bar :elevation="5" class="lara-navbar">
         <div class="ml-6">
             <v-app-bar-title>
-                <router-link :to="{ name: 'home' }" class="lara-icon-link">
+                <span class="lara-icon-link lara-clickable" @click="navigateToHome">
                     <h2 class="font-weight-bold">lara.</h2>
-                </router-link>
+                </span>
             </v-app-bar-title>
         </div>
         <v-spacer></v-spacer>
@@ -75,12 +90,11 @@ let changeLanguage = (lang: string) => {
             </v-menu>
         </div>
         <div class="mr-6">
-            <router-link class="ml-6 lara-navbar-link" v-if="isUserAdmin()" :to="{ name: 'admin' }">{{ $t('navbar.manageUsers') }}</router-link>
+            <span @click="navigateToAdmin" class="ml-6 lara-navbar-link" v-if="isUserAdmin()">{{ $t('navbar.manageUsers') }}</span>
             <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'home' }">{{ $t('navbar.home') }}</router-link>
-            <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'login' }" @click.native="logout">{{ $t('navbar.logout') }}</router-link>
+            <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'login' }" @click="logout">{{ $t('navbar.logout') }}</router-link>
         </div>
     </v-app-bar>
-
 </template>
 
 
