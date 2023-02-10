@@ -1,27 +1,22 @@
 <script setup lang="ts">
 
 import {reactive} from "@vue/reactivity";
-
-import PaperCard from "@/components/cards/PaperCard.vue";
-
-import SearchbarComponent from "@/components/sidebar/SearchbarComponent.vue";
+import {useRoute} from "vue-router";
 
 import type {Paper} from "@/model/Paper";
 import type {Research} from "@/model/Research";
 import {useOpenResearchStore} from "@/stores/openResearch";
-import {useRoute} from "vue-router";
 import {ResearchApiHandler} from "@/api/Research/ResearchApiHandler";
 
 import {useOpenPaperStore} from '@/stores/openPaper';
 import type {SavedPaper} from "@/model/SavedPaper";
 import PaperOrganizableList from "@/components/basic/PaperOrganizableList.vue";
+import SearchbarComponent from "@/components/sidebar/SearchbarComponent.vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
+import PaperCard from "@/components/cards/PaperCard.vue";
 import type {Organizer} from "@/model/Organizer";
 
-useOpenPaperStore().resetStore();
-
 let openResearchStore = useOpenResearchStore();
-
 let slots = [{ id: "search-results", name: "Suchergebnisse" }];
 
 let searchState: { results: Paper[], research: Research | undefined, query: string | undefined, loading: boolean } = reactive({
@@ -29,10 +24,6 @@ let searchState: { results: Paper[], research: Research | undefined, query: stri
     results: [],
     research: openResearchStore.getResearch,
     query: useRoute().query.search as string,
-});
-
-openResearchStore.$subscribe((mutation, state) => {
-    searchState.research = state.openResearch;
 });
 
 async function getSearchResults(selectedOrganizers: Organizer[]): Promise<void> {
@@ -57,12 +48,20 @@ async function getSearchResults(selectedOrganizers: Organizer[]): Promise<void> 
     searchState.loading = false;
 }
 
-getSearchResults([]);
-
+// Helper methods
 function isSaved(paper: Paper): boolean {
     let savedPapers: SavedPaper[] = openResearchStore.getResearchPapers;
     return savedPapers.filter(savedPaper => savedPaper.paper.paperId === paper.paperId).length > 0;
 }
+
+openResearchStore.$subscribe((mutation, state) => {
+    searchState.research = state.openResearch;
+});
+
+// Reset store, because in the search view there is no openPaper
+useOpenPaperStore().resetStore();
+
+getSearchResults([]);
 
 </script>
 
