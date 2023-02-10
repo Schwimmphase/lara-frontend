@@ -9,7 +9,9 @@
                     <v-form v-model="valid">
                         <div class="d-flex flex-column">
                             <div class="d-flex flex-row justify-space-between" v-for="slot in slots" >
-                                <p class="text-h5 mt-auto mb-auto">{{ slot.name }}</p>
+                                <div class="w-25 d-flex align-center">
+                                    <p class="text-h5 mt-auto mb-auto">{{ slot.name }}</p>
+                                </div>
                                 <slot :name="slot.id"></slot>
                             </div>
                         </div>
