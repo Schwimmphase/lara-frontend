@@ -16,10 +16,6 @@ import type {SavedPaper} from "@/model/SavedPaper";
 import {i18n} from "@/internationalization/i18n";
 import PaperOrganizableList from "@/components/basic/PaperOrganizableList.vue";
 
-document.title = i18n.global.t("pageTitles.recommendations") + " - lara";
-
-useOpenPaperStore().resetStore();
-
 const slotsRecommended = [
     {id: "recommendations", name: i18n.global.t("words.recommendations")}
 ];
@@ -30,39 +26,39 @@ const slotsReferences = [
 ];
 
 let state: { showCitations: boolean, citations: Paper[], references: Paper[], recommendations: Paper[],
-        research: Research | undefined, loadingRecommendations: boolean,
-        loadingCitationsReferences: boolean} = reactive({
-    showCitations: false,
+            research: Research | undefined, loadingRecommendations: boolean,
+            loadingCitationsReferences: boolean} = reactive({
     citations: [],
     references: [],
     recommendations: [],
     research: undefined,
+    showCitations: false,
     loadingRecommendations: true,
     loadingCitationsReferences: true
 });
 
-// Get the persistent saved OpenResearch
-let researchStore = useOpenResearchStore();
-
-state.research = researchStore.openResearch;
-
-// Get Paper Lists from API
-let research = state.research as Research;
-
 // Method to get the Recommendations from the API
 async function setRecommendations(selectedOrganizers: Organizer[]): Promise<void> {
+    if (state.research == undefined) {
+        console.error("SET_RECOMMENDATIONS : Research is undefined")
+        return;
+    }
+    
     state.loadingRecommendations = true;
-
-    state.recommendations = await ResearchApiHandler.getRecommendations(research, selectedOrganizers);
-
+    state.recommendations = await ResearchApiHandler.getRecommendations(state.research, selectedOrganizers);
     state.loadingRecommendations = false;
 }
 
 // Method to get the Recommendations from the API
 async function setCitationReferences(selectedOrganizers: Organizer[]): Promise<void> {
+    if (state.research == undefined) {
+        console.error("SET_CITATIONS : Research is undefined")
+        return;
+    }
+    
     state.loadingCitationsReferences = true;
 
-    state.citations = await ResearchApiHandler.getCitations(research, selectedOrganizers);
+    state.citations = await ResearchApiHandler.getCitations(state.research, selectedOrganizers);
     state.references = await ResearchApiHandler.getReferences(research, selectedOrganizers);
 
     state.loadingCitationsReferences = false;
@@ -72,6 +68,13 @@ function isSaved(paper: Paper): boolean {
     let researchPaper: SavedPaper[] = researchStore.getResearchPapers;
     return researchPaper.filter(savedPaper => savedPaper.paper.paperId == paper.paperId).length > 0;
 }
+
+document.title = i18n.global.t("pageTitles.recommendations") + " - lara";
+useOpenPaperStore().resetStore();
+
+// Get the persistent saved OpenResearch
+let researchStore = useOpenResearchStore();
+state.research = researchStore.openResearch;
 
 setRecommendations([]);
 
@@ -143,10 +146,3 @@ setCitationReferences([]);
         </div>
     </div>
 </template>
-
-
-<style scoped>
-
-@import '../assets/main.css';
-
-</style>
