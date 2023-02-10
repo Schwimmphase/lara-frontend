@@ -72,6 +72,10 @@ class BasicApiHandler {
         cachedPaper.research = this.buildResearch(cachedPaper.research.toString());
         return cachedPaper;
     }
+
+    public handleError(reason: any) {
+        console.error(reason.name + ',', reason.message);
+    }
 }
 
 export default new BasicApiHandler();
