@@ -58,8 +58,6 @@ let getPapers = async () => {
         return;
     }
 
-    console.log("Get papers")
-
     let response = await ResearchApiHandler.getSavedPapers(state.research, [])
 
     state.researchPapers = response;
@@ -191,7 +189,7 @@ getPapers();
 }
 
 .lara-fixed-icon-right {
-    left: 265px;
+    left: 260px;
 }
 
 </style>
