@@ -63,7 +63,7 @@ class BasicApiHandler {
         savedPaper.saveState = savedPaper.saveState.toString().toLowerCase() as SaveState;
         let tags: Tag[] = [];
         for (let tag of savedPaper.tags) {
-            tags.push(this.buildTag(tag.toString()));
+            tags.push(tag as Tag);
         }
         savedPaper.tags = tags;
         return savedPaper;
