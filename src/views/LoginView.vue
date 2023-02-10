@@ -53,14 +53,14 @@ async function login() {
 
     router.push({ name: 'home'});
 }
+
 </script>
 
 
-<style>
-
-@import '../assets/main.css';
+<style scoped>
 
 #login-form {
     width: 300px;
 }
+
 </style>
