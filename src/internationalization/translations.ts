@@ -55,7 +55,7 @@ export const messages = {
 
         login: {
             login: 'Login',
-            userId: 'User ID',
+            username: 'Username',
             password: 'Password',
             button: 'submit'
         },
@@ -230,7 +230,7 @@ export const messages = {
 
         login: {
             login: 'Anmelden',
-            userId: 'Nutzer-ID',
+            username: 'Nutzername',
             password: 'Passwort',
             button: 'anmelden'
         },

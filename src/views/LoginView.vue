@@ -4,8 +4,8 @@
 
         <div>
             <v-form class="mt-8">
-                <v-text-field class="lara-field" variant="outlined" :label=" $t('login.userId') "
-                                v-model="loginData.userId" @keyup.enter="login" autofocus></v-text-field>
+                <v-text-field class="lara-field" variant="outlined" :label=" $t('login.username') "
+                                v-model="loginData.username" @keyup.enter="login" autofocus></v-text-field>
                 <v-text-field class="lara-field" variant="outlined" :label=" $t('login.password') " type="password"
                                 v-model="loginData.password" @keyup.enter="login"></v-text-field>
                 <lara-button type="primary" @click="login">{{ $t('login.button') }}</lara-button>
@@ -32,14 +32,14 @@ import {i18n} from "@/internationalization/i18n";
 document.title = i18n.global.t("pageTitles.login") + " - lara";
 
 let loginData = reactive({
-    userId: "",
+    username: "",
     password: "",
     loginFailed: false
 });
 
 
 async function login() {
-    const [token, user] = await AuthApiHandler.login(loginData.userId, loginData.password);
+    const [token, user] = await AuthApiHandler.login(loginData.username, loginData.password);
     if (token === undefined && user === undefined) {
         loginData.loginFailed = true;
         return;

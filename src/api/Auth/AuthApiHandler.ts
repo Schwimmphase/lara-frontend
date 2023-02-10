@@ -2,8 +2,8 @@ import BasicApiHandler from "../BasicApiHandler";
 import { AuthApiCaller } from "./AuthApiCaller";
 
 export class AuthApiHandler {
-    public static async login(userId: string, password: string): Promise<any[]> {
-        const response = await AuthApiCaller.login(userId, password);
+    public static async login(username: string, password: string): Promise<any[]> {
+        const response = await AuthApiCaller.login(username, password);
         if (!response) {
             return [];
         }
