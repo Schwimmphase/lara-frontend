@@ -22,6 +22,7 @@ export class PaperApiCaller {
     }
 
     public static addTag(paperId: string, researchId: string, tagId: string) {
+        console.debug("tagId:", tagId)
         return basicApiCaller.axiosInstance.put(this.urlPath + paperId + this.urlTag, {}, {
             params: {
                 "researchId": researchId,

@@ -20,7 +20,6 @@ export class PaperApiHandler {
         } else {
             // Get the details of a SavedPaper if the research id is not null
             const response = await PaperApiCaller.getDetails(paperId, researchId);
-            console.debug("api response of getDetails", response.data); // TODO: backend doesn't handle comment correctly?
             let data = basicApiHandler.tryParseJson(response.data);
             return BasicApiHandler.buildSavedPaper(data);
         }

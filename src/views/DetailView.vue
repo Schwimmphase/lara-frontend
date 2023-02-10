@@ -13,6 +13,8 @@ import type { Author } from '@/model/Author';
 import {useOpenResearchStore} from "@/stores/openResearch";
 import type {Research} from "@/model/Research";
 
+import { toRaw } from "vue";
+
 // State for the page, the openPaper and a indicator to know if the page is loading
 let detailState: {loading: boolean, openPaper: OpenPaper | undefined } = reactive({
     loading: true,
@@ -46,6 +48,8 @@ async function setPaper(): Promise<void> {
 
     detailState.openPaper = openPaperFromAPI;
     detailState.loading = false;
+
+    console.debug("openPaper in detailView:", toRaw(detailState.openPaper.savedPaper));
 }
 
 setPaper();

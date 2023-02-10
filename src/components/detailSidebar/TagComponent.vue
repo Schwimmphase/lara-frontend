@@ -134,13 +134,20 @@ async function deleteTag(decision: boolean, name: string): Promise<void> {
 // method to add tag to open paper
 async function addTagToOpenPaper(name: string): Promise<void> {
     const tag = tagState.selectableTags.find(tag => tag.name === name); // get tag of given name
-    let tagSelected = tagState.selectedTags.find(tag => tag === name); // get if tag of given name has been selected 
+    const tagSelected = tagState.selectedTags.find(tag => tag === name); // get if tag of given name has been selected 
     if (!tag || tagSelected) return;
+    console.debug("found tag:", tag);
 
     await PaperApiHandler.addTag(props.openPaper, tag);
 
+    // fetch paperdata from api again
+    let paper = await PaperApiHandler.getDetails(props.openPaper.paper.paperId, useOpenResearchStore().getResearch!.id);
+
+    console.debug("addTag");
+    console.debug(paper);
+
     // update open paper of locally saved open research
-    props.openPaper.tags.push(tag);
+    //props.openPaper.tags.push(tag);
 
     // update selectable & selected tags
     getTags();
