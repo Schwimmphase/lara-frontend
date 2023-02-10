@@ -7,7 +7,10 @@ export const messages = {
             recommendations: 'Recommendations',
             citations: 'Citations',
             references: 'References',
-            export: 'Export'
+            export: 'Export',
+            activate: 'Activate',
+            descending: 'descending',
+            ascending: 'ascending'
         },
 
         navbar: {
