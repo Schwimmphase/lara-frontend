@@ -7,7 +7,6 @@ import type { Tag } from "@/model/Tag"
 import { SaveState } from "@/model/SaveState"
 import type { Organizer } from "@/model/Organizer"
 import { RecommendationMethod } from "@/model/RecommendationMethod"
-import type { Research } from "@/model/Research"
 import BasicApiHandler from "../BasicApiHandler"
 import { ResearchApiHandler } from "../Research/ResearchApiHandler"
 

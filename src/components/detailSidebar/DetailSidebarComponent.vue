@@ -6,7 +6,6 @@ import { useOpenPaperStore } from '@/stores/openPaper'
 import { reactive } from '@vue/reactivity';
 import { toRaw } from 'vue';
 
-import { ResearchApiHandler } from '@/api/Research/ResearchApiHandler';
 import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
 
 import type { SavedPaper } from '@/model/SavedPaper';
@@ -15,7 +14,6 @@ import { OpenPaper } from '@/stores/model/OpenPaper';
 import { SaveState } from '@/model/SaveState';
 import type { Research } from '@/model/Research';
 import { useOpenResearchStore } from '@/stores/openResearch';
-import router from '@/router';
 import type { Author } from '@/model/Author';
 
 const MAX_NUMBER_OF_AUTHORS = 2;
@@ -75,8 +73,11 @@ let changeComment = async (comment: string): Promise<void> => {
     console.debug("Changed comment to '" + comment + "'");
 
     await PaperApiHandler.changeComment(detailState.openPaper.savedPaper, comment);
-    detailState.openPaper.savedPaper.comment = comment;
-    useOpenResearchStore().setResearchPaper(toRaw(detailState.openPaper.savedPaper));
+
+    // update open paper of open research
+    let paper = await PaperApiHandler.getDetails(detailState.openPaper.savedPaper.paper.paperId, researchState.research!.id) as SavedPaper;
+    detailState.openPaper.savedPaper.comment = paper.comment;
+    useOpenResearchStore().setResearchPaper(toRaw(paper));
 }
 
 let changeRelevance = async (relevance: number | string | undefined): Promise<void> => {
@@ -95,8 +96,10 @@ let changeRelevance = async (relevance: number | string | undefined): Promise<vo
     await PaperApiHandler.changeRelevance(detailState.openPaper.savedPaper, relevance as number);
 
     // update open paper of open research
-    detailState.openPaper.savedPaper.relevance = relevance as number;
-    useOpenResearchStore().setResearchPaper(toRaw(detailState.openPaper.savedPaper));
+    let paper = await PaperApiHandler.getDetails(detailState.openPaper.savedPaper.paper.paperId, researchState.research!.id) as SavedPaper;
+    detailState.openPaper.savedPaper.relevance = paper.relevance;
+    detailSidebarState.relevance = paper.relevance;
+    useOpenResearchStore().setResearchPaper(toRaw(paper));
 }
 
 let changeSaveState = async (savedPaper: SavedPaper | undefined, state: SaveState): Promise<void> => {
@@ -107,8 +110,10 @@ let changeSaveState = async (savedPaper: SavedPaper | undefined, state: SaveStat
     
     await PaperApiHandler.changeSaveState(savedPaper, state);
 
-    savedPaper.saveState = state;
-    useOpenResearchStore().setResearchPaper(savedPaper);
+    let paper = await PaperApiHandler.getDetails(savedPaper.paper.paperId, researchState.research!.id) as SavedPaper;
+    detailState.openPaper!.savedPaper!.saveState = paper.saveState;
+    savedPaper.saveState = paper.saveState;
+    useOpenResearchStore().setResearchPaper(paper);
 }
 
 
@@ -255,42 +260,42 @@ const props = defineProps<{ openPaper: OpenPaper }>();
                 <div>
                     <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.recommendations') }}</span>
 
-                    <div class="mb-4" v-for="(recommendation, index) in recommendationsStore.recommendations" :key="index">
-                        <router-link class="text-h6 lara-recommendation-link" v-if="index < 3"
+                    <div class="mb-2" v-for="(recommendation, index) in recommendationsStore.recommendations" :key="index">
+                        <router-link class="lara-recommendation-link" v-if="index < 3"
                                      :to="{ name: 'paperDetails', query: {paper: recommendation.paperId}}"
                                      @click="openPaperStore.setPaper(new OpenPaper(recommendation, undefined, false))">
                             {{ recommendation.title }}
                         </router-link>
                     </div>
-                    <p v-if="recommendationsStore.recommendations.length > MAX_NUMBER_DISPLAYED">
+                    <p v-if="recommendationsStore.recommendations.length > MAX_NUMBER_DISPLAYED" class="text-grey">
                         {{ $t('detailSidebar.more', { n: recommendationsStore.recommendations.length - MAX_NUMBER_DISPLAYED }) }}
                     </p>
                 </div>
-                <div class="mt-2">
+                <div class="mt-4">
                     <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.citations') }}</span>
 
-                    <div class="mb-4" v-for="(citation, index) in recommendationsStore.citations" :key="index">
-                        <router-link class="text-h6 lara-recommendation-link" v-if="index < 3"
+                    <div class="mb-2" v-for="(citation, index) in recommendationsStore.citations" :key="index">
+                        <router-link class="lara-recommendation-link" v-if="index < 3"
                                      :to="{ name: 'paperDetails', query: {paper: citation.paperId}}" 
                                      @click="openPaperStore.setPaper(new OpenPaper(citation, undefined, false))">
                             {{ citation.title }}
                         </router-link>
                     </div>
-                    <p v-if="recommendationsStore.citations.length > MAX_NUMBER_DISPLAYED">
+                    <p v-if="recommendationsStore.citations.length > MAX_NUMBER_DISPLAYED" class="text-grey">
                         {{ $t('detailSidebar.more', { n: recommendationsStore.citations.length - MAX_NUMBER_DISPLAYED }) }}
                     </p>
                 </div>
-                <div class="mt-2">
+                <div class="mt-4">
                     <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.references') }}</span>
 
-                    <div class="mb-4" v-for="(reference, index) in recommendationsStore.references" :key="index">
-                        <router-link class="text-h6 lara-recommendation-link" v-if="index < 3"
+                    <div class="mb-2" v-for="(reference, index) in recommendationsStore.references" :key="index">
+                        <router-link class="lara-recommendation-link" v-if="index < 3"
                                      :to="{ name: 'paperDetails', query: {paper: reference.paperId}}"
                                      @click="openPaperStore.setPaper(new OpenPaper(reference, undefined, false))">
                             {{ reference.title }}
                         </router-link>
                     </div>
-                    <p v-if="recommendationsStore.references.length > MAX_NUMBER_DISPLAYED">
+                    <p v-if="recommendationsStore.references.length > MAX_NUMBER_DISPLAYED" class="text-grey">
                         {{ $t('detailSidebar.more', { n: recommendationsStore.references.length - MAX_NUMBER_DISPLAYED }) }}
                     </p>
                 </div>

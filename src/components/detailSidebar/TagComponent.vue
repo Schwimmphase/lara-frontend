@@ -81,7 +81,7 @@ async function getTagsOfResearch() {
     tagState.selectableTags = tags;
     
     // get selected tags
-    tagState.selectedTags = openPaperState.openPaper.tags.map(tag => tag.name); // TODO: no tags even if tags in local storage (bc prop didn't get updated on change of local storage in detailSidebarComponent?)
+    tagState.selectedTags = openPaperState.openPaper.tags.map(tag => tag.name);
 }
 getTagsOfResearch();
 
