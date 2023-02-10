@@ -1,5 +1,4 @@
 import { Author } from "./Author";
-import { Comment } from "./Comment";
 import { Tag } from "./Tag";
 import { Paper } from "./Paper";
 import { SavedPaper } from "./SavedPaper";
@@ -10,11 +9,11 @@ import { UserCategory } from "./UserCategory";
 import { OpenPaper } from "@/stores/model/OpenPaper";
 
 
-export const testComment1 = new Comment("Das ist der erste Testkommentar");
-export const testComment2 = new Comment("Das ist der zweite Testkommentar");
-export const testComment3 = new Comment("Das ist der dritte Testkommentar");
+export const testComment1 = "Das ist der erste Testkommentar";
+export const testComment2 = "Das ist der zweite Testkommentar";
+export const testComment3 = "Das ist der dritte Testkommentar";
 
-export const testResearchComment = new Comment("Das ist der dritte Testkommentar");
+export const testResearchComment = "Das ist der dritte Testkommentar";
 
 export const testUserCategory1 = new UserCategory("id12345", "#32a852", "Cooler Typ");
 export const testUserCategory2 = new UserCategory("id67890", "#0000FF", "ADMIN");

@@ -1,6 +1,5 @@
 import { Author } from "@/model/Author";
 import { CachedPaper } from "@/model/CachedPaper";
-import { Comment } from "@/model/Comment";
 import { Paper } from "@/model/Paper";
 import { Research } from "@/model/Research";
 import { SavedPaper } from "@/model/SavedPaper";
@@ -43,7 +42,6 @@ class BasicApiHandler {
 
     public buildResearch(data: string): Research {
         let research = plainToInstance(Research, data);
-        research.comment = new Comment(research.comment.toString());
         research.startDate = new Date(research.startDate);
         return research;
     }
@@ -62,7 +60,6 @@ class BasicApiHandler {
         let savedPaper = plainToInstance(SavedPaper, data);
         savedPaper.paper = this.buildPaper(JSON.parse(JSON.stringify(savedPaper.paper)));
         savedPaper.research = this.buildResearch(JSON.parse(JSON.stringify(savedPaper.research)));
-        savedPaper.comment = new Comment(JSON.parse(JSON.stringify(data)).comment.text);
         savedPaper.saveState = savedPaper.saveState.toString().toLowerCase() as SaveState;
         let tags: Tag[] = [];
         for (let tag of savedPaper.tags) {

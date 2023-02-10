@@ -3,7 +3,6 @@ import { PaperApiCaller } from "./PaperApiCaller"
 
 import type { Paper } from "@/model/Paper"
 import type { SavedPaper } from "@/model/SavedPaper"
-import type { Comment } from "@/model/Comment"
 import type { Tag } from "@/model/Tag"
 import { SaveState } from "@/model/SaveState"
 import type { Organizer } from "@/model/Organizer"
@@ -21,7 +20,7 @@ export class PaperApiHandler {
         } else {
             // Get the details of a SavedPaper if the research id is not null
             const response = await PaperApiCaller.getDetails(paperId, researchId);
-            console.debug("data", response.data); // TODO: backend doesn't handle comment correctly?
+            console.debug("api response of getDetails", response.data); // TODO: backend doesn't handle comment correctly?
             let data = basicApiHandler.tryParseJson(response.data);
             return BasicApiHandler.buildSavedPaper(data);
         }
@@ -35,8 +34,8 @@ export class PaperApiHandler {
         await PaperApiCaller.removeTag(savedPaper.paper.paperId, savedPaper.research.id, tag.id);
     }
 
-    public static async changeComment(savedPaper: SavedPaper, comment: Comment): Promise<void> {
-        await PaperApiCaller.changeComment(savedPaper.paper.paperId, savedPaper.research.id, comment.text);
+    public static async changeComment(savedPaper: SavedPaper, comment: string): Promise<void> {
+        await PaperApiCaller.changeComment(savedPaper.paper.paperId, savedPaper.research.id, comment);
     }
 
     public static async changeSaveState(savedPaper: SavedPaper, saveState: SaveState): Promise<void> {

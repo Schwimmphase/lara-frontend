@@ -11,7 +11,6 @@ import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
 
 import type { SavedPaper } from '../../model/SavedPaper';
 import type { Paper } from '../../model/Paper';
-import type { Comment } from '../../model/Comment'
 import { OpenPaper } from '../../stores/model/OpenPaper';
 import { SaveState } from '../../model/SaveState';
 import type { Research } from '../../model/Research';
@@ -50,15 +49,15 @@ openPaperStore.$subscribe((mutation, state) => {
 });
 
 // State for the comment/relevance of the open paper
-let detailSidebarState: { comment: Comment | undefined, relevance: number | undefined } = reactive({
-    comment: detailState.openPaper?.saved ? detailState.openPaper.savedPaper!.comment : undefined,
+let detailSidebarState: { comment: string, relevance: number | undefined } = reactive({
+    comment: detailState.openPaper?.saved ? detailState.openPaper.savedPaper!.comment : "",
     relevance: detailState.openPaper?.saved ? detailState.openPaper.savedPaper!.relevance : 0
 });
 
 
 // Methods to change comment/tag/saveState/relevance of the paper currently viewed
-let changeComment = async (comment: Comment | undefined): Promise<void> => {
-    if (comment == undefined || detailState.openPaper == null) {
+let changeComment = async (comment: string): Promise<void> => {
+    if (comment == "" || detailState.openPaper == null) {
         console.error("CHANGE_COMMENT : Argument null / undefined");
         return;
     }
@@ -68,11 +67,13 @@ let changeComment = async (comment: Comment | undefined): Promise<void> => {
         return;
     }
     
-    console.debug("Changed comment to '" + comment.text + "'");
+    console.debug("Changed comment to '" + comment + "'");
 
     await PaperApiHandler.changeComment(detailState.openPaper.savedPaper, comment);
 
-    detailState.openPaper.savedPaper.comment.text = comment.text;
+    console.debug(await PaperApiHandler.getDetails(detailState.openPaper.savedPaper.paper.paperId, researchState.research!.id))
+
+    detailState.openPaper.savedPaper.comment = comment;
     useOpenResearchStore().setResearchPaper(toRaw(detailState.openPaper.savedPaper));
 }
 
@@ -187,7 +188,7 @@ const props = defineProps<{ openPaper: OpenPaper }>();
 
                 <div class="mt-4">
                     <span class="text-h5">{{ $t('detailSidebar.comments') }}</span>
-                    <v-textarea hide-details variant="outlined" class="mt-2 lara-field" v-model="detailSidebarState.comment!.text"></v-textarea>
+                    <v-textarea hide-details variant="outlined" class="mt-2 lara-field" v-model="detailSidebarState.comment"></v-textarea>
                     <lara-button class="mt-2" type="primary" @click="changeComment(toRaw(detailSidebarState.comment))">{{ $t('detailSidebar.save') }}</lara-button>
                     <v-divider class="my-3"></v-divider>
                 </div>

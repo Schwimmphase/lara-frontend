@@ -1,5 +1,4 @@
 import type { Paper } from "./Paper";
-import type { Comment } from "./Comment";
 import type { Tag } from "./Tag";
 import type { SaveState } from "./SaveState";
 import type { Research } from "./Research";
@@ -8,12 +7,12 @@ import type { Research } from "./Research";
 export class SavedPaper {
     paper: Paper;
     research: Research;
-    comment: Comment;
+    comment: string;
     tags: Tag[];
     relevance: number;
     saveState: SaveState;
 
-    constructor(paper: Paper, research: Research, comment: Comment, tags: Tag[], relevance: number, saveState: SaveState) {
+    constructor(paper: Paper, research: Research, comment: string, tags: Tag[], relevance: number, saveState: SaveState) {
         this.paper = paper;
         this.research = research;
         this.comment = comment;

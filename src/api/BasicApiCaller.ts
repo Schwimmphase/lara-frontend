@@ -6,7 +6,7 @@ class BasicApiCaller {
 
     constructor() {
         this.axiosInstance = axios.create({
-            baseURL: 'https://api.lara.gregyyy.dev',
+            baseURL: 'https://app.lara.gregyyy.dev',
             timeout: 10_000, // ms
         });
 

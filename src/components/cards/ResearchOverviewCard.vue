@@ -2,7 +2,7 @@
 
     <v-card class="d-flex flex-column lara-card w-100" height="230" variant="flat">
         <v-card-title @click="$emit('open', paper)" class="font-weight-bold text-wrap lara-clickable">{{ paper.paper.title }}</v-card-title>
-        <v-card-text>{{ paper.comment === undefined ? '' : paper.comment.text }}</v-card-text>
+        <v-card-text>{{ paper.comment }}</v-card-text>
 
         <div v-if="addButton">
             <v-container class="d-flex gap-4">

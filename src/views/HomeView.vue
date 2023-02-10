@@ -16,7 +16,7 @@
                 <research-card v-if="research != null"
                                :id="research.id"
                                :title="research.title"
-                               :description="research.comment.text"
+                               :description="research.comment"
                                :added="69"
                                :enqueued="420"
                                :started-at="research.startDate.toLocaleDateString()"
@@ -41,7 +41,6 @@ import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
 import { useOpenResearchStore } from "@/stores/openResearch";
 import { useOpenPaperStore } from "@/stores/openPaper";
 import NewResearchDialog from "@/components/dialogs/NewResearchDialog.vue";
-import { Comment } from "@/model/Comment";
 import { reactive } from "vue";
 
 // reset open research/paper
@@ -63,12 +62,12 @@ async function getResearches() {
 getResearches();
 
 async function onCreateResearch(title: string, description: string) {
-    const research = await ResearchApiHandler.createResearch(title, new Comment(description));
+    const research = await ResearchApiHandler.createResearch(title, description);
     state.researches.push(research);
 }
 
 async function onEditResearch(research: Research, title: string, description: string) {
-    const newResearch = await ResearchApiHandler.updateResearch(research, title, new Comment(description));
+    const newResearch = await ResearchApiHandler.updateResearch(research, title, description);
     state.researches[state.researches.indexOf(research)] = newResearch;
 }
 
