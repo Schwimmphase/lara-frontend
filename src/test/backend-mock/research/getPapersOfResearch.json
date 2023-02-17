@@ -1,0 +1,29 @@
+{
+  "savedPapers": [
+    {
+      "paper": {
+        "id": "S2$649def34f8be52c8b66281af98ae884c09aef38b",
+        "title": "Der Titel eines Artikels",
+        "authors": [
+          {
+            "name": "Thomas Bläsius"
+          }
+        ],
+        "year": 2022,
+        "abstract": "Dies ist ein Abstract\nmit Zeilenumbrüchen.",
+        "citationCount": 23,
+        "referenceCount": 34,
+        "venue": "NCCF",
+        "pdfUrl": "https://papers.org/paper/HJdsfD845hS8wfS7b43d.pdf"
+      },
+      "comment": "Dieser Artikel ist sehr sehr gut. Ich mag diesen Artikel.",
+      "tags": [
+        {
+          "id": "24JDXZoef7zJ8h8qZtAyvY8jZZkrtYeD",
+          "name": "Experiment",
+          "color": "#00876C"
+        }
+      ]
+    }
+  ]
+}
