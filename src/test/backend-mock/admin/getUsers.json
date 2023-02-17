@@ -1,0 +1,14 @@
+{
+  "users": [
+    {
+      "username": "Bernd",
+      "userId": "QiWDFtocwu7wrDF4tqraWX5tqTZk5GTr",
+      "userCategory": "ADMIN"
+    },
+    {
+      "username": "Sebastian",
+      "userId": "Cw98kECj5XbeshkxAXfcViebwBsuMvjH",
+      "userCategory": "Student"
+    }
+  ]
+}

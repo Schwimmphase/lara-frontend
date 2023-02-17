@@ -1,0 +1,11 @@
+{
+  "passwordNotNullOrEmpty": "Password must not be null or empty",
+  "usernameEmpty": "Username must not be empty",
+  "userCategoryNotFound": "User category with this name not found",
+  "userNotFound": "User with this id not found",
+  "userCategoryOrUserNotFound": "User category with this name or user with this id not found",
+  "userCategoryAlreadyExists": "User category with this name already exists",
+  "nameEmpty": "Name must not be empty",
+  "colorEmpty": "Color must not be empty",
+  "userCategoryNotDeleteBecauseUser": "User category cannot be deleted because a User has this category"
+}

@@ -1,0 +1,8 @@
+{
+  "researchNotFound": "Research with this id not found",
+  "researchNotOwned": "Research not owned by user",
+  "researchOrPaperNotFound": "Research or paper with this id not found",
+  "researchOrPaperNotOwned": "Research or paper not owned by user",
+  "cache": "Could not update cache",
+  "loadCache": "There was a problem loading the CachedPapers for this Research"
+}
