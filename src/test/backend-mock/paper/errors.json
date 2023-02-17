@@ -1,0 +1,7 @@
+{
+  "paperNotOwned": "Paper not owned by user",
+  "paperNotFound": "Paper with this id not found",
+  "paperAlreadyTag": "Paper already has this tag",
+  "paperOrTagNotOwned": "Paper or tag not owned by user",
+  "paperNotHasTag": "Paper does not has this tag"
+}
