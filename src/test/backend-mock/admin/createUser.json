@@ -1,5 +1,9 @@
 {
   "username": "Bernd",
   "userId": "QiWDFtocwu7wrDF4tqraWX5tqTZk5GTr",
-  "userCategory": "ADMIN"
+  "userCategory": {
+    "id": "jewAMxi7PiW7icVg6t3RpKFTNER5ZtD8",
+    "name": "ADMIN",
+    "color": "#FF0000"
+  }
 }
