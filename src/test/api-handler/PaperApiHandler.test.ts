@@ -3,27 +3,17 @@ import {beforeEach, describe, expect, test} from "vitest"
 import MockAdapter from "axios-mock-adapter";
 import BasicApiCaller from "@/api/BasicApiCaller";
 import type {Paper} from "@/model/Paper";
-import type {Author} from "@/model/Author";
 import {PaperApiHandler} from "@/api/Paper/PaperApiHandler";
-import type {Tag} from "@/model/Tag";
 import {SavedPaper} from "@/model/SavedPaper";
-import type {ResearchResponse} from "@/test/api-handler/Helper";
-import {assertResearch, assertTags, getPaper, getResearch, getTag} from "@/test/api-handler/Helper";
+import type {SavedPaperResponse} from "@/test/api-handler/Helper";
+import {assertPaper, assertSavedPaper, getPaper, getResearch, getTag} from "@/test/api-handler/Helper";
+import {SaveState} from "@/model/SaveState";
 
 import getDetailsPaper from "@/test/backend-mock/paper/getDetailsPaper.json";
 import getDetailsSavedPaper from "@/test/backend-mock/paper/getDetailsSavedPaper.json";
-import {SaveState} from "@/model/SaveState";
+import getRecommendationsOfPaper from "@/test/backend-mock/paper/getRecommendationsOfPaper.json";
 
 const mock = new MockAdapter(BasicApiCaller.axiosInstance);
-
-interface SavedPaperResponse {
-    paper: Paper,
-    comment: string,
-    tags: Tag[],
-    research: ResearchResponse,
-    saveState: string,
-    relevance: number
-}
 
 describe("PaperApiHandler", () => {
     beforeEach(() => {
@@ -70,6 +60,68 @@ describe("PaperApiHandler", () => {
 
         await PaperApiHandler.removeTag(savedPaper, tag); // test if no error is thrown
     });
+    test("changeComment", async () => {
+        let savedPaper = getSavedPaper();
+
+        mock.onPatch("/paper/" + savedPaper.paper.paperId + "/comment",
+            { "comment": "Ne der Artikel ist doch nicht so gut" }).reply(200);
+
+        // test if no error is thrown
+        await PaperApiHandler.changeComment(savedPaper, "Ne der Artikel ist doch nicht so gut");
+    });
+    test("changeSaveState", async () => {
+        let savedPaper = getSavedPaper();
+
+        mock.onPut("/paper/" + savedPaper.paper.paperId + "/save-state").reply(200);
+
+        await PaperApiHandler.changeSaveState(savedPaper, SaveState.hidden); // test if no error is thrown
+    });
+    test("changeRelevance", async () => {
+        let savedPaper = getSavedPaper();
+
+        mock.onPatch("/paper/" + savedPaper.paper.paperId + "/relevance").reply(200);
+
+        await PaperApiHandler.changeRelevance(savedPaper, 1); // test if no error is thrown
+    });
+    test("getRecommendations", async () => {
+        let json: { recommendations: Paper[] } = getRecommendationsOfPaper;
+
+        let paper = getPaper();
+
+        mock.onPost("/paper/" + paper.paperId + "/recommendations", { "organizers": [] })
+            .reply(200, json);
+
+        let actualRecommendations: Paper[] = await PaperApiHandler.getRecommendations(paper, []);
+
+        expect(actualRecommendations.length).toBe(1);
+        assertPaper(actualRecommendations[0], paper);
+    });
+    test("getReferences", async () => {
+        let json: { recommendations: Paper[] } = getRecommendationsOfPaper;
+
+        let paper = getPaper();
+
+        mock.onPost("/paper/" + paper.paperId + "/recommendations", { "organizers": [] })
+            .reply(200, json);
+
+        let actualReferences: Paper[] = await PaperApiHandler.getReferences(paper, []);
+
+        expect(actualReferences.length).toBe(1);
+        assertPaper(actualReferences[0], paper);
+    });
+    test("getCitations", async () => {
+        let json: { recommendations: Paper[] } = getRecommendationsOfPaper;
+
+        let paper = getPaper();
+
+        mock.onPost("/paper/" + paper.paperId + "/recommendations", { "organizers": [] })
+            .reply(200, json);
+
+        let actualCitations: Paper[] = await PaperApiHandler.getCitations(paper, []);
+
+        expect(actualCitations.length).toBe(1);
+        assertPaper(actualCitations[0], paper);
+    });
 });
 
 function getSavedPaper(): SavedPaper {
@@ -78,36 +130,4 @@ function getSavedPaper(): SavedPaper {
     let tag = getTag();
     return new SavedPaper(paper, research, "Dieser Artikel ist sehr sehr gut. Ich mag diesen Artikel.",
         [tag], 3, SaveState.added);
-}
-
-function assertPaper(actual: Paper, expected: Paper){
-    expect(actual.paperId).toBe(expected.paperId);
-    expect(actual.title).toBe(expected.title);
-    assertAuthors(actual.authors, expected.authors);
-    expect(actual.year).toBe(expected.year);
-    expect(actual.abstract).toBe(expected.abstract);
-    expect(actual.citationCount).toBe(expected.citationCount);
-    expect(actual.referenceCount).toBe(expected.referenceCount);
-    expect(actual.venue).toBe(expected.venue);
-    expect(actual.pdfUrl).toBe(expected.pdfUrl);
-}
-
-function assertSavedPaper(actual: SavedPaper, expected: SavedPaperResponse) {
-    assertPaper(actual.paper, expected.paper);
-    expect(actual.comment).toBe(expected.comment);
-    assertTags(actual.tags, expected.tags);
-    assertResearch(actual.research, expected.research);
-    expect(actual.saveState).toBe(expected.saveState);
-    expect(actual.relevance).toBe(expected.relevance);
-}
-
-function assertAuthor(actual: Author, expected: Author){
-    expect(actual.name).toBe(expected.name);
-}
-
-function assertAuthors(actual: Author[], expected: Author[]){
-    expect(actual.length).toBe(expected.length);
-    for(let i = 0; i < actual.length; i++){
-        assertAuthor(actual[i], expected[i]);
-    }
 }
