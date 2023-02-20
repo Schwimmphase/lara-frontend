@@ -15,8 +15,16 @@ export function getUserCategoryStudent(): UserCategory {
     return new UserCategory("rjyyjhVafQ32YSZ6BkS4A7H3cri46ohi", "#00876C", "Student");
 }
 
+export function getUserCategoryInvalid(): UserCategory {
+    return new UserCategory("INVALID", "#FF0000", "INVALID");
+}
+
 export function getUserAdmin(): User {
     return new User("Bernd", "QiWDFtocwu7wrDF4tqraWX5tqTZk5GTr", "password", getUserCategoryAdmin());
+}
+
+export function getUserInvalid(): User {
+    return new User("INVALID", "INVALID", "INVALID", getUserCategoryInvalid());
 }
 
 export function getPaper(): Paper {
