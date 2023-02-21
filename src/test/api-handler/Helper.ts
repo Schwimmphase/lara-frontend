@@ -34,6 +34,11 @@ export function getPaper(): Paper {
         "https://papers.org/paper/HJdsfD845hS8wfS7b43d.pdf");
 }
 
+export function getPaperInvalid(): Paper {
+    return new Paper("INVALID", "INVALID", [], 0, "INVALID", 0,
+        0, "INVALID", "INVALID");
+}
+
 export interface ResearchResponse {
     id: string;
     title: string;
@@ -54,6 +59,10 @@ export function getResearch(): Research {
     let user = getUserAdmin();
     return new Research("QiWDFtocwu7wrDF4tqraWX5tqTZk5GTr", "Eine sehr wichtige Recherche", new Date(),
         "Das ist die Beschreibung einer sehr wichtigen Recherche", user);
+}
+
+export function getResearchInvalid(): Research {
+    return new Research("INVALID", "INVALID", new Date(), "INVALID", getUserAdmin());
 }
 
 export function assertResearch(actual: Research, expected: ResearchResponse) {

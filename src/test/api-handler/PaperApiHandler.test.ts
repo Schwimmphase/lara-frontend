@@ -6,12 +6,13 @@ import type {Paper} from "@/model/Paper";
 import {PaperApiHandler} from "@/api/Paper/PaperApiHandler";
 import {SavedPaper} from "@/model/SavedPaper";
 import type {SavedPaperResponse} from "@/test/api-handler/Helper";
-import {assertPaper, assertSavedPaper, getPaper, getResearch, getTag} from "@/test/api-handler/Helper";
+import {assertPaper, assertSavedPaper, getPaper, getPaperInvalid, getResearch, getTag} from "@/test/api-handler/Helper";
 import {SaveState} from "@/model/SaveState";
 
 import getDetailsPaper from "@/test/backend-mock/paper/getDetailsPaper.json";
 import getDetailsSavedPaper from "@/test/backend-mock/paper/getDetailsSavedPaper.json";
 import getRecommendationsOfPaper from "@/test/backend-mock/paper/getRecommendationsOfPaper.json";
+import errors from "@/test/backend-mock/paper/errors.json";
 
 const mock = new MockAdapter(BasicApiCaller.axiosInstance);
 
@@ -30,6 +31,17 @@ describe("PaperApiHandler", () => {
 
         assertPaper(detailsPaper, json);
     });
+    test("getDetails from paper with wrong id", async () => {
+        let json: string = errors.paperNotFound;
+
+        let paper = getPaperInvalid();
+
+        mock.onGet("/paper/" + paper.paperId).reply(400, { message: json });
+
+        await PaperApiHandler.getDetails(paper.paperId, null).catch(reason => {
+           expect(reason.message).toBe(json);
+        });
+    });
     test("getDetails from saved paper", async () => {
         let json: SavedPaperResponse = getDetailsSavedPaper;
 
@@ -43,6 +55,19 @@ describe("PaperApiHandler", () => {
 
         assertSavedPaper(savedPaper, json);
     });
+    test("getDetails from saved paper not owned by user", async () => {
+        let json: string = errors.paperNotOwned;
+
+        let paper = getPaper();
+        let research = getResearch();
+
+        mock.onGet("/paper/" + paper.paperId, { params: { "researchId": research.id } })
+            .reply(403, { message: json });
+
+        await PaperApiHandler.getDetails(paper.paperId, research.id).catch(reason => {
+            expect(reason.message).toBe(json);
+        });
+    });
     test("addTag", async () => {
         let savedPaper = getSavedPaper();
         let tag = getTag();
@@ -50,6 +75,32 @@ describe("PaperApiHandler", () => {
         mock.onPut("/paper/" + savedPaper.paper.paperId + "/tag").reply(200);
 
         await PaperApiHandler.addTag(savedPaper, tag); // test if no error is thrown
+    });
+    test("addTag with paper already having tag", async () => {
+        let json: string = errors.paperAlreadyTag;
+
+        let savedPaper = getSavedPaper();
+        let tag = getTag();
+
+        mock.onPut("/paper/" + savedPaper.paper.paperId + "/tag")
+            .reply(400, { message: json });
+
+        await PaperApiHandler.addTag(savedPaper, tag).catch(reason => {
+            expect(reason.message).toBe(json);
+        });
+    });
+    test("addTag with tag not owned by user", async () => {
+        let json: string = errors.paperOrTagNotOwned;
+
+        let savedPaper = getSavedPaper();
+        let tag = getTag();
+
+        mock.onPut("/paper/" + savedPaper.paper.paperId + "/tag")
+            .reply(403, { message: json });
+
+        await PaperApiHandler.addTag(savedPaper, tag).catch(reason => {
+            expect(reason.message).toBe(json);
+        });
     });
     test("removeTag", async () => {
         let savedPaper = getSavedPaper();
@@ -59,6 +110,19 @@ describe("PaperApiHandler", () => {
             .reply(200);
 
         await PaperApiHandler.removeTag(savedPaper, tag); // test if no error is thrown
+    });
+    test("removeTag with paper not having tag", async () => {
+        let json: string = errors.paperNotHasTag;
+
+        let savedPaper = getSavedPaper();
+        let tag = getTag();
+
+        mock.onDelete("/paper/" + savedPaper.paper.paperId + "/tag")
+            .reply(400, { message: json });
+
+        await PaperApiHandler.removeTag(savedPaper, tag).catch(reason => {
+            expect(reason.message).toBe(json);
+        });
     });
     test("changeComment", async () => {
         let savedPaper = getSavedPaper();

@@ -1,4 +1,4 @@
-import {describe, test, expect, beforeEach} from "vitest"
+import {beforeEach, describe, expect, test} from "vitest"
 
 import MockAdapter from "axios-mock-adapter";
 import BasicApiCaller from "@/api/BasicApiCaller";
@@ -38,7 +38,13 @@ describe("AuthApiHandler", () => {
 
         let [token, user] = await AuthApiHandler.login("Sebastian", "password");
         assertAuthReturn(token, user, json);
-    })
+    });
+    test("login as user with wrong password", async () => {
+        mock.onPost("/login", { "username": "Sebastian", "password": "INVALID" }).reply(401);
+
+        let result: any[] = await AuthApiHandler.login("Sebastian", "INVALID");
+        expect(result.length).toBe(0);
+    });
 })
 
 function assertAuthReturn(token: String, user: User, json: AuthReturn): void {
