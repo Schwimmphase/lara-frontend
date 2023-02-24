@@ -11,17 +11,18 @@ export class TagApiCaller {
             params: {
                 "researchId": researchId
             }
-        });
+        }).catch(reason => { throw new Error(reason.response.data.message); });
     }
 
     public static updateTag(id: string, name: string, color: string) {
         return BasicApiCaller.axiosInstance.patch(this.urlTag + '/' + id, {
             "name": name,
             "color": color
-        });
+        }).catch(reason => { throw new Error(reason.response.data.message); });
     }
 
     public static deleteTag(id: string) {
-        return BasicApiCaller.axiosInstance.delete(this.urlTag + '/' + id);
+        return BasicApiCaller.axiosInstance.delete(this.urlTag + '/' + id)
+            .catch(reason => { throw new Error(reason.response.data.message); });
     }
 }

@@ -76,6 +76,10 @@ export function getTag() {
     return new Tag("24JDXZoef7zJ8h8qZtAyvY8jZZkrtYeD", "Experiment", "#00876C");
 }
 
+export function getTagInvalid() {
+    return new Tag("INVALID", "INVALID", "INVALID");
+}
+
 export function assertTag(actual: Tag, expected: Tag) {
     expect(actual.id).toBe(expected.id);
     expect(actual.name).toBe(expected.name);

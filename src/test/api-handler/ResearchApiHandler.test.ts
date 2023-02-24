@@ -5,7 +5,15 @@ import BasicApiCaller from "@/api/BasicApiCaller";
 import {ResearchApiHandler} from "@/api/Research/ResearchApiHandler";
 import type {Research} from "@/model/Research";
 import type {SavedPaperResponse} from "@/test/api-handler/Helper";
-import {assertPaper, assertSavedPaper, assertTag, getPaper, getResearch} from "@/test/api-handler/Helper";
+import {
+    assertPaper,
+    assertSavedPaper,
+    assertTag,
+    getPaper,
+    getPaperInvalid,
+    getResearch,
+    getResearchInvalid
+} from "@/test/api-handler/Helper";
 import {SaveState} from "@/model/SaveState";
 import type {Tag} from "@/model/Tag";
 import type {Paper} from "@/model/Paper";
@@ -17,6 +25,7 @@ import getTagsOfResearch from "@/test/backend-mock/research/getTagsOfResearch.js
 import getPapersOfResearch from "@/test/backend-mock/research/getPapersOfResearch.json";
 import getRecommendationsOfResearch from "@/test/backend-mock/research/getRecommendationsOfResearch.json";
 import searchByKeywords from "@/test/backend-mock/research/searchByKeywords.json";
+import errors from "@/test/backend-mock/research/errors.json";
 
 const mock = new MockAdapter(BasicApiCaller.axiosInstance);
 
@@ -64,6 +73,30 @@ describe("ResearchApiHandler", () => {
 
         assertResearch(actualResearch, json);
     });
+    test("updateResearch with invalid id", async () => {
+        let json: string = errors.researchNotFound;
+
+        let research = getResearchInvalid();
+
+        mock.onPatch("/research/" + research.id).reply(403, {message: json});
+
+        await ResearchApiHandler.updateResearch(research, "Eine sehr wichtige Recherche",
+            "Das ist die Beschreibung einer sehr wichtigen Recherche").catch(reason => {
+                expect(reason.message).toBe(json);
+        });
+    });
+    test("updateResearch with research not owned by user", async () => {
+        let json: string = errors.researchNotOwned;
+
+        let research = getResearchInvalid();
+
+        mock.onPatch("/research/" + research.id).reply(403, {message: json});
+
+        await ResearchApiHandler.updateResearch(research, "Eine sehr wichtige Recherche",
+            "Das ist die Beschreibung einer sehr wichtigen Recherche").catch(reason => {
+                expect(reason.message).toBe(json);
+        });
+    });
     test("deleteResearch", async () => {
         let research = getResearch();
 
@@ -78,6 +111,42 @@ describe("ResearchApiHandler", () => {
         mock.onPut("/research/" + research.id + "/paper").reply(200);
 
         await ResearchApiHandler.savePaper(research, paper, SaveState.added); // only checks if no error is thrown
+    });
+    test("savePaper with invalid id", async () => {
+        let json: string = errors.researchOrPaperNotFound;
+
+        let research = getResearchInvalid();
+        let paper = getPaperInvalid();
+
+        mock.onPut("/research/" + research.id + "/paper").reply(403, {message: json});
+
+        await ResearchApiHandler.savePaper(research, paper, SaveState.added).catch(reason => {
+            expect(reason.message).toBe(json);
+        });
+    });
+    test("savePaper with research not owned by user", async () => {
+        let json: string = errors.researchOrPaperNotOwned;
+
+        let research = getResearchInvalid();
+        let paper = getPaperInvalid();
+
+        mock.onPut("/research/" + research.id + "/paper").reply(403, {message: json});
+
+        await ResearchApiHandler.savePaper(research, paper, SaveState.added).catch(reason => {
+            expect(reason.message).toBe(json);
+        });
+    });
+    test("savePaper with cache error", async () => {
+        let json: string = errors.cache;
+
+        let research = getResearchInvalid();
+        let paper = getPaperInvalid();
+
+        mock.onPut("/research/" + research.id + "/paper").reply(500, {message: json});
+
+        await ResearchApiHandler.savePaper(research, paper, SaveState.added).catch(reason => {
+            expect(reason.message).toBe(json);
+        });
     });
     test("removePaper", async () => {
         let research = getResearch();
@@ -110,6 +179,17 @@ describe("ResearchApiHandler", () => {
 
         expect(savedPapers.length).toBe(json.papers.length);
         assertSavedPaper(savedPapers[0], json.papers[0]);
+    });
+    test("getSavedPapers with cache error", async () => {
+        let json: string = errors.loadCache;
+
+        let research = getResearch();
+
+        mock.onPost("/research/" + research.id + "/papers").reply(400, {message: json});
+
+        await ResearchApiHandler.getSavedPapers(research, []).catch(reason => {
+            expect(reason.message).toBe(json);
+        });
     });
     test("getRecommendations", async () => {
         let json: { recommendations: Paper[] } = getRecommendationsOfResearch;
