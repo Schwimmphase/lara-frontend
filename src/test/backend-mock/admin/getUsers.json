@@ -3,12 +3,20 @@
     {
       "username": "Bernd",
       "userId": "QiWDFtocwu7wrDF4tqraWX5tqTZk5GTr",
-      "userCategory": "ADMIN"
+      "userCategory": {
+        "id": "jewAMxi7PiW7icVg6t3RpKFTNER5ZtD8",
+        "name": "ADMIN",
+        "color": "#FF0000"
+      }
     },
     {
       "username": "Sebastian",
       "userId": "Cw98kECj5XbeshkxAXfcViebwBsuMvjH",
-      "userCategory": "Student"
+      "userCategory": {
+        "id": "rjyyjhVafQ32YSZ6BkS4A7H3cri46ohi",
+        "name": "Student",
+        "color": "#00876C"
+      }
     }
   ]
 }

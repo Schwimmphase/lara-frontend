@@ -1,7 +1,7 @@
 {
   "recommendations": [
     {
-      "id": "S2$649def34f8be52c8b66281af98ae884c09aef38b",
+      "paperId": "S2$649def34f8be52c8b66281af98ae884c09aef38b",
       "title": "Der Titel eines Artikels",
       "authors": [
         {
@@ -9,7 +9,7 @@
         }
       ],
       "year": 2022,
-      "abstract": "Dies ist ein Abstract\nmit Zeilenumbrüchen.",
+      "abstract": "Das ist ein Abstract\nmit Zeilenumbruch",
       "citationCount": 23,
       "referenceCount": 34,
       "venue": "NCCF",

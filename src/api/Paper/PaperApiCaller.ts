@@ -1,5 +1,5 @@
 import basicApiCaller from "../BasicApiCaller";
-import type { Organizer } from "@/model/Organizer";
+import type {Organizer} from "@/model/Organizer";
 
 export class PaperApiCaller {
     static urlPath = '/paper/';
@@ -11,13 +11,14 @@ export class PaperApiCaller {
 
     public static getDetails(paperId: string, researchId?: string) {
         if (researchId == null) {
-            return basicApiCaller.axiosInstance.get(this.urlPath + paperId);
+            return basicApiCaller.axiosInstance.get(this.urlPath + paperId)
+                .catch(reason => { throw new Error(reason.response.data.message); });
         } else {
             return basicApiCaller.axiosInstance.get(this.urlPath + paperId, {
                 params: {
                     "researchId": researchId
                 }
-            })
+            }).catch(reason => { throw new Error(reason.response.data.message); });
         }
     }
 
@@ -27,7 +28,7 @@ export class PaperApiCaller {
                 "researchId": researchId,
                 "tagId": tagId
             }
-        });
+        }).catch(reason => { throw new Error(reason.response.data.message); });
     }
     
     public static removeTag(paperId: string, researchId: string, tagId: string) {
@@ -36,7 +37,7 @@ export class PaperApiCaller {
                 "researchId": researchId,
                 "tagId": tagId
             }
-        })
+        }).catch(reason => { throw new Error(reason.response.data.message); });
     }
     
     public static changeComment(paperId: string, researchId: string, comment: string) {
@@ -47,7 +48,7 @@ export class PaperApiCaller {
                     "researchId": researchId
                 }
             }
-        );
+        ).catch(reason => { throw new Error(reason.response.data.message); });
     }
 
     public static changeSaveState(paperId: string, researchId: string, saveState: string) {
@@ -56,7 +57,7 @@ export class PaperApiCaller {
                 "researchId": researchId,
                 "save-state": saveState
             }
-        });
+        }).catch(reason => { throw new Error(reason.response.data.message); });
     }
 
     public static changeRelevance(paperId: string, researchId: string, relevance: number) {
@@ -65,7 +66,7 @@ export class PaperApiCaller {
                 "researchId": researchId,
                 "relevance": relevance
             }
-        });
+        }).catch(reason => { throw new Error(reason.response.data.message); });
     }
     
     public static getRecommendationsOrReferencesOrCitations(paperId: string, method: string, organizers: Organizer[]) {
@@ -76,6 +77,6 @@ export class PaperApiCaller {
                     "method": method
                 }
             }
-        );
+        ).catch(reason => { throw new Error(reason.response.data.message); });
     }
 }
