@@ -2,10 +2,10 @@
 
 import LaraButton from "../basic/LaraButton.vue";
 
-import { Paper } from "@/model/Paper";
-import { SaveState } from "@/model/SaveState";
-import { Research } from "@/model/Research";
-import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
+import {Paper} from "@/model/Paper";
+import {SaveState} from "@/model/SaveState";
+import {Research} from "@/model/Research";
+import {ResearchApiHandler} from "@/api/Research/ResearchApiHandler";
 import router from "@/router";
 import {useOpenResearchStore} from "@/stores/openResearch";
 import {PaperApiHandler} from "@/api/Paper/PaperApiHandler";
@@ -66,15 +66,14 @@ let openPaper = (): void => {
             <div>
                 <v-card-title class="font-weight-bold">{{ paper!.title }}</v-card-title>
                 <v-card-subtitle>
-                    <span v-for="(author, index) in paper!.authors" :key="index">{{ author!.name }}, </span>
+                    {{ paper!.authors?.map(author => author.name).join(", ") }}
                 </v-card-subtitle>
                 <div class="mt-2 mx-4 mb-2">
-                    <span class="lara-informations">
+                    <div class="lara-informations">
                         {{ paper!.year }} - {{ paper!.venue }} -
                         {{ $t('detailSidebar.citationCount', { n: paper!.citationCount}) }} -
                         {{ $t('detailSidebar.referenceCount', {n: paper!.referenceCount}) }}
-                    </span>
-                    <br>
+                    </div>
                     <div id="abstract-container">
                         <p id="abstract">{{ paper!.abstract }}</p>
                     </div>
@@ -121,6 +120,10 @@ let openPaper = (): void => {
 
 .lara-informations {
     color: rgb(86, 86, 86);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 6px;
 }
 
 #unsaved-paper-card {
