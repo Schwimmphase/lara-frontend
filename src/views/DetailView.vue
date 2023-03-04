@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 import DetailSidebarComponent from '@/components/detailSidebar/DetailSidebarComponent.vue';
-import { OpenPaper } from '@/stores/model/OpenPaper';
-import { useOpenPaperStore } from '@/stores/openPaper';
+import {OpenPaper} from '@/stores/model/OpenPaper';
+import {useOpenPaperStore} from '@/stores/openPaper';
 
 import type {Paper} from '@/model/Paper';
 import type {SavedPaper} from '@/model/SavedPaper';
@@ -25,6 +25,7 @@ const slotsReferences = [
 
 // Number of the maximum of displayed authors
 const MAX_NUMBER_OF_AUTHORS = 3;
+const PDF_LOAD_TIMEOUT = 10_000;
 
 // State for the page, the openPaper and a indicator to know if the page is loading
 let detailState: {loading: boolean, openPaper: OpenPaper | undefined, research: Research | undefined, showBigger: boolean } = reactive({
@@ -116,6 +117,27 @@ detailState.research = researchStore.getResearch;
 
 setPaper();
 
+// Pdf load handling
+
+let pdfState: {loaded: boolean, timeout: boolean, snackbar: boolean, snackbarTimeout: number} = reactive({
+    loaded: false,
+    timeout: false,
+    snackbar: false,
+    snackbarTimeout: 5000
+});
+
+setTimeout(() => {
+    pdfState.timeout = true;
+    if (!pdfState.loaded) {
+        console.error("PDF not loaded in time (%d)", PDF_LOAD_TIMEOUT);
+        pdfState.snackbar = true;
+    }
+}, PDF_LOAD_TIMEOUT);
+
+function onLoad() {
+    pdfState.loaded = true;
+}
+
 </script>
 
 
@@ -125,63 +147,40 @@ setPaper();
         <detail-sidebar-component @bigger="bigger" :open-paper="detailState.openPaper!"></detail-sidebar-component>
 
         <div v-show="!detailState.showBigger" class="h-100">
-            <!-- Paper is saved and pdf is available -->
-            <div v-if="(detailState.openPaper?.saved) && (detailState.openPaper?.savedPaper?.paper.pdfUrl != null)" class="w-100 h-100">
-                <iframe :src="detailState.openPaper.savedPaper?.paper.pdfUrl + '#zoom=page-width'" class="w-100 h-100" frameborder="0"></iframe>
+            <!-- Paper pdf is available -->
+            <div v-if="detailState.openPaper?.getPaper()?.pdfUrl != null && (!pdfState.timeout || pdfState.loaded)" class="w-100 h-100">
+                <object type="application/pdf" :data="detailState.openPaper.getPaper().pdfUrl + '#zoom=page-width'"
+                        class="w-100 h-100" @load="onLoad">
+                </object>
             </div>
 
-            <!-- Paper is not saved but pdf is available -->
-            <div v-else-if="!(detailState.openPaper?.saved) && (detailState.openPaper?.paper?.pdfUrl != null)" class="w-100 h-100">
-                <iframe :src="detailState.openPaper.paper?.pdfUrl + '#zoom=page-width'" class="w-100 h-100" frameborder="0"></iframe>
-            </div>
-
-            <!-- Paper is saved but pdf is not available -->
-            <div v-else-if="(detailState.openPaper?.saved) && (detailState.openPaper?.savedPaper?.paper.pdfUrl == null)" class="w-100 h-100">
+            <!-- Paper pdf is not available or error while loading pdf -->
+            <div v-else class="w-100 h-100">
                 <div class="ma-10">
                     <!-- Display the abstract of the paper -->
-                    <span class="text-h4 font-weight-bold">{{ detailState.openPaper?.savedPaper?.paper.title }}</span><br>
+                    <span class="text-h4 font-weight-bold">{{ detailState.openPaper?.getPaper()?.title }}</span><br>
                     <div class="mt-5">
                         <span class="font-weight-bold text-h5">{{ $t('detailView.abstract') }}</span><br>
-                        <span>{{ detailState.openPaper?.savedPaper?.paper.abstract }}</span>
+                        <span>{{ detailState.openPaper?.getPaper()?.abstract }}</span>
                     </div>
                     <v-divider class="mt-5"></v-divider>
                     <!-- Display additional information on the paper -->
                     <div class="mt-5">
                         <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.information') }}</span><br>
                         <div class="mb-2 text-h6">
-                            <span class="font-weight-bold text-h6">{{ getAuthorsString(detailState.openPaper?.savedPaper?.paper.authors) }}</span>
+                            <span class="font-weight-bold text-h6">{{ getAuthorsString(detailState.openPaper?.getPaper()?.authors) }}</span>
                         </div>
-                        <span>{{ $t('detailView.year_venue_timesCited_timesReferenced', {year: detailState.openPaper?.savedPaper?.paper.year,
-                            venue: detailState.openPaper?.savedPaper?.paper.venue, timesCited: detailState.openPaper?.savedPaper?.paper.citationCount,
-                            timesReferenced: detailState.openPaper?.savedPaper?.paper.referenceCount}) }}</span>
+                        <span>
+                            {{ $t('detailView.year_venue_timesCited_timesReferenced', {
+                            year: detailState.openPaper?.getPaper()?.year,
+                            venue: detailState.openPaper?.getPaper()?.venue, timesCited:
+                            detailState.openPaper?.getPaper()?.citationCount,
+                            timesReferenced: detailState.openPaper?.getPaper()?.referenceCount}) }}
+                        </span>
                     </div>
                     <v-divider class="my-3"></v-divider>
                 </div>
             </div>
-
-            <!-- Paper is not saved and pdf is not available -->
-            <div v-else-if="!(detailState.openPaper?.saved) && (detailState.openPaper?.paper?.pdfUrl == null)" class="w-100 h-100">
-                <div class="ma-10">
-                    <!-- Display the abstract of the paper -->
-                    <span class="text-h4 font-weight-bold">{{ detailState.openPaper?.paper?.title }}</span><br>
-                    <div class="mt-5">
-                        <span class="text-h5 font-weight-bold">{{ $t('detailView.abstract') }}</span><br>
-                        <span>{{ detailState.openPaper?.paper?.abstract }}</span>
-                    </div>
-                    <v-divider class="mt-5"></v-divider>
-                    <!-- Display additional information on the paper -->
-                    <div class="mt-5">
-                        <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.information') }}</span><br>
-                        <div class="mb-2 text-h6">
-                            <span class="font-weight-bold text-h6">{{ getAuthorsString(detailState.openPaper?.paper?.authors) }}</span>
-                        </div>
-                        <span>{{ $t('detailView.year_venue_timesCited_timesReferenced', {year: detailState.openPaper?.paper?.year, venue: detailState.openPaper?.paper?.venue, timesCited: detailState.openPaper?.paper?.citationCount, timesReferenced: detailState.openPaper?.paper?.referenceCount}) }}</span>
-                    </div>
-                    <v-divider class="my-3"></v-divider>
-                </div>
-            </div>
-
-            <div v-else>{{ $t('detailView.errorGettingPdf') }}</div>
         </div>
 
         <!-- bigger view of button is pressed, replaces pdf viewer and information -->
@@ -221,4 +220,13 @@ setPaper();
         <v-progress-circular indeterminate></v-progress-circular>
     </div>
 
+    <!-- Snackbar for pdf load error -->
+    <v-snackbar v-model="pdfState.snackbar" :timeout="pdfState.snackbarTimeout">
+        {{ $t('detailView.errorGettingPdf') }}
+        <template v-slot:actions>
+            <v-btn color="pink" variant="text" @click="pdfState.snackbar = false">
+                {{ $t('words.close') }}
+            </v-btn>
+        </template>
+    </v-snackbar>
 </template>

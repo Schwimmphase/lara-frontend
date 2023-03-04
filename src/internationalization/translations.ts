@@ -28,7 +28,7 @@ export const messages = {
             abstract: 'Abstract',
             year_venue_timesCited_timesReferenced: '{year} - {venue} - cited {timesCited} times - referenced {timesReferenced} times',
             biggerListEmpty: 'There are no papers to display here',
-            errorGettingPdf: 'Unfortunately there has been an error!'
+            errorGettingPdf: 'Unfortunately there has been an error while loading the PDF!'
         },
 
         detailSidebar: {
@@ -203,7 +203,7 @@ export const messages = {
             abstract: 'Zusammenfassung',
             year_venue_timesCited_timesReferenced: '{year} - {venue} - {timesCited} mal zitiert - {timesReferenced} mal referenziert',
             biggerListEmpty: 'Hier sind keine Artikel, die angezeigt werden können',
-            errorGettingPdf: 'Leider ist ein Fehler aufgetreten!'
+            errorGettingPdf: 'Leider ist ein Fehler aufgetreten beim Laden der PDF!'
         },
 
         detailSidebar: {
