@@ -149,7 +149,7 @@ function onLoad() {
         <div v-show="!detailState.showBigger" class="h-100">
             <!-- Paper pdf is available -->
             <div v-if="detailState.openPaper?.getPaper()?.pdfUrl != null && (!pdfState.timeout || pdfState.loaded)" class="w-100 h-100">
-                <object type="application/pdf" :data="detailState.openPaper.getPaper().pdfUrl + '#zoom=page-width'"
+                <object type="application/pdf" :data="detailState.openPaper!.getPaper()!.pdfUrl + '#zoom=page-width'"
                         class="w-100 h-100" @load="onLoad">
                 </object>
             </div>
