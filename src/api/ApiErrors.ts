@@ -5,7 +5,8 @@ export enum ApiErrors {
     notAuthenticated = "errorMsg.global.notAuthenticated",
     notAuthorized = "errorMsg.global.notAuthorized",
     internalServerError = "errorMsg.global.internalServerError",
-    unknownError = "errorMsg.global.unknownError"
+    unknownError = "errorMsg.global.unknownError",
+    couldNotParseData = "errorMsg.global.couldNotParseData"
 }
 
 export const globalErrorSnackbar: {visible: boolean, timeout: number, errorMessage: string} = reactive({

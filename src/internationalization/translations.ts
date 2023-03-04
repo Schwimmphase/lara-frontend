@@ -21,6 +21,7 @@ export const messages = {
                 notAuthorized: 'Unexpected error: you are not authorized to perform this action',
                 internalServerError: 'Unexpected error: error on the server',
                 unknownError: 'Unexpected error: unknown error',
+                couldNotParseData: 'Unexpected error: could not parse data from server'
             }
         },
 
@@ -203,6 +204,7 @@ export const messages = {
                 notAuthorized: 'Unerwarteter Fehler: Sie sind nicht berechtigt, diese Aktion auszuführen',
                 internalServerError: 'Unerwarteter Fehler: Fehler auf dem Server',
                 unknownError: 'Unerwarteter Fehler: unbekannter Fehler',
+                couldNotParseData: 'Unerwarteter Fehler: Daten vom Server konnten nicht verarbeitet werden',
             }
         },
 
