@@ -28,11 +28,11 @@ class BasicApiCaller {
         }, error => {
             if (error.response) {
                 if (error.response.status == "400") {
-                    console.error("False arguments of request, recieved error message:", error.response.data.message);
+                    console.error("False arguments of request, received error message:", error.response.data.message);
                 } else if (error.response.status == "401") {
-                    console.error("User not authentificated");
+                    console.error("User not authenticated");
                 } else if (error.response.status == "403") {
-                    console.error("Access forbidden, recieved error message:", error.response.data.message);
+                    console.error("Access forbidden, received error message:", error.response.data.message);
                 } else if (error.response.status == "500") {
                     console.error("Internal Server Error,", error.response.data.message);
                 } else {
