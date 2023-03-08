@@ -1,5 +1,9 @@
 {
   "username": "Gustav",
   "userId": "QiWDFtocwu7wrDF4tqraWX5tqTZk5GTr",
-  "userCategory": "Prof"
+  "userCategory": {
+    "id": "rjyyjhVafQ32YSZ6BkS4A7H3cri46ohi",
+    "name": "Student",
+    "color": "#00876C"
+  }
 }

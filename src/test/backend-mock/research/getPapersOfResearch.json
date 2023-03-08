@@ -1,8 +1,8 @@
 {
-  "savedPapers": [
+  "papers": [
     {
       "paper": {
-        "id": "S2$649def34f8be52c8b66281af98ae884c09aef38b",
+        "paperId": "S2$649def34f8be52c8b66281af98ae884c09aef38b",
         "title": "Der Titel eines Artikels",
         "authors": [
           {
@@ -16,6 +16,12 @@
         "venue": "NCCF",
         "pdfUrl": "https://papers.org/paper/HJdsfD845hS8wfS7b43d.pdf"
       },
+      "research": {
+        "id": "zcjYMtLuJqX5okv8sYoDkTkdmzn7dHCj",
+        "title": "Eine sehr wichtige Recherche",
+        "comment": "Das ist eine sehr wichtige Recherche",
+        "startDate": "2022-12-18T12:00:00.000Z"
+      },
       "comment": "Dieser Artikel ist sehr sehr gut. Ich mag diesen Artikel.",
       "tags": [
         {
@@ -23,7 +29,9 @@
           "name": "Experiment",
           "color": "#00876C"
         }
-      ]
+      ],
+      "saveState": "added",
+      "relevance": 3
     }
   ]
 }
