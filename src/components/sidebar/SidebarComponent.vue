@@ -6,16 +6,16 @@ import ReturnButtonComponent from './ReturnButtonComponent.vue';
 import RecommendationsButtonComponent from './RecommendationsButtonComponent.vue';
 import SearchbarComponent from './SearchbarComponent.vue';
 
-import type { SavedPaper } from '@/model/SavedPaper';
-import type { Research } from '@/model/Research';
-import { SaveState } from '@/model/SaveState';
+import type {SavedPaper} from '@/model/SavedPaper';
+import type {Research} from '@/model/Research';
+import {SaveState} from '@/model/SaveState';
 
-import { useOpenResearchStore } from '@/stores/openResearch';
+import {useOpenResearchStore} from '@/stores/openResearch';
 
 import ExpandableList from "@/components/basic/ExpandableList.vue";
-import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
-import { reactive } from '@vue/reactivity';
-import { ResearchApiHandler } from '@/api/Research/ResearchApiHandler';
+import {PaperApiHandler} from '@/api/Paper/PaperApiHandler';
+import {reactive} from '@vue/reactivity';
+import {ResearchApiHandler} from '@/api/Research/ResearchApiHandler';
 
 let props = defineProps({
     showSearch: Boolean,
@@ -126,8 +126,10 @@ getPapers();
             <!-- Section for the enqueued papers -->
             <expandable-list :title="$t('sidebar.enqueued')" :expanded="true">
                 <v-list-item v-for="(savedPaper, index) in state.enqueuedPapers" :key="index">
-                    <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
-                    <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon>mdi-plus</v-icon></span>
+                    <span style="white-space: pre;">
+                        <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link" style="white-space: normal">{{ savedPaper.paper.title }}</span>
+                        <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon>mdi-plus</v-icon></span>
+                    </span>
                 </v-list-item>
             </expandable-list>
 
@@ -143,8 +145,10 @@ getPapers();
             <!-- Section for the hidden papers -->
             <expandable-list :title="$t('sidebar.hidden')" icon="mdi-eye-off" :hidden="true">
                 <v-list-item v-for="(savedPaper, index) in state.hiddenPapers" v-bind:key="index">
-                    <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link">{{ savedPaper.paper.title }}</span>
-                    <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon>"mdi-plus"</v-icon></span>
+                    <span style="white-space: pre;">
+                        <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link" style="white-space: normal">{{ savedPaper.paper.title }}</span>
+                        <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon>"mdi-plus"</v-icon></span>
+                    </span>
                 </v-list-item>
             </expandable-list>
         </div>
