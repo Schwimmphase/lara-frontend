@@ -25,7 +25,7 @@ const slotsReferences = [
 
 // Number of the maximum of displayed authors
 const MAX_NUMBER_OF_AUTHORS = 3;
-const PDF_LOAD_TIMEOUT = 10_000;
+const PDF_LOAD_TIMEOUT = 15_000;
 
 // State for the page, the openPaper and a indicator to know if the page is loading
 let detailState: {loading: boolean, openPaper: OpenPaper | undefined, research: Research | undefined, showBigger: boolean } = reactive({
@@ -119,23 +119,15 @@ setPaper();
 
 // Pdf load handling
 
-let pdfState: {loaded: boolean, timeout: boolean, snackbar: boolean, snackbarTimeout: number} = reactive({
-    loaded: false,
-    timeout: false,
+let pdfState: {error: boolean, snackbar: boolean, snackbarTimeout: number} = reactive({
+    error: false,
     snackbar: false,
     snackbarTimeout: 5000
 });
 
-setTimeout(() => {
-    pdfState.timeout = true;
-    if (!pdfState.loaded) {
-        console.error("PDF not loaded in time (%d)", PDF_LOAD_TIMEOUT);
-        pdfState.snackbar = true;
-    }
-}, PDF_LOAD_TIMEOUT);
-
-function onLoad() {
-    pdfState.loaded = true;
+function onPdfError() {
+    pdfState.error = true;
+    pdfState.snackbar = true;
 }
 
 </script>
@@ -148,9 +140,9 @@ function onLoad() {
 
         <div v-show="!detailState.showBigger" class="h-100">
             <!-- Paper pdf is available -->
-            <div v-if="detailState.openPaper?.getPaper()?.pdfUrl != null && (!pdfState.timeout || pdfState.loaded)" class="w-100 h-100">
+            <div v-if="detailState.openPaper?.getPaper()?.pdfUrl != null && !pdfState.error" class="w-100 h-100">
                 <object type="application/pdf" :data="detailState.openPaper!.getPaper()!.pdfUrl + '#zoom=page-width'"
-                        class="w-100 h-100" @load="onLoad">
+                        class="w-100 h-100" @error="onPdfError">
                 </object>
             </div>
 
