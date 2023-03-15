@@ -27,7 +27,7 @@
             <v-card-actions class="ml-4 mr-4 mb-2 mt-2 pa-0">
                 <!-- Tags -->
                 <div class="d-flex gap-3 tags">
-                    <v-chip v-for="(tag, index) in paper.tags" :key="index" :color="tag.color" class="lara-chip">{{ tag.name }}</v-chip>
+                    <v-chip v-for="(tag, index) in paper.tags" :key="index" :color="tag.color" class="lara-chip mr-2">{{ tag.name }}</v-chip>
                 </div>
                 <div class="d-flex gap-3 ml-2">
                     <v-rating v-if="paper.relevance !== 0" disabled :model-value="paper.relevance" length="3" size="40" full-icon="mdi-star" empty-icon="mdi-star-outline" color="orange"></v-rating>
