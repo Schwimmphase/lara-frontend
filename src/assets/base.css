@@ -31,3 +31,7 @@ body {
 .gap-16 {
   gap: 64px;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
