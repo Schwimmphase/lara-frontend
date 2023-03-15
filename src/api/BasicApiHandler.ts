@@ -15,9 +15,10 @@ import {ApiErrors, triggerGlobalError} from "@/api/ApiErrors";
 class BasicApiHandler {
     constructor() {}
 
-    public tryParseJson(responseData: AxiosResponse<any, any>): any {
+    public tryParseJson(responseData: any): any {
+        let data = undefined;
         try {
-            var data = JSON.parse(JSON.stringify(responseData));
+            data = JSON.parse(JSON.stringify(responseData));
         } catch (error) {
             triggerGlobalError(ApiErrors.couldNotParseData);
             throw new Error("Could not parse JSON string");
@@ -29,7 +30,7 @@ class BasicApiHandler {
         let user = plainToInstance(User, data);
         user.userCategory = plainToInstance(UserCategory, user.userCategory);
         if (user.activeResearch != null) {
-            user.activeResearch = this.buildResearch(user.activeResearch.toString());
+            user.activeResearch = this.buildResearch(this.tryParseJson(user.activeResearch));
         }
         return user;
     }
@@ -56,12 +57,12 @@ class BasicApiHandler {
 
     public buildSavedPaper(data: string): SavedPaper {
         let savedPaper = plainToInstance(SavedPaper, data);
-        savedPaper.paper = this.buildPaper(JSON.parse(JSON.stringify(savedPaper.paper)));
-        savedPaper.research = this.buildResearch(JSON.parse(JSON.stringify(savedPaper.research)));
+        savedPaper.paper = this.buildPaper(this.tryParseJson(savedPaper.paper));
+        savedPaper.research = this.buildResearch(this.tryParseJson(savedPaper.research));
         savedPaper.saveState = savedPaper.saveState.toString().toLowerCase() as SaveState;
         let tags: Tag[] = [];
         for (let tag of savedPaper.tags) {
-            tags.push(tag as Tag);
+            tags.push(new Tag(tag.id, tag.name, tag.color));
         }
         savedPaper.tags = tags;
         return savedPaper;
@@ -69,9 +70,9 @@ class BasicApiHandler {
 
     public buildCachedPaper(data: string): CachedPaper {
         let cachedPaper = plainToInstance(CachedPaper, data);
-        cachedPaper.paper = this.buildPaper(cachedPaper.paper.toString());
-        cachedPaper.parentPaper = this.buildPaper(cachedPaper.parentPaper.toString());
-        cachedPaper.research = this.buildResearch(cachedPaper.research.toString());
+        cachedPaper.paper = this.buildPaper(this.tryParseJson(cachedPaper.paper));
+        cachedPaper.parentPaper = this.buildPaper(this.tryParseJson(cachedPaper.parentPaper));
+        cachedPaper.research = this.buildResearch(this.tryParseJson(cachedPaper.research));
         return cachedPaper;
     }
 
