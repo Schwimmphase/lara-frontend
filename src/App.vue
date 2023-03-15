@@ -19,7 +19,7 @@ const meta = computed(() => route.meta);
           <router-view :key="route.fullPath"></router-view>
 
           <v-snackbar v-model="globalErrorSnackbar.visible" :timeout="globalErrorSnackbar.timeout">
-              {{ $t(globalErrorSnackbar.errorMessage) }}
+              {{ $t(globalErrorSnackbar.error, { 'message': globalErrorSnackbar.message }) }}
               <template v-slot:actions>
                   <v-btn color="pink" variant="text" @click="globalErrorSnackbar.visible = false">
                       {{ $t('words.close') }}

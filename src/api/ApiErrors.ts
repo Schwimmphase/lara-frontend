@@ -9,13 +9,15 @@ export enum ApiErrors {
     couldNotParseData = "errorMsg.global.couldNotParseData"
 }
 
-export const globalErrorSnackbar: {visible: boolean, timeout: number, errorMessage: string} = reactive({
+export const globalErrorSnackbar: {visible: boolean, timeout: number, error: string, message: string} = reactive({
     visible: false,
     timeout: 5000,
-    errorMessage: ''
+    error: '',
+    message: ''
 });
 
-export const triggerGlobalError = function (errorMessage: string) {
-    globalErrorSnackbar.errorMessage = errorMessage;
+export const triggerGlobalError = function (error: string, message?: string) {
+    globalErrorSnackbar.error = error;
+    globalErrorSnackbar.message = message ?? '';
     globalErrorSnackbar.visible = true;
 }

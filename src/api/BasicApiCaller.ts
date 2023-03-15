@@ -30,7 +30,7 @@ class BasicApiCaller {
             if (error.response) {
                 if (error.response.status == "400") {
                     console.error("False arguments of request, recieved error message:", error.response.data.message);
-                    triggerGlobalError(ApiErrors.wrongInput);
+                    triggerGlobalError(ApiErrors.wrongInput, error.response.data.message);
                 } else if (error.response.status == "401") {
                     console.error("User not authentificated");
                     triggerGlobalError(ApiErrors.notAuthenticated);
