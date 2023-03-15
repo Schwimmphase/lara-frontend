@@ -2,8 +2,8 @@
     <div @click="state.dialog = true">
         <slot></slot>
     </div>
-    <v-dialog v-model="state.dialog">
-        <v-card id="dialog">
+    <v-dialog v-model="state.dialog" id="dialog">
+        <v-card>
             <v-card-title></v-card-title>
             <v-card-text>
                 <v-form v-model="valid">

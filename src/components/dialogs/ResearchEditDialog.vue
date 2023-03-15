@@ -1,8 +1,8 @@
 <template>
     <div>
         <v-btn size="small" color="surface-variant" variant="text" icon="mdi-pencil" @click="state.dialog = true"></v-btn>
-        <v-dialog v-model="state.dialog">
-            <v-card id="dialog">
+        <v-dialog v-model="state.dialog" id="dialog">
+            <v-card>
                 <v-card-text>
                     <v-form v-model="valid">
                         <div class="d-flex flex-column">

@@ -32,7 +32,6 @@ let closeDialog = () => {
         <slot></slot>
     </div>
     
-
     <v-dialog v-model="state.dialog" class="dialog">
         <v-card>
             <div class="mx-4">
@@ -73,9 +72,6 @@ let closeDialog = () => {
 .dialog {
     min-width: 300px;
     max-width: 750px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
     border-radius: 0;
 }
 
