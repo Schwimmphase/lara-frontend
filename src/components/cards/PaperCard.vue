@@ -64,7 +64,7 @@ let openPaper = (): void => {
     <v-card class="lara-card mt-4 w-100" id="unsaved-paper-card">
         <div class="d-flex flex-column justify-space-between h-100">
             <div>
-                <v-card-title class="font-weight-bold">{{ paper!.title }}</v-card-title>
+                <v-card-title @click="openPaper" class="font-weight-bold cursor-pointer">{{ paper!.title }}</v-card-title>
                 <v-card-subtitle>
                     {{ paper!.authors?.map(author => author.name).join(", ") }}
                 </v-card-subtitle>
