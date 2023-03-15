@@ -33,8 +33,8 @@ let closeDialog = () => {
     </div>
     
 
-    <v-dialog v-model="state.dialog">
-        <v-card class="dialog">
+    <v-dialog v-model="state.dialog" class="dialog">
+        <v-card>
             <div class="mx-4">
                 <v-card-title class="font-weight-bold text-h4 mt-4">{{ $t('admin.categories.edit') }}</v-card-title>
                 <v-container>
