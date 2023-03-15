@@ -14,7 +14,15 @@ export const messages = {
         },
         
         errorMsg: {
-            falseLoginData: 'Wrong username oder wrong password'
+            falseLoginData: 'Wrong username oder wrong password',
+            global: {
+                wrongInput: 'Error: {message}',
+                notAuthenticated: 'Unexpected error: you are not authenticated',
+                notAuthorized: 'Unexpected error: you are not authorized to perform this action',
+                internalServerError: 'Unexpected error: internal server error',
+                unknownError: 'Unexpected error: unknown error',
+                couldNotParseData: 'Unexpected error: could not parse data from server'
+            }
         },
 
         navbar: {
@@ -189,7 +197,15 @@ export const messages = {
         },
 
         errorMsg: {
-            falseLoginData: 'Falscher Nutzername oder falsches Passwort'
+            falseLoginData: 'Falscher Nutzername oder falsches Passwort',
+            global: {
+                wrongInput: 'Fehler: {message}',
+                notAuthenticated: 'Unerwarteter Fehler: Sie sind nicht angemeldet',
+                notAuthorized: 'Unerwarteter Fehler: Sie sind nicht berechtigt, diese Aktion auszuführen',
+                internalServerError: 'Unerwarteter Fehler: Interner Serverfehler',
+                unknownError: 'Unerwarteter Fehler: unbekannter Fehler',
+                couldNotParseData: 'Unerwarteter Fehler: Daten vom Server konnten nicht verarbeitet werden',
+            }
         },
 
         navbar: {
