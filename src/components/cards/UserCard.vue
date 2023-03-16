@@ -16,7 +16,7 @@
             <v-spacer></v-spacer>
 
             <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
-                <v-btn size="small" color="red" variant="text" icon="mdi-delete" v-if="deletable">
+                <v-btn size="small" color="red" variant="text" icon="mdi-delete" :title="$t('words.delete')" v-if="deletable">
                 </v-btn>
             </confirm-dialog>
         </v-card-actions>

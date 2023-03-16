@@ -11,8 +11,10 @@
             <div class="d-flex mx-4">
                 <v-chip class="lara-chip" :color="toRaw(props.title).color" @click="addTagToOpenPaper(toRaw(props.title).name)">{{ toRaw(props.title).name }}</v-chip>
                 <v-spacer></v-spacer>
-                <v-icon class="lara-clickable" @click="{ editTagState.open = true; editTagState.tag = toRaw(props.title) }">mdi-pencil</v-icon>
-                <v-icon class="ml-3 lara-clickable" @click="{ deleteTagState.open = true; deleteTagState.tag = toRaw(props.title) }" color="red">mdi-trash-can</v-icon>
+                <v-icon class="lara-clickable" :title="$t('words.edit')"
+                        @click="{ editTagState.open = true; editTagState.tag = toRaw(props.title) }">mdi-pencil</v-icon>
+                <v-icon class="ml-3 lara-clickable" :title="$t('words.delete')" color="red"
+                        @click="{ deleteTagState.open = true; deleteTagState.tag = toRaw(props.title) }">mdi-trash-can</v-icon>
             </div>
         </template>
         <!-- Create & add new Tag -->

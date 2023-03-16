@@ -10,7 +10,12 @@ export const messages = {
             export: 'Export',
             activate: 'Activate',
             descending: 'descending',
-            ascending: 'ascending'
+            ascending: 'ascending',
+            research: 'Research',
+            hide: 'Hide',
+            remove: 'Remove',
+            delete: 'Delete',
+            edit: 'Edit',
         },
         
         errorMsg: {
@@ -153,7 +158,9 @@ export const messages = {
             returnButton: 'Return',
             enqueued: 'enqueued',
             added: 'added',
-            hidden: 'hidden'
+            hidden: 'hidden',
+            expand: 'Expand sidebar',
+            collapse: 'Collapse sidebar',
         },
 
         researchEditDialog: {
@@ -193,7 +200,12 @@ export const messages = {
             export: 'Exportieren',
             activate: 'Aktivieren',
             descending: 'absteigend',
-            ascending: 'aufsteigend'
+            ascending: 'aufsteigend',
+            research: 'Recherche',
+            hide: 'Ausblenden',
+            remove: 'Entfernen',
+            delete: 'Löschen',
+            edit: 'Bearbeiten',
         },
 
         errorMsg: {
@@ -335,7 +347,9 @@ export const messages = {
             returnButton: 'Zurück',
             enqueued: 'gemerkt',
             added: 'hinzugefügt',
-            hidden: 'ausgeblendet'
+            hidden: 'ausgeblendet',
+            expand: 'Seitenleiste ausklappen',
+            collapse: 'Seitenleiste einklappen',
         },
 
         researchEditDialog: {

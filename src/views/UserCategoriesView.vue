@@ -69,11 +69,11 @@ state.initialLoading = false;
                     <v-spacer></v-spacer>
                     <v-avatar class="ml-4" size="30" :color="category.color"></v-avatar>
                     <EditUserCategoryDialog :category="category" @edit="(category, name, color) => updateCategory(category, name, color)">
-                        <v-icon class="ml-4 lara-clickable">mdi-pencil</v-icon>
+                        <v-icon class="ml-4 lara-clickable" :title="$t('words.edit')">mdi-pencil</v-icon>
                     </EditUserCategoryDialog>
                     
                     <ConfirmDialog @close="(decision) => deleteCategory(category, decision)">
-                        <v-icon color="red" class="ml-4 lara-clickable">mdi-trash-can</v-icon>
+                        <v-icon color="red" class="ml-4 lara-clickable" :title="$t('words.delete')">mdi-trash-can</v-icon>
                     </ConfirmDialog>
                 </v-card>
             </div>
