@@ -10,15 +10,15 @@ import {
     getUserCategoryAdmin,
     getUserCategoryInvalid,
     getUserCategoryStudent, getUserInvalid
-} from "@/test/api-handler/Helper";
+} from "@/test/Helper";
 
-import getUsers from "@/test/backend-mock/admin/getUsers.json";
-import createUser from "@/test/backend-mock/admin/createUser.json";
-import updateUser from "@/test/backend-mock/admin/updateUser.json";
-import getUserCategories from "@/test/backend-mock/admin/getUserCategories.json";
-import createUserCategory from "@/test/backend-mock/admin/createUserCategory.json";
-import updateUserCategory from "@/test/backend-mock/admin/updateUserCategory.json";
-import errors from "@/test/backend-mock/admin/errors.json";
+import getUsers from "@/test/unit-tests/backend-mock/admin/getUsers.json";
+import createUser from "@/test/unit-tests/backend-mock/admin/createUser.json";
+import updateUser from "@/test/unit-tests/backend-mock/admin/updateUser.json";
+import getUserCategories from "@/test/unit-tests/backend-mock/admin/getUserCategories.json";
+import createUserCategory from "@/test/unit-tests/backend-mock/admin/createUserCategory.json";
+import updateUserCategory from "@/test/unit-tests/backend-mock/admin/updateUserCategory.json";
+import errors from "@/test/unit-tests/backend-mock/admin/errors.json";
 
 const mock = new MockAdapter(BasicApiCaller.axiosInstance);
 

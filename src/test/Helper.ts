@@ -7,6 +7,8 @@ import {expect} from "vitest";
 import {Tag} from "@/model/Tag";
 import type {SavedPaper} from "@/model/SavedPaper";
 
+/* c8 ignore start */
+
 export function getUserCategoryAdmin(): UserCategory {
     return new UserCategory("jewAMxi7PiW7icVg6t3RpKFTNER5ZtD8", "#FF0000", "ADMIN");
 }
@@ -65,7 +67,7 @@ export function getResearchInvalid(): Research {
     return new Research("INVALID", "INVALID", new Date(), "INVALID", getUserAdmin());
 }
 
-export function assertResearch(actual: Research, expected: ResearchResponse) {
+export function assertResearch(actual: Research, expected: ResearchResponse | Research) {
     expect(actual.id).toBe(expected.id);
     expect(actual.title).toBe(expected.title);
     expect(actual.comment).toBe(expected.comment);
@@ -105,7 +107,7 @@ export function assertPaper(actual: Paper, expected: Paper){
     expect(actual.pdfUrl).toBe(expected.pdfUrl);
 }
 
-export function assertSavedPaper(actual: SavedPaper, expected: SavedPaperResponse) {
+export function assertSavedPaper(actual: SavedPaper, expected: SavedPaperResponse | SavedPaper) {
     assertPaper(actual.paper, expected.paper);
     expect(actual.comment).toBe(expected.comment);
     assertTags(actual.tags, expected.tags);
@@ -124,3 +126,5 @@ export function assertAuthors(actual: Author[], expected: Author[]){
         assertAuthor(actual[i], expected[i]);
     }
 }
+
+/* c8 ignore stop */

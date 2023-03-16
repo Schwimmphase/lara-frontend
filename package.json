@@ -5,13 +5,13 @@
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
+    "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
+    "build-only": "vite build",
     "preview": "vite preview",
     "test:unit": "vitest --environment jsdom --root src/",
     "test": "vitest",
     "test-coverage": "vitest run --coverage",
-    "test-ui": "vitest --ui",
-    "build-only": "vite build",
-    "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"
+    "test-ui": "vitest --ui"
   },
   "dependencies": {
     "@mdi/font": "^7.1.96",

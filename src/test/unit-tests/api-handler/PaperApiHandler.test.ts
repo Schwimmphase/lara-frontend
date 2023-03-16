@@ -5,14 +5,14 @@ import BasicApiCaller from "@/api/BasicApiCaller";
 import type {Paper} from "@/model/Paper";
 import {PaperApiHandler} from "@/api/Paper/PaperApiHandler";
 import {SavedPaper} from "@/model/SavedPaper";
-import type {SavedPaperResponse} from "@/test/api-handler/Helper";
-import {assertPaper, assertSavedPaper, getPaper, getPaperInvalid, getResearch, getTag} from "@/test/api-handler/Helper";
+import type {SavedPaperResponse} from "@/test/Helper";
+import {assertPaper, assertSavedPaper, getPaper, getPaperInvalid, getResearch, getTag} from "@/test/Helper";
 import {SaveState} from "@/model/SaveState";
 
-import getDetailsPaper from "@/test/backend-mock/paper/getDetailsPaper.json";
-import getDetailsSavedPaper from "@/test/backend-mock/paper/getDetailsSavedPaper.json";
-import getRecommendationsOfPaper from "@/test/backend-mock/paper/getRecommendationsOfPaper.json";
-import errors from "@/test/backend-mock/paper/errors.json";
+import getDetailsPaper from "@/test/unit-tests/backend-mock/paper/getDetailsPaper.json";
+import getDetailsSavedPaper from "@/test/unit-tests/backend-mock/paper/getDetailsSavedPaper.json";
+import getRecommendationsOfPaper from "@/test/unit-tests/backend-mock/paper/getRecommendationsOfPaper.json";
+import errors from "@/test/unit-tests/backend-mock/paper/errors.json";
 
 const mock = new MockAdapter(BasicApiCaller.axiosInstance);
 
