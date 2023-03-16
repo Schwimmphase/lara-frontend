@@ -64,6 +64,8 @@ export const messages = {
             references: 'References',
             bigger: 'Toggle bigger list',
             more: 'No more papers | One more paper | {n} more papers',
+            abstractEmpty: 'No abstract available',
+            unknownVenue: 'Unknown venue',
         },
 
         login: {
@@ -253,7 +255,9 @@ export const messages = {
             citations: 'Zitationen',
             references: 'Referenzen',
             bigger: 'Schalte größere Liste um',
-            more: 'Keine weiteren Artikel | Ein weiterer Artikel | {n} weitere Artikel'
+            more: 'Keine weiteren Artikel | Ein weiterer Artikel | {n} weitere Artikel',
+            abstractEmpty: 'Keine Zusammenfassung verfügbar',
+            unknownVenue: 'Unbekannte Venue',
         },
 
         login: {

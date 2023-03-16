@@ -153,6 +153,8 @@ function onOrganize() {
     // clear currently selected oranizers
     organizerState.selectedOragnizers = [];
 
+    let tagsEmpty = (organizerState.tags.length == 0);
+
     // build tags organizer
     let tagsValue = "";
     let separator = "";
@@ -163,21 +165,21 @@ function onOrganize() {
         separator = ",";
     });
 
-    let tagsFilter = new Organizer("tags-filter", tagsValue); // TODO Komma mit Leerzeichen oder ohne??
-
-    organizerState.selectedOragnizers.push(tagsFilter);
-
-    console.debug(tagsFilter);
+    if (!tagsEmpty) {
+        let tagsFilter = new Organizer("tags-filter", tagsValue);
+        organizerState.selectedOragnizers.push(tagsFilter);
+    }
 
     getUsers(organizerState.selectedOragnizers);
-
-    console.debug("organize");
 }
 
 function onRemoveOrganizer(name: string) {
     let newOrganizers = organizerState.selectedOragnizers.filter((organizer) => {
         return name !== organizer.name;
     });
+
+    // Reset the selected tags
+    organizerState.tags = [];
 
     organizerState.selectedOragnizers = newOrganizers;
 }
