@@ -2,7 +2,7 @@
     <v-card class="d-flex flex-column lara-card font-weight-bold" width="350" height="230" variant="flat">
         <v-card-title class="font-weight-bold">{{ title }}</v-card-title>
 
-        <v-card-text>{{ description }}</v-card-text>
+        <v-card-text>{{ truncate(description, 195) }}</v-card-text>
         <v-card-subtitle>{{  $t('researchCard.startedOn', {startedOn: startedAt})  }}</v-card-subtitle>
 
         <v-card-actions class="ml-4 mr-4 mb-2 mt-2 pa-0">
@@ -45,6 +45,13 @@ const emit = defineEmits<{
 function openResearch(research: Research) {
     useOpenResearchStore().setOpenResearch(research);
     router.push({ name: 'researchOverview', query: { research: research.id} });
+}
+
+function truncate(text: string, length: number) {
+    if (text.length > length) {
+        return text.substring(0, length - 3) + '...';
+    }
+    return text;
 }
 
 </script>

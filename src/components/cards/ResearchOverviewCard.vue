@@ -1,8 +1,10 @@
 <template>
 
     <v-card class="d-flex flex-column lara-card w-100" height="230" variant="flat">
-        <v-card-title @click="$emit('open', paper)" class="font-weight-bold text-wrap lara-clickable">{{ paper.paper.title }}</v-card-title>
-        <v-card-text>{{ paper.comment }}</v-card-text>
+        <v-card-title @click="$emit('open', paper)" class="font-weight-bold text-wrap lara-clickable paper-title">
+            {{ paper.paper.title }}
+        </v-card-title>
+        <v-card-text class="paper-abstract">{{ truncate(paper.comment, 260 ) }}</v-card-text>
 
         <div v-if="addButton">
             <v-container class="mx-4 pa-0">
@@ -12,7 +14,7 @@
                 <v-rating class="ml-2" v-if="paper.relevance !== 0" disabled :model-value="paper.relevance" length="3" size="40" full-icon="mdi-star" empty-icon="mdi-star-outline" color="orange"></v-rating>
             </v-container>
 
-            <v-card-actions class="mx-4 mb-5 pa-0">
+            <v-card-actions class="mx-4 mb-2 pa-0">
                 <lara-button type="primary" style="max-width: 200px" @click="$emit('add')">
                     {{ $t('researchOverviewCard.add') }}
                 </lara-button>
@@ -67,6 +69,13 @@ defineEmits<{
     (event: 'add'): void
 }>();
 
+function truncate(text: string, length: number) {
+    if (text.length > length) {
+        return text.substring(0, length - 3) + '...';
+    }
+    return text;
+}
+
 </script>
 
 
@@ -78,6 +87,19 @@ defineEmits<{
     max-width: 300px;
     overflow-x: scroll;
     float: left;
+}
+
+.paper-title {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    white-space: pre-wrap;
+}
+
+.paper-abstract {
+    overflow: hidden;
+    white-space: pre-wrap;
 }
 
 </style>
