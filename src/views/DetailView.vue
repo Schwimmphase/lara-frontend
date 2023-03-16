@@ -153,7 +153,10 @@ function onPdfError() {
                     <span class="text-h4 font-weight-bold">{{ detailState.openPaper?.getPaper()?.title }}</span><br>
                     <div class="mt-5">
                         <span class="font-weight-bold text-h5">{{ $t('detailView.abstract') }}</span><br>
-                        <span>{{ detailState.openPaper?.getPaper()?.abstract }}</span>
+                        <span>
+                            {{ !detailState.openPaper?.getPaper()?.abstract ?
+                            $t('detailSidebar.abstractEmpty') : detailState.openPaper?.getPaper()?.abstract }}
+                        </span>
                     </div>
                     <v-divider class="mt-5"></v-divider>
                     <!-- Display additional information on the paper -->
@@ -165,8 +168,9 @@ function onPdfError() {
                         <span>
                             {{ $t('detailView.year_venue_timesCited_timesReferenced', {
                             year: detailState.openPaper?.getPaper()?.year,
-                            venue: detailState.openPaper?.getPaper()?.venue, timesCited:
-                            detailState.openPaper?.getPaper()?.citationCount,
+                            venue: !detailState.openPaper?.getPaper()?.venue ?
+                                $t('detailSidebar.unknownVenue') : detailState.openPaper?.getPaper()?.venue,
+                            timesCited: detailState.openPaper?.getPaper()?.citationCount,
                             timesReferenced: detailState.openPaper?.getPaper()?.referenceCount}) }}
                         </span>
                     </div>

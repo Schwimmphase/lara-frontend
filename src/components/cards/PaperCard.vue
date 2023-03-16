@@ -70,12 +70,14 @@ let openPaper = (): void => {
                 </v-card-subtitle>
                 <div class="mt-2 mx-4 mb-2">
                     <div class="lara-informations">
-                        {{ paper!.year }} - {{ paper!.venue }} -
+                        {{ paper!.year }} - {{ !paper!.venue ? $t('detailSidebar.unknownVenue') : paper!.venue}} -
                         {{ $t('detailSidebar.citationCount', { n: paper!.citationCount}) }} -
                         {{ $t('detailSidebar.referenceCount', {n: paper!.referenceCount}) }}
                     </div>
                     <div id="abstract-container">
-                        <p id="abstract">{{ paper!.abstract }}</p>
+                        <p id="abstract">
+                            {{ !paper!.abstract ? $t('detailSidebar.abstractEmpty') : paper!.abstract }}
+                        </p>
                     </div>
                 </div>
             </div>
