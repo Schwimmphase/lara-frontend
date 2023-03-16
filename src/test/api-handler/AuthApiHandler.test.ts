@@ -4,8 +4,8 @@ import MockAdapter from "axios-mock-adapter";
 import BasicApiCaller from "@/api/BasicApiCaller";
 import {AuthApiHandler} from "@/api/Auth/AuthApiHandler";
 
-import loginAdmin from "@/test/unit-tests/backend-mock/auth/loginAdmin.json";
-import loginUser from "@/test/unit-tests/backend-mock/auth/loginUser.json";
+import loginAdmin from "@/test/backend-mock/auth/loginAdmin.json";
+import loginUser from "@/test/backend-mock/auth/loginUser.json";
 import type {User} from "@/model/User";
 
 const mock = new MockAdapter(BasicApiCaller.axiosInstance);

@@ -10,7 +10,6 @@ import {OpenPaper} from "@/stores/model/OpenPaper";
 import {CachedPaper} from "@/model/CachedPaper";
 import {CachedPaperType} from "@/model/CachedPaperType";
 
-/* c8 ignore start */
 
 export const testComment1 = "Das ist der erste Testkommentar";
 export const testComment2 = "Das ist der zweite Testkommentar";
@@ -83,5 +82,3 @@ export const testSavedPaperList: SavedPaper[] = [
     testSavedPaper11,
     testSavedPaper12
 ];
-
-/* c8 ignore stop */

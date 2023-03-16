@@ -18,14 +18,14 @@ import {SaveState} from "@/model/SaveState";
 import type {Tag} from "@/model/Tag";
 import type {Paper} from "@/model/Paper";
 
-import getAllResearchesByUser from "@/test/unit-tests/backend-mock/research/getAllResearchesByUser.json";
-import createResearch from "@/test/unit-tests/backend-mock/research/createResearch.json";
-import updateResearch from "@/test/unit-tests/backend-mock/research/updateResearch.json";
-import getTagsOfResearch from "@/test/unit-tests/backend-mock/research/getTagsOfResearch.json";
-import getPapersOfResearch from "@/test/unit-tests/backend-mock/research/getPapersOfResearch.json";
-import getRecommendationsOfResearch from "@/test/unit-tests/backend-mock/research/getRecommendationsOfResearch.json";
-import searchByKeywords from "@/test/unit-tests/backend-mock/research/searchByKeywords.json";
-import errors from "@/test/unit-tests/backend-mock/research/errors.json";
+import getAllResearchesByUser from "@/test/backend-mock/research/getAllResearchesByUser.json";
+import createResearch from "@/test/backend-mock/research/createResearch.json";
+import updateResearch from "@/test/backend-mock/research/updateResearch.json";
+import getTagsOfResearch from "@/test/backend-mock/research/getTagsOfResearch.json";
+import getPapersOfResearch from "@/test/backend-mock/research/getPapersOfResearch.json";
+import getRecommendationsOfResearch from "@/test/backend-mock/research/getRecommendationsOfResearch.json";
+import searchByKeywords from "@/test/backend-mock/research/searchByKeywords.json";
+import errors from "@/test/backend-mock/research/errors.json";
 
 const mock = new MockAdapter(BasicApiCaller.axiosInstance);
 

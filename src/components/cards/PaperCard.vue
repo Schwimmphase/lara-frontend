@@ -44,8 +44,15 @@ async function createSavedPaper(state: SaveState): Promise<void> {
     let savedPaper: SavedPaper = await PaperApiHandler.getDetails(props.paper.paperId, props.research.id) as SavedPaper;
     store.addResearchPaper(savedPaper);
 
-    emits('enqueued');
-    snackbarState.enqueued = true;
+    if (state === SaveState.enqueued) {
+        emits('enqueued');
+        snackbarState.enqueued = true;
+        snackbarState.hidden = false;
+    } else if (state === SaveState.hidden) {
+        emits('hidden');
+        snackbarState.hidden = true;
+        snackbarState.enqueued = false;
+    }
 }
 
 let openPaper = (): void => {
@@ -89,7 +96,8 @@ let openPaper = (): void => {
                 <lara-button @click="openPaper" class="mt-2 mr-2 search-button" type="secondary">
                     {{ $t('detailSidebar.open') }}
                 </lara-button>
-                <lara-button @click="createSavedPaper(SaveState.hidden)" class="mt-2 search-button" type="outline">
+                <lara-button @click="createSavedPaper(SaveState.hidden)" class="mt-2 search-button" type="outline"
+                             v-if="!saved">
                     <v-icon>mdi-eye-off</v-icon>
                 </lara-button>
             </div>
