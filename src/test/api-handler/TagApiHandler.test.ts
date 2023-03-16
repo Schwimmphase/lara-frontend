@@ -4,7 +4,7 @@ import MockAdapter from "axios-mock-adapter";
 import BasicApiCaller from "@/api/BasicApiCaller";
 import type {Tag} from "@/model/Tag";
 import {TagApiHandler} from "@/api/Tag/TagApiHandler";
-import {assertTag, getResearch, getTag, getTagInvalid} from "@/test/api-handler/Helper";
+import {assertTag, getResearch, getTag, getTagInvalid} from "@/test/Helper";
 
 import createTag from "@/test/backend-mock/tag/createTag.json";
 import updateTag from "@/test/backend-mock/tag/updateTag.json";

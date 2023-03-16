@@ -4,7 +4,7 @@ import MockAdapter from "axios-mock-adapter";
 import BasicApiCaller from "@/api/BasicApiCaller";
 import {ResearchApiHandler} from "@/api/Research/ResearchApiHandler";
 import type {Research} from "@/model/Research";
-import type {SavedPaperResponse} from "@/test/api-handler/Helper";
+import type {SavedPaperResponse} from "@/test/Helper";
 import {
     assertPaper,
     assertSavedPaper,
@@ -13,7 +13,7 @@ import {
     getPaperInvalid,
     getResearch,
     getResearchInvalid
-} from "@/test/api-handler/Helper";
+} from "@/test/Helper";
 import {SaveState} from "@/model/SaveState";
 import type {Tag} from "@/model/Tag";
 import type {Paper} from "@/model/Paper";

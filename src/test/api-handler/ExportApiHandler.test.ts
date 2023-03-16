@@ -5,7 +5,7 @@ import BasicApiCaller from "@/api/BasicApiCaller";
 import {ExportApiHandler} from "@/api/Export/ExportApiHandler";
 import type {Research} from "@/model/Research";
 import type {Paper} from "@/model/Paper";
-import {getPaper, getPaperInvalid, getResearch, getResearchInvalid} from "@/test/api-handler/Helper";
+import {getPaper, getPaperInvalid, getResearch, getResearchInvalid} from "@/test/Helper";
 
 import exportResearch from "@/test/backend-mock/export/exportResearch.json";
 import exportPaper from "@/test/backend-mock/export/exportPaper.json";

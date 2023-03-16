@@ -11,34 +11,21 @@ import {PaperApiHandler} from '@/api/Paper/PaperApiHandler';
 import {useRoute} from 'vue-router';
 import {reactive} from '@vue/reactivity';
 import type {Author} from '@/model/Author';
-import {i18n} from "@/internationalization/i18n";
-import PaperCard from "@/components/cards/PaperCard.vue";
-import PaperOrganizableList from "@/components/basic/PaperOrganizableList.vue";
 import {useOpenResearchStore} from "@/stores/openResearch";
 import type {Research} from "@/model/Research";
-import type {Organizer} from "@/model/Organizer";
-
-const slotsReferences = [
-    {id: "citations", name: "citations", key: "citatoins" },
-    {id: "references", name: "references", key: "references" },
-];
+import TabbedView from "@/components/basic/TabbedView.vue";
 
 // Number of the maximum of displayed authors
 const MAX_NUMBER_OF_AUTHORS = 3;
 const PDF_LOAD_TIMEOUT = 15_000;
 
 // State for the page, the openPaper and a indicator to know if the page is loading
-let detailState: {loading: boolean, openPaper: OpenPaper | undefined, research: Research | undefined, showBigger: boolean } = reactive({
+let detailState: { loading: boolean, openPaper: OpenPaper | undefined, research: Research | undefined,
+                    showBigger: boolean } = reactive({
     loading: true,
     openPaper: undefined,
     research: undefined,
     showBigger: false
-});
-
-let biggerStore: {citations: Paper[], references: Paper[], loading: boolean} = reactive({
-    citations: [],
-    references: [],
-    loading: true
 });
 
 // Method to fetch the correct paper from the API and save it in the open paper store
@@ -69,20 +56,8 @@ async function setPaper(): Promise<void> {
 
 async function bigger(): Promise<void> {
     detailState.showBigger = !detailState.showBigger;
-
-    if (detailState.showBigger && biggerStore.citations.length === 0 && biggerStore.references.length == 0) {
-        await getCitationReferences([]);
-    }
 }
 
-async function getCitationReferences(selectedOrganizers: Organizer[]): Promise<void> {
-    biggerStore.loading = true;
-
-    biggerStore.citations = await PaperApiHandler.getCitations(detailState.openPaper!.getPaper() as Paper, selectedOrganizers);
-    biggerStore.references = await PaperApiHandler.getReferences(detailState.openPaper!.getPaper() as Paper, selectedOrganizers);
-
-    biggerStore.loading = false;
-}
 
 // Helper Methods
 // Method to format the authors of the open paper
@@ -96,15 +71,8 @@ function getAuthorsString(authors: Author[] | undefined) {
     }
 }
 
-function isSaved(paper: Paper): boolean {
-    let savedPapers: SavedPaper[] = researchStore.researchPapers;
-    return savedPapers.filter(savedPaper => savedPaper.paper.paperId === paper.paperId).length > 0;
-}
-
 let openPaperStore = useOpenPaperStore();
-
 detailState.openPaper = openPaperStore.paper;
-
 openPaperStore.$subscribe((mutation, state) => {
     // When a change in the paper is detected, update the state
     detailState.openPaper = state.paper;
@@ -181,33 +149,7 @@ function onPdfError() {
 
         <!-- bigger view of button is pressed, replaces pdf viewer and information -->
         <div v-show="detailState.showBigger" class="h-100">
-            <div class="mx-16">
-                <paper-organizable-list :slots="slotsReferences" :export-enabled="false"
-                                        @organize="organizers => getCitationReferences(organizers)">
-                    <template v-slot:citations>
-                        <div v-if="biggerStore.loading" class="h-50 w-100 ma-5 d-flex justify-center align-center">
-                            <v-progress-circular indeterminate size="35"></v-progress-circular>
-                        </div>
-
-                        <paper-card v-for="(paper, index) in biggerStore.citations" :key="index" :paper="paper" v-else
-                                    :research="detailState.research" :saved="isSaved(paper)"/>
-                        <span v-if="biggerStore.citations.length === 0 && !biggerStore.loading">
-                            {{ $t('detailView.biggerListEmpty') }}
-                        </span>
-                    </template>
-                    <template v-slot:references>
-                        <div v-if="biggerStore.loading" class="h-50 w-100 ma-5 d-flex justify-center align-center">
-                            <v-progress-circular indeterminate size="35"></v-progress-circular>
-                        </div>
-
-                        <paper-card v-for="(paper, index) in biggerStore.references" :key="index" :paper="paper" v-else
-                                    :research="detailState.research" :saved="isSaved(paper)" />
-                        <span v-if="biggerStore.references.length === 0 && !biggerStore.loading">
-                            {{ $t('detailView.biggerListEmpty') }}
-                        </span>
-                    </template>
-                </paper-organizable-list>
-            </div>
+            <tabbed-view :source-paper="detailState.openPaper!.getPaper()"></tabbed-view>
         </div>
     </div>
     

@@ -190,8 +190,6 @@ export const messages = {
         },
 
         recommendationsView: {
-            recommended: 'Recommended',
-            citationsReferences: 'Citations/References',
             empty: 'This list is empty. Maybe try adding papers to your research.'
         },
 
@@ -399,8 +397,6 @@ export const messages = {
         },
 
         recommendationsView: {
-            recommended: 'Empfohlen',
-            citationsReferences: 'Zitate/Referenzen',
             empty: 'Diese List ist leer. Versuche erst Artikel zu deiner Recherche hionzuzufügen.'
         },
 
