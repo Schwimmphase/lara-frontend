@@ -10,7 +10,7 @@ import {
     getUserCategoryAdmin,
     getUserCategoryInvalid,
     getUserCategoryStudent, getUserInvalid
-} from "@/test/api-handler/Helper";
+} from "@/test/Helper";
 
 import getUsers from "@/test/backend-mock/admin/getUsers.json";
 import createUser from "@/test/backend-mock/admin/createUser.json";
