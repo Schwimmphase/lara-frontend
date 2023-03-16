@@ -11,11 +11,10 @@
                         <v-text-field :messages="state.titleMessages" class="lara-field" variant="outlined"
                                       v-model="state.title" :counter="maxTitleLength"
                                       :label="$t('newResearchDialog.title')"></v-text-field>
-                        <v-text-field :messages="state.descriptionMessages" class="lara-field" variant="outlined"
+                        <v-textarea :messages="state.descriptionMessages" class="lara-field mt-4" variant="outlined"
                                       v-model="state.description" :counter="maxDescriptionLength"
                                       :label="$t('newResearchDialog.description')"
-                                      @keypress.enter="closeDialog">
-                        </v-text-field>
+                        ></v-textarea>
                     </div>
                 </v-form>
             </v-card-text>
