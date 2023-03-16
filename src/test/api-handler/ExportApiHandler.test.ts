@@ -7,9 +7,9 @@ import type {Research} from "@/model/Research";
 import type {Paper} from "@/model/Paper";
 import {getPaper, getPaperInvalid, getResearch, getResearchInvalid} from "@/test/Helper";
 
-import exportResearch from "@/test/unit-tests/backend-mock/export/exportResearch.json";
-import exportPaper from "@/test/unit-tests/backend-mock/export/exportPaper.json";
-import errors from "@/test/unit-tests/backend-mock/export/errors.json";
+import exportResearch from "@/test/backend-mock/export/exportResearch.json";
+import exportPaper from "@/test/backend-mock/export/exportPaper.json";
+import errors from "@/test/backend-mock/export/errors.json";
 
 const mock = new MockAdapter(BasicApiCaller.axiosInstance);
 
