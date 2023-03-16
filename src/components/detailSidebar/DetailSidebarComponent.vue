@@ -21,7 +21,8 @@ const MAX_NUMBER_OF_AUTHORS = 2;
 const MAX_NUMBER_DISPLAYED = 3;
 
 defineEmits<{
-    (event: 'bigger'): void
+    (event: 'bigger'): void,
+    (event: 'toggle'): void
 }>();
 
 // Store for the openResearch
@@ -265,7 +266,7 @@ const props = defineProps<{ openPaper: OpenPaper }>();
 
             <!-- Section for the recommendations, citations and references of the open paper -->
             <div class="mt-3">
-                <lara-button class="mt-2 mb-4" type="outline" @click="$emit('bigger')">
+                <lara-button class="mt-2 mb-4" type="outline" @click="$emit('toggle')">
                     {{ $t('detailSidebar.bigger') }}
                 </lara-button>
 
