@@ -110,6 +110,22 @@ export const messages = {
             descending: 'Descending',
         },
 
+        slots: {
+            yearFilter: "Year Filter",
+            venueFilter: "Venue Filter",
+            yearSorter: "Year Sorter",
+            citationsSorter: "Citations Sorter",
+            referencesSorter: "References Sorter",
+            added: "Added",
+            enqueued: "Enqueued",
+            hidden: "Hidden",
+            tagFilter: "Tag Filter",
+            searchResults: "Search Results",
+            recommendations: "Recommendations",
+            citations: "Citations",
+            references: "References"
+        },
+
         home: {
             greetings: 'Hello {username}!',
             startNewResearch: 'Start new research',
@@ -300,6 +316,22 @@ export const messages = {
             later: 'Später',
             ascending: 'Aufsteigend',
             descending: 'Absteigend',
+        },
+
+        slots: {
+            yearFilter: "Jahr Filter",
+            venueFilter: "Erscheinungsort Filter",
+            yearSorter: "Jahr Sortierung",
+            citationsSorter: "Sortierung Zitationen",
+            referencesSorter: "Sortierung Referenzen",
+            added: "Hinzugefügt",
+            enqueued: "Gemerkt",
+            hidden: "Ausgeblendet",
+            tagFilter: "Tag Filter",
+            searchResults: "Suchergebnisse",
+            recommendations: "Empfehlungen",
+            citations: "Zitate",
+            references: "Referenzen"
         },
 
         home: {

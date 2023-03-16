@@ -22,7 +22,7 @@
 
 
         <div class="mt-4" v-if="!state.loading">
-            <organizable-list :slots="[{ id: 'users'}]" :organize-slots="organizeSlots"
+            <organizable-list :slots="[{ id: 'users', key: 'users' }]" :organize-slots="organizeSlots"
                               :selected-organizers="organizerState.selectedOragnizers" @organize="onOrganize"
                               @remove-organizer="(name) => onRemoveOrganizer(name)">
                 <template v-slot:users v-if="state.users != undefined && state.categories != undefined">
@@ -70,7 +70,7 @@ import {AdminApiHandler} from "@/api/Admin/AdminApiHandler";
 // Set the document title
 document.title = i18n.global.t("pageTitles.admin") + " - lara";
 
-const organizeSlots = [{ id: "category-filter", name: i18n.global.t("admin.organize.userCategories") }];
+const organizeSlots = [{ id: "category-filter", name: "Tags", key: "tagFilter" }];
 
 const userCategoriesStrings = computed<string[]>(() => {
     let strings: string[] = [];

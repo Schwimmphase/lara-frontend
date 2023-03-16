@@ -17,7 +17,7 @@ import PaperCard from "@/components/cards/PaperCard.vue";
 import type {Organizer} from "@/model/Organizer";
 
 let openResearchStore = useOpenResearchStore();
-let slots = [{ id: "search-results", name: "Suchergebnisse" }];
+let slots = [{ id: "search-results", name: "Suchergebnisse", key: "searchResults" }];
 
 let searchState: { results: Paper[], research: Research | undefined, query: string | undefined, loading: boolean } = reactive({
     loading: true,
