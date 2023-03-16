@@ -200,7 +200,7 @@ getPapers();
 }
 
 .lara-fixed-icon {
-    position: absolute;
+    position: fixed;
     top: 45vh;
 }
 
