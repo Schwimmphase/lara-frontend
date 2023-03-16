@@ -104,12 +104,12 @@ function onPdfError() {
 <template>
     <!-- Render if the API Call is complete -->
     <div v-if="!detailState.loading" class="w-100 h-100">
-        <detail-sidebar-component @bigger="bigger" :open-paper="detailState.openPaper"></detail-sidebar-component>
+        <detail-sidebar-component @bigger="bigger" :open-paper="detailState.openPaper!"></detail-sidebar-component>
 
         <div v-show="!detailState.showBigger" class="h-100">
             <!-- Paper pdf is available -->
             <div v-if="detailState.openPaper?.getPaper()?.pdfUrl != null && !pdfState.error" class="w-100 h-100">
-                <object type="application/pdf" :data="detailState.openPaper.getPaper().pdfUrl + '#zoom=page-width'"
+                <object type="application/pdf" :data="detailState.openPaper!.getPaper()!.pdfUrl + '#zoom=page-width'"
                         class="w-100 h-100" @error="onPdfError">
                 </object>
             </div>
@@ -145,7 +145,7 @@ function onPdfError() {
 
         <!-- bigger view of button is pressed, replaces pdf viewer and information -->
         <div v-show="detailState.showBigger" class="h-100">
-            <tabbed-view :source-paper="detailState.openPaper.getPaper()"></tabbed-view>
+            <tabbed-view :source-paper="detailState.openPaper!.getPaper()"></tabbed-view>
         </div>
     </div>
     

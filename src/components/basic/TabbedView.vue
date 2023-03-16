@@ -22,14 +22,14 @@
         <div class="mt-3">
             <div v-show="state.visibleTab === 1">
                 <paper-organizable-list :slots="slotsRecommendations" :export-enabled="false"
-                                        @organize="organizers => $emit('setRecommendations', organizers)">
+                                        @organize="organizers => setRecommendations(organizers)">
                     <template v-slot:recommendations>
                         <div v-if="state.loadingRecommendations" class="h-50 w-100 ma-5 d-flex justify-center align-center">
                             <v-progress-circular indeterminate size="35"></v-progress-circular>
                         </div>
 
                         <paper-card v-for="(paper, index) in state.recommendations" :key="index" :paper="paper" v-else
-                                    :research="state.research" :saved="$emit('isSaved', paper)"/>
+                                    :research="state.research" :saved="isSaved(paper)"/>
                         <span v-if="state.recommendations.length === 0 && !state.loadingRecommendations">
                             {{ $t('recommendationsView.empty') }}
                         </span>
@@ -38,14 +38,14 @@
             </div>
             <div v-show="state.visibleTab === 2">
                 <paper-organizable-list :slots="slotsCitations" :export-enabled="false"
-                                        @organize="organizers => $emit('setCitations', organizers)">
+                                        @organize="organizers => setCitations(organizers)">
                     <template v-slot:citations>
                         <div v-if="state.loadingCitations" class="h-50 w-100 ma-5 d-flex justify-center align-center">
                             <v-progress-circular indeterminate size="35"></v-progress-circular>
                         </div>
 
                         <paper-card v-for="(paper, index) in state.citations" :key="index" :paper="paper" v-else
-                                    :research="state.research" :saved="$emit('isSaved', paper)"/>
+                                    :research="state.research" :saved="isSaved(paper)"/>
                         <span v-if="state.citations.length === 0 && !state.loadingCitations">
                             {{ $t('recommendationsView.empty') }}
                         </span>
@@ -54,14 +54,14 @@
             </div>
             <div v-show="state.visibleTab === 3">
                 <paper-organizable-list :slots="slotsReferences" :export-enabled="false"
-                                        @organize="organizers => $emit('setReferences', organizers)">
+                                        @organize="organizers => setReferences(organizers)">
                     <template v-slot:references>
                         <div v-if="state.loadingReferences" class="h-50 w-100 ma-5 d-flex justify-center align-center">
                             <v-progress-circular indeterminate size="35"></v-progress-circular>
                         </div>
 
                         <paper-card v-for="(paper, index) in state.references" :key="index" :paper="paper" v-else
-                                    :research="state.research" :saved="$emit('isSaved', paper)"/>
+                                    :research="state.research" :saved="isSaved(paper)"/>
                         <span v-if="state.references.length === 0 && !state.loadingReferences">
                             {{ $t('recommendationsView.empty') }}
                         </span>
@@ -77,13 +77,13 @@
 <script setup lang="ts">
 
 import {reactive} from "vue";
-import {Organizer} from "@/model/Organizer";
+import type {Organizer} from "@/model/Organizer";
 import {Paper} from "@/model/Paper";
 import PaperOrganizableList from "@/components/basic/PaperOrganizableList.vue";
 import PaperCard from "@/components/cards/PaperCard.vue";
-import {Research} from "@/model/Research";
+import type {Research} from "@/model/Research";
 import {ResearchApiHandler} from "@/api/Research/ResearchApiHandler";
-import {SavedPaper} from "@/model/SavedPaper";
+import type {SavedPaper} from "@/model/SavedPaper";
 import {useOpenResearchStore} from "@/stores/openResearch";
 import {i18n} from "@/internationalization/i18n";
 import {PaperApiHandler} from "@/api/Paper/PaperApiHandler";
