@@ -10,6 +10,7 @@ import {OpenPaper} from "@/stores/model/OpenPaper";
 import {CachedPaper} from "@/model/CachedPaper";
 import {CachedPaperType} from "@/model/CachedPaperType";
 
+/* c8 ignore start */
 
 export const testComment1 = "Das ist der erste Testkommentar";
 export const testComment2 = "Das ist der zweite Testkommentar";
@@ -31,7 +32,7 @@ export const testTag1 = new Tag("id12345", "Super wichtig", "#fcba03");
 export const testTag2 = new Tag("id12346", "Mega wichtig", "#2980b9");
 export const testTag3 = new Tag("id12347", "Ultra wichtig", "#2c3e50");
 
-export const testPaper1 = new Paper("SemSchol$961fe188f2fe4708a7dbf70057790750252e058c", "An Efficient Branch-and-Bound Solver for Hitting Set", [testAuthor, testAuthor, testAuthor],
+export const testPaper1 = new Paper("S2$961fe188f2fe4708a7dbf70057790750252e058c", "An Efficient Branch-and-Bound Solver for Hitting Set", [testAuthor, testAuthor, testAuthor],
     2023, "Das ist der Absrtract eines sehr coolen Papers, das aber keinen Zweck hat sonder nur Test ist.",
     1, 0, "NEG", "https://www.orimi.com/pdf-test.pdf");
 
@@ -82,3 +83,5 @@ export const testSavedPaperList: SavedPaper[] = [
     testSavedPaper11,
     testSavedPaper12
 ];
+
+/* c8 ignore stop */
