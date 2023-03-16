@@ -1,18 +1,18 @@
 <template>
-    <div @click="state.dialog = true">
+    <div @click="openState.dialog = true">
         <slot></slot>
     </div>
-    <v-dialog v-model="state.dialog">
+    <v-dialog v-model="openState.dialog">
         <v-card id="dialog">
             <v-card-title></v-card-title>
             <v-card-text>
                 <v-form v-model="valid">
                     <div class="d-flex flex-column gap-4">
-                        <v-text-field class="lara-field" variant="outlined"
-                                      v-model="state.title" :counter="32"
+                        <v-text-field :messages="state.titleMessages" class="lara-field" variant="outlined"
+                                      v-model="state.title" :counter="maxTitleLength"
                                       :label="$t('newResearchDialog.title')"></v-text-field>
-                        <v-text-field class="lara-field" variant="outlined"
-                                      v-model="state.description" :counter="256"
+                        <v-text-field :messages="state.descriptionMessages" class="lara-field" variant="outlined"
+                                      v-model="state.description" :counter="maxDescriptionLength"
                                       :label="$t('newResearchDialog.description')"
                                       @keypress.enter="closeDialog">
                         </v-text-field>
@@ -32,20 +32,78 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
+import { watch } from "vue";
+import { i18n } from "@/internationalization/i18n";
 
 let valid = false;
+
+const maxTitleLength = 25;
+const maxDescriptionLength = 110;
+
+let titleMessage: string[];
+let descriptionMessage: string[];
 
 const emit = defineEmits<{
     (event: "save", title: string, description: string): void
 }>();
 
 let state = reactive({
-    dialog: false,
     title: "",
-    description: ""
+    description: "",
+    descriptionMessages: [''],
+    titleMessages: [''],
+    titleToLong: false,
+    descriptionToLong: false,
+    locale: ""
 });
 
+let openState = reactive({
+    dialog: false,
+});
+
+watch(openState, () => {
+    state.locale = i18n.global.locale.value;
+
+    state.descriptionMessages = [''];
+    state.titleMessages = [''];
+    
+    if (state.locale == "de") {
+        titleMessage = [i18n.global.messages.value.de.newResearchDialog.titleTooLong];
+        descriptionMessage = [i18n.global.messages.value.de.newResearchDialog.descriptionTooLong];
+    } else {
+        titleMessage = [i18n.global.messages.value.en.newResearchDialog.titleTooLong];
+        descriptionMessage = [i18n.global.messages.value.en.newResearchDialog.descriptionTooLong];
+    }
+
+    if (state.titleToLong) {
+        state.titleMessages = titleMessage;
+    }
+
+    if (state.descriptionToLong) {
+        state.descriptionMessages = descriptionMessage;
+    }
+})
+
 function closeDialog() {
+    let ret = false;
+
+    state.titleToLong = false;
+    state.descriptionToLong = false;
+
+    if (state.description.length > maxDescriptionLength) {
+        state.descriptionMessages = descriptionMessage;
+        state.descriptionToLong = true;
+        ret = true;
+    }
+
+    if (state.title.length > maxTitleLength) {
+        state.titleMessages = titleMessage;
+        state.titleToLong = true;
+        ret = true;
+    }
+
+    if (ret) return;
+
     console.debug("Dialog closed emitting save event");
 
     emit("save", state.title, state.description);

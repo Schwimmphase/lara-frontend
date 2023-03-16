@@ -58,7 +58,7 @@ export const messages = {
             citations: 'Citations',
             references: 'References',
             bigger: 'Toggle bigger list',
-            more: 'No more papers | One more paper | {n} more papers'
+            more: 'No more papers | One more paper | {n} more papers',
         },
 
         login: {
@@ -124,7 +124,9 @@ export const messages = {
         newResearchDialog: {
             title: 'Title',
             description: 'Description',
-            cancel: 'Cancel'
+            cancel: 'Cancel',
+            titleTooLong: 'Title too long',
+            descriptionTooLong: 'Description too long',
         },
 
         researchOverview: {
@@ -306,7 +308,9 @@ export const messages = {
 
         newResearchDialog: {
             title: 'Titel',
-            description: 'Beschreibung'
+            description: 'Beschreibung',
+            titleTooLong: 'Titel zu lang',
+            descriptionTooLong: 'Beschreibung zu lang',
         },
 
         researchOverview: {

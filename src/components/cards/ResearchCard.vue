@@ -1,6 +1,16 @@
 <template>
     <v-card class="d-flex flex-column lara-card font-weight-bold" width="350" height="230" variant="flat">
-        <v-card-title class="font-weight-bold">{{ title }}</v-card-title>
+        
+        <v-card-title class="font-weight-bold">
+            {{ title }}
+        </v-card-title>
+
+        <!--<v-card-title class="font-weight-bold">{{ title }}
+        </v-card-title>-->
+        
+        
+        
+        
 
         <v-card-text>{{ description }}</v-card-text>
         <v-card-subtitle>{{  $t('researchCard.startedOn', {startedOn: startedAt})  }}</v-card-subtitle>
