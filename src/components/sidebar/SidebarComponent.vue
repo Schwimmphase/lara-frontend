@@ -109,7 +109,8 @@ getPapers();
 <template>
     <!-- Navigations-drawer for the sidebar to manage the paper of a research -->
     <v-navigation-drawer width="300" permanent v-model="state.show">
-        <v-icon class="lara-fixed-icon lara-fixed-icon-right" @click="toggleSidebar(false)" size="32">mdi-chevron-left</v-icon>
+        <v-icon class="lara-fixed-icon lara-fixed-icon-right" @click="toggleSidebar(false)" size="32"
+                :title="$t('sidebar.collapse')">mdi-chevron-left</v-icon>
         <div class="mx-2 mr-7 my-3">
             <div>
                 <SearchbarComponent v-if="props.showSearch"/>
@@ -119,8 +120,10 @@ getPapers();
 
             <div class="mt-4">
                 <span class="text-h6 font-weight-bold">{{ state.research != null ? state.research.title : null }}</span>
-                <span @click="state.research != null ? navigateToResearchOverview(state.research) : null" class="ml-2 lara-sidebar-link text-h6"><v-icon
-                    icon="mdi-view-grid"/></span>
+                <span @click="state.research != null ? navigateToResearchOverview(state.research) : null"
+                      class="ml-2 lara-sidebar-link text-h6">
+                    <v-icon :title="$t('words.recommendations')" icon="mdi-view-grid"/>
+                </span>
             </div>
 
             <!-- Section for the enqueued papers -->
@@ -128,7 +131,9 @@ getPapers();
                 <v-list-item v-for="(savedPaper, index) in state.enqueuedPapers" :key="index">
                     <span style="white-space: pre;">
                         <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link" style="white-space: normal">{{ savedPaper.paper.title }}</span>
-                        <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon>mdi-plus</v-icon></span>
+                        <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link">
+                            <v-icon :title="$t('detailSidebar.add')">mdi-plus</v-icon>
+                        </span>
                     </span>
                 </v-list-item>
             </expandable-list>
@@ -147,7 +152,9 @@ getPapers();
                 <v-list-item v-for="(savedPaper, index) in state.hiddenPapers" v-bind:key="index">
                     <span style="white-space: pre;">
                         <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link" style="white-space: normal">{{ savedPaper.paper.title }}</span>
-                        <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link"><v-icon>"mdi-plus"</v-icon></span>
+                        <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link">
+                            <v-icon :title="$t('detailSidebar.add')">mdi-plus</v-icon>
+                        </span>
                     </span>
                 </v-list-item>
             </expandable-list>
@@ -156,14 +163,19 @@ getPapers();
 
     <v-navigation-drawer width="56" permanent v-model="state.notShow">
         <div class="d-flex flex-column align-center">
-            <v-icon class="lara-fixed-icon" @click="toggleSidebar(true)" size="32">mdi-chevron-right</v-icon>
+            <v-icon class="lara-fixed-icon" @click="toggleSidebar(true)" size="32"
+                    :title="$t('sidebar.expand')">mdi-chevron-right</v-icon>
         </div>
         
         <div class="d-flex flex-column mx-2 my-3 justify-center align-center">
-            <v-icon class="mt-4" v-if="props.showSearch" @click="navigateToSearch" size="32">mdi-magnify</v-icon>
-            <v-icon class="mt-4" v-if="props.showRecommendations" @click="navigateToRecommendations" size="32">mdi-book</v-icon>
-            <v-icon class="mt-4" @click="returnPage" size="30">mdi-arrow-left</v-icon>
-            <v-icon class="mt-4" @click="state.research != null ? navigateToResearchOverview(state.research) : null" size="30">mdi-view-grid</v-icon>
+            <v-icon class="mt-4" v-if="props.showSearch" @click="navigateToSearch" size="32"
+                    :title="$t('researchOverview.globalSearch')">mdi-magnify</v-icon>
+            <v-icon class="mt-4" v-if="props.showRecommendations" @click="navigateToRecommendations" size="32"
+                    :title="$t('words.recommendations')">mdi-book</v-icon>
+            <v-icon class="mt-4" @click="returnPage" size="30"
+                    :title="$t('sidebar.returnButton')">mdi-arrow-left</v-icon>
+            <v-icon class="mt-4" @click="state.research != null ? navigateToResearchOverview(state.research) : null"
+                    size="30" :title="$t('words.research')">mdi-view-grid</v-icon>
         </div>
     </v-navigation-drawer>
 </template>

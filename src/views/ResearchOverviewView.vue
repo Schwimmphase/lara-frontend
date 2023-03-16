@@ -6,7 +6,8 @@
                 <h1 class="text-h3 font-weight-bold">{{ research != null ? research.title : "" }}</h1>
             </div>
             <div class="d-flex align-center justify-end w-100">
-                <v-icon @click="router.push({ name: 'recommendations' })" class="mr-5" size="40">mdi-book</v-icon>
+                <v-icon @click="router.push({ name: 'recommendations' })" class="mr-5" size="40"
+                        :title="$t('words.recommendations')">mdi-book</v-icon>
                 <searchbar-component id="search-bar"></searchbar-component>
             </div>
             

@@ -2,19 +2,19 @@
 import LaraButton from '../basic/LaraButton.vue';
 import TagComponent from './TagComponent.vue';
 
-import { useOpenPaperStore } from '@/stores/openPaper'
-import { reactive } from '@vue/reactivity';
-import { toRaw } from 'vue';
+import {useOpenPaperStore} from '@/stores/openPaper'
+import {reactive} from '@vue/reactivity';
+import {toRaw} from 'vue';
 
-import { PaperApiHandler } from '@/api/Paper/PaperApiHandler';
+import {PaperApiHandler} from '@/api/Paper/PaperApiHandler';
 
-import type { SavedPaper } from '@/model/SavedPaper';
-import type { Paper } from '@/model/Paper';
-import { OpenPaper } from '@/stores/model/OpenPaper';
-import { SaveState } from '@/model/SaveState';
-import type { Research } from '@/model/Research';
-import { useOpenResearchStore } from '@/stores/openResearch';
-import type { Author } from '@/model/Author';
+import type {SavedPaper} from '@/model/SavedPaper';
+import type {Paper} from '@/model/Paper';
+import {OpenPaper} from '@/stores/model/OpenPaper';
+import {SaveState} from '@/model/SaveState';
+import type {Research} from '@/model/Research';
+import {useOpenResearchStore} from '@/stores/openResearch';
+import type {Author} from '@/model/Author';
 import {ResearchApiHandler} from "@/api/Research/ResearchApiHandler";
 
 const MAX_NUMBER_OF_AUTHORS = 2;
@@ -131,6 +131,11 @@ let createSavedPaper = async (paper: Paper | null | undefined, state: SaveState)
 
     let savedPaper: SavedPaper = await PaperApiHandler.getDetails(paper.paperId, researchState.research.id) as SavedPaper;
     openResearchStore.addResearchPaper(savedPaper);
+
+    let openPaper = new OpenPaper(undefined, savedPaper, true);
+    openPaperStore.setPaper(openPaper);
+    detailState.openPaper = openPaper;
+    console.debug("openPaper: ", detailState.openPaper);
 }
 
 
@@ -225,8 +230,12 @@ const props = defineProps<{ openPaper: OpenPaper }>();
                             hover
                         ></v-rating>
                         <v-spacer></v-spacer>
-                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState != SaveState.hidden" class="mr-10 mt-6 lara-hide-button" @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.hidden) : null">mdi-eye-off</v-icon>
-                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState == SaveState.hidden" class="mr-10 mt-6 lara-hide-button" @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.added) : null">mdi-eye</v-icon>
+                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState != SaveState.hidden"
+                                class="mr-10 mt-6 lara-hide-button" :title="$t('words.hide')"
+                                @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.hidden) : null">mdi-eye-off</v-icon>
+                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState == SaveState.hidden"
+                                class="mr-10 mt-6 lara-hide-button" :title="$t('detailSidebar.add')"
+                                @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.added) : null">mdi-eye</v-icon>
                     </div>
                     <v-divider class="my-3"></v-divider>
                 </div>

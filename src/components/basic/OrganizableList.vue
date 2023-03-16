@@ -12,7 +12,7 @@
                     <span id="organizer-chip-text">
                         {{ getOrganizerHumanName(organizer.name) }}: {{ organizer.argument }}
                     </span>
-                    <v-btn size="small" variant="text" icon="mdi-close-circle"
+                    <v-btn size="small" variant="text" icon="mdi-close-circle" :title="$t('words.remove')"
                            @click="$emit('removeOrganizer', organizer.name)">
                     </v-btn>
                 </v-chip>

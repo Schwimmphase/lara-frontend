@@ -1,13 +1,14 @@
-import { Author } from "@/model/Author";
-import { CachedPaper } from "@/model/CachedPaper";
-import { Paper } from "@/model/Paper";
-import { Research } from "@/model/Research";
-import { SavedPaper } from "@/model/SavedPaper";
-import { Tag } from "@/model/Tag";
-import { User } from "@/model/User";
-import { UserCategory } from "@/model/UserCategory";
-import { plainToInstance } from "class-transformer";
+import {Author} from "@/model/Author";
+import {CachedPaper} from "@/model/CachedPaper";
+import {Paper} from "@/model/Paper";
+import {Research} from "@/model/Research";
+import {SavedPaper} from "@/model/SavedPaper";
+import {Tag} from "@/model/Tag";
+import {User} from "@/model/User";
+import {UserCategory} from "@/model/UserCategory";
+import {plainToInstance} from "class-transformer";
 import type {SaveState} from "@/model/SaveState";
+import {ApiErrors, triggerGlobalError} from "@/api/ApiErrors";
 
 // defines basic functionality used by every specific api handler
 class BasicApiHandler {
@@ -18,6 +19,7 @@ class BasicApiHandler {
         try {
             data = JSON.parse(JSON.stringify(responseData));
         } catch (error) {
+            triggerGlobalError(ApiErrors.couldNotParseData);
             throw new Error("Could not parse JSON string");
         }
         return data;

@@ -1,6 +1,16 @@
 <template>
     <v-card class="d-flex flex-column lara-card font-weight-bold" width="350" height="230" variant="flat">
-        <v-card-title class="font-weight-bold">{{ title }}</v-card-title>
+        
+        <v-card-title class="font-weight-bold">
+            {{ title }}
+        </v-card-title>
+
+        <!--<v-card-title class="font-weight-bold">{{ title }}
+        </v-card-title>-->
+        
+        
+        
+        
 
         <v-card-text>{{ description }}</v-card-text>
         <v-card-subtitle>{{  $t('researchCard.startedOn', {startedOn: startedAt})  }}</v-card-subtitle>
@@ -14,7 +24,7 @@
                                   @save="(newTitle: string, newDescription: string) => onDataChange(newTitle, newDescription)" />
 
             <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
-                <v-btn size="small" color="red" variant="text" icon="mdi-delete"></v-btn>
+                <v-btn size="small" color="red" variant="text" icon="mdi-delete" :title="$t('words.delete')"></v-btn>
             </confirm-dialog>
         </v-card-actions>
     </v-card>
