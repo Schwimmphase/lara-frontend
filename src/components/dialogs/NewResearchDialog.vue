@@ -2,13 +2,8 @@
     <div @click="openState.dialog = true">
         <slot></slot>
     </div>
-<<<<<<< HEAD
-    <v-dialog v-model="state.dialog" id="dialog">
-        <v-card>
-=======
     <v-dialog v-model="openState.dialog">
         <v-card id="dialog">
->>>>>>> main
             <v-card-title></v-card-title>
             <v-card-text>
                 <v-form v-model="valid">
