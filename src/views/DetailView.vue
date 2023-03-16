@@ -55,6 +55,10 @@ async function setPaper(): Promise<void> {
 }
 
 async function bigger(): Promise<void> {
+    detailState.showBigger = true;
+}
+
+async function toggle(): Promise<void> {
     detailState.showBigger = !detailState.showBigger;
 }
 
@@ -104,7 +108,7 @@ function onPdfError() {
 <template>
     <!-- Render if the API Call is complete -->
     <div v-if="!detailState.loading" class="w-100 h-100">
-        <detail-sidebar-component @bigger="bigger" :open-paper="detailState.openPaper!"></detail-sidebar-component>
+        <detail-sidebar-component @toggle="toggle" @bigger="bigger" :open-paper="detailState.openPaper!"></detail-sidebar-component>
 
         <div v-show="!detailState.showBigger" class="h-100">
             <!-- Paper pdf is available -->
