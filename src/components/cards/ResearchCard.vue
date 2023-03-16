@@ -14,7 +14,7 @@
                                   @save="(newTitle: string, newDescription: string) => onDataChange(newTitle, newDescription)" />
 
             <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
-                <v-btn size="small" color="red" variant="text" icon="mdi-delete"></v-btn>
+                <v-btn size="small" color="red" variant="text" icon="mdi-delete" :title="$t('words.delete')"></v-btn>
             </confirm-dialog>
         </v-card-actions>
     </v-card>

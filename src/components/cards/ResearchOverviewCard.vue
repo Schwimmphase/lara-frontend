@@ -17,9 +17,10 @@
                     {{ $t('researchOverviewCard.add') }}
                 </lara-button>
                 <v-spacer></v-spacer>
-                <v-btn size="small" color="surface-variant" variant="text" icon="mdi-open-in-new" @click="$emit('export')"></v-btn>
+                <v-btn size="small" color="surface-variant" variant="text" icon="mdi-open-in-new"
+                       @click="$emit('export')" :title="$t('words.export')"></v-btn>
                 <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
-                    <v-btn size="small" color="red" variant="text" icon="mdi-delete"></v-btn>
+                    <v-btn size="small" color="red" variant="text" icon="mdi-delete" :title="$t('words.remove')"></v-btn>
                 </confirm-dialog>
             </v-card-actions>
         </div>
@@ -35,9 +36,10 @@
                 <!-- Relevance -->
                 <v-spacer></v-spacer>
                 <!-- Export & Delete Buttons -->
-                <v-btn size="small" color="surface-variant" variant="text" icon="mdi-open-in-new" @click="$emit('export')"></v-btn>
+                <v-btn size="small" color="surface-variant" variant="text" icon="mdi-open-in-new"
+                       @click="$emit('export')" :title="$t('words.export')"></v-btn>
                 <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
-                    <v-btn size="small" color="red" variant="text" icon="mdi-delete"></v-btn>
+                    <v-btn size="small" color="red" variant="text" icon="mdi-delete" :title="$t('words.remove')"></v-btn>
                 </confirm-dialog>
             </v-card-actions>
         </div>

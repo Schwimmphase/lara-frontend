@@ -230,8 +230,12 @@ const props = defineProps<{ openPaper: OpenPaper }>();
                             hover
                         ></v-rating>
                         <v-spacer></v-spacer>
-                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState != SaveState.hidden" class="mr-10 mt-6 lara-hide-button" @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.hidden) : null">mdi-eye-off</v-icon>
-                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState == SaveState.hidden" class="mr-10 mt-6 lara-hide-button" @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.added) : null">mdi-eye</v-icon>
+                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState != SaveState.hidden"
+                                class="mr-10 mt-6 lara-hide-button" :title="$t('words.hide')"
+                                @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.hidden) : null">mdi-eye-off</v-icon>
+                        <v-icon v-if="detailState.openPaper.savedPaper?.saveState == SaveState.hidden"
+                                class="mr-10 mt-6 lara-hide-button" :title="$t('detailSidebar.add')"
+                                @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.added) : null">mdi-eye</v-icon>
                     </div>
                     <v-divider class="my-3"></v-divider>
                 </div>
