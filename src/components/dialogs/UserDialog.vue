@@ -2,8 +2,8 @@
     <div @click="state.dialog = true">
         <slot></slot>
     </div>
-    <v-dialog v-model="state.dialog">
-        <v-card id="dialog">
+    <v-dialog id="dialog" v-model="state.dialog">
+        <v-card>
             <v-card-title></v-card-title>
             <v-card-text>
                 <v-form v-model="valid">
@@ -90,9 +90,6 @@ function closeDialog() {
 #dialog {
     min-width: 300px;
     max-width: 750px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
     border-radius: 0;
 }
 </style>

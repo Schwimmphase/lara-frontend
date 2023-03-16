@@ -28,9 +28,10 @@ let close = (decision: boolean) => {
 
     <v-dialog
         v-model="state.showDialog"
+        class="dialog"
         persistent
     >
-        <v-card class="dialog lara-card">
+        <v-card class="lara-card">
             <div class="ma-5">
                 <span class="text-h5 font-weight-bold">{{ $t('confirmDialog.message') }}</span>
                 <LaraButton class="mt-2" type="primary" @click="close(true)">{{ $t('confirmDialog.confirm') }}</LaraButton>

@@ -32,9 +32,8 @@ let closeDialog = () => {
         <slot></slot>
     </div>
     
-
-    <v-dialog v-model="state.dialog">
-        <v-card class="dialog">
+    <v-dialog v-model="state.dialog" class="dialog">
+        <v-card>
             <div class="mx-4">
                 <v-card-title class="font-weight-bold text-h4 mt-4">{{ $t('admin.categories.edit') }}</v-card-title>
                 <v-container>
@@ -73,9 +72,6 @@ let closeDialog = () => {
 .dialog {
     min-width: 300px;
     max-width: 750px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
     border-radius: 0;
 }
 

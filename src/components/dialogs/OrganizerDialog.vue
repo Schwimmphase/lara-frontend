@@ -3,8 +3,8 @@
         <lara-button type="outline" icon="mdi-filter" class="w-100" id="filter-button" @click="state.dialog = true">
             {{ $t('organizableList.filterSettings') }}
         </lara-button>
-        <v-dialog v-model="state.dialog">
-            <v-card id="dialog">
+        <v-dialog v-model="state.dialog" id="dialog">
+            <v-card>
                 <v-card-text>
                     <v-form v-model="valid">
                         <div class="d-flex flex-column">
@@ -59,8 +59,6 @@ function closeDialog() {
 #dialog {
     min-width: 300px;
     max-width: 750px;
-    margin-left: auto;
-    margin-right: auto;
     width: 100%;
     border-radius: 0;
 }

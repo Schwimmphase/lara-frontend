@@ -28,8 +28,8 @@ let closeDialog = () => {
 
 
 <template>
-    <v-dialog v-model="model">
-        <v-card id="dialog">
+    <v-dialog v-model="model" id="edit-tag-dialog">
+        <v-card>
             <v-container>
                 <v-row>
                     <v-col>
@@ -59,9 +59,6 @@ let closeDialog = () => {
                     </v-col>
                 </v-row>
             </v-container>
-            
-            
-            
         </v-card>
     </v-dialog>
 
@@ -69,12 +66,9 @@ let closeDialog = () => {
 
 <style scoped>
 
-#dialog {
+#edit-tag-dialog {
     min-width: 300px;
     max-width: 750px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
     border-radius: 0;
 }
 
