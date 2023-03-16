@@ -279,9 +279,10 @@ const props = defineProps<{ openPaper: OpenPaper }>();
                             {{ recommendation.title }}
                         </router-link>
                     </div>
-                    <p v-if="recommendationsStore.recommendations.length > MAX_NUMBER_DISPLAYED" class="text-grey">
+                    <a v-if="recommendationsStore.recommendations.length > MAX_NUMBER_DISPLAYED"  @click="$emit('bigger')"
+                       class="text-grey lara-no-decoration cursor-pointer">
                         {{ $t('detailSidebar.more', { n: recommendationsStore.recommendations.length - MAX_NUMBER_DISPLAYED }) }}
-                    </p>
+                    </a>
                 </div>
                 <div class="mt-4">
                     <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.citations') }}</span>
@@ -293,9 +294,10 @@ const props = defineProps<{ openPaper: OpenPaper }>();
                             {{ citation.title }}
                         </router-link>
                     </div>
-                    <p v-if="recommendationsStore.citations.length > MAX_NUMBER_DISPLAYED" class="text-grey">
+                    <a v-if="recommendationsStore.citations.length > MAX_NUMBER_DISPLAYED" @click="$emit('bigger')"
+                       class="text-grey lara-no-decoration cursor-pointer">
                         {{ $t('detailSidebar.more', { n: recommendationsStore.citations.length - MAX_NUMBER_DISPLAYED }) }}
-                    </p>
+                    </a>
                 </div>
                 <div class="mt-4">
                     <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.references') }}</span>
@@ -307,9 +309,10 @@ const props = defineProps<{ openPaper: OpenPaper }>();
                             {{ reference.title }}
                         </router-link>
                     </div>
-                    <p v-if="recommendationsStore.references.length > MAX_NUMBER_DISPLAYED" class="text-grey">
+                    <a v-if="recommendationsStore.references.length > MAX_NUMBER_DISPLAYED" @click="$emit('bigger')"
+                       class="text-grey lara-no-decoration cursor-pointer">
                         {{ $t('detailSidebar.more', { n: recommendationsStore.references.length - MAX_NUMBER_DISPLAYED }) }}
-                    </p>
+                    </a>
                 </div>
             </div>
         </div>
