@@ -109,7 +109,7 @@ function closeDialog() {
     emit("save", state.title, state.description);
     state.title = ""
     state.description = ""
-    state.dialog = false
+    openState.dialog = false
 }
 
 </script>
