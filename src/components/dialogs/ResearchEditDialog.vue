@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-btn size="small" color="surface-variant" variant="text" icon="mdi-pencil" @click="openState.dialog = true"></v-btn>
+        <v-btn size="small" color="surface-variant" :title="$t('words.edit')" variant="text" icon="mdi-pencil" @click="openState.dialog = true"></v-btn>
         <v-dialog v-model="openState.dialog">
             <v-card id="dialog">
                 <v-card-text>
