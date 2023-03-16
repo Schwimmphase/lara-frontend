@@ -32,7 +32,7 @@
                     </user-card>
                 </template>
 
-                <template v-slot:organizer-tags>
+                <template v-slot:category-filter>
                     <div id="tag-select" class="mt-4">
                         <v-select class="lara-field" :label="$t('admin.organize.userCategories')"
                                   variant="outlined" :items="userCategoriesStrings" multiple clearable v-model="organizerState.tags">
@@ -52,25 +52,25 @@
 
 <script setup lang="ts">
 
-import { computed, reactive } from "vue";
-import { i18n } from "@/internationalization/i18n";
+import {computed, reactive} from "vue";
+import {i18n} from "@/internationalization/i18n";
 
 import LaraButton from "@/components/basic/LaraButton.vue";
 import OrganizableList from "@/components/basic/OrganizableList.vue";
 import UserCard from "@/components/cards/UserCard.vue";
 import UserDialog from "@/components/dialogs/UserDialog.vue";
 
-import type { User } from "@/model/User";
+import type {User} from "@/model/User";
 import type {UserCategory} from "@/model/UserCategory";
-import { Organizer } from "@/model/Organizer";
+import {Organizer} from "@/model/Organizer";
 
-import { useCurrentUserStore } from "@/stores/currentUser";
-import { AdminApiHandler } from "@/api/Admin/AdminApiHandler";
+import {useCurrentUserStore} from "@/stores/currentUser";
+import {AdminApiHandler} from "@/api/Admin/AdminApiHandler";
 
 // Set the document title
 document.title = i18n.global.t("pageTitles.admin") + " - lara";
 
-const organizeSlots = [{ id: "organizer-tags", name: "Tags" }];
+const organizeSlots = [{ id: "category-filter", name: i18n.global.t("admin.organize.userCategories") }];
 
 const userCategoriesStrings = computed<string[]>(() => {
     let strings: string[] = [];
@@ -166,7 +166,7 @@ function onOrganize() {
     });
 
     if (!tagsEmpty) {
-        let tagsFilter = new Organizer("tags-filter", tagsValue);
+        let tagsFilter = new Organizer("category-filter", tagsValue);
         organizerState.selectedOragnizers.push(tagsFilter);
     }
 
@@ -182,6 +182,8 @@ function onRemoveOrganizer(name: string) {
     organizerState.tags = [];
 
     organizerState.selectedOragnizers = newOrganizers;
+
+    getUsers(organizerState.selectedOragnizers);
 }
 
 // Fetch the categories and the users on pageload

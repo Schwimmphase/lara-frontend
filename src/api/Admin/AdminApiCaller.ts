@@ -1,7 +1,5 @@
-import type { Organizer } from "@/model/Organizer";
+import type {Organizer} from "@/model/Organizer";
 import BasicApiCaller from "../BasicApiCaller";
-import type { UserCategory } from "@/model/UserCategory";
-import basicApiHandler from "@/api/BasicApiHandler";
 
 export class AdminApiCaller {
     static urlUsermanagement = '/usermanagement';
@@ -9,8 +7,9 @@ export class AdminApiCaller {
 
     public static getUsers(organizers: Organizer[]) {
         return BasicApiCaller.axiosInstance.get(this.urlUsermanagement, {
-            data: {
-                "organizers": organizers
+            params: {
+                "organizer": organizers.map(organizer => organizer.name + "=" + organizer.argument)
+                    .join("&organizer=")
             }
         }).catch(reason => { throw new Error(reason.response.data.message); });
     }
