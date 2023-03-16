@@ -10,7 +10,7 @@
                         <div class="d-flex flex-column">
                             <div class="d-flex flex-row justify-space-between" v-for="slot in slots" >
                                 <div class="w-25 d-flex align-center">
-                                    <p class="text-h5 mt-auto mb-auto">{{ slot.name }}</p>
+                                    <p class="text-h5 mt-auto mb-auto">{{ $t('slots.' + slot.key) }}</p>
                                 </div>
                                 <slot :name="slot.id"></slot>
                             </div>

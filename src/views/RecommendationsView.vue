@@ -17,12 +17,12 @@ import {i18n} from "@/internationalization/i18n";
 import PaperOrganizableList from "@/components/basic/PaperOrganizableList.vue";
 
 const slotsRecommended = [
-    {id: "recommendations", name: i18n.global.t("words.recommendations")}
+    {id: "recommendations", name: "recommendations", key: "recommendations" }
 ];
 
 const slotsReferences = [
-    {id: "citations", name: i18n.global.t("words.citations")},
-    {id: "references", name: i18n.global.t("words.references")},
+    { id: "citations", name: "citations", key: "citations" },
+    { id: "references", name: "references", key: "references" },
 ];
 
 let state: { showCitations: boolean, citations: Paper[], references: Paper[], recommendations: Paper[],

@@ -19,8 +19,8 @@ import type {Research} from "@/model/Research";
 import type {Organizer} from "@/model/Organizer";
 
 const slotsReferences = [
-    {id: "citations", name: i18n.global.t("words.citations")},
-    {id: "references", name: i18n.global.t("words.references")},
+    {id: "citations", name: "citations", key: "citatoins" },
+    {id: "references", name: "references", key: "references" },
 ];
 
 // Number of the maximum of displayed authors

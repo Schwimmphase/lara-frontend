@@ -116,12 +116,12 @@ let hidden = computed(() => {
 });
 
 let slots: Slot[] = [
-    { id: "added" },
-    { id: "enqueued", name: enqueued.value }, // TODO: currently does not auto update
-    { id: "hidden", name: hidden.value } // TODO: currently does not auto update
+    { id: "added", key: "added" },
+    { id: "enqueued", name: enqueued.value, key: "enqueued" },
+    { id: "hidden", name: hidden.value, key: "hidden" }
 ];
 
-const organizeSlots: Slot[] = [{ id: "year-filter", name: "Year Filter" }];
+const organizeSlots: Slot[] = [{ id: "year-filter", name: "Year Filter", key: "yearFilter" }];
 
 async function getSavedPapers(organizers: Organizer[]) {
     state.loading = true;

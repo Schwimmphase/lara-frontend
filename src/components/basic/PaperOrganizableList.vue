@@ -95,11 +95,11 @@ let referencesSorterState: { active: boolean, descending: boolean} = reactive({
 });
 
 const organizeSlots: Slot[] = [
-    { id: "year-filter", name: "Year Filter" },
-    { id: "venue-filter", name: "Venue Filter"},
-    { id: "year-sorter", name: "Year Sorter"},
-    { id: "citation-count-sorter", name: "Citations Sorter"},
-    { id: "reference-count-sorter", name: "References Sorter"},
+    { id: "year-filter", name: "Year Filter", key: 'yearFilter' },
+    { id: "venue-filter", name: "Venue Filter", key: 'venueFilter' },
+    { id: "year-sorter", name: "Year Sorter", key: 'yearSorter' },
+    { id: "citation-count-sorter", name: "Citations Sorter", key: 'citationsSorter' },
+    { id: "reference-count-sorter", name: "References Sorter", key: 'referencesSorter' },
 ];
 
 function setOrganizer(name: string, value: string): void {
