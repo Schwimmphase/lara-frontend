@@ -25,7 +25,7 @@
                                         @organize="organizers => setRecommendations(organizers)">
                     <template v-slot:recommendations>
                         <div v-if="state.loadingRecommendations" class="h-50 w-100 ma-5 d-flex justify-center align-center">
-                            <v-progress-circular indeterminate size="35"></v-progress-circular>
+                            <v-progress-circular indeterminate size="35" id="loading-recommendations"></v-progress-circular>
                         </div>
 
                         <paper-card v-for="(paper, index) in state.recommendations" :key="index" :paper="paper" v-else
@@ -41,7 +41,7 @@
                                         @organize="organizers => setCitations(organizers)">
                     <template v-slot:citations>
                         <div v-if="state.loadingCitations" class="h-50 w-100 ma-5 d-flex justify-center align-center">
-                            <v-progress-circular indeterminate size="35"></v-progress-circular>
+                            <v-progress-circular indeterminate size="35" id="loading-citations"></v-progress-circular>
                         </div>
 
                         <paper-card v-for="(paper, index) in state.citations" :key="index" :paper="paper" v-else
@@ -57,7 +57,7 @@
                                         @organize="organizers => setReferences(organizers)">
                     <template v-slot:references>
                         <div v-if="state.loadingReferences" class="h-50 w-100 ma-5 d-flex justify-center align-center">
-                            <v-progress-circular indeterminate size="35"></v-progress-circular>
+                            <v-progress-circular indeterminate size="35" id="loading-references"></v-progress-circular>
                         </div>
 
                         <paper-card v-for="(paper, index) in state.references" :key="index" :paper="paper" v-else
@@ -85,7 +85,6 @@ import type {Research} from "@/model/Research";
 import {ResearchApiHandler} from "@/api/Research/ResearchApiHandler";
 import type {SavedPaper} from "@/model/SavedPaper";
 import {useOpenResearchStore} from "@/stores/openResearch";
-import {i18n} from "@/internationalization/i18n";
 import {PaperApiHandler} from "@/api/Paper/PaperApiHandler";
 
 let state: { visibleTab: number, loadingRecommendations: boolean, loadingCitations: boolean,

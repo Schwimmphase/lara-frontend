@@ -64,6 +64,15 @@ let openPaper = (): void => {
     router.push({ name: 'paperDetails', query: { paper: props.paper.paperId }});
 }
 
+function getCardId(paper: Paper): string {
+    let id = "paper-card-";
+    for (let i = 0; i < Math.min(paper.title.split(" ").length, 4); i++) {
+        let split = paper.title.split(" ")[i];
+        id += split.substring(0, split.length > 4 ? 4 : split.length).toLowerCase() + "-";
+    }
+    return id.substring(0, id.length - 1);
+}
+
 </script>
 
 
@@ -71,7 +80,10 @@ let openPaper = (): void => {
     <v-card class="lara-card mt-4 w-100" id="unsaved-paper-card">
         <div class="d-flex flex-column justify-space-between h-100">
             <div>
-                <v-card-title @click="openPaper" class="font-weight-bold cursor-pointer" id="open-paper">{{ paper!.title }}</v-card-title>
+                <v-card-title @click="openPaper" class="font-weight-bold cursor-pointer"
+                              :id="getCardId(paper!) + '-title'">
+                    {{ paper!.title }}
+                </v-card-title>
                 <v-card-subtitle>
                     {{ paper!.authors?.map(author => author.name).join(", ") }}
                 </v-card-subtitle>
@@ -89,15 +101,16 @@ let openPaper = (): void => {
                 </div>
             </div>
             <div class="mx-4 mb-4 d-flex flex-row">
-                <lara-button @click="openPaper" class="mt-2 mr-2 search-button" type="secondary">
+                <lara-button @click="openPaper" class="mt-2 mr-2 search-button" type="secondary"
+                             :id="getCardId(paper!) + '-open'">
                     {{ $t('detailSidebar.open') }}
                 </lara-button>
                 <lara-button @click="createSavedPaper(SaveState.enqueued)" class="mt-2 mr-2 search-button"
-                             type="primary" v-if="!saved" id="enqueue-paper">
+                             type="primary" v-if="!saved" :id="getCardId(paper!) + '-enqueue'" >
                     {{ $t('detailSidebar.enqueue') }}
                 </lara-button>
                 <lara-button @click="createSavedPaper(SaveState.hidden)" class="mt-2 search-button" type="outline"
-                             v-if="!saved"  id="open-paper">
+                             v-if="!saved" :id="getCardId(paper!) + '-hide'">
                     <v-icon>mdi-eye-off</v-icon>
                 </lara-button>
             </div>
@@ -107,7 +120,7 @@ let openPaper = (): void => {
     <v-snackbar v-model="snackbarState.enqueued" :timeout="snackbarState.timeout">
         {{ $t('paperCard.snackbar.enqueued') }}
         <template v-slot:actions>
-            <v-btn color="pink" variant="text" @click="snackbarState.enqueued = false" id="snackbar-enqueued">
+            <v-btn color="pink" variant="text" @click="snackbarState.enqueued = false" id="snackbar-enqueued-close">
                 {{ $t('words.close') }}
             </v-btn>
         </template>
@@ -116,7 +129,7 @@ let openPaper = (): void => {
     <v-snackbar v-model="snackbarState.hidden" :timeout="snackbarState.timeout" id="snackbar-hidden">
         {{ $t('paperCard.snackbar.hidden') }}
         <template v-slot:actions>
-            <v-btn color="pink" variant="text" @click="snackbarState.hidden = false" id="snackbar-not-hidden">
+            <v-btn color="pink" variant="text" @click="snackbarState.hidden = false" id="snackbar-hidden-close">
                 {{ $t('words.close') }}
             </v-btn>
         </template>

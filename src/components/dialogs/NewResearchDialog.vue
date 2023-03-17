@@ -9,11 +9,11 @@
                 <v-form v-model="valid" v-on:submit.prevent>
                     <div class="d-flex flex-column gap-4">
                         <v-text-field :messages="state.titleMessages" class="lara-field" variant="outlined"
-                                      v-model="state.title" :counter="maxTitleLength"
+                                      v-model="state.title" :counter="maxTitleLength" id="new-research-title"
                                       :label="$t('newResearchDialog.title')"></v-text-field>
                         <v-textarea :messages="state.descriptionMessages" class="lara-field mt-4" variant="outlined"
                                       v-model="state.description" :counter="maxDescriptionLength"
-                                      :label="$t('newResearchDialog.description')"
+                                      id="new-research-description" :label="$t('newResearchDialog.description')"
                         ></v-textarea>
                     </div>
                 </v-form>
@@ -29,10 +29,9 @@
 
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import {reactive, watch} from "vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
-import { watch } from "vue";
-import { i18n } from "@/internationalization/i18n";
+import {i18n} from "@/internationalization/i18n";
 
 let valid = false;
 

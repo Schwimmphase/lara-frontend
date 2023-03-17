@@ -196,22 +196,30 @@ const props = defineProps<{ openPaper: OpenPaper, biggerListShown: boolean }>();
                 <div>
                     <span class="text-h5">{{ $t('detailSidebar.information') }}</span><br>
                     <div>
-                        <span class="font-weight-bold">{{ getAuthorsString(detailState.openPaper?.savedPaper?.paper.authors) }}</span>
+                        <span class="font-weight-bold" id="detail-sidebar-authors">
+                            {{ getAuthorsString(detailState.openPaper?.savedPaper?.paper.authors) }}
+                        </span>
                     </div>
-                    <span>{{ detailState.openPaper?.savedPaper?.paper.year }} - {{ detailState.openPaper?.savedPaper?.paper.venue }} - {{ detailState.openPaper.savedPaper?.paper.citationCount }} mal zitiert - {{ detailState.openPaper.savedPaper?.paper.referenceCount }} Referenzen</span>
+                    <span id="detail-sidebar-info">
+                        {{ detailState.openPaper?.savedPaper?.paper.year }} - {{ detailState.openPaper?.savedPaper?.paper.venue }} - {{ detailState.openPaper.savedPaper?.paper.citationCount }} mal zitiert - {{ detailState.openPaper.savedPaper?.paper.referenceCount }} Referenzen
+                    </span>
                     <v-divider class="my-3"></v-divider>
                 </div>
 
                 <div class="mt-4">
                     <span class="text-h5">{{ $t('detailSidebar.comments') }}</span>
-                    <v-textarea hide-details variant="outlined" class="mt-2 lara-field" v-model="detailSidebarState.comment"></v-textarea>
-                    <lara-button class="mt-2" type="primary" @click="changeComment(toRaw(detailSidebarState.comment))">{{ $t('detailSidebar.save') }}</lara-button>
+                    <v-textarea hide-details variant="outlined" class="mt-2 lara-field"
+                                v-model="detailSidebarState.comment" id="detail-sidebar-comment"></v-textarea>
+                    <lara-button class="mt-2" type="primary" @click="changeComment(toRaw(detailSidebarState.comment))"
+                                 id="detail-sidebar-comment-save">
+                        {{ $t('detailSidebar.save') }}
+                    </lara-button>
                     <v-divider class="my-3"></v-divider>
                 </div>
 
                 <div class="mt-4">
                     <span class="text-h5">{{ $t('detailSidebar.tags') }}</span>
-                    <div class="mt-2">
+                    <div class="mt-2" id="detail-sidebar-tags">
                         <tag-component :open-paper="props.openPaper.savedPaper!"></tag-component>
                     </div>
                     <v-divider class="my-3"></v-divider>
@@ -229,13 +237,14 @@ const props = defineProps<{ openPaper: OpenPaper, biggerListShown: boolean }>();
                             empty-icon="mdi-star-outline"
                             color="orange"
                             hover
+                            id="detail-sidebar-rating"
                         ></v-rating>
                         <v-spacer></v-spacer>
                         <v-icon v-if="detailState.openPaper.savedPaper?.saveState != SaveState.hidden"
-                                class="mr-10 mt-6 lara-hide-button" :title="$t('words.hide')"
+                                class="mr-10 mt-6 lara-hide-button" :title="$t('words.hide')" id="detail-sidebar-hide"
                                 @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.hidden) : null">mdi-eye-off</v-icon>
                         <v-icon v-if="detailState.openPaper.savedPaper?.saveState == SaveState.hidden"
-                                class="mr-10 mt-6 lara-hide-button" :title="$t('detailSidebar.add')"
+                                class="mr-10 mt-6 lara-hide-button" :title="$t('detailSidebar.add')" id="detail-sidebar-add"
                                 @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.added) : null">mdi-eye</v-icon>
                     </div>
                     <v-divider class="my-3"></v-divider>
@@ -247,9 +256,11 @@ const props = defineProps<{ openPaper: OpenPaper, biggerListShown: boolean }>();
                 <div>
                     <span class="text-h5">{{ $t('detailSidebar.information') }}</span><br>
                     <div>
-                        <span class="font-weight-bold">{{ getAuthorsString(detailState.openPaper?.paper?.authors) }}</span>
+                        <span class="font-weight-bold" id="detail-sidebar-authors">{{ getAuthorsString(detailState.openPaper?.paper?.authors) }}</span>
                     </div>
-                    <span>{{ detailState.openPaper?.paper?.year }} - {{ detailState.openPaper?.paper?.venue }} - {{ $t('detailSidebar.citationCount', { n: detailState.openPaper?.paper?.citationCount}) }} - {{ $t('detailSidebar.referenceCount', {n: detailState.openPaper?.paper?.referenceCount}) }}</span>
+                    <span id="detail-sidebar-info">
+                        {{ detailState.openPaper?.paper?.year }} - {{ detailState.openPaper?.paper?.venue }} - {{ $t('detailSidebar.citationCount', { n: detailState.openPaper?.paper?.citationCount}) }} - {{ $t('detailSidebar.referenceCount', {n: detailState.openPaper?.paper?.referenceCount}) }}
+                    </span>
                     <v-divider class="my-3"></v-divider>
                 </div>
                 

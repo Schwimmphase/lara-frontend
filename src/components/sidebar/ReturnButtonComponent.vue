@@ -12,5 +12,5 @@ let returnToLastPage = () => {
 
 
 <template>
-    <lara-button type="secondary" @click="returnToLastPage">{{ $t('sidebar.returnButton') }}</lara-button>
+    <lara-button type="secondary" @click="returnToLastPage" id="sidebar-back-button">{{ $t('sidebar.returnButton') }}</lara-button>
 </template>

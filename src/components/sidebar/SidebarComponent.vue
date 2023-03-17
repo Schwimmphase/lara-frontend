@@ -121,7 +121,7 @@ getPapers();
             <div class="mt-4">
                 <span class="text-h6 font-weight-bold">{{ state.research != null ? state.research.title : null }}</span>
                 <span @click="state.research != null ? navigateToResearchOverview(state.research) : null"
-                      class="ml-2 lara-sidebar-link text-h6">
+                      class="ml-2 lara-sidebar-link text-h6" id="sidebar-research-overview">
                     <v-icon :title="$t('words.recommendations')" icon="mdi-view-grid"/>
                 </span>
             </div>

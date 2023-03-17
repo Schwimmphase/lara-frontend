@@ -85,8 +85,13 @@ if (!localStorage.getItem('lang')) {
         </div>
         <div class="mr-6">
             <span @click="navigateToAdmin" class="ml-6 lara-navbar-link" v-if="isUserAdmin()" id="navbar-manage-user-button">{{ $t('navbar.manageUsers') }}</span>
-            <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'home' }">{{ $t('navbar.home') }}</router-link>
-            <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'login' }" @click="logout">{{ $t('navbar.logout') }}</router-link>
+            <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'home' }" id="navbar-home">
+                {{ $t('navbar.home') }}
+            </router-link>
+            <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'login' }"
+                         @click="logout" id="navbar-logout">
+                {{ $t('navbar.logout') }}
+            </router-link>
         </div>
     </v-app-bar>
 </template>
