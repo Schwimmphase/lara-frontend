@@ -1,46 +1,28 @@
-# lara-frontend
+# lara Frontend
+Frontend für das PSE-Projekt lara auch Werkzeug zur Literaturrecherche genannt.
 
-This template should help get you started developing with Vue 3 in Vite.
+## Setup
 
-## Recommended IDE Setup
+### Umgebungsvariablen
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Um das Projekt zu starten, müssen Umgebungsvariablen gesetzt werden. Diese können in einer Datei `.env` gesetzt werden.
+Die Umgebungsvariablen sind:
+- `VITE_API_HOST`: URL des Backend-Servers (z.B. `http://localhost:8080`)
 
-## Type Support for `.vue` Imports in TS
+### Docker
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+Der einfachste Weg ist es, Docker zu verwenden. Dafür muss Docker installiert sein. Danach kann das Projekt mit folgendem Befehl gestartet werden:
+```sh
+docker-compose up
+```
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
+### Manuell
+Für den manuellen Weg muss [node.js](https://nodejs.org/en/) installiert sein. Danach kann das Projekt mit folgendem Befehl gebaut werden:
 ```sh
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
 npm run build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
+Jetzt kann das Projekt von einem Webserver wie z.B. [nginx](https://nginx.org/en/) ausgeliefert werden. 
+Zu beachten ist, dass der Webserver auf den Ordner `dist` zeigen muss und das Routing auf `index.html` umgeleitet werden muss.
+Eine Beispielkonfiguration für nginx ist in der Datei `nginx.conf` zu finden.

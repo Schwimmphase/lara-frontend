@@ -7,7 +7,7 @@ class BasicApiCaller {
 
     constructor() {
         this.axiosInstance = axios.create({
-            baseURL: 'https://api.lara.gregyyy.dev',
+            baseURL: import.meta.env.VITE_API_HOST,
             timeout: 10_000, // ms
         });
 
