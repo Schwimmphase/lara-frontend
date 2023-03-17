@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
-import { reactive } from "@vue/reactivity";
-import { defineEmits } from 'vue';
+import {reactive} from "@vue/reactivity";
+import {defineEmits} from 'vue';
 
 import LaraButton from "../basic/LaraButton.vue";
 
@@ -41,7 +41,9 @@ let closeDialog = () => {
                                         :label="$t('admin.categories.name')">
                                     </v-text-field>  
                                 </div>
-                                <lara-button type="primary" @click="closeDialog" id="create-new-user-category-button">{{ $t('admin.categories.finish') }}</lara-button>
+                                <lara-button type="primary" @click="closeDialog" id="create-new-user-category-button">
+                                    {{ $t('admin.categories.finish') }}
+                                </lara-button>
                             </v-form>
                         </v-col>
                         <v-col>

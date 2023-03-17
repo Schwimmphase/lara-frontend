@@ -1,14 +1,21 @@
 <template>
     <v-container class="w-75 pt-8" id="home-view">
-        <h1 class="text-h3 font-weight-bold" id="user-greeting">{{ $t('home.greetings', {username: currentUser!.username}) }}</h1>
+        <h1 class="text-h3 font-weight-bold" id="user-greeting">
+            {{ $t('home.greetings', {username: currentUser!.username}) }}
+        </h1>
 
         <div style="width: 300px">
-            <NewResearchDialog :button-text="$t('home.startNewResearch')" @save="(title, description) => onCreateResearch(title, description)">
-                <lara-button class="mt-8 mb-8" type="primary" id="new-research-button">{{ $t('home.startNewResearch') }}</lara-button>
+            <NewResearchDialog :button-text="$t('home.startNewResearch')"
+                               @save="(title, description) => onCreateResearch(title, description)">
+                <lara-button class="mt-8 mb-8" type="primary" id="new-research-button">
+                    {{ $t('home.startNewResearch') }}
+                </lara-button>
             </NewResearchDialog>
         </div>
 
-        <h2 class="text-h4 font-weight-bold" id="home-title">{{ $t('home.myResearches') }}</h2>
+        <h2 class="text-h4 font-weight-bold" id="home-title">
+            {{ $t('home.myResearches') }}
+        </h2>
 
         <div class="mt-4 d-flex flex-wrap flex-row gap-8">
             <div v-for="research, index in state.researches" :key="index">
@@ -37,11 +44,11 @@ import ResearchCard from "@/components/cards/ResearchCard.vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
 import NewResearchDialog from "@/components/dialogs/NewResearchDialog.vue";
 
-import { useCurrentUserStore } from "@/stores/currentUser";
-import { ResearchApiHandler } from "@/api/Research/ResearchApiHandler";
-import { useOpenResearchStore } from "@/stores/openResearch";
-import { useOpenPaperStore } from "@/stores/openPaper";
-import { reactive } from "vue";
+import {useCurrentUserStore} from "@/stores/currentUser";
+import {ResearchApiHandler} from "@/api/Research/ResearchApiHandler";
+import {useOpenResearchStore} from "@/stores/openResearch";
+import {useOpenPaperStore} from "@/stores/openPaper";
+import {reactive} from "vue";
 import {i18n} from "@/internationalization/i18n";
 
 document.title = i18n.global.t("pageTitles.home") + " - lara";

@@ -15,7 +15,8 @@
                 </lara-button>
 
                 <v-rating class="ml-4" v-if="paper.relevance !== 0" readonly :model-value="paper.relevance"
-                          length="3" size="40" full-icon="mdi-star" empty-icon="mdi-star-outline" color="orange"></v-rating>
+                          length="3" size="40" full-icon="mdi-star" empty-icon="mdi-star-outline" color="orange">
+                </v-rating>
                 <div class="ml-4 tags" :id="getCardId(paper.paper) + '-tags'">
                     <v-chip v-for="(tag, index) in paper.tags" :key="index" :color="tag.color" class="lara-chip mr-2"
                             :id="getCardId(paper.paper) + '-tag-' + tag.name.toLowerCase()">
@@ -26,7 +27,8 @@
                 <v-spacer></v-spacer>
 
                 <v-btn size="small" color="surface-variant" variant="text" icon="mdi-open-in-new"
-                       @click="$emit('export')" :title="$t('words.export')" :id="getCardId(paper.paper) + '-export'"></v-btn>
+                       @click="$emit('export')" :title="$t('words.export')" :id="getCardId(paper.paper) + '-export'">
+                </v-btn>
                 <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
                     <v-btn size="small" color="red" variant="text" icon="mdi-delete" :title="$t('words.remove')"
                            :id="getCardId(paper.paper) + '-delete'"></v-btn>
@@ -53,7 +55,8 @@
                 <v-spacer></v-spacer>
                 <!-- Export & Delete Buttons -->
                 <v-btn size="small" color="surface-variant" variant="text" icon="mdi-open-in-new"
-                       @click="$emit('export')" :title="$t('words.export')" :id="getCardId(paper.paper) + '-export'"></v-btn>
+                       @click="$emit('export')" :title="$t('words.export')" :id="getCardId(paper.paper) + '-export'">
+                </v-btn>
                 <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
                     <v-btn size="small" color="red" variant="text" icon="mdi-delete" :title="$t('words.remove')"
                            :id="getCardId(paper.paper) + '-delete'"></v-btn>

@@ -65,7 +65,11 @@ state.initialLoading = false;
 
             <div class="mt-3" v-if="!state.categoryLoading">
                 <v-card class="lara-card mt-3 pa-3 d-flex" v-for="(category) in state.categories" :key="category.toString()">
-                    <v-title><span class="lara-title font-weight-bold">{{ category.name }}</span><span class="lara-id">#{{ category.id }}</span></v-title>
+                    <v-title>
+                        <span class="lara-title font-weight-bold">{{ category.name }}</span><span class="lara-id">
+                            #{{ category.id }}
+                        </span>
+                    </v-title>
                     <v-spacer></v-spacer>
                     <v-avatar class="ml-4" size="30" :color="category.color"></v-avatar>
                     <EditUserCategoryDialog :category="category" @edit="(category, name, color) => updateCategory(category, name, color)">
@@ -73,7 +77,9 @@ state.initialLoading = false;
                     </EditUserCategoryDialog>
                     
                     <ConfirmDialog @close="(decision) => deleteCategory(category, decision)">
-                        <v-icon color="red" class="ml-4 lara-clickable" :title="$t('words.delete')" id="delete-category">mdi-trash-can</v-icon>
+                        <v-icon color="red" class="ml-4 lara-clickable" :title="$t('words.delete')" id="delete-category">
+                            mdi-trash-can
+                        </v-icon>
                     </ConfirmDialog>
                 </v-card>
             </div>

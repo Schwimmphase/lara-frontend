@@ -112,7 +112,9 @@ function onPdfError() {
 <template>
     <!-- Render if the API Call is complete -->
     <div v-if="!detailState.loading" class="w-100 h-100">
-        <detail-sidebar-component @toggle="toggle" @bigger="bigger" :open-paper="detailState.openPaper!" :bigger-list-shown="detailState.showBigger" id="detail-sidebar-component"></detail-sidebar-component>
+        <detail-sidebar-component @toggle="toggle" @bigger="bigger" :open-paper="detailState.openPaper!"
+                                  :bigger-list-shown="detailState.showBigger" id="detail-sidebar-component">
+        </detail-sidebar-component>
 
         <div v-show="!detailState.showBigger" class="h-100">
             <!-- Paper pdf is available -->
@@ -178,7 +180,8 @@ function onPdfError() {
     <v-snackbar v-model="pdfState.snackbar" :timeout="pdfState.snackbarTimeout" id="snackbar-detail-view-error-getting-pdf">
         {{ $t('detailView.errorGettingPdf') }}
         <template v-slot:actions>
-            <v-btn color="pink" variant="text" @click="pdfState.snackbar = false" id="snackbar-detail-view-close-error-getting-pdf">
+            <v-btn color="pink" variant="text" @click="pdfState.snackbar = false"
+                   id="snackbar-detail-view-close-error-getting-pdf">
                 {{ $t('words.close') }}
             </v-btn>
         </template>

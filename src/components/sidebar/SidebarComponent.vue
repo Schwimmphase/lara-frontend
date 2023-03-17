@@ -130,7 +130,9 @@ getPapers();
             <expandable-list :title="$t('sidebar.enqueued')" :expanded="true">
                 <v-list-item v-for="(savedPaper, index) in state.enqueuedPapers" :key="index">
                     <span style="white-space: pre;">
-                        <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link" style="white-space: normal">{{ savedPaper.paper.title }}</span>
+                        <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link" style="white-space: normal">
+                            {{ savedPaper.paper.title }}
+                        </span>
                         <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link">
                             <v-icon :title="$t('detailSidebar.add')">mdi-plus</v-icon>
                         </span>
@@ -151,7 +153,9 @@ getPapers();
             <expandable-list :title="$t('sidebar.hidden')" icon="mdi-eye-off" :hidden="true">
                 <v-list-item v-for="(savedPaper, index) in state.hiddenPapers" v-bind:key="index">
                     <span style="white-space: pre;">
-                        <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link" style="white-space: normal">{{ savedPaper.paper.title }}</span>
+                        <span @click="openSavedPaper(savedPaper)" class="lara-sidebar-link" style="white-space: normal">
+                            {{ savedPaper.paper.title }}
+                        </span>
                         <span @click="changeSaveState(savedPaper, SaveState.added)" class="ml-2 lara-sidebar-link">
                             <v-icon :title="$t('detailSidebar.add')">mdi-plus</v-icon>
                         </span>

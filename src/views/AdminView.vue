@@ -1,20 +1,28 @@
 <template>
     <v-container id="container" class="w-75">
-        <h1 class="text-h3 font-weight-bold" id="admin-greeting">{{ $t('admin.greeting', { name: state.currentUser?.username }) }}</h1>
+        <h1 class="text-h3 font-weight-bold" id="admin-greeting">
+            {{ $t('admin.greeting', { name: state.currentUser?.username }) }}
+        </h1>
 
         <div v-if="!state.loading && state.categories != undefined" class="d-flex flex-row gap-8 mt-8">
             <user-dialog :button-text="$t('admin.userDialog.buttonCreate')" :password-change="false"
                          :user-categories="state.categories"
                          @save="(username, category, password) => onCreateUser(username, category, password)">
-                <lara-button type="primary" id="create-user-button" class="w-100">{{ $t('admin.createUser') }}</lara-button>
+                <lara-button type="primary" id="create-user-button" class="w-100">
+                    {{ $t('admin.createUser') }}
+                </lara-button>
             </user-dialog>
 
             <router-link :to="{ name: 'userCategories' }" class="lara-no-decoration">
-                <lara-button type="secondary" id="create-category-button" class="w-100">{{ $t('admin.editCategories') }}</lara-button>
+                <lara-button type="secondary" id="create-category-button" class="w-100">
+                    {{ $t('admin.editCategories') }}
+                </lara-button>
             </router-link>
         </div>
 
-        <h2 class="text-h4 font-weight-bold mt-8" id="admin-user-overview">{{ $t('admin.userOverview') }}</h2>
+        <h2 class="text-h4 font-weight-bold mt-8" id="admin-user-overview">
+            {{ $t('admin.userOverview') }}
+        </h2>
 
         <div class="mt-4" v-if="state.loading">
             <v-progress-circular indeterminate size="70"></v-progress-circular>
@@ -26,8 +34,8 @@
                               :selected-organizers="organizerState.selectedOragnizers" @organize="onOrganize"
                               @remove-organizer="(name) => onRemoveOrganizer(name)">
                 <template v-slot:users v-if="state.users != undefined && state.categories != undefined">
-                    <user-card v-for="(user, index) in state.users" :user="user" :key="index" :deletable="true" :user-categories="state.categories"
-                               @delete="onDeleteUser(user)"
+                    <user-card v-for="(user, index) in state.users" :user="user" :key="index" :deletable="true"
+                               @delete="onDeleteUser(user)" :user-categories="state.categories"
                                @update="(username, category, password) => onUpdateUser(user, username, category, password)">
                     </user-card>
                 </template>

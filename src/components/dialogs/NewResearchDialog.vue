@@ -20,7 +20,9 @@
             </v-card-text>
             <v-card-actions>
                 <v-container>
-                    <lara-button type="primary" @click="closeDialog" id="start-new-research-button">{{  $t('home.startNewResearch') }}</lara-button>
+                    <lara-button type="primary" @click="closeDialog" id="start-new-research-button">
+                        {{ $t('home.startNewResearch') }}
+                    </lara-button>
                 </v-container>
             </v-card-actions>
         </v-card>

@@ -77,14 +77,17 @@ if (!localStorage.getItem('lang')) {
                 <v-list>
                     <v-list-item
                     v-for="(language, index) in languages" :key="index" :value="language.abbreviation"
-                    @click="changeLanguage(language.abbreviation)" class="" :class="{ 'lara-selected': (language.abbreviation === (i18n.global.locale).value), 'lara-language-option': (language.abbreviation !== (i18n.global.locale).value) }" id="navbar-language-change-button">
+                    @click="changeLanguage(language.abbreviation)" class="" id="navbar-language-change-button"
+                    :class="{ 'lara-selected': (language.abbreviation === (i18n.global.locale).value), 'lara-language-option': (language.abbreviation !== (i18n.global.locale).value) }">
                         <span>{{ language.name }}</span>
                     </v-list-item>
                 </v-list>
             </v-menu>
         </div>
         <div class="mr-6">
-            <span @click="navigateToAdmin" class="ml-6 lara-navbar-link" v-if="isUserAdmin()" id="navbar-manage-user-button">{{ $t('navbar.manageUsers') }}</span>
+            <span @click="navigateToAdmin" class="ml-6 lara-navbar-link" v-if="isUserAdmin()" id="navbar-manage-user-button">
+                {{ $t('navbar.manageUsers') }}
+            </span>
             <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'home' }" id="navbar-home">
                 {{ $t('navbar.home') }}
             </router-link>

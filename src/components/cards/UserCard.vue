@@ -3,21 +3,25 @@
         <v-card-title class="text-h5 d-flex">
             <span :id="getCardId(user.username) + '-username'">{{ user.username }}<span class="text-grey" :id="getCardId(user.username) + '-userid'">#{{ user.userId }}</span></span>
             <v-spacer />
-            <v-chip class="lara-chip" :color="user.userCategory.color" :id="getCardId(user.username) + '-category'">{{ user.userCategory.name }}</v-chip>
+            <v-chip class="lara-chip" :color="user.userCategory.color" :id="getCardId(user.username) + '-category'">
+                {{ user.userCategory.name }}
+            </v-chip>
         </v-card-title>
 
         <v-card-actions class="my-2 mx-4 pa-0">
-            <user-edit-dialog :user="user" @save="(username, category, password) => onDialogSave(username, category, password)"
+            <user-edit-dialog @save="(username, category, password) => onDialogSave(username, category, password)"
                               :user-categories="userCategories" :button-text="$t('admin.userDialog.buttonEdit')"
-                              :password-change="true">
-                <lara-button type="primary" :id="getCardId(user.username) + '-edit'">{{ $t('admin.editUser') }}</lara-button>
+                              :password-change="true" :user="user" >
+                <lara-button type="primary" :id="getCardId(user.username) + '-edit'">
+                    {{ $t('admin.editUser') }}
+                </lara-button>
             </user-edit-dialog>
 
             <v-spacer></v-spacer>
 
             <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
-                <v-btn size="small" color="red" variant="text" icon="mdi-delete" :title="$t('words.delete')" v-if="deletable"
-                       :id="getCardId(user.username) + '-delete'">
+                <v-btn size="small" color="red" variant="text" icon="mdi-delete" :title="$t('words.delete')"
+                       v-if="deletable" :id="getCardId(user.username) + '-delete'">
                 </v-btn>
             </confirm-dialog>
         </v-card-actions>

@@ -2,7 +2,8 @@
 
     <v-combobox :placeholder="tagState.selectedTags.length === 0 ? $t('detailSidebar.addTags') : ''" multiple
                 :hide-no-data=false v-model="tagState.selectedTags" v-model:search.sync="tagState.searchQuery"
-                :items="tagState.selectableTags" id="detail-sidebar-tag-input" @keydown.enter="multiplexOnKeyboardAction(tagState.searchQuery)">
+                :items="tagState.selectableTags" id="detail-sidebar-tag-input"
+                @keydown.enter="multiplexOnKeyboardAction(tagState.searchQuery)">
         <!-- Selected Tags -->
         <template v-slot:selection="{ attrs, item, parent, selected }">
             <v-chip class="lara-chip" :color="getColor(item.title)" v-bind="attrs" :input-value="selected" closable

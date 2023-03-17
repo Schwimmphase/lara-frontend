@@ -4,8 +4,12 @@
             {{ title }}
         </v-card-title>
 
-        <v-card-text :id="getCardId(title) + '-description'">{{ description }}</v-card-text>
-        <v-card-subtitle :id="getCardId(title) + '-started'">{{  $t('researchCard.startedOn', {startedOn: startedAt})  }}</v-card-subtitle>
+        <v-card-text :id="getCardId(title) + '-description'">
+            {{ description }}
+        </v-card-text>
+        <v-card-subtitle :id="getCardId(title) + '-started'">
+            {{  $t('researchCard.startedOn', {startedOn: startedAt})  }}
+        </v-card-subtitle>
 
         <v-card-actions class="ml-4 mr-4 mb-2 mt-2 pa-0">
             <lara-button type="primary" class="w-50" @click="openResearch(research)" :id="getCardId(title) + '-open'">

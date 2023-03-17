@@ -28,7 +28,9 @@
             </v-card-text>
             <v-card-actions>
                 <v-container>
-                    <lara-button type="primary" @click="closeDialog" id="user-dialogue-close-button">{{ buttonText }}</lara-button>
+                    <lara-button type="primary" @click="closeDialog" id="user-dialogue-close-button">
+                        {{ buttonText }}
+                    </lara-button>
                 </v-container>
             </v-card-actions>
         </v-card>
@@ -37,10 +39,10 @@
 
 
 <script setup lang="ts">
-import type { User } from "@/model/User";
-import { computed, reactive } from "vue";
+import type {User} from "@/model/User";
+import {computed, reactive} from "vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
-import type { UserCategory } from "@/model/UserCategory";
+import type {UserCategory} from "@/model/UserCategory";
 
 let valid = false;
 
