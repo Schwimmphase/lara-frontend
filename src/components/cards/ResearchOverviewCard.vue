@@ -5,7 +5,7 @@
                       :id="getCardId(paper.paper) + '-title'">
             {{ paper.paper.title }}
         </v-card-title>
-        <v-card-text :id="getCardId(paper.paper) + '-comment'">{{ paper.comment }}</v-card-text>
+        <v-card-text :id="getCardId(paper.paper) + '-comment'">{{ truncate(paper.comment, 260 ) }}</v-card-text>
 
         <!-- with add button -->
         <div v-if="addButton">
@@ -33,8 +33,6 @@
                 </confirm-dialog>
             </v-card-actions>
         </div>
-
-        <!-- without add button -->
         <div v-else>
             <v-card-actions class="ml-4 mr-4 mb-2 mt-2 pa-0">
                 <!-- Tags -->
@@ -85,6 +83,13 @@ defineEmits<{
     (event: 'add'): void
 }>();
 
+function truncate(text: string, length: number) {
+    if (text.length > length) {
+        return text.substring(0, length - 3) + '...';
+    }
+    return text;
+}
+
 function getCardId(paper: Paper): string {
     let id = "overview-paper-card-";
     for (let i = 0; i < Math.min(paper.title.split(" ").length, 4); i++) {
@@ -105,6 +110,19 @@ function getCardId(paper: Paper): string {
     max-width: 300px;
     overflow-x: scroll;
     float: left;
+}
+
+.paper-title {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    white-space: pre-wrap;
+}
+
+.paper-abstract {
+    overflow: hidden;
+    white-space: pre-wrap;
 }
 
 </style>
