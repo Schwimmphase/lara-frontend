@@ -288,7 +288,7 @@ export const messages = {
             greeting: 'Hallo Admin {name}!',
             userOverview: 'Nutzerübersicht',
             editUser: 'Nutzer bearbeiten',
-            editDialog: {
+            userDialog: {
                 username: 'Nutzername',
                 passwordNew: 'Neues Passwort',
                 password: 'Passwort',
