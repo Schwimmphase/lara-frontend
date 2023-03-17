@@ -30,7 +30,9 @@
     </div>
 
     <div v-for="slot in slots">
-        <h4 class="text-h4 font-weight-bold mt-8" v-if="slot.name">{{ $t('slots.' + slot.key) }}</h4>
+        <h4 class="text-h4 font-weight-bold mt-8" v-if="slot.name" :id="'organizable-list-header-' + getId(slot.key)">
+            {{ $t('slots.' + slot.key) }}
+        </h4>
         <div class="d-flex flex-row flex-wrap mt-8 gap-8">
             <slot :name="slot.id"></slot>
         </div>
@@ -70,6 +72,10 @@ function getOrganizerHumanName(internalName: string): string {
         console.warn("No human name for organizer '" + internalName + "'");
         return internalName;
     }
+}
+
+function getId(name: string): string {
+    return name.toLowerCase().split(' ').join('-');
 }
 </script>
 

@@ -118,7 +118,7 @@ function onPdfError() {
             <!-- Paper pdf is available -->
             <div v-if="detailState.openPaper?.getPaper()?.pdfUrl != null && !pdfState.error" class="w-100 h-100">
                 <object type="application/pdf" :data="detailState.openPaper!.getPaper()!.pdfUrl + '#zoom=page-width'"
-                        class="w-100 h-100" @error="onPdfError">
+                        class="w-100 h-100" @error="onPdfError" id="details-pdf">
                 </object>
             </div>
 
@@ -126,10 +126,13 @@ function onPdfError() {
             <div v-else class="w-100 h-100">
                 <div class="ma-10">
                     <!-- Display the abstract of the paper -->
-                    <span class="text-h4 font-weight-bold">{{ detailState.openPaper?.getPaper()?.title }}</span><br>
+                    <span class="text-h4 font-weight-bold" id="details-no-pdf-title">
+                        {{ detailState.openPaper?.getPaper()?.title }}
+                    </span>
+                    <br>
                     <div class="mt-5">
                         <span class="font-weight-bold text-h5">{{ $t('detailView.abstract') }}</span><br>
-                        <span>
+                        <span id="details-no-pdf-abstract">
                             {{ !detailState.openPaper?.getPaper()?.abstract ?
                             $t('detailSidebar.abstractEmpty') : detailState.openPaper?.getPaper()?.abstract }}
                         </span>
@@ -139,9 +142,11 @@ function onPdfError() {
                     <div class="mt-5">
                         <span class="text-h4 font-weight-bold">{{ $t('detailSidebar.information') }}</span><br>
                         <div class="mb-2 text-h6">
-                            <span class="font-weight-bold text-h6">{{ getAuthorsString(detailState.openPaper?.getPaper()?.authors) }}</span>
+                            <span class="font-weight-bold text-h6" id="details-no-pdf-authors">
+                                {{ getAuthorsString(detailState.openPaper?.getPaper()?.authors) }}
+                            </span>
                         </div>
-                        <span>
+                        <span id="details-no-pdf-info">
                             {{ $t('detailView.year_venue_timesCited_timesReferenced', {
                             year: detailState.openPaper?.getPaper()?.year,
                             venue: !detailState.openPaper?.getPaper()?.venue ?
@@ -157,7 +162,9 @@ function onPdfError() {
 
         <!-- bigger view of button is pressed, replaces pdf viewer and information -->
         <div v-show="detailState.showBigger" class="h-100">
-            <span @click="closeTabbedView" class="lara-clickable lara-close-icon"><v-icon size="x-large">mdi-close</v-icon></span>
+            <span @click="closeTabbedView" class="lara-clickable lara-close-icon" id="details-no-pdf-close-bigger">
+                <v-icon size="x-large">mdi-close</v-icon>
+            </span>
             <tabbed-view :source-paper="detailState.openPaper!.getPaper()"></tabbed-view>
         </div>
     </div>

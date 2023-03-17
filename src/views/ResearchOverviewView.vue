@@ -22,7 +22,7 @@
                                         @delete="deletePaper(savedPaper)"
                                         @export="exportPaper(savedPaper)">
                 </research-overview-card>
-                <p v-if="addedPapers.length === 0">{{ $t("researchOverview.empty") }}</p>
+                <p v-if="addedPapers.length === 0" id="added-empty">{{ $t("researchOverview.empty") }}</p>
             </template>
             <template v-slot:enqueued>
                 <research-overview-card v-for="(savedPaper, index) in enqueuedPapers"
@@ -32,7 +32,7 @@
                                         @add="addPaper(savedPaper, SaveState.added)"
                                         @export="exportPaper(savedPaper)">
                 </research-overview-card>
-                <p v-if="enqueuedPapers.length === 0">{{ $t("researchOverview.empty") }}</p>
+                <p v-if="enqueuedPapers.length === 0" id="enqueued-empty">{{ $t("researchOverview.empty") }}</p>
             </template>
             <template v-slot:hidden>
                 <research-overview-card v-for="(savedPaper, index) in hiddenPapers"
@@ -42,15 +42,15 @@
                                         @add="addPaper(savedPaper, SaveState.added)"
                                         @export="exportPaper(savedPaper)">
                 </research-overview-card>
-                <p v-if="hiddenPapers.length === 0">{{ $t("researchOverview.empty") }}</p>
+                <p v-if="hiddenPapers.length === 0" id="hidden-empty">{{ $t("researchOverview.empty") }}</p>
             </template>
         </paper-organizable-list>
     </v-container>
 
-    <v-snackbar v-model="state.copied" :timeout="state.timeout">
+    <v-snackbar v-model="state.copied" :timeout="state.timeout" id="overview-copied">
         {{ $t('researchOverview.copied') }}
         <template v-slot:actions>
-            <v-btn color="pink" variant="text" @click="state.copied = false" id="overview-copied">
+            <v-btn color="pink" variant="text" @click="state.copied = false" id="overview-copied-close">
                 {{ $t('researchOverview.close') }}
             </v-btn>
         </template>

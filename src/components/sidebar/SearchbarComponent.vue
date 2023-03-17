@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { reactive } from "@vue/reactivity";
+import {reactive} from "@vue/reactivity";
 import router from '../../router';
 
 let props = defineProps({
@@ -21,6 +21,9 @@ let navigateToSearch = (): void => {
 
 <template>
     <div>
-        <v-text-field @keypress.enter="navigateToSearch" hide-details @click:append-inner="navigateToSearch" v-model="state.searchQuery" :label="$t('sidebar.searchBar')" variant="outlined" append-inner-icon="mdi-magnify"></v-text-field>
+        <v-text-field @keypress.enter="navigateToSearch" hide-details @click:append-inner="navigateToSearch"
+                      v-model="state.searchQuery" :label="$t('sidebar.searchBar')" variant="outlined"
+                      append-inner-icon="mdi-magnify" id="searchbar-input">
+        </v-text-field>
     </div>
 </template>
