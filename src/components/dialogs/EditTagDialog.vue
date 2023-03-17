@@ -34,7 +34,7 @@ let closeDialog = () => {
                 <v-row>
                     <v-col>
                         <v-card-text>
-                            <v-form>
+                            <v-form v-on:submit.prevent>
                                 <div class="d-flex flex-column gap-4">
                                     <v-text-field class="lara-field" variant="outlined"
                                       v-model="state.name" :counter="32"
