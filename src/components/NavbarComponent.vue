@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
-import { LanguageService } from '@/internationalization/LanguageService';
+import {LanguageService} from '@/internationalization/LanguageService';
 
-import { i18n } from '@/internationalization/i18n'
-import { useCurrentUserStore } from '@/stores/currentUser';
-import { useOpenResearchStore } from '@/stores/openResearch';
-import { useOpenPaperStore } from '@/stores/openPaper';
+import {i18n} from '@/internationalization/i18n'
+import {useCurrentUserStore} from '@/stores/currentUser';
+import {useOpenResearchStore} from '@/stores/openResearch';
+import {useOpenPaperStore} from '@/stores/openPaper';
 import router from '@/router';
 
 // Method to navigate to homeview
@@ -71,10 +71,9 @@ if (!localStorage.getItem('lang')) {
         </div>
         <v-spacer></v-spacer>
         <div>
-            <span id="menu-activator" class="lara-navbar-link" id="navbar-change-language">{{ $t('navbar.changeLanguage') }}</span>
-            <!--<v-btn id="menu-activator" class="lara-navbar-link">{{ $t('navbar.changeLanguage') }}</v-btn>-->
+            <span class="lara-navbar-link" id="navbar-change-language">{{ $t('navbar.changeLanguage') }}</span>
 
-            <v-menu activator="#menu-activator">
+            <v-menu activator="#navbar-change-language">
                 <v-list>
                     <v-list-item
                     v-for="(language, index) in languages" :key="index" :value="language.abbreviation"

@@ -10,7 +10,7 @@
             <user-edit-dialog :user="user" @save="(username, category, password) => onDialogSave(username, category, password)"
                               :user-categories="userCategories" :button-text="$t('admin.userDialog.buttonEdit')"
                               :password-change="true">
-                <lara-button type="primary" id="edit-button" id="edit-user-button">{{ $t('admin.editUser') }}</lara-button>
+                <lara-button type="primary" id="edit-user-button">{{ $t('admin.editUser') }}</lara-button>
             </user-edit-dialog>
 
             <v-spacer></v-spacer>
@@ -29,7 +29,7 @@ import type {User} from "@/model/User";
 import LaraButton from "@/components/basic/LaraButton.vue";
 import UserEditDialog from "@/components/dialogs/UserDialog.vue";
 import type {UserCategory} from "@/model/UserCategory";
-import { reactive } from "vue";
+import {reactive} from "vue";
 import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
 
 const state = reactive({
@@ -66,7 +66,7 @@ function onDialogSave(username: string, userCategory: UserCategory, password?: s
     text-overflow: ellipsis;
 }
 
-#edit-button {
+#edit-user-button {
     min-width: 150px;
 }
 </style>

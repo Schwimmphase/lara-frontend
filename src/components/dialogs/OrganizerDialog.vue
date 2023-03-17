@@ -1,6 +1,6 @@
 <template>
     <div>
-        <lara-button type="outline" icon="mdi-filter" class="w-100" id="filter-button" @click="state.dialog = true" id="organizable-list-filter-settings">
+        <lara-button type="outline" icon="mdi-filter" class="w-100" @click="state.dialog = true" id="organizable-list-filter-settings">
             {{ $t('organizableList.filterSettings') }}
         </lara-button>
         <v-dialog v-model="state.dialog">
@@ -29,9 +29,9 @@
 
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import {reactive} from "vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
-import type { Slot } from "@/components/basic/OrganizableList.vue";
+import type {Slot} from "@/components/basic/OrganizableList.vue";
 
 let state = reactive({
     dialog: false
@@ -65,7 +65,7 @@ function closeDialog() {
     border-radius: 0;
 }
 
-#filter-button {
+#organizable-list-filter-settings {
     max-width: 300px;
     min-width: 100px;
     text-overflow: ellipsis;
