@@ -1,7 +1,6 @@
 export const messages = {
     en: {
-        test: 'This is a small test',
-
+        
         words: {
             close: 'Close',
             recommendations: 'Recommendations',
@@ -22,11 +21,11 @@ export const messages = {
             falseLoginData: 'Wrong username oder wrong password',
             global: {
                 wrongInput: 'Error: {message}',
-                notAuthenticated: 'Unexpected error: you are not authenticated',
-                notAuthorized: 'Unexpected error: you are not authorized to perform this action',
-                internalServerError: 'Unexpected error: internal server error',
-                unknownError: 'Unexpected error: unknown error',
-                couldNotParseData: 'Unexpected error: could not parse data from server'
+                notAuthenticated: 'Unexpected error: You are not authenticated',
+                notAuthorized: 'Unexpected error: You are not authorized to perform this action',
+                internalServerError: 'Unexpected error: Internal server error',
+                unknownError: 'Unexpected error: Unknown error',
+                couldNotParseData: 'Unexpected error: Could not parse data from server'
             }
         },
 
@@ -72,7 +71,7 @@ export const messages = {
             login: 'Login',
             username: 'Username',
             password: 'Password',
-            button: 'submit'
+            button: 'Submit'
         },
 
         admin: {
@@ -86,7 +85,7 @@ export const messages = {
                 passwordNew: 'New password',
                 password: 'Password',
                 userCategory: 'User category',
-                buttonCreate: 'Nutzer erstellen',
+                buttonCreate: 'Create user',
                 buttonEdit: 'Save'
             },
             categories: {
@@ -175,7 +174,7 @@ export const messages = {
         sidebar: {
             searchBar: 'Search...',
             recommendationsButton: 'Recommendations',
-            returnButton: 'Return',
+            returnButton: 'Back',
             enqueued: 'enqueued',
             added: 'added',
             hidden: 'hidden',
@@ -195,7 +194,7 @@ export const messages = {
 
         paperCard: {
             snackbar: {
-                enqueued: 'Paper has been added to the list of queued papers',
+                enqueued: 'Paper has been added to the list of enqueued papers',
                 hidden: 'Paper was hidden from the research'
             }
         },
@@ -249,7 +248,7 @@ export const messages = {
             abstract: 'Zusammenfassung',
             year_venue_timesCited_timesReferenced: '{year} - {venue} - {timesCited} mal zitiert - {timesReferenced} mal referenziert',
             biggerListEmpty: 'Hier sind keine Artikel, die angezeigt werden können',
-            errorGettingPdf: 'Leider ist ein Fehler aufgetreten beim Laden der PDF!'
+            errorGettingPdf: 'Leider ist ein Fehler beim Laden der PDF aufgetreten!'
         },
 
         detailSidebar: {
@@ -260,7 +259,7 @@ export const messages = {
             tags: 'Tags',
             addTags: 'Tags hinzufügen',
             editTag: {
-                name: 'Tagname'
+                name: 'Tag Name'
             },
             relevance: 'Relevanz',
             save: 'Speichern',
@@ -321,7 +320,7 @@ export const messages = {
         slots: {
             yearFilter: "Jahr Filter",
             venueFilter: "Erscheinungsort Filter",
-            yearSorter: "Jahr Sortierung",
+            yearSorter: "Sortierung Jahr",
             citationsSorter: "Sortierung Zitationen",
             referencesSorter: "Sortierung Referenzen",
             added: "Hinzugefügt",
@@ -397,13 +396,13 @@ export const messages = {
         },
 
         recommendationsView: {
-            empty: 'Diese List ist leer. Versuche erst Artikel zu deiner Recherche hionzuzufügen.'
+            empty: 'Diese Liste ist leer. Versuche erst Artikel zu deiner Recherche hinzuzufügen.'
         },
 
         paperCard: {
             snackbar: {
-                enqueued: 'Paper has been added to the list of queued papers',
-                hidden: 'Paper was hidden from the research'
+                enqueued: 'Artikel wurde zur Liste gemerkter Artikel hinzugefügt.',
+                hidden: 'Artikel wurde von der Recherche ausgeblendet.'
             }
         },
 
