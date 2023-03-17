@@ -1,21 +1,26 @@
 <template>
     <div>
-        <v-btn size="small" color="surface-variant" :title="$t('words.edit')" variant="text" icon="mdi-pencil" @click="openState.dialog = true"  id="research-edit-dialogue"></v-btn>
+        <v-btn size="small" color="surface-variant" :title="$t('words.edit')" variant="text" icon="mdi-pencil"
+               @click="openState.dialog = true"  id="research-edit-dialogue"></v-btn>
         <v-dialog v-model="openState.dialog" id="dialog">
             <v-card>
                 <v-card-text>
                     <v-form v-model="valid" v-on:submit.prevent>
                         <div class="d-flex flex-column">
                             <v-text-field :messages="state.titleMessages" class="lara-field" variant="outlined"
-                                          v-model="state.title" :counter="maxTitleLength" :label="$t('researchEditDialog.title')"></v-text-field>
+                                          v-model="state.title" :counter="maxTitleLength"
+                                          :label="$t('researchEditDialog.title')"></v-text-field>
                             <v-textarea :messages="state.descriptionMessages" class="lara-field mt-4" variant="outlined"
-                                        v-model="state.description" :counter="maxDescriptionLength" :label="$t('researchEditDialog.description')"></v-textarea>
+                                        v-model="state.description" :counter="maxDescriptionLength"
+                                        :label="$t('researchEditDialog.description')"></v-textarea>
                         </div>
                     </v-form>
                 </v-card-text>
                 <v-card-actions>
                     <v-container>
-                        <lara-button type="primary" @click="closeDialog" id="research-edit-save-button">{{ $t('researchEditDialog.save') }}</lara-button>
+                        <lara-button type="primary" @click="closeDialog" id="research-edit-save-button">
+                            {{ $t('researchEditDialog.save') }}
+                        </lara-button>
                     </v-container>
                 </v-card-actions>
             </v-card>
@@ -25,11 +30,10 @@
 
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import {reactive, watch} from "vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
 
-import { i18n } from "@/internationalization/i18n";
-import { watch } from "vue";
+import {i18n} from "@/internationalization/i18n";
 
 const maxDescriptionLength = 110;
 const maxTitleLength = 25;

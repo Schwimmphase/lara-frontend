@@ -1,6 +1,7 @@
 <template>
     <div>
-        <lara-button type="outline" icon="mdi-filter" class="w-100" @click="state.dialog = true" id="organizable-list-filter-settings">
+        <lara-button type="outline" icon="mdi-filter" class="w-100" @click="state.dialog = true"
+                     id="organizable-list-filter-settings">
             {{ $t('organizableList.filterSettings') }}
         </lara-button>
         <v-dialog v-model="state.dialog" id="dialog">
@@ -19,7 +20,9 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-container>
-                        <lara-button type="primary" @click="closeDialog" id="organizable-list-organize-button">{{ $t('organizableList.organizeButton') }}</lara-button>
+                        <lara-button type="primary" @click="closeDialog" id="organizable-list-organize-button">
+                            {{ $t('organizableList.organizeButton') }}
+                        </lara-button>
                     </v-container>
                 </v-card-actions>
             </v-card>

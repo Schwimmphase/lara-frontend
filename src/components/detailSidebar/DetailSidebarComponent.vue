@@ -229,15 +229,9 @@ const props = defineProps<{ openPaper: OpenPaper, biggerListShown: boolean }>();
                     <span class="text-h5">{{ $t('detailSidebar.relevance') }}</span>
                     <div class="d-flex">
                         <v-rating
-                            v-model="detailSidebarState.relevance"
-                            @update:modelValue="changeRelevance"
-                            length="3"
-                            size="75"
-                            full-icon="mdi-star"
-                            empty-icon="mdi-star-outline"
-                            color="orange"
-                            hover
-                            id="detail-sidebar-rating"
+                            v-model="detailSidebarState.relevance" @update:modelValue="changeRelevance"
+                            length="3" size="75" full-icon="mdi-star" empty-icon="mdi-star-outline" color="orange"
+                            hover id="detail-sidebar-rating"
                         ></v-rating>
                         <v-spacer></v-spacer>
                         <v-icon v-if="detailState.openPaper.savedPaper?.saveState != SaveState.hidden"
@@ -265,9 +259,19 @@ const props = defineProps<{ openPaper: OpenPaper, biggerListShown: boolean }>();
                 </div>
                 
                 <div class="mt-4">
-                    <lara-button type="secondary" @click="detailState.openPaper !== null ? createSavedPaper(detailState.openPaper?.paper, SaveState.enqueued) : null" id="detail-sidebar-enqueue-button">{{ $t('detailSidebar.enqueue') }}</lara-button>
-                    <lara-button class="mt-2" type="primary" @click="detailState.openPaper !== null ? createSavedPaper( detailState.openPaper?.paper, SaveState.added) : null" id="detail-sidebar-add-button">{{ $t('detailSidebar.add') }}</lara-button>
-                    <lara-button class="lara-hide-button mt-2" type="outline" @click="detailState.openPaper !== null ? createSavedPaper(detailState.openPaper?.paper, SaveState.hidden) : null" id="detail-sidebar-hide-button">
+                    <lara-button type="secondary"
+                                 @click="detailState.openPaper !== null ? createSavedPaper(detailState.openPaper?.paper, SaveState.enqueued) : null"
+                                 id="detail-sidebar-enqueue-button">
+                        {{ $t('detailSidebar.enqueue') }}
+                    </lara-button>
+                    <lara-button class="mt-2" type="primary"
+                                 @click="detailState.openPaper !== null ? createSavedPaper( detailState.openPaper?.paper, SaveState.added) : null"
+                                 id="detail-sidebar-add-button">
+                        {{ $t('detailSidebar.add') }}
+                    </lara-button>
+                    <lara-button class="lara-hide-button mt-2" type="outline"
+                                 @click="detailState.openPaper !== null ? createSavedPaper(detailState.openPaper?.paper, SaveState.hidden) : null"
+                                 id="detail-sidebar-hide-button">
                         <v-icon>mdi-eye-off</v-icon>
                     </lara-button>
                     <v-divider class="my-3"></v-divider>
@@ -283,7 +287,8 @@ const props = defineProps<{ openPaper: OpenPaper, biggerListShown: boolean }>();
                     <div class="mb-2" v-for="(recommendation, index) in recommendationsStore.recommendations" :key="index">
                         <router-link class="lara-recommendation-link" v-if="index < 3"
                                      :to="{ name: 'paperDetails', query: {paper: recommendation.paperId}}"
-                                     @click="openPaperStore.setPaper(new OpenPaper(recommendation, undefined, false))" id="recommendations-link">
+                                     @click="openPaperStore.setPaper(new OpenPaper(recommendation, undefined, false))"
+                                     id="recommendations-link">
                             {{ recommendation.title }}
                         </router-link>
                     </div>
@@ -298,7 +303,8 @@ const props = defineProps<{ openPaper: OpenPaper, biggerListShown: boolean }>();
                     <div class="mb-2" v-for="(citation, index) in recommendationsStore.citations" :key="index">
                         <router-link class="lara-recommendation-link" v-if="index < 3"
                                      :to="{ name: 'paperDetails', query: {paper: citation.paperId}}" 
-                                     @click="openPaperStore.setPaper(new OpenPaper(citation, undefined, false))" id="citations-link">
+                                     @click="openPaperStore.setPaper(new OpenPaper(citation, undefined, false))"
+                                     id="citations-link">
                             {{ citation.title }}
                         </router-link>
                     </div>
@@ -313,7 +319,8 @@ const props = defineProps<{ openPaper: OpenPaper, biggerListShown: boolean }>();
                     <div class="mb-2" v-for="(reference, index) in recommendationsStore.references" :key="index">
                         <router-link class="lara-recommendation-link" v-if="index < 3"
                                      :to="{ name: 'paperDetails', query: {paper: reference.paperId}}"
-                                     @click="openPaperStore.setPaper(new OpenPaper(reference, undefined, false))" id="references-link">
+                                     @click="openPaperStore.setPaper(new OpenPaper(reference, undefined, false))"
+                                     id="references-link">
                             {{ reference.title }}
                         </router-link>
                     </div>

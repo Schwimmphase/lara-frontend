@@ -13,8 +13,9 @@
         </div>
 
         <div class="mt-4">
-            <!--<v-alert type="error" prominent variant="tonal">Es ist etwas schiefgelaufen</v-alert>-->
-            <v-alert v-if="loginData.loginFailed" type="error" prominent variant="elevated">{{ $t('errorMsg.falseLoginData') }}</v-alert>
+            <v-alert v-if="loginData.loginFailed" type="error" prominent variant="elevated">
+                {{ $t('errorMsg.falseLoginData') }}
+            </v-alert>
         </div>
     </v-container>
 </template>
@@ -22,11 +23,11 @@
 
 <script setup lang="ts">
 
-import { reactive } from 'vue';
+import {reactive} from 'vue';
 import LaraButton from '@/components/basic/LaraButton.vue';
-import { AuthApiHandler } from '@/api/Auth/AuthApiHandler';
+import {AuthApiHandler} from '@/api/Auth/AuthApiHandler';
 import router from '@/router';
-import { useCurrentUserStore } from '@/stores/currentUser';
+import {useCurrentUserStore} from '@/stores/currentUser';
 import {i18n} from "@/internationalization/i18n";
 
 document.title = i18n.global.t("pageTitles.login") + " - lara";
@@ -48,7 +49,7 @@ async function login() {
     // parse token
     let tokenPayload = JSON.parse(atob(token.split('.')[1]));
     let expiryDate = new Date();
-    expiryDate.setTime(expiryDate.getTime() + tokenPayload.exp); // this should not work but it does (but not completely correct) ???
+    expiryDate.setTime(expiryDate.getTime() + tokenPayload.exp);
     let isAdmin = tokenPayload.admin;
     
     // create cookie for token

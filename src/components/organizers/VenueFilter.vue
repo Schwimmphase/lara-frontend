@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {reactive, watch, ref } from 'vue';
+import {reactive, ref, watch} from 'vue';
 
 const emit = defineEmits(['update']);
 
@@ -47,10 +47,13 @@ let remove = (venue: string[] | string) => {
 <template>
     <div class="d-flex flex-column">
         <div>
-            <v-text-field class="lara-field" @click:append-inner="addVenue" v-model="currentState.currentVenue" append-inner-icon="mdi-plus" hide-details variant="outlined" :placeholder="$t('organizers.venue')"></v-text-field>
+            <v-text-field class="lara-field" @click:append-inner="addVenue" v-model="currentState.currentVenue"
+                          append-inner-icon="mdi-plus" hide-details variant="outlined"
+                          :placeholder="$t('organizers.venue')"></v-text-field>
         </div>
         <div class="lara-venues">
-            <v-chip class="lara-chip ml-2 mt-2" v-for="(venue, index) in selectedState" :key="venue + index" closable @click:close="remove(venue)" id="venue-sorter-closer">{{ venue }}</v-chip>
+            <v-chip class="lara-chip ml-2 mt-2" v-for="(venue, index) in selectedState" :key="venue + index" closable
+                    @click:close="remove(venue)" id="venue-sorter-closer">{{ venue }}</v-chip>
         </div>
     </div>
 </template>

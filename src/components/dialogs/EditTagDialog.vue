@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Tag } from "@/model/Tag";
-import { reactive } from "@vue/reactivity";
-import { defineEmits } from 'vue';
+import {Tag} from "@/model/Tag";
+import {reactive} from "@vue/reactivity";
+import {defineEmits} from 'vue';
 
 import LaraButton from "../basic/LaraButton.vue";
 
@@ -45,7 +45,8 @@ let closeDialog = () => {
                         </v-card-text>
                         <v-card-actions>
                             <v-container>
-                                <lara-button type="primary" @click="closeDialog" id="edit-tag-close-dialogue">{{ $t('detailSidebar.save') }}</lara-button>
+                                <lara-button type="primary" @click="closeDialog"
+                                             id="edit-tag-close-dialogue">{{ $t('detailSidebar.save') }}</lara-button>
                             </v-container>
                         </v-card-actions>
                     </v-col>

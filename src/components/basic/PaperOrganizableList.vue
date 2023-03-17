@@ -19,7 +19,8 @@
 
         <template v-slot:venue-filter>
             <div class="w-100 mt-6 mx-5">
-                <venue-filter @update="(venues) => onVenueFilter(venues)" :selected-venues="venueFilterState.selectedVenues" />
+                <venue-filter @update="(venues) => onVenueFilter(venues)"
+                              :selected-venues="venueFilterState.selectedVenues" />
             </div>
         </template>
 
@@ -33,7 +34,7 @@
         <template v-slot:citation-count-sorter>
             <div class="w-100 mt-6 mx-5">
                 <sorter :activated="citationsSorterState.active" :descending="citationsSorterState.descending"
-                                  @update="(active, descending) => onSorter(citationsSorterState, 'citation-count-sorter', active, descending)" />
+                        @update="(active, descending) => onSorter(citationsSorterState, 'citation-count-sorter', active, descending)" />
             </div>
         </template>
 

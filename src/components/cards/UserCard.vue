@@ -9,7 +9,7 @@
         </v-card-title>
 
         <v-card-actions class="my-2 mx-4 pa-0">
-            <user-edit-dialog :user="user" @save="(username, category, password) => onDialogSave(username, category, password)"
+            <user-edit-dialog @save="(username, category, password) => onDialogSave(username, category, password)"
                               :user-categories="userCategories" :button-text="$t('admin.userDialog.buttonEdit')"
                               :password-change="true">
                 <lara-button type="primary" :id="getCardId(user.username) + '-edit'"  class="edit-user-button">
@@ -20,8 +20,8 @@
             <v-spacer></v-spacer>
 
             <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
-                <v-btn size="small" color="red" variant="text" icon="mdi-delete" :title="$t('words.delete')" v-if="deletable"
-                       :id="getCardId(user.username) + '-delete'">
+                <v-btn size="small" color="red" variant="text" icon="mdi-delete" :title="$t('words.delete')"
+                       v-if="deletable" :id="getCardId(user.username) + '-delete'">
                 </v-btn>
             </confirm-dialog>
         </v-card-actions>
