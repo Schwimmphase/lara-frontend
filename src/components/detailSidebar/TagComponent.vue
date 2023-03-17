@@ -29,7 +29,6 @@
         <!-- Create & add new Tag -->
         <template v-slot:no-data>
             <v-list-item>
-                Create/add tag <strong>{{ tagState.searchQuery }}</strong> by pressing ENTER
                 {{ $t('detailSidebar.createTag', { name: tagState.searchQuery }) }}
             </v-list-item>
         </template>
