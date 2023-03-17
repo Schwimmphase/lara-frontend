@@ -1,16 +1,20 @@
 <template>
-    <v-card class="d-flex flex-column lara-card" :id="getCardId(user.username)" variant="flat">
+    <v-card class="d-flex flex-column lara-card user-card" :id="getCardId(user.username)" variant="flat">
         <v-card-title class="text-h5 d-flex">
-            <span :id="getCardId(user.username) + '-username'">{{ user.username }}<span class="text-grey" :id="getCardId(user.username) + '-userid'">#{{ user.userId }}</span></span>
+            <span class="username" :id="getCardId(user.username) + '-username'">{{ user.username }}<span class="text-grey" :id="getCardId(user.username) + '-userid'">#{{ user.userId }}</span></span>
             <v-spacer />
-            <v-chip class="lara-chip" :color="user.userCategory.color" :id="getCardId(user.username) + '-category'">{{ user.userCategory.name }}</v-chip>
+            <v-chip class="lara-chip user-tag" :color="user.userCategory.color" :id="getCardId(user.username) + '-category'">
+                {{ user.userCategory.name }}
+            </v-chip>
         </v-card-title>
 
         <v-card-actions class="my-2 mx-4 pa-0">
             <user-edit-dialog :user="user" @save="(username, category, password) => onDialogSave(username, category, password)"
                               :user-categories="userCategories" :button-text="$t('admin.userDialog.buttonEdit')"
                               :password-change="true">
-                <lara-button type="primary" :id="getCardId(user.username) + '-edit'">{{ $t('admin.editUser') }}</lara-button>
+                <lara-button type="primary" :id="getCardId(user.username) + '-edit'"  class="edit-user-button">
+                    {{ $t('admin.editUser') }}
+                </lara-button>
             </user-edit-dialog>
 
             <v-spacer></v-spacer>
@@ -62,17 +66,24 @@ function getCardId(name: string): string {
 
 
 <style scoped>
-#user-card {
+.user-card {
     width: 400px;
 }
 
-#user-card-title {
+.username {
     width: 275px;
     overflow-x: hidden;
     text-overflow: ellipsis;
 }
 
-#edit-user-button {
+.user-tag {
+    max-width: 100px;
+    overflow-x: hidden !important;
+    text-overflow: ellipsis !important;
+    display: inline-block;
+}
+
+.edit-user-button {
     min-width: 150px;
 }
 </style>
