@@ -70,7 +70,7 @@
 import LaraButton from "@/components/basic/LaraButton.vue";
 import type {SavedPaper} from "@/model/SavedPaper";
 import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
-import {Paper} from "@/model/Paper";
+import type {Paper} from "@/model/Paper";
 
 
 defineProps<{
