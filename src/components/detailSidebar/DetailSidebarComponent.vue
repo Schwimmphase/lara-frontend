@@ -182,7 +182,7 @@ let getAuthorsString = (authors: Author[] | undefined) => {
 }
 
 // prop to be passed down to TagComponent
-const props = defineProps<{ openPaper: OpenPaper }>();
+const props = defineProps<{ openPaper: OpenPaper, biggerListShown: boolean }>();
 
 </script>
 
@@ -265,11 +265,7 @@ const props = defineProps<{ openPaper: OpenPaper }>();
 
 
             <!-- Section for the recommendations, citations and references of the open paper -->
-            <div class="mt-3">
-                <lara-button class="mt-2 mb-4" type="outline" @click="$emit('toggle')">
-                    {{ $t('detailSidebar.bigger') }}
-                </lara-button>
-
+            <div class="mt-3" v-show="!props.biggerListShown">
                 <div>
                     <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.recommendations') }}</span>
 
@@ -315,6 +311,10 @@ const props = defineProps<{ openPaper: OpenPaper }>();
                         {{ $t('detailSidebar.more', { n: recommendationsStore.references.length - MAX_NUMBER_DISPLAYED }) }}
                     </a>
                 </div>
+
+                <lara-button class="mt-2 mb-4" type="outline" @click="$emit('toggle')">
+                    {{ $t('detailSidebar.bigger') }}
+                </lara-button>
             </div>
         </div>
     </v-navigation-drawer>

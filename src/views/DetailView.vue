@@ -58,6 +58,10 @@ async function bigger(): Promise<void> {
     detailState.showBigger = true;
 }
 
+async function closeTabbedView(): Promise<void> {
+    detailState.showBigger = false;
+}
+
 async function toggle(): Promise<void> {
     detailState.showBigger = !detailState.showBigger;
 }
@@ -108,7 +112,7 @@ function onPdfError() {
 <template>
     <!-- Render if the API Call is complete -->
     <div v-if="!detailState.loading" class="w-100 h-100">
-        <detail-sidebar-component @toggle="toggle" @bigger="bigger" :open-paper="detailState.openPaper!"></detail-sidebar-component>
+        <detail-sidebar-component @toggle="toggle" @bigger="bigger" :open-paper="detailState.openPaper!" :bigger-list-shown="detailState.showBigger"></detail-sidebar-component>
 
         <div v-show="!detailState.showBigger" class="h-100">
             <!-- Paper pdf is available -->
@@ -153,6 +157,7 @@ function onPdfError() {
 
         <!-- bigger view of button is pressed, replaces pdf viewer and information -->
         <div v-show="detailState.showBigger" class="h-100">
+            <span @click="closeTabbedView" class="lara-clickable lara-close-icon"><v-icon size="x-large">mdi-close</v-icon></span>
             <tabbed-view :source-paper="detailState.openPaper!.getPaper()"></tabbed-view>
         </div>
     </div>
@@ -172,3 +177,14 @@ function onPdfError() {
         </template>
     </v-snackbar>
 </template>
+
+<style scoped>
+
+.lara-close-icon {
+    position: absolute;
+    right: 24px;
+    top: 0;
+}
+
+
+</style>
