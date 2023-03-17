@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  lara:
+    image: lara/frontend:latest
+    restart: unless-stopped
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
