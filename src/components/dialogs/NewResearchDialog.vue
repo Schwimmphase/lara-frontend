@@ -6,7 +6,7 @@
         <v-card id="dialog">
             <v-card-title></v-card-title>
             <v-card-text>
-                <v-form v-model="valid">
+                <v-form v-model="valid" v-on:submit.prevent>
                     <div class="d-flex flex-column gap-4">
                         <v-text-field :messages="state.titleMessages" class="lara-field" variant="outlined"
                                       v-model="state.title" :counter="maxTitleLength"
