@@ -9,9 +9,14 @@
 
             <div class="d-flex gap-4">
                 <v-chip v-for="(organizer, index) of selectedOrganizers" :key="index" class="lara-chip h-100" id="organizer-chip">
+                    
                     <span id="organizer-chip-text">
-                        {{ getOrganizerHumanName(organizer.name) }}: {{ organizer.argument }}
+                        {{ $t('slots.' + getOrganizerHumanName(organizer.name) ) }}: {{ organizer.argument }}
                     </span>
+
+                    <!--<span id="organizer-chip-text">
+                        {{ getOrganizerHumanName(organizer.name) }}: {{ organizer.argument }}
+                    </span>-->
                     <v-btn size="small" variant="text" icon="mdi-close-circle" :title="$t('words.remove')"
                            @click="$emit('removeOrganizer', organizer.name)">
                     </v-btn>
@@ -25,7 +30,7 @@
     </div>
 
     <div v-for="slot in slots">
-        <h4 class="text-h4 font-weight-bold mt-8" v-if="slot.name">{{ slot.name}}</h4>
+        <h4 class="text-h4 font-weight-bold mt-8" v-if="slot.name">{{ $t('slots.' + slot.key) }}</h4>
         <div class="d-flex flex-row flex-wrap mt-8 gap-8">
             <slot :name="slot.id"></slot>
         </div>
@@ -40,7 +45,9 @@ import type {Organizer} from "@/model/Organizer";
 
 export interface Slot {
     id: string,
-    name?: string
+    name?: string,
+    // Key for translations
+    key: string
 }
 
 const props = defineProps<{
@@ -58,7 +65,7 @@ defineEmits<{
 
 function getOrganizerHumanName(internalName: string): string {
     if (props.organizeSlots.filter(organizer => organizer.id === internalName).length > 0) {
-        return props.organizeSlots.filter(organizer => organizer.id === internalName)[0].name as string;
+        return props.organizeSlots.filter(organizer => organizer.id === internalName)[0].key as string;
     } else {
         console.warn("No human name for organizer '" + internalName + "'");
         return internalName;

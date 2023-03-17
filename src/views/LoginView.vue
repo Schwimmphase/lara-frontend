@@ -1,6 +1,6 @@
 <template>
     <v-container id="login-form">
-        <h1 class="text-h3 mt-16 text-sm-center font-weight-bold">{{ $t('login.login') }}</h1>
+        <h1 class="text-h3 mt-16 text-sm-center font-weight-bold" id="login-title">{{ $t('login.login') }}</h1>
 
         <div>
             <v-form class="mt-8">
@@ -8,7 +8,7 @@
                                 v-model="loginData.username" @keyup.enter="login" autofocus></v-text-field>
                 <v-text-field class="lara-field" variant="outlined" :label=" $t('login.password') " type="password"
                                 v-model="loginData.password" @keyup.enter="login"></v-text-field>
-                <lara-button type="primary" @click="login">{{ $t('login.button') }}</lara-button>
+                <lara-button type="primary" id="login-button" @click="login">{{ $t('login.button') }}</lara-button>
             </v-form>
         </div>
 

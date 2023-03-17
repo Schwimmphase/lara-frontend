@@ -17,7 +17,7 @@ import PaperCard from "@/components/cards/PaperCard.vue";
 import type {Organizer} from "@/model/Organizer";
 
 let openResearchStore = useOpenResearchStore();
-let slots = [{ id: "search-results", name: "Suchergebnisse" }];
+let slots = [{ id: "search-results", name: "Suchergebnisse", key: "searchResults" }];
 
 let searchState: { results: Paper[], research: Research | undefined, query: string | undefined, loading: boolean } = reactive({
     loading: true,
@@ -69,7 +69,7 @@ getSearchResults([]);
 <template>
     <div class="mt-8 mx-16 h-100">
         <!-- Searchbar on top of the page -->
-        <SearchbarComponent :input-string="searchState.query" />
+        <SearchbarComponent :input-string="searchState.query" id="search-view-searchbar-component"/>
 
         <div v-if="searchState.loading" class="h-50 ma-5 d-flex justify-center align-center">
             <v-progress-circular indeterminate size="35"></v-progress-circular>

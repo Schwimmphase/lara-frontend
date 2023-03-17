@@ -1,6 +1,6 @@
 <template>
     <div>
-        <lara-button type="outline" icon="mdi-filter" class="w-100" id="filter-button" @click="state.dialog = true">
+        <lara-button type="outline" icon="mdi-filter" class="w-100" @click="state.dialog = true" id="organizable-list-filter-settings">
             {{ $t('organizableList.filterSettings') }}
         </lara-button>
         <v-dialog v-model="state.dialog" id="dialog">
@@ -10,7 +10,7 @@
                         <div class="d-flex flex-column">
                             <div class="d-flex flex-row justify-space-between" v-for="slot in slots" >
                                 <div class="w-25 d-flex align-center">
-                                    <p class="text-h5 mt-auto mb-auto">{{ slot.name }}</p>
+                                    <p class="text-h5 mt-auto mb-auto">{{ $t('slots.' + slot.key) }}</p>
                                 </div>
                                 <slot :name="slot.id"></slot>
                             </div>
@@ -19,7 +19,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-container>
-                        <lara-button type="primary" @click="closeDialog">{{ $t('organizableList.organizeButton') }}</lara-button>
+                        <lara-button type="primary" @click="closeDialog" id="organizable-list-organize-button">{{ $t('organizableList.organizeButton') }}</lara-button>
                     </v-container>
                 </v-card-actions>
             </v-card>
@@ -29,9 +29,9 @@
 
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import {reactive} from "vue";
 import LaraButton from "@/components/basic/LaraButton.vue";
-import type { Slot } from "@/components/basic/OrganizableList.vue";
+import type {Slot} from "@/components/basic/OrganizableList.vue";
 
 let state = reactive({
     dialog: false
@@ -63,7 +63,7 @@ function closeDialog() {
     border-radius: 0;
 }
 
-#filter-button {
+#organizable-list-filter-settings {
     max-width: 300px;
     min-width: 100px;
     text-overflow: ellipsis;

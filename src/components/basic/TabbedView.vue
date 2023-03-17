@@ -106,15 +106,15 @@ const props = defineProps({
 });
 
 const slotsRecommendations = [
-    {id: "recommendations", name: i18n.global.t("words.recommendations")}
+    { id: "recommendations", name: "recommendations", key: "recommendations" }
 ];
 
 const slotsCitations = [
-    {id: "citations", name: i18n.global.t("words.citations")}
+    { id: "citations", name: "citations", key: "citations" }
 ];
 
 const slotsReferences = [
-    {id: "references", name: i18n.global.t("words.references")}
+    { id: "references", name: "references", key: "references" }
 ];
 
 // Get the persistent saved OpenResearch

@@ -1,6 +1,6 @@
 <template>
     <v-container id="container" class="w-75">
-        <h1 class="text-h3 font-weight-bold">{{ $t('admin.greeting', { name: state.currentUser?.username }) }}</h1>
+        <h1 class="text-h3 font-weight-bold" id="admin-greeting">{{ $t('admin.greeting', { name: state.currentUser?.username }) }}</h1>
 
         <div v-if="!state.loading && state.categories != undefined" class="d-flex flex-row gap-8 mt-8">
             <user-dialog :button-text="$t('admin.userDialog.buttonCreate')" :password-change="false"
@@ -14,7 +14,7 @@
             </router-link>
         </div>
 
-        <h2 class="text-h4 font-weight-bold mt-8">{{ $t('admin.userOverview') }}</h2>
+        <h2 class="text-h4 font-weight-bold mt-8" id="admin-user-overview">{{ $t('admin.userOverview') }}</h2>
 
         <div class="mt-4" v-if="state.loading">
             <v-progress-circular indeterminate size="70"></v-progress-circular>
@@ -22,7 +22,7 @@
 
 
         <div class="mt-4" v-if="!state.loading">
-            <organizable-list :slots="[{ id: 'users'}]" :organize-slots="organizeSlots"
+            <organizable-list :slots="[{ id: 'users', key: 'users' }]" :organize-slots="organizeSlots"
                               :selected-organizers="organizerState.selectedOragnizers" @organize="onOrganize"
                               @remove-organizer="(name) => onRemoveOrganizer(name)">
                 <template v-slot:users v-if="state.users != undefined && state.categories != undefined">
@@ -32,7 +32,7 @@
                     </user-card>
                 </template>
 
-                <template v-slot:organizer-tags>
+                <template v-slot:category-filter>
                     <div id="tag-select" class="mt-4">
                         <v-select class="lara-field" :label="$t('admin.organize.userCategories')"
                                   variant="outlined" :items="userCategoriesStrings" multiple clearable v-model="organizerState.tags">
@@ -52,25 +52,25 @@
 
 <script setup lang="ts">
 
-import { computed, reactive } from "vue";
-import { i18n } from "@/internationalization/i18n";
+import {computed, reactive} from "vue";
+import {i18n} from "@/internationalization/i18n";
 
 import LaraButton from "@/components/basic/LaraButton.vue";
 import OrganizableList from "@/components/basic/OrganizableList.vue";
 import UserCard from "@/components/cards/UserCard.vue";
 import UserDialog from "@/components/dialogs/UserDialog.vue";
 
-import type { User } from "@/model/User";
+import type {User} from "@/model/User";
 import type {UserCategory} from "@/model/UserCategory";
-import { Organizer } from "@/model/Organizer";
+import {Organizer} from "@/model/Organizer";
 
-import { useCurrentUserStore } from "@/stores/currentUser";
-import { AdminApiHandler } from "@/api/Admin/AdminApiHandler";
+import {useCurrentUserStore} from "@/stores/currentUser";
+import {AdminApiHandler} from "@/api/Admin/AdminApiHandler";
 
 // Set the document title
 document.title = i18n.global.t("pageTitles.admin") + " - lara";
 
-const organizeSlots = [{ id: "organizer-tags", name: "Tags" }];
+const organizeSlots = [{ id: "category-filter", name: "Tags", key: "tagFilter" }];
 
 const userCategoriesStrings = computed<string[]>(() => {
     let strings: string[] = [];
@@ -166,7 +166,7 @@ function onOrganize() {
     });
 
     if (!tagsEmpty) {
-        let tagsFilter = new Organizer("tags-filter", tagsValue);
+        let tagsFilter = new Organizer("category-filter", tagsValue);
         organizerState.selectedOragnizers.push(tagsFilter);
     }
 
@@ -182,6 +182,8 @@ function onRemoveOrganizer(name: string) {
     organizerState.tags = [];
 
     organizerState.selectedOragnizers = newOrganizers;
+
+    getUsers(organizerState.selectedOragnizers);
 }
 
 // Fetch the categories and the users on pageload

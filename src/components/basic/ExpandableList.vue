@@ -1,5 +1,5 @@
 <template>
-    <div @click="toggleExpanded" class="lara-collapse-div">
+    <div @click="toggleExpanded" class="lara-collapse-div" id="toggle-expand">
         <span class="text-h5" :class="hidden ? 'lara-hidden-link' : ''">
             <v-icon icon="mdi-menu-right" class="px-2" :class="state.expanded ? 'rotate' : ''" />
             {{ title }}

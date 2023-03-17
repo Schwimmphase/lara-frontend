@@ -1,12 +1,12 @@
 <template>
 
-    <v-container class="pt-8 px-16 w-75">
+    <v-container class="pt-8 px-16 w-75" id="research-overview">
         <div class="d-flex d-row justify-space-between">
             <div class="w-100">
-                <h1 class="text-h3 font-weight-bold">{{ research != null ? research.title : "" }}</h1>
+                <h1 class="text-h3 font-weight-bold" id="research-title">{{ research != null ? research.title : "" }}</h1>
             </div>
             <div class="d-flex align-center justify-end w-100">
-                <v-icon @click="router.push({ name: 'recommendations' })" class="mr-5" size="40"
+                <v-icon @click="router.push({ name: 'recommendations' })" class="mr-5" size="40" id="overview-recommendations"
                         :title="$t('words.recommendations')">mdi-book</v-icon>
                 <searchbar-component id="search-bar"></searchbar-component>
             </div>
@@ -50,7 +50,7 @@
     <v-snackbar v-model="state.copied" :timeout="state.timeout">
         {{ $t('researchOverview.copied') }}
         <template v-slot:actions>
-            <v-btn color="pink" variant="text" @click="state.copied = false">
+            <v-btn color="pink" variant="text" @click="state.copied = false" id="overview-copied">
                 {{ $t('researchOverview.close') }}
             </v-btn>
         </template>
@@ -116,12 +116,12 @@ let hidden = computed(() => {
 });
 
 let slots: Slot[] = [
-    { id: "added" },
-    { id: "enqueued", name: enqueued.value }, // TODO: currently does not auto update
-    { id: "hidden", name: hidden.value } // TODO: currently does not auto update
+    { id: "added", key: "added" },
+    { id: "enqueued", name: enqueued.value, key: "enqueued" },
+    { id: "hidden", name: hidden.value, key: "hidden" }
 ];
 
-const organizeSlots: Slot[] = [{ id: "year-filter", name: "Year Filter" }];
+const organizeSlots: Slot[] = [{ id: "year-filter", name: "Year Filter", key: "yearFilter" }];
 
 async function getSavedPapers(organizers: Organizer[]) {
     state.loading = true;
