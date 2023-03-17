@@ -39,7 +39,7 @@ let closeDialog = () => {
                 <v-container>
                     <v-row>
                         <v-col>
-                            <v-form>
+                            <v-form @submit.prevent>
                                 <div class="d-flex flex-column gap-4">
                                     <v-text-field class="lara-field" variant="outlined"
                                         v-model="state.title" :counter="32"
