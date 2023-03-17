@@ -64,28 +64,28 @@ if (!localStorage.getItem('lang')) {
     <v-app-bar :elevation="5" class="lara-navbar">
         <div class="ml-6">
             <v-app-bar-title>
-                <span class="lara-icon-link lara-clickable" @click="navigateToHome">
-                    <h2 class="font-weight-bold">lara.</h2>
+                <span class="lara-icon-link lara-clickable" @click="navigateToHome" id="navbar-navigation-to-home">
+                    <h2 class="font-weight-bold" id="navbar-title">lara.</h2>
                 </span>
             </v-app-bar-title>
         </div>
         <v-spacer></v-spacer>
         <div>
-            <span id="menu-activator" class="lara-navbar-link">{{ $t('navbar.changeLanguage') }}</span>
+            <span id="menu-activator" class="lara-navbar-link" id="navbar-change-language">{{ $t('navbar.changeLanguage') }}</span>
             <!--<v-btn id="menu-activator" class="lara-navbar-link">{{ $t('navbar.changeLanguage') }}</v-btn>-->
 
             <v-menu activator="#menu-activator">
                 <v-list>
                     <v-list-item
                     v-for="(language, index) in languages" :key="index" :value="language.abbreviation"
-                    @click="changeLanguage(language.abbreviation)" class="" :class="{ 'lara-selected': (language.abbreviation === (i18n.global.locale).value), 'lara-language-option': (language.abbreviation !== (i18n.global.locale).value) }">
+                    @click="changeLanguage(language.abbreviation)" class="" :class="{ 'lara-selected': (language.abbreviation === (i18n.global.locale).value), 'lara-language-option': (language.abbreviation !== (i18n.global.locale).value) }" id="navbar-language-change-button">
                         <span>{{ language.name }}</span>
                     </v-list-item>
                 </v-list>
             </v-menu>
         </div>
         <div class="mr-6">
-            <span @click="navigateToAdmin" class="ml-6 lara-navbar-link" v-if="isUserAdmin()">{{ $t('navbar.manageUsers') }}</span>
+            <span @click="navigateToAdmin" class="ml-6 lara-navbar-link" v-if="isUserAdmin()" id="navbar-manage-user-button">{{ $t('navbar.manageUsers') }}</span>
             <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'home' }">{{ $t('navbar.home') }}</router-link>
             <router-link class="ml-6 lara-navbar-link" v-if="isUserLoggedIn()" :to="{ name: 'login' }" @click="logout">{{ $t('navbar.logout') }}</router-link>
         </div>

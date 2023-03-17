@@ -47,7 +47,7 @@ let closeDialog = () => {
                                         :label="$t('admin.categories.name')">
                                     </v-text-field>  
                                 </div>
-                                <lara-button type="primary" @click="closeDialog">{{ $t('admin.categories.save') }}</lara-button>
+                                <lara-button type="primary" @click="closeDialog" id="edit-user-category-save">{{ $t('admin.categories.save') }}</lara-button>
                             </v-form>
                         </v-col>
                         <v-col>

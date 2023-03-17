@@ -86,13 +86,13 @@ setCitationReferences([]);
 <template>
     <div class="mt-8 mx-16 h-100">
         <div class="d-flex">
-            <span @click="state.showCitations = false"
+            <span @click="state.showCitations = false" id="recommendations-view-no-citations"
                   :class="{ 'font-weight-bold': !state.showCitations, 'lara-clickable': state.showCitations }"
                   class="text-h4">
                 {{ $t('recommendationsView.recommended') }}
             </span>
             <span
-                @click="state.showCitations = true"
+                @click="state.showCitations = true" id="recommendations-view-citations"
                 :class="{ 'font-weight-bold': state.showCitations, 'lara-clickable': !state.showCitations }"
                 class="text-h4 ml-3">
                 {{ $t('recommendationsView.citationsReferences') }}

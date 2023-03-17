@@ -45,7 +45,7 @@ let closeDialog = () => {
                         </v-card-text>
                         <v-card-actions>
                             <v-container>
-                                <lara-button type="primary" @click="closeDialog">{{ $t('detailSidebar.save') }}</lara-button>
+                                <lara-button type="primary" @click="closeDialog" id="edit-tag-close-dialogue">{{ $t('detailSidebar.save') }}</lara-button>
                             </v-container>
                         </v-card-actions>
                     </v-col>

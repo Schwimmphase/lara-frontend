@@ -69,7 +69,7 @@ getSearchResults([]);
 <template>
     <div class="mt-8 mx-16 h-100">
         <!-- Searchbar on top of the page -->
-        <SearchbarComponent :input-string="searchState.query" />
+        <SearchbarComponent :input-string="searchState.query" id="search-view-searchbar-component"/>
 
         <div v-if="searchState.loading" class="h-50 ma-5 d-flex justify-center align-center">
             <v-progress-circular indeterminate size="35"></v-progress-circular>

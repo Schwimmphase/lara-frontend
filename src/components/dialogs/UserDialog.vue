@@ -28,7 +28,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-container>
-                    <lara-button type="primary" @click="closeDialog">{{ buttonText }}</lara-button>
+                    <lara-button type="primary" @click="closeDialog" id="user-dialogue-close-button">{{ buttonText }}</lara-button>
                 </v-container>
             </v-card-actions>
         </v-card>

@@ -253,9 +253,9 @@ const props = defineProps<{ openPaper: OpenPaper }>();
                 </div>
                 
                 <div class="mt-4">
-                    <lara-button type="primary" @click="detailState.openPaper !== null ? createSavedPaper( detailState.openPaper?.paper, SaveState.added) : null">{{ $t('detailSidebar.add') }}</lara-button>
-                    <lara-button class="mt-2" type="secondary" @click="detailState.openPaper !== null ? createSavedPaper(detailState.openPaper?.paper, SaveState.enqueued) : null">{{ $t('detailSidebar.enqueue') }}</lara-button>
-                    <lara-button class="lara-hide-button mt-2" type="outline" @click="detailState.openPaper !== null ? createSavedPaper(detailState.openPaper?.paper, SaveState.hidden) : null">
+                    <lara-button type="primary" @click="detailState.openPaper !== null ? createSavedPaper( detailState.openPaper?.paper, SaveState.added) : null" id="detail-sidebar-add-button">{{ $t('detailSidebar.add') }}</lara-button>
+                    <lara-button class="mt-2" type="secondary" @click="detailState.openPaper !== null ? createSavedPaper(detailState.openPaper?.paper, SaveState.enqueued) : null" id="detail-sidebar-enqueue-button">{{ $t('detailSidebar.enqueue') }}</lara-button>
+                    <lara-button class="lara-hide-button mt-2" type="outline" @click="detailState.openPaper !== null ? createSavedPaper(detailState.openPaper?.paper, SaveState.hidden) : null" id="detail-sidebar-hide-button">
                         <v-icon>mdi-eye-off</v-icon>
                     </lara-button>
                     <v-divider class="my-3"></v-divider>
@@ -265,17 +265,17 @@ const props = defineProps<{ openPaper: OpenPaper }>();
 
             <!-- Section for the recommendations, citations and references of the open paper -->
             <div class="mt-3">
-                <lara-button class="mt-2 mb-4" type="outline" @click="$emit('bigger')">
+                <lara-button class="mt-2 mb-4" type="outline" @click="$emit('bigger')" id="detail-sidebar-bigger-button">
                     {{ $t('detailSidebar.bigger') }}
                 </lara-button>
 
                 <div>
-                    <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.recommendations') }}</span>
+                    <span class="text-h5 font-weight-bold" id="sidebar-recommendations">{{ $t('detailSidebar.recommendations') }}</span>
 
                     <div class="mb-2" v-for="(recommendation, index) in recommendationsStore.recommendations" :key="index">
                         <router-link class="lara-recommendation-link" v-if="index < 3"
                                      :to="{ name: 'paperDetails', query: {paper: recommendation.paperId}}"
-                                     @click="openPaperStore.setPaper(new OpenPaper(recommendation, undefined, false))">
+                                     @click="openPaperStore.setPaper(new OpenPaper(recommendation, undefined, false))" id="recommendations-link">
                             {{ recommendation.title }}
                         </router-link>
                     </div>
@@ -284,12 +284,12 @@ const props = defineProps<{ openPaper: OpenPaper }>();
                     </p>
                 </div>
                 <div class="mt-4">
-                    <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.citations') }}</span>
+                    <span class="text-h5 font-weight-bold" id="sidebar-citations">{{ $t('detailSidebar.citations') }}</span>
 
                     <div class="mb-2" v-for="(citation, index) in recommendationsStore.citations" :key="index">
                         <router-link class="lara-recommendation-link" v-if="index < 3"
                                      :to="{ name: 'paperDetails', query: {paper: citation.paperId}}" 
-                                     @click="openPaperStore.setPaper(new OpenPaper(citation, undefined, false))">
+                                     @click="openPaperStore.setPaper(new OpenPaper(citation, undefined, false))" id="citations-link">
                             {{ citation.title }}
                         </router-link>
                     </div>
@@ -298,12 +298,12 @@ const props = defineProps<{ openPaper: OpenPaper }>();
                     </p>
                 </div>
                 <div class="mt-4">
-                    <span class="text-h5 font-weight-bold">{{ $t('detailSidebar.references') }}</span>
+                    <span class="text-h5 font-weight-bold" id="sidebar-references">{{ $t('detailSidebar.references') }}</span>
 
                     <div class="mb-2" v-for="(reference, index) in recommendationsStore.references" :key="index">
                         <router-link class="lara-recommendation-link" v-if="index < 3"
                                      :to="{ name: 'paperDetails', query: {paper: reference.paperId}}"
-                                     @click="openPaperStore.setPaper(new OpenPaper(reference, undefined, false))">
+                                     @click="openPaperStore.setPaper(new OpenPaper(reference, undefined, false))" id="references-link">
                             {{ reference.title }}
                         </router-link>
                     </div>

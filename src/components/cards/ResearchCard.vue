@@ -6,15 +6,15 @@
         <v-card-subtitle>{{  $t('researchCard.startedOn', {startedOn: startedAt})  }}</v-card-subtitle>
 
         <v-card-actions class="ml-4 mr-4 mb-2 mt-2 pa-0">
-            <lara-button type="primary" class="w-50" @click="openResearch(research)">{{ $t('researchCard.open') }}</lara-button>
+            <lara-button type="primary" class="w-50" @click="openResearch(research)" id="open-research">{{ $t('researchCard.open') }}</lara-button>
 
             <v-spacer></v-spacer>
 
             <research-edit-dialog :title="title" :description="description"
-                                  @save="(newTitle: string, newDescription: string) => onDataChange(newTitle, newDescription)" />
+                                  @save="(newTitle: string, newDescription: string) => onDataChange(newTitle, newDescription)" id="edit-research"/>
 
             <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
-                <v-btn size="small" color="red" variant="text" icon="mdi-delete" :title="$t('words.delete')"></v-btn>
+                <v-btn size="small" color="red" variant="text" icon="mdi-delete" :title="$t('words.delete')" id="delete-research"></v-btn>
             </confirm-dialog>
         </v-card-actions>
     </v-card>

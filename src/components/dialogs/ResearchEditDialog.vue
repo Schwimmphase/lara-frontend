@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-btn size="small" color="surface-variant" variant="text" icon="mdi-pencil" :title="$t('words.edit')"
-               @click="state.dialog = true"></v-btn>
+               @click="state.dialog = true" id="research-edit-dialogue"></v-btn>
         <v-dialog v-model="state.dialog">
             <v-card id="dialog">
                 <v-card-text>
@@ -16,7 +16,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-container>
-                        <lara-button type="primary" @click="closeDialog">{{ $t('researchEditDialog.save') }}</lara-button>
+                        <lara-button type="primary" @click="closeDialog" id="research-edit-save-button">{{ $t('researchEditDialog.save') }}</lara-button>
                     </v-container>
                 </v-card-actions>
             </v-card>

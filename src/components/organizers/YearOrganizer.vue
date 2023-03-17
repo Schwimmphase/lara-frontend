@@ -53,11 +53,11 @@ let decreaseMin = () => {
         <v-range-slider @change:modelValue="updateParent" v-model:model-value="state" :step="1" strict
                         :min="extremas.min - 20" :max="extremas.max + 20" thumb-label="always">
             <template v-slot:prepend>
-                <lara-button icon="mdi-calendar" @click="decreaseMin" type="outline">{{ $t('organizers.earlier') }}</lara-button>
+                <lara-button icon="mdi-calendar" @click="decreaseMin" type="outline" id="year-organizer-earlier">{{ $t('organizers.earlier') }}</lara-button>
             </template>
 
             <template v-slot:append>
-                <lara-button icon="mdi-calendar" @click="increaseMax" type="outline">{{ $t('organizers.later') }}</lara-button>
+                <lara-button icon="mdi-calendar" @click="increaseMax" type="outline" id="year-organizer-later">{{ $t('organizers.later') }}</lara-button>
             </template>
         </v-range-slider>
     </div>
