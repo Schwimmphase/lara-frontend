@@ -49,7 +49,7 @@ export const messages = {
             information: 'Information',
             comments: 'Comments',
             tags: 'Tags',
-            createTag: 'Create or add tag {name} using ENTER',
+            createTag: 'Create, add or remove tag {name} using ENTER',
             addTags: 'Add Tags',
             editTag: {
                 name: 'Tag name',
@@ -259,7 +259,7 @@ export const messages = {
             information: 'Informationen',
             comments: 'Kommentare',
             tags: 'Tags',
-            createTag: 'Tag {name} mit ENTER erstellen oder hinzufügen',
+            createTag: 'Tag {name} mit ENTER erstellen, hinzufügen oder entfernen',
             addTags: 'Tags hinzufügen',
             editTag: {
                 name: 'Tagname',

@@ -2,17 +2,17 @@
 
     <div class="mt-8 mx-16 h-100">
         <div class="d-flex">
-            <span @click="state.visibleTab = 1"
+            <span id="recommendations" @click="state.visibleTab = 1"
                   :class="{ 'font-weight-bold': state.visibleTab === 1, 'lara-clickable': state.visibleTab !== 1 }"
                   class="text-h4">
                 {{ $t('words.recommendations') }}
             </span>
-            <span @click="state.visibleTab = 2"
+            <span id="citations" @click="state.visibleTab = 2"
                   :class="{ 'font-weight-bold': state.visibleTab === 2, 'lara-clickable': state.visibleTab !== 2 }"
                   class="text-h4 ml-3">
                 {{ $t('words.citations') }}
             </span>
-            <span @click="state.visibleTab = 3"
+            <span id="references" @click="state.visibleTab = 3"
                   :class="{ 'font-weight-bold': state.visibleTab === 3, 'lara-clickable': state.visibleTab !== 3 }"
                   class="text-h4 ml-3">
                 {{ $t('words.references') }}
