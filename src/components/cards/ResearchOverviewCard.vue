@@ -7,7 +7,7 @@
         <!-- with add button -->
         <div v-if="addButton">
             <v-card-actions class="mx-4 mb-5 pa-0">
-                <lara-button type="primary" style="max-width: 200px" @click="$emit('add')">
+                <lara-button type="primary" style="max-width: 200px" @click="$emit('add')" id="research-overview-add">
                     {{ $t('researchOverviewCard.add') }}
                 </lara-button>
 
@@ -22,9 +22,9 @@
                 <v-spacer></v-spacer>
 
                 <v-btn size="small" color="surface-variant" variant="text" icon="mdi-open-in-new"
-                       @click="$emit('export')" :title="$t('words.export')"></v-btn>
+                       @click="$emit('export')" :title="$t('words.export')" id="research-overview-export"></v-btn>
                 <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
-                    <v-btn size="small" color="red" variant="text" icon="mdi-delete" :title="$t('words.remove')"></v-btn>
+                    <v-btn size="small" color="red" variant="text" icon="mdi-delete" :title="$t('words.remove')" id="research-overview-confirm"></v-btn>
                 </confirm-dialog>
             </v-card-actions>
         </div>
@@ -43,9 +43,9 @@
                 <v-spacer></v-spacer>
                 <!-- Export & Delete Buttons -->
                 <v-btn size="small" color="surface-variant" variant="text" icon="mdi-open-in-new"
-                       @click="$emit('export')" :title="$t('words.export')"></v-btn>
+                       @click="$emit('export')" :title="$t('words.export')" id="export-button"></v-btn>
                 <confirm-dialog @close="decision => { if (decision) $emit('delete') }">
-                    <v-btn size="small" color="red" variant="text" icon="mdi-delete" :title="$t('words.remove')"></v-btn>
+                    <v-btn size="small" color="red" variant="text" icon="mdi-delete" :title="$t('words.remove')" id="delete-button"></v-btn>
                 </confirm-dialog>
             </v-card-actions>
         </div>

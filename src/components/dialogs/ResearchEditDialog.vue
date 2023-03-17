@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-btn size="small" color="surface-variant" :title="$t('words.edit')" variant="text" icon="mdi-pencil" @click="openState.dialog = true"></v-btn>
+        <v-btn size="small" color="surface-variant" :title="$t('words.edit')" variant="text" icon="mdi-pencil" @click="openState.dialog = true"  id="research-edit-dialogue"></v-btn>
         <v-dialog v-model="openState.dialog">
             <v-card id="dialog">
                 <v-card-text>
@@ -15,7 +15,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-container>
-                        <lara-button type="primary" @click="closeDialog">{{ $t('researchEditDialog.save') }}</lara-button>
+                        <lara-button type="primary" @click="closeDialog" id="research-edit-save-button">{{ $t('researchEditDialog.save') }}</lara-button>
                     </v-container>
                 </v-card-actions>
             </v-card>
@@ -43,6 +43,7 @@ const props = defineProps<{
 }>();
 
 let state = reactive({
+    dialog: false,
     title: props.title,
     description: props.description,
     titleToLong: false,
@@ -61,7 +62,7 @@ watch(openState, () => {
 
     state.descriptionMessages = [''];
     state.titleMessages = [''];
-    
+
     if (state.locale == "de") {
         titleMessage = [i18n.global.messages.value.de.newResearchDialog.titleTooLong];
         descriptionMessage = [i18n.global.messages.value.de.newResearchDialog.descriptionTooLong];

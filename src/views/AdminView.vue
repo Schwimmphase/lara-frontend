@@ -1,6 +1,6 @@
 <template>
     <v-container id="container" class="w-75">
-        <h1 class="text-h3 font-weight-bold">{{ $t('admin.greeting', { name: state.currentUser?.username }) }}</h1>
+        <h1 class="text-h3 font-weight-bold" id="admin-greeting">{{ $t('admin.greeting', { name: state.currentUser?.username }) }}</h1>
 
         <div v-if="!state.loading && state.categories != undefined" class="d-flex flex-row gap-8 mt-8">
             <user-dialog :button-text="$t('admin.userDialog.buttonCreate')" :password-change="false"
@@ -14,7 +14,7 @@
             </router-link>
         </div>
 
-        <h2 class="text-h4 font-weight-bold mt-8">{{ $t('admin.userOverview') }}</h2>
+        <h2 class="text-h4 font-weight-bold mt-8" id="admin-user-overview">{{ $t('admin.userOverview') }}</h2>
 
         <div class="mt-4" v-if="state.loading">
             <v-progress-circular indeterminate size="70"></v-progress-circular>

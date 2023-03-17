@@ -21,7 +21,7 @@ const meta = computed(() => route.meta);
           <v-snackbar v-model="globalErrorSnackbar.visible" :timeout="globalErrorSnackbar.timeout">
               {{ $t(globalErrorSnackbar.error, { 'message': globalErrorSnackbar.message }) }}
               <template v-slot:actions>
-                  <v-btn color="pink" variant="text" @click="globalErrorSnackbar.visible = false">
+                  <v-btn color="pink" variant="text" @click="globalErrorSnackbar.visible = false" id="global-error-snackbar-close">
                       {{ $t('words.close') }}
                   </v-btn>
               </template>

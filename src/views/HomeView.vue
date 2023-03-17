@@ -1,14 +1,14 @@
 <template>
-    <v-container class="w-75 pt-8">
-        <h1 class="text-h3 font-weight-bold">{{ $t('home.greetings', {username: currentUser!.username}) }}</h1>
+    <v-container class="w-75 pt-8" id="home-view">
+        <h1 class="text-h3 font-weight-bold" id="user-greeting">{{ $t('home.greetings', {username: currentUser!.username}) }}</h1>
 
         <div style="width: 300px">
             <NewResearchDialog :button-text="$t('home.startNewResearch')" @save="(title, description) => onCreateResearch(title, description)">
-                <lara-button class="mt-8 mb-8" type="primary">{{ $t('home.startNewResearch') }}</lara-button>
+                <lara-button class="mt-8 mb-8" type="primary" id="new-research-button">{{ $t('home.startNewResearch') }}</lara-button>
             </NewResearchDialog>
         </div>
 
-        <h2 class="text-h4 font-weight-bold">{{ $t('home.myResearches') }}</h2>
+        <h2 class="text-h4 font-weight-bold" id="home-title">{{ $t('home.myResearches') }}</h2>
 
         <div class="mt-4 d-flex flex-wrap flex-row gap-8">
             <div v-for="research, index in state.researches" :key="index">

@@ -59,7 +59,7 @@ state.initialLoading = false;
             <span class="text-h4 font-weight-bold">{{ $t('admin.categories.manage') }}</span>
             <div class="mt-3">
                 <NewUserCategoryDialog @create="(name, color) => createCategory(name, color)">
-                    <LaraButton type="primary">{{ $t('admin.categories.create') }}</LaraButton>
+                    <LaraButton type="primary" id="create-category-button">{{ $t('admin.categories.create') }}</LaraButton>
                 </NewUserCategoryDialog>
             </div>
 
@@ -69,11 +69,11 @@ state.initialLoading = false;
                     <v-spacer></v-spacer>
                     <v-avatar class="ml-4" size="30" :color="category.color"></v-avatar>
                     <EditUserCategoryDialog :category="category" @edit="(category, name, color) => updateCategory(category, name, color)">
-                        <v-icon class="ml-4 lara-clickable" :title="$t('words.edit')">mdi-pencil</v-icon>
+                        <v-icon class="ml-4 lara-clickable" :title="$t('words.edit')" id="edit-category">mdi-pencil</v-icon>
                     </EditUserCategoryDialog>
                     
                     <ConfirmDialog @close="(decision) => deleteCategory(category, decision)">
-                        <v-icon color="red" class="ml-4 lara-clickable" :title="$t('words.delete')">mdi-trash-can</v-icon>
+                        <v-icon color="red" class="ml-4 lara-clickable" :title="$t('words.delete')" id="delete-category">mdi-trash-can</v-icon>
                     </ConfirmDialog>
                 </v-card>
             </div>
