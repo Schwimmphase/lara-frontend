@@ -50,9 +50,11 @@ export const messages = {
             information: 'Information',
             comments: 'Comments',
             tags: 'Tags',
+            createTag: 'Create or add tag {name} using ENTER',
             addTags: 'Add Tags',
             editTag: {
                 name: 'Tag name',
+                invalidEdit: 'A different tag with this name already exists'
             },
             relevance: 'Relevance',
             save: 'Save',
@@ -242,9 +244,11 @@ export const messages = {
             information: 'Informationen',
             comments: 'Kommentare',
             tags: 'Tags',
+            createTag: 'Tag {name} mit ENTER erstellen oder hinzufügen',
             addTags: 'Tags hinzufügen',
             editTag: {
-                name: 'Tagname'
+                name: 'Tagname',
+                invalidEdit: 'Ein anderer Tag mit diesem Namen existiert bereits'
             },
             relevance: 'Relevanz',
             save: 'Speichern',
