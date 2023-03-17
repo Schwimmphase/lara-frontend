@@ -89,12 +89,12 @@ let openPaper = (): void => {
                 </div>
             </div>
             <div class="mx-4 mb-4 d-flex flex-row">
+                <lara-button @click="openPaper" class="mt-2 mr-2 search-button" type="secondary">
+                    {{ $t('detailSidebar.open') }}
+                </lara-button>
                 <lara-button @click="createSavedPaper(SaveState.enqueued)" class="mt-2 mr-2 search-button"
                              type="primary" v-if="!saved">
                     {{ $t('detailSidebar.enqueue') }}
-                </lara-button>
-                <lara-button @click="openPaper" class="mt-2 mr-2 search-button" type="secondary">
-                    {{ $t('detailSidebar.open') }}
                 </lara-button>
                 <lara-button @click="createSavedPaper(SaveState.hidden)" class="mt-2 search-button" type="outline"
                              v-if="!saved">
