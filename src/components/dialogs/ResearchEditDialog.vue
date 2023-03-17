@@ -1,10 +1,10 @@
 <template>
     <div>
         <v-btn size="small" color="surface-variant" :title="$t('words.edit')" variant="text" icon="mdi-pencil" @click="openState.dialog = true"  id="research-edit-dialogue"></v-btn>
-        <v-dialog v-model="openState.dialog">
-            <v-card id="dialog">
+        <v-dialog v-model="openState.dialog" id="dialog">
+            <v-card>
                 <v-card-text>
-                    <v-form v-model="valid">
+                    <v-form v-model="valid" v-on:submit.prevent>
                         <div class="d-flex flex-column">
                             <v-text-field :messages="state.titleMessages" class="lara-field" variant="outlined"
                                           v-model="state.title" :counter="maxTitleLength" :label="$t('researchEditDialog.title')"></v-text-field>
