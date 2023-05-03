@@ -39,18 +39,18 @@ export const testPaper2 = new Paper("2", "paper title", [testAuthor, testAuthor]
     1990, "paper abstract",
     10, 4, "f", "https://www.orimi.com/pdf-test.pdf");
 
-export const testSavedPaper1 = new SavedPaper(testPaper1, testResearch, testComment1, [testTag1, testTag2, testTag3], 1, SaveState.hidden);
-export const testSavedPaper2 = new SavedPaper(testPaper1, testResearch, testComment2, [testTag1, testTag2, testTag3], 2, SaveState.hidden);
-export const testSavedPaper3 = new SavedPaper(testPaper1, testResearch, testComment3, [testTag1, testTag2, testTag3], 0, SaveState.added);
-export const testSavedPaper4 = new SavedPaper(testPaper1, testResearch, testComment1, [testTag1, testTag2, testTag3], 1, SaveState.enqueued);
-export const testSavedPaper5 = new SavedPaper(testPaper1, testResearch, testComment2, [testTag1, testTag2, testTag3], 2, SaveState.hidden);
-export const testSavedPaper6 = new SavedPaper(testPaper1, testResearch, testComment3, [testTag1, testTag2, testTag3], 0, SaveState.added);
-export const testSavedPaper7 = new SavedPaper(testPaper1, testResearch, testComment1, [testTag1, testTag2, testTag3], 1, SaveState.enqueued);
-export const testSavedPaper8 = new SavedPaper(testPaper1, testResearch, testComment2, [testTag1, testTag2, testTag3], 2, SaveState.hidden);
-export const testSavedPaper9 = new SavedPaper(testPaper1, testResearch, testComment3, [testTag1, testTag2, testTag3], 0, SaveState.added);
-export const testSavedPaper10 = new SavedPaper(testPaper1, testResearch, testComment1, [testTag1, testTag2, testTag3], 1, SaveState.enqueued);
-export const testSavedPaper11 = new SavedPaper(testPaper1, testResearch, testComment2, [testTag1, testTag2, testTag3], 2, SaveState.hidden);
-export const testSavedPaper12 = new SavedPaper(testPaper1, testResearch, testComment3, [testTag1, testTag2, testTag3], 0, SaveState.added);
+export const testSavedPaper1 = new SavedPaper(testPaper1, testResearch, testComment1, [testTag1, testTag2, testTag3], 1, testPaper1.pdfUrl, SaveState.hidden);
+export const testSavedPaper2 = new SavedPaper(testPaper1, testResearch, testComment2, [testTag1, testTag2, testTag3], 2, testPaper1.pdfUrl, SaveState.hidden);
+export const testSavedPaper3 = new SavedPaper(testPaper1, testResearch, testComment3, [testTag1, testTag2, testTag3], 0, testPaper1.pdfUrl, SaveState.added);
+export const testSavedPaper4 = new SavedPaper(testPaper1, testResearch, testComment1, [testTag1, testTag2, testTag3], 1, testPaper1.pdfUrl, SaveState.enqueued);
+export const testSavedPaper5 = new SavedPaper(testPaper1, testResearch, testComment2, [testTag1, testTag2, testTag3], 2, testPaper1.pdfUrl, SaveState.hidden);
+export const testSavedPaper6 = new SavedPaper(testPaper1, testResearch, testComment3, [testTag1, testTag2, testTag3], 0, testPaper1.pdfUrl, SaveState.added);
+export const testSavedPaper7 = new SavedPaper(testPaper1, testResearch, testComment1, [testTag1, testTag2, testTag3], 1, testPaper1.pdfUrl, SaveState.enqueued);
+export const testSavedPaper8 = new SavedPaper(testPaper1, testResearch, testComment2, [testTag1, testTag2, testTag3], 2, testPaper1.pdfUrl, SaveState.hidden);
+export const testSavedPaper9 = new SavedPaper(testPaper1, testResearch, testComment3, [testTag1, testTag2, testTag3], 0, testPaper1.pdfUrl, SaveState.added);
+export const testSavedPaper10 = new SavedPaper(testPaper1, testResearch, testComment1, [testTag1, testTag2, testTag3], 1, testPaper1.pdfUrl, SaveState.enqueued);
+export const testSavedPaper11 = new SavedPaper(testPaper1, testResearch, testComment2, [testTag1, testTag2, testTag3], 2, testPaper1.pdfUrl, SaveState.hidden);
+export const testSavedPaper12 = new SavedPaper(testPaper1, testResearch, testComment3, [testTag1, testTag2, testTag3], 0, testPaper1.pdfUrl, SaveState.added);
 
 export const testCachedPaper = new CachedPaper(testPaper1, testPaper2, testResearch, CachedPaperType.citation);
 

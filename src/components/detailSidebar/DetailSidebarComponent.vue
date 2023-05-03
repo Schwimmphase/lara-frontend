@@ -105,9 +105,9 @@ let changeRelevance = async (relevance: number | string | undefined): Promise<vo
     useOpenResearchStore().setResearchPaper(toRaw(paper));
 }
 
-let changeUserPdf = async (url: string): Promise<void> => {
-    if (detailState.openPaper == undefined) {
-        console.error("Open paper null")
+let changeUserPdf = async (url: string | undefined): Promise<void> => {
+    if (url == undefined || detailState.openPaper == undefined) {
+        console.error("Url or open paper undefined")
         return
     }
 

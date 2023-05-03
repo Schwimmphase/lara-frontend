@@ -193,5 +193,5 @@ function getSavedPaper(): SavedPaper {
     let research = getResearch();
     let tag = getTag();
     return new SavedPaper(paper, research, "Dieser Artikel ist sehr sehr gut. Ich mag diesen Artikel.",
-        [tag], 3, SaveState.added);
+        [tag], 3, "https://arxiv.org/pdf/2003.14317.pdf", SaveState.added);
 }
