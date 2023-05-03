@@ -10,14 +10,17 @@ export class SavedPaper {
     comment: string;
     tags: Tag[];
     relevance: number;
+    userPdfUrl: string;
     saveState: SaveState;
 
-    constructor(paper: Paper, research: Research, comment: string, tags: Tag[], relevance: number, saveState: SaveState) {
+    constructor(paper: Paper, research: Research, comment: string, tags: Tag[], relevance: number, userPdfUrl: string,
+                saveState: SaveState) {
         this.paper = paper;
         this.research = research;
         this.comment = comment;
         this.tags = tags;
         this.relevance = relevance;
+        this.userPdfUrl = userPdfUrl;
         this.saveState = saveState;
     }
 }

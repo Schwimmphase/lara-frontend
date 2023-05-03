@@ -118,8 +118,8 @@ function onPdfError() {
 
         <div v-show="!detailState.showBigger" class="h-100">
             <!-- Paper pdf is available -->
-            <div v-if="detailState.openPaper?.getPaper()?.pdfUrl != null && !pdfState.error" class="w-100 h-100">
-                <object type="application/pdf" :data="detailState.openPaper!.getPaper()!.pdfUrl + '#zoom=page-width'"
+            <div v-if="detailState.openPaper?.getPdfUrl() != undefined && !pdfState.error" class="w-100 h-100">
+                <object type="application/pdf" :data="detailState.openPaper!.getPdfUrl() + '#zoom=page-width'"
                         class="w-100 h-100" @error="onPdfError" id="details-pdf">
                 </object>
             </div>
