@@ -16,4 +16,12 @@ export class OpenPaper {
         return this.saved ? this.savedPaper?.paper : this.paper;
     }
 
+    getPdfUrl(): string | undefined {
+        if (this.saved && this.savedPaper?.userPdfUrl != undefined) {
+            return this.savedPaper?.userPdfUrl;
+        } else {
+            return this.getPaper()?.pdfUrl;
+        }
+    }
+
 }

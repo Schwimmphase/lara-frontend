@@ -67,6 +67,8 @@ export const messages = {
             more: 'No more papers | One more paper | {n} more papers',
             abstractEmpty: 'No abstract available',
             unknownVenue: 'Unknown venue',
+            userPdf: "Own URL to PDF",
+            pdfSet: "Set PDF",
         },
 
         login: {
@@ -277,6 +279,8 @@ export const messages = {
             more: 'Keine weiteren Artikel | Ein weiterer Artikel | {n} weitere Artikel',
             abstractEmpty: 'Keine Zusammenfassung verfügbar',
             unknownVenue: 'Unbekannte Venue',
+            userPdf: 'Eigene URL zur PDF',
+            pdfSet: 'PDF setzen',
         },
 
         login: {

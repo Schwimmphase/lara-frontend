@@ -8,6 +8,7 @@ export class PaperApiCaller {
     static urlSaveState = '/save-state';
     static urlRelevance = '/relevance';
     static urlRecommendations = '/recommendations';
+    static urlUserPdf = '/user-pdf';
 
     public static getDetails(paperId: string, researchId?: string) {
         if (researchId == null) {
@@ -67,6 +68,16 @@ export class PaperApiCaller {
                 "relevance": relevance
             }
         }).catch(reason => { throw new Error(reason.response.data.message); });
+    }
+
+    public static changeUserPdf(paperId: string, researchId: string, userPdfUrl: string) {
+        return basicApiCaller.axiosInstance.put(this.urlPath + paperId + this.urlUserPdf, {}, {
+                params: {
+                    "researchId": researchId,
+                    "url": userPdfUrl
+                }
+            }
+        ).catch(reason => { throw new Error(reason.response.data.message); });
     }
     
     public static getRecommendationsOrReferencesOrCitations(paperId: string, method: string, organizers: Organizer[]) {

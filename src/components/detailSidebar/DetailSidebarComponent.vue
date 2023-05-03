@@ -54,9 +54,10 @@ openPaperStore.$subscribe((mutation, state) => {
 });
 
 // State for the comment/relevance of the open paper
-let detailSidebarState: { comment: string, relevance: number | undefined } = reactive({
+let detailSidebarState: { comment: string, relevance: number | undefined, userPdf: string | undefined } = reactive({
     comment: detailState.openPaper?.saved ? detailState.openPaper.savedPaper!.comment : "",
-    relevance: detailState.openPaper?.saved ? detailState.openPaper.savedPaper!.relevance : 0
+    relevance: detailState.openPaper?.saved ? detailState.openPaper.savedPaper!.relevance : 0,
+    userPdf: detailState.openPaper?.saved ? detailState.openPaper.savedPaper!.userPdfUrl : undefined
 });
 
 
@@ -102,6 +103,22 @@ let changeRelevance = async (relevance: number | string | undefined): Promise<vo
     detailState.openPaper.savedPaper.relevance = paper.relevance;
     detailSidebarState.relevance = paper.relevance;
     useOpenResearchStore().setResearchPaper(toRaw(paper));
+}
+
+let changeUserPdf = async (url: string): Promise<void> => {
+    if (detailState.openPaper == undefined) {
+        console.error("Open paper null")
+        return
+    }
+
+    if (detailState.openPaper.savedPaper == undefined) {
+        console.error("CHANGE_USER_PDF : No saved paper");
+        return
+    }
+
+    console.debug("Change user pdf:", url);
+
+    await PaperApiHandler.changeUserPdf(detailState.openPaper.savedPaper, url);
 }
 
 let changeSaveState = async (savedPaper: SavedPaper | undefined, state: SaveState): Promise<void> => {
@@ -241,6 +258,18 @@ const props = defineProps<{ openPaper: OpenPaper, biggerListShown: boolean }>();
                                 class="mr-10 mt-6 lara-hide-button" :title="$t('detailSidebar.add')" id="detail-sidebar-add"
                                 @click="detailState.openPaper !== null ? changeSaveState(detailState.openPaper?.savedPaper, SaveState.added) : null">mdi-eye</v-icon>
                     </div>
+                    <v-divider class="my-3"></v-divider>
+                </div>
+
+                <div class="mt-4">
+                    <span class="text-h5">{{ $t('detailSidebar.userPdf') }}</span>
+                    <v-text-field class="mt-2 lara-field" id="detail-sidebar-user-pdf"
+                                  v-model="detailSidebarState.userPdf">
+                    </v-text-field>
+                    <lara-button type="primary" id="detail-sidebar-pdf-set"
+                                 @click="changeUserPdf(detailSidebarState.userPdf)">
+                        {{ $t('detailSidebar.pdfSet') }}
+                    </lara-button>
                     <v-divider class="my-3"></v-divider>
                 </div>
             </div>

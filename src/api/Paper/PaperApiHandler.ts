@@ -8,7 +8,6 @@ import { SaveState } from "@/model/SaveState"
 import type { Organizer } from "@/model/Organizer"
 import { RecommendationMethod } from "@/model/RecommendationMethod"
 import BasicApiHandler from "../BasicApiHandler"
-import { ResearchApiHandler } from "../Research/ResearchApiHandler"
 
 export class PaperApiHandler {
     public static async getDetails(paperId: string, researchId: string | null): Promise<unknown> {
@@ -43,6 +42,10 @@ export class PaperApiHandler {
 
     public static async changeRelevance(savedPaper: SavedPaper, relevance: number): Promise<void> {
         await PaperApiCaller.changeRelevance(savedPaper.paper.paperId, savedPaper.research.id, relevance);
+    }
+
+    public static async changeUserPdf(savedPaper: SavedPaper, userPdfUrl: string): Promise<void> {
+        await PaperApiCaller.changeUserPdf(savedPaper.paper.paperId, savedPaper.research.id, userPdfUrl);
     }
 
     public static async getRecommendations(paper: Paper, organizers: Organizer[]): Promise<Paper[]> {
